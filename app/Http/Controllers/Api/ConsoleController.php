@@ -39,7 +39,7 @@ class ConsoleController extends Controller
     }
 
     public function createUser(Request $request) {
-        if ($request->user()->clusteradmin) {
+        if (!$request->user()->clusteradmin) {
             return response()->json(['message' => 'permission denied'], 403);
         }
 

@@ -143,7 +143,7 @@ const Authentication = ({children}) => {
     }
 
     const isClusterAdmin = () => {
-        return isAuthenticated() && user.admin;
+        return isAuthenticated() && user.clusteradmin;
     }
 
     const sendResetLink = (email) => {
