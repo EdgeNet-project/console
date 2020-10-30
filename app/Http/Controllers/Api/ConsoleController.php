@@ -38,6 +38,28 @@ class ConsoleController extends Controller
         return $request->user();
     }
 
+    public function createUser(Request $request) {
+        if ($request->user()->clusteradmin) {
+            return response()->json(['message' => 'permission denied'], 403);
+        }
+
+        $validated = $request->validate([
+            'email' => 'email|required',
+            'name' => 'required',
+            'authority' => 'required',
+            'firstname' => '',
+            'lastname' => ''
+        ]);
+
+        $user = User::create(array_merge($validated, ['password' => '-']));
+
+        return response()->json($user,200);
+    }
+
+    public function patchUser(Request $request) {
+
+    }
+
     public function users($name = null) {
         if ($name) {
             $user = User::where('name', $name)->first();
