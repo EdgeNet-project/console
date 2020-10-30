@@ -57,7 +57,7 @@ const UserView = () => {
     const consoleAccess = () => {
         axios.post('/api/users', {
             name: resource.metadata.name,
-            authority: resource.metadata.namespace.substring(0, 10),
+            authority: resource.metadata.namespace.substring(10),
             email: resource.spec.email,
             firstname: resource.spec.firstname,
             lastname: resource.spec.lastname,
