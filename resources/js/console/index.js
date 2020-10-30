@@ -5,7 +5,7 @@ import theme from "./theme";
 
 import {
     ConsoleRoutes,
-    ClusterAdminRoutes,
+    ClusterAdminRoutesMain, ClusterAdminRoutesView,
     MyAuthorityRoutes,
     KubernetesRoutes,
     RequestsRoutes,
@@ -56,7 +56,7 @@ const Console = ({settings}) =>
                                     <RequestsRoutes />
                                 </Route>
                                 <Route path="/admin">
-                                    <ClusterAdminRoutes />
+                                    <ClusterAdminRoutesMain />
                                 </Route>
                                 <Route path="/kubernetes">
                                     <KubernetesRoutes />
@@ -71,6 +71,9 @@ const Console = ({settings}) =>
                             <Switch>
                                 <Route path="/user">
                                     <UserMenu />
+                                </Route>
+                                <Route path="/admin">
+                                    <ClusterAdminRoutesView />
                                 </Route>
                             </Switch>
 

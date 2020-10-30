@@ -4,7 +4,7 @@ import { Login, ForgotPassword, ResetPasswordView } from "../authentication";
 import { Guest } from "../authentication/access";
 import { UserRegistration, VerifyEmail } from "../registration";
 
-import ClusterAdminRoutes from "./ClusterAdminRoutes";
+import { ClusterAdminRoutesMain, ClusterAdminRoutesView } from "./ClusterAdminRoutes";
 import KubernetesRoutes from "./KubernetesRoutes";
 import MyAuthorityRoutes from "./MyAuthorityRoutes";
 import RequestsRoutes from "./RequestsRoutes";
@@ -33,6 +33,8 @@ const ConsoleRoutes = () =>
     </Guest>;
 
 export {
-    ConsoleRoutes, ClusterAdminRoutes, KubernetesRoutes, MyAuthorityRoutes, RequestsRoutes, UserRoutes
+    ConsoleRoutes,
+    ClusterAdminRoutesMain, ClusterAdminRoutesView,
+    KubernetesRoutes, MyAuthorityRoutes, RequestsRoutes, UserRoutes
 
 };

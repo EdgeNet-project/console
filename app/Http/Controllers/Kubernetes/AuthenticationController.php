@@ -47,7 +47,7 @@ class AuthenticationController extends Controller
         /*
          * Cluster admins
          */
-        if ($user->admin) {
+        if ($user->clusteradmin) {
             $groups[] = 'system:masters';
         }
 

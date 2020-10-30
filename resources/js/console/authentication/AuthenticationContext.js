@@ -19,7 +19,8 @@ const Authentication = ({children}) => {
     useEffect(() => {
             if (user && user.api_token) {
                 axios.defaults.headers.common = {
-                    Authorization: "Bearer " + user.api_token
+                    Authorization: "Bearer " + user.api_token,
+                    Accept: "application/json"
                 };
                 sessionStorage.setItem('api_token', user.api_token);
 
