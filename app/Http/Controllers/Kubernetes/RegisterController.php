@@ -156,7 +156,7 @@ class RegisterController extends Controller
                     'email' => $request->input('email'),
                     'phone' => $request->input('phone', '-'),
 
-                ]
+                ],
             ],
 
         ];
