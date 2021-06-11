@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import { ConsoleLogo } from "../../index";
 
 import AuthorityRegistration from "./AuthorityRegistration";
-import AuthoritySelect from "./AuthoritySelect";
+import TenantSelect from "./TenantSelect";
 import Succes from "./Succes";
 import axios from "axios";
 
@@ -69,7 +69,7 @@ const UserRegistration = () => {
                 <Box border={{side: 'bottom', color: 'brand', size: 'small'}}
                      pad={{vertical: 'medium'}} gap="small">
 
-                    {createAuthority ? <AuthorityRegistration setAuthority={setAuthority} /> : <AuthoritySelect setAuthority={setAuthority} />}
+                    {createAuthority ? <AuthorityRegistration setAuthority={setAuthority} /> : <TenantSelect setAuthority={setAuthority} />}
 
                     <Anchor onClick={() => setCreateAuthority(!createAuthority)}>
                         {createAuthority ? "I want to select an existing institution" : "My institution is not on the list" }
