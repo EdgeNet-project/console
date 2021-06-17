@@ -31,7 +31,7 @@ const UserView = () => {
     const loadResource = () => {
         setLoading(true);
 
-        axios.get('/apis/apps.edgenet.io/v1alpha/namespaces/'+namespace+'/users/' + name)
+        axios.get('/apis/core.edgenet.io/v1alpha/acceptableusepolicies/' + name)
             .then(({data}) => {
                 if (data) {
                     setResource(data);

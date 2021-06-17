@@ -70,13 +70,19 @@ const Authentication = ({children}) => {
     }
 
     const getAUP = () => {
-        return axios.get('/apis/apps.edgenet.io/v1alpha/namespaces/authority-' + user.authority + '/acceptableusepolicies/' + user.name)
+        // The AUP name contains user-template-hash on the AUP labels. It is in the form of (%s-%s, user.name, user-template-hash).
+        // The email address of user is bound to the AUP in the object spec.
+        // The object can be retrieved by the SelfSubjectAccessReview API.
+        return axios.get('/apis/core.edgenet.io/v1alpha/acceptableusepolicies/' + user.name)
             .then(({data}) => setAup(data.spec))
             .catch(error => console.log(error))
     }
 
     const getEdgenet = () => {
-        return axios.get('/apis/apps.edgenet.io/v1alpha/namespaces/authority-' + user.authority + '/users/' + user.name)
+        // The AUP name contains user-template-hash on the AUP labels. It is in the form of (%s-%s, user.name, user-template-hash).
+        // The email address of user is bound to the AUP in the object spec.
+        // The object can be retrieved by the SelfSubjectAccessReview API.
+        return axios.get('/apis/core.edgenet.io/v1alpha/acceptableusepolicies/' + user.name)
             .then(({data}) => setEdgenet(data))
             .catch(err => console.log(err));
     }

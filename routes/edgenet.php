@@ -1,5 +1,5 @@
 <?php
-Route::get('authorities', 'ResourceController@get');
+Route::get('tenants', 'ResourceController@get');
 Route::patch('namespaces/registration/emailverifications/{token}', 'ResourceController@patch');
 Route::patch('namespaces/authority-{namespace}/emailverifications/{token}', 'ResourceController@patch');
 Route::group(['middleware' => 'auth:api'], function() {

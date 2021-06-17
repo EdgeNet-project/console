@@ -68,7 +68,7 @@ class RegisterController extends Controller
                 return response()->json(['message' => 'Authority with the same shortname already exists'], 422);
             }
 
-            if (!$this->createKubernetesAuthority($authority, $username, $request)) {
+            if (!$this->createKubernetesTenant($authority, $username, $request)) {
                 return response()->json(['message' => 'Can\'t create authority (kubernetes)'], 422);
             }
         } else {
@@ -124,7 +124,7 @@ class RegisterController extends Controller
         return false;
     }
 
-    protected function createKubernetesAuthority($authority, $username, $request)
+    protected function createKubernetesTenant($authority, $username, $request)
     {
         $request->validate([
             'authority.fullname' => ['required', 'string', 'max:255'],
@@ -132,8 +132,8 @@ class RegisterController extends Controller
         ]);
 
         $authoritySpec = [
-            'apiVersion' => 'apps.edgenet.io/v1alpha',
-            'kind' => 'AuthorityRequest',
+            'apiVersion' => 'registration.edgenet.io/v1alpha',
+            'kind' => 'TenantRequest',
             'metadata' => [
                 'name' => $authority,
             ],
@@ -156,12 +156,12 @@ class RegisterController extends Controller
                     'email' => $request->input('email'),
                     'phone' => $request->input('phone', '-'),
 
-                ]
+                ],
             ],
 
         ];
 
-        $url = config('edgenet.api.server') . '/apis/apps.edgenet.io/v1alpha/authorityrequests';
+        $url = config('edgenet.api.server') . '/apis/registration.edgenet.io/v1alpha/tenantrequests';
 
         Log::channel('kubernetes')->info('Authority registration : ' . $url);
         Log::channel('kubernetes')->info('Authority registration : ' . print_r($authoritySpec, true));
@@ -201,30 +201,30 @@ class RegisterController extends Controller
     private function createKubernetesUser($authority, $username, $request)
     {
         $namespace = 'authority-' . $authority;
-
-        $roles = ['User'];
+        // We may allow users to choose their role in the tenant as Owner, Admin, or Collaborator
+        $role = 'Collaborator';
 
         $userSpec = [
-            'apiVersion' => 'apps.edgenet.io/v1alpha',
-            'kind' => 'UserRegistrationRequest',
+            'apiVersion' => 'registration.edgenet.io/v1alpha',
+            'kind' => 'UserRequest',
             'metadata' => [
                 'name' => $username,
-                'namespace' => $namespace
             ],
             'spec' => [
+                'tenant' => $authority,
                 'firstname' => $request->input('firstname'),
                 'lastname' => $request->input('lastname'),
                 'email' => $request->input('email'),
 //                'phone' => $request->input('phone', '-'),
 //                'bio' => $request->input('bio','-'),
 //                'url' => $request->input('url','-'),
-//                'roles' => $roles,
+                'role' => $role,
             ],
 
         ];
         //dd($userSpec,config('edgenet.api_prefix_crd') . '/users');
 
-        $url = config('edgenet.api.server') . '/apis/apps.edgenet.io/v1alpha/namespaces/'.$namespace.'/userregistrationrequests';
+        $url = config('edgenet.api.server') . '/apis/registration.edgenet.io/v1alpha/userrequests';
 
         //return $this->postRequest($url, $userSpec);
 

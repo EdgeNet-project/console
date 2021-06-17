@@ -44,7 +44,7 @@ const UserList = () => {
     }, [])
 
     const loadRequests = () => {
-        axios.get('/apis/apps.edgenet.io/v1alpha/namespaces/authority-'+user.authority+'/users', {
+        axios.get('/apis/core.edgenet.io/v1alpha/acceptableusepolicies', {
             // params: { ...queryParams, page: current_page + 1 },
             // paramsSerializer: qs.stringify,
         })

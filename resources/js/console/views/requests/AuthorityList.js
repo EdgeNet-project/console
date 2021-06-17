@@ -57,7 +57,7 @@ const AuthorityList = () => {
     }, [])
 
     const loadRequests = () => {
-        axios.get('/apis/apps.edgenet.io/v1alpha/authorityrequests', {
+        axios.get('/apis/registration.edgenet.io/v1alpha/tenantrequests', {
             // params: { ...queryParams, page: current_page + 1 },
             // paramsSerializer: qs.stringify,
         })
@@ -76,7 +76,7 @@ const AuthorityList = () => {
 
     const approveAuthority = (authority) => {
         axios.patch(
-            '/apis/apps.edgenet.io/v1alpha/authorityrequests/' + authority,
+            '/apis/registration.edgenet.io/v1alpha/tenantrequests/' + authority,
             [{ op: 'replace', path: '/spec/approved', value: true }],
             { headers: { 'Content-Type': 'application/json-patch+json' } }
         )

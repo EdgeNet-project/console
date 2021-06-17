@@ -27,7 +27,7 @@ const NodeList = () => {
 
     const loadResources = () => {
         console.log(user)
-        axios.get('/apis/apps.edgenet.io/v1alpha/namespaces/authority-'+user.authority+'/nodecontributions', {
+        axios.get('/apis/core.edgenet.io/v1alpha/nodecontributions', {
             // params: { ...queryParams, page: current_page + 1 },
             // paramsSerializer: qs.stringify,
         })

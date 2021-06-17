@@ -41,7 +41,7 @@ const UserList = () => {
     }, [])
 
     const loadRequests = () => {
-        axios.get('/apis/apps.edgenet.io/v1alpha/userregistrationrequests', {
+        axios.get('/apis/registration.edgenet.io/v1alpha/userrequests', {
             // params: { ...queryParams, page: current_page + 1 },
             // paramsSerializer: qs.stringify,
         })
@@ -61,7 +61,7 @@ const UserList = () => {
     const approveUser = (user) => {
         setLoading(true)
         axios.patch(
-            '/apis/apps.edgenet.io/v1alpha/namespaces/' + user.namespace + '/userregistrationrequests/' + user.name,
+            '/apis/registration.edgenet.io/v1alpha/userrequests/' + user.name,
             [{ op: 'replace', path: '/spec/approved', value: true }],
             { headers: { 'Content-Type': 'application/json-patch+json' } }
         )

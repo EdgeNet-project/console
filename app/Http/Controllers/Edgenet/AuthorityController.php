@@ -86,8 +86,8 @@ class AuthorityController extends EdgenetController
                 // migrate authority
 
                 $authority = [
-                    'apiVersion' => 'apps.edgenet.io/v1alpha',
-                    'kind' => 'Authority',
+                    'apiVersion' => 'core.edgenet.io/v1alpha',
+                    'kind' => 'Tenant',
                     'metadata' => [
                         'name' => $site->name_id,
                     ],
@@ -97,7 +97,7 @@ class AuthorityController extends EdgenetController
                         'url' => $site->url,
                         'address' => '-',
                         'contact' => [
-                            'username' => $this->generateUserName($user),
+                      //      'username' => $this->generateUserName($user),
                             'firstname' => $user->first_name,
                             'lastname' => $user->last_name,
                             'email' => $user->email,
@@ -144,27 +144,24 @@ class AuthorityController extends EdgenetController
         $user_name = $this->generateUserName($user);
         $user_namespace = 'authority-' . $site->name_id;
 
-        $roles = ['User'];
+        $role = 'Collaborator';
         if ($user->pi) {
-            $roles[] = 'Admin';
+            $role = 'Admin';
         }
 
         $userSpec = [
-            'apiVersion' => 'apps.edgenet.io/v1alpha',
-            'kind' => 'User',
+            'apiVersion' => 'registration.edgenet.io/v1alpha',
+            'kind' => 'UserRequest',
             'metadata' => [
                 'name' => $user_name,
-                'namespace' => $user_namespace
             ],
             'spec' => [
+                'tenant' => $site->name_id,
                 'firstname' => $user->first_name,
                 'lastname' => $user->last_name,
                 'email' => $user->email,
-                'phone' => $user->phone ? $user->phone : '-',
-                'bio' => $user->bio ? $user->bio : '-',
-                'url' => $user->url ? $user->url : '-',
-                'roles' => $roles,
-                'password' => $password
+                'role' => $role,
+                'approved' => true,
             ],
 
         ];
