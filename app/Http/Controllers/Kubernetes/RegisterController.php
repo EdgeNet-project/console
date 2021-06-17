@@ -132,8 +132,8 @@ class RegisterController extends Controller
         ]);
 
         $authoritySpec = [
-            'apiVersion' => 'apps.edgenet.io/v1alpha',
-            'kind' => 'AuthorityRequest',
+            'apiVersion' => 'registration.edgenet.io/v1alpha',
+            'kind' => 'TenantRequest',
             'metadata' => [
                 'name' => $authority,
             ],
@@ -201,24 +201,24 @@ class RegisterController extends Controller
     private function createKubernetesUser($authority, $username, $request)
     {
         $namespace = 'authority-' . $authority;
-
-        $roles = ['User'];
+        // We may allow users to choose their role in the tenant as Owner, Admin, or Collaborator
+        $role = 'Collaborator';
 
         $userSpec = [
-            'apiVersion' => 'apps.edgenet.io/v1alpha',
-            'kind' => 'UserRegistrationRequest',
+            'apiVersion' => 'registration.edgenet.io/v1alpha',
+            'kind' => 'UserRequest',
             'metadata' => [
                 'name' => $username,
-                'namespace' => $namespace
             ],
             'spec' => [
+                'tenant' => $authority,
                 'firstname' => $request->input('firstname'),
                 'lastname' => $request->input('lastname'),
                 'email' => $request->input('email'),
 //                'phone' => $request->input('phone', '-'),
 //                'bio' => $request->input('bio','-'),
 //                'url' => $request->input('url','-'),
-//                'roles' => $roles,
+                'role' => $role,
             ],
 
         ];
