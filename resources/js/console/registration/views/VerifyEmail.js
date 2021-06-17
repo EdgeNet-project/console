@@ -25,7 +25,7 @@ const VerifyEmail = () => {
 
     useEffect(() => {
         axios.patch(
-            '/apis/apps.edgenet.io/v1alpha/namespaces/' + namespace + '/emailverifications/' + code,
+            '/apis/registration.edgenet.io/v1alpha/emailverifications/' + code,
             [{ op: 'replace', path: '/spec/verified', value: true }],
             { headers: { 'Content-Type': 'application/json-patch+json' } }
         )

@@ -50,7 +50,7 @@ const AuthorityList = () => {
     }, [])
 
     const loadRequests = () => {
-        axios.get('/apis/apps.edgenet.io/v1alpha/authorities', {
+        axios.get('/apis/core.edgenet.io/v1alpha/tenants', {
             // params: { ...queryParams, page: current_page + 1 },
             // paramsSerializer: qs.stringify,
         })

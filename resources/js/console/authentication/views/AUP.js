@@ -11,7 +11,7 @@ const AUP = () => {
 
     const acceptAUP = () => {
         axios.patch(
-            '/apis/apps.edgenet.io/v1alpha/namespaces/authority-'+user.authority+'/acceptableusepolicies/' + user.name,
+            '/apis/core.edgenet.io/v1alpha/acceptableusepolicies/' + user.name,
             [{ op: 'replace', path: '/spec/accepted', value: true }],
             { headers: { 'Content-Type': 'application/json-patch+json' } }
         )

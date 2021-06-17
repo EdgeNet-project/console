@@ -68,7 +68,7 @@ class RegisterController extends Controller
                 return response()->json(['message' => 'Authority with the same shortname already exists'], 422);
             }
 
-            if (!$this->createKubernetesAuthority($authority, $username, $request)) {
+            if (!$this->createKubernetesTenant($authority, $username, $request)) {
                 return response()->json(['message' => 'Can\'t create authority (kubernetes)'], 422);
             }
         } else {
@@ -124,7 +124,7 @@ class RegisterController extends Controller
         return false;
     }
 
-    protected function createKubernetesAuthority($authority, $username, $request)
+    protected function createKubernetesTenant($authority, $username, $request)
     {
         $request->validate([
             'authority.fullname' => ['required', 'string', 'max:255'],
@@ -161,7 +161,7 @@ class RegisterController extends Controller
 
         ];
 
-        $url = config('edgenet.api.server') . '/apis/apps.edgenet.io/v1alpha/authorityrequests';
+        $url = config('edgenet.api.server') . '/apis/registration.edgenet.io/v1alpha/tenantrequests';
 
         Log::channel('kubernetes')->info('Authority registration : ' . $url);
         Log::channel('kubernetes')->info('Authority registration : ' . print_r($authoritySpec, true));
@@ -224,7 +224,7 @@ class RegisterController extends Controller
         ];
         //dd($userSpec,config('edgenet.api_prefix_crd') . '/users');
 
-        $url = config('edgenet.api.server') . '/apis/apps.edgenet.io/v1alpha/namespaces/'.$namespace.'/userregistrationrequests';
+        $url = config('edgenet.api.server') . '/apis/registration.edgenet.io/v1alpha/userrequests';
 
         //return $this->postRequest($url, $userSpec);
 
