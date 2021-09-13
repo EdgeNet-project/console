@@ -10,7 +10,7 @@ import axios from "axios";
 
 const UserRegistration = () => {
     const [ createAuthority, setCreateAuthority ] = useState(false);
-    const [ authority, setAuthority ] = useState(null);
+    const [ authority, setTenant ] = useState(null);
     const [ message, setMessage ] = useState(null);
     const [ errors, setErrors ] = useState({});
     const [ loading, setLoading ] = useState(null);
@@ -69,7 +69,7 @@ const UserRegistration = () => {
                 <Box border={{side: 'bottom', color: 'brand', size: 'small'}}
                      pad={{vertical: 'medium'}} gap="small">
 
-                    {createAuthority ? <AuthorityRegistration setAuthority={setAuthority} /> : <TenantSelect setAuthority={setAuthority} />}
+                    {createAuthority ? <AuthorityRegistration setTenant={setTenant} /> : <TenantSelect setTenant={setTenant} />}
 
                     <Anchor onClick={() => setCreateAuthority(!createAuthority)}>
                         {createAuthority ? "I want to select an existing institution" : "My institution is not on the list" }

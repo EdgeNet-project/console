@@ -5,7 +5,7 @@ const RegistrationContext = React.createContext({});
 const RegistrationConsumer = RegistrationContext.Consumer;
 
 const Registration = ({children}) => {
-    const [ authority, setAuthority ] = useState(null);
+    const [ authority, setTenant ] = useState(null);
     const [ message, setMessage ] = useState(null);
     const [ errors, setErrors ] = useState({});
     const [ loading, setLoading ] = useState(null);
@@ -53,7 +53,7 @@ const Registration = ({children}) => {
 
     return (
         <RegistrationContext.Provider value={{
-            setAuthority: setAuthority,
+            setTenant: setTenant,
             submitRegistration: submitRegistration,
             loading: loading,
             message: message,

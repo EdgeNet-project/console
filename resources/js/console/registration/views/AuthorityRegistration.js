@@ -1,10 +1,10 @@
 import React from "react";
 import {Box, Form, FormField, Text} from "grommet";
 
-const AuthorityRegistration = ({setAuthority}) => {
+const AuthorityRegistration = ({setTenant}) => {
 
     return (
-        <Form onSubmit={null} onChange={(value) => setAuthority(value)} value={null}>
+        <Form onSubmit={null} onChange={(value) => setTenant(value)} value={null}>
             <Text color="dark-2" margin={{bottom: 'small'}}>
                 Please complete with the information of the institution you are part of
             </Text>
