@@ -21,7 +21,7 @@ const Loading = () =>
 
 const VerifyEmail = () => {
     const [ verified, setVerified ] = useState(false);
-    const { namespace, code } = useParams();
+    const { code } = useParams();
 
     useEffect(() => {
         axios.patch(

@@ -114,9 +114,14 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapEdgenetRoutes()
     {
-        Route::prefix(config('edgenet.api.prefix'))
+        Route::prefix(config('edgenet.api.prefix.registration'))
             ->middleware('edgenet')
             ->namespace($this->namespace . '\Edgenet')
-            ->group(base_path('routes/edgenet.php'));
+            ->group(base_path('routes/edgenet/registration.php'));
+
+        Route::prefix(config('edgenet.api.prefix.core'))
+            ->middleware('edgenet')
+            ->namespace($this->namespace . '\Edgenet')
+            ->group(base_path('routes/edgenet/core.php'));
     }
 }

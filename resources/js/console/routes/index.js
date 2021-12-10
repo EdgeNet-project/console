@@ -16,7 +16,7 @@ const ConsoleRoutes = () =>
             <Route path="/signup">
                 <UserRegistration />
             </Route>
-            <Route path="/verify/:namespace/:code">
+            <Route path="/verify/:code">
                 <VerifyEmail />
             </Route>
             <Route exact path="/password/reset">
