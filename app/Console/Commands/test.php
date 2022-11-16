@@ -39,10 +39,13 @@ class test extends Command
         $nodes = $cluster->node()->all();
 
         foreach ($nodes as $node) {
-            dd($node->getInfo());
-//            $node->getImages();
-//            $node->getCapacity();
-//            $node->getAllocatableInfo();
+            dd([
+                $node->getInfo(),
+                $node->getImages(),
+            $node->getCapacity(),
+            $node->getAllocatableInfo(),
+            ]);
+
         }
 
         // Create a new instance of KubernetesCluster.
