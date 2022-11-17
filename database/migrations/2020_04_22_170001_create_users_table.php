@@ -16,26 +16,25 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->rememberToken();
 
-            $table->boolean('active')->default(false);
+            /*
+             * Global switch to disable user access
+             */
+            $table->boolean('enabled')->default(false);
 
             $table->string('title')->nullable();
             $table->string('firstname');
             $table->string('lastname');
 
+            /*
+             * Corresponds to K8s name
+             */
             $table->string('name')->unique();
-            $table->string('authority');
 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
 
             $table->string('password');
-
-            $table->string('api_token', 60)->nullable()->unique();
-
-            $table->boolean('clusteradmin')->default(false);
-            $table->boolean('nodemanager')->default(false);
 
         });
     }
