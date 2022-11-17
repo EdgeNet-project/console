@@ -11,7 +11,10 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.react('resources/js/app.js', 'public/js')
+mix.js('resources/js/console.js', 'public/js')
+    .react()
     // .sass('resources/sass/app.scss', 'public/css')
-    .copy('node_modules/flag-icon-css/css/flag-icon.min.css', 'public/css')
-    .copyDirectory('node_modules/flag-icon-css/flags', 'public/flags');
+    // .copy('node_modules/flag-icon-css/css/flag-icons.min.css', 'public/css')
+    // .copyDirectory('node_modules/flag-icon-css/flags', 'public/flags');
+
+mix.version()

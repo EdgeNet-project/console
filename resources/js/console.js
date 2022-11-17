@@ -1,9 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { MantineProvider } from '@mantine/core';
 
 const Console = () => {
 
-    return null
+    return (
+        <MantineProvider withGlobalStyles withNormalizeCSS>
+
+        </MantineProvider>
+    )
 }
 
 if (dom) {
