@@ -9,10 +9,10 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.1",
-        "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^9.0",
+        "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.0",
         "nyholm/psr7": "^1.3",
         "renoki-co/laravel-php-k8s": "^3.4",

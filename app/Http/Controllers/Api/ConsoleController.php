@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\User;
+use App\Model\User;
 use Auth;
+use Illuminate\Http\Request;
 
 class ConsoleController extends Controller
 {

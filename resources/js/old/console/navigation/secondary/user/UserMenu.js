@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {Box, Button as GrommetButton, Text} from "grommet";
 import { Lock, Logout } from "grommet-icons";
-import { NavigationButton } from "../..";
+import { NavigationButton } from "../../index";
 import {AuthenticationContext} from "../../../authentication";
 
 const UserMenu = () => {

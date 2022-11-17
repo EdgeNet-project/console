@@ -3,18 +3,15 @@
 namespace App\Http\Controllers\Kubernetes;
 
 use App\Http\Controllers\Controller;
+use App\Model\User;
+use Auth;
+use GuzzleHttp\Client;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
-
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use Auth;
-
-use App\User;
 
 class RegisterController extends Controller
 {

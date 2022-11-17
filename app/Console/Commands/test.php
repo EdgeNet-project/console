@@ -19,7 +19,7 @@ class test extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '';
 
     /**
      * Execute the console command.
