@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { AuthContext } from "../Auth";
+import React from 'react';
+import { useAuth } from "../Auth";
 
 const Authenticated = ({children}) => {
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
 
     if (!user) {
         return null;
@@ -12,7 +12,7 @@ const Authenticated = ({children}) => {
 };
 
 const isAuthenticated = () => {
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
 
     return !!user
 }

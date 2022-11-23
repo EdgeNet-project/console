@@ -8,12 +8,17 @@ use App\Http\Controllers\Authentication\AuthenticationController;
 //
 //Auth::routes(['register' => false]);
 
-Route::get('user', [ AuthenticationController::class, 'user' ])
-    ->name('auth.user');
+
 Route::post('login', [ AuthenticationController::class, 'login' ])
-    ->name('auth.login');
+    ->name('login');
 Route::post('logout', [ AuthenticationController::class, 'logout' ])
     ->name('auth.logout');
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('user', [AuthenticationController::class, 'user'])
+        ->name('auth.user');
+});
+
 
 //Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 //Route::post('register', 'Kubernetes\RegisterController@register');

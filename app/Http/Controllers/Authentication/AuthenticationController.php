@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Model\User;
 use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
@@ -11,7 +11,7 @@ class AuthenticationController extends Controller
 
     public function user()
     {
-        return auth()->user();
+        return response()->json(auth()->user());
     }
 
     public function login()
@@ -24,9 +24,12 @@ class AuthenticationController extends Controller
         $user = User::where('email', request('email'))->first();
 
         if (Hash::check(request('password'), $user->getAuthPassword())) {
-            return [
-                'token' => $user->createToken('app-admins')
-            ];
+
+            $token = $user->createToken('app-admins');
+
+            return response()->json([
+                'token' => $token->plainTextToken
+            ]);
         }
 
         return response()->json(['message' => 'authentication failed'], 301);

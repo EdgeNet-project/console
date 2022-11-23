@@ -12,10 +12,10 @@ const defaults = {
 
 const Auth = ({children}) => {
     const [ token, setToken ] = useState(null);
-    // const [ user, setUser ] = useState(null);
+    const [ user, setUser ] = useState(null);
     // const [ error, setError ] = useState(null);
     // const [ loading, setLoading ] = useState(false);
-    const { loading, error, get, post, data } = useFetch()
+    const { loading, error, get, post, abort } = useFetch()
 
     useEffect(() => {
         setToken(
@@ -30,6 +30,11 @@ const Auth = ({children}) => {
 
         if (token) {
             console.log('aa', token)
+            get('/api/user', {token: token})
+                .then(data => setUser(data))
+                .then(() => {
+                    sessionStorage.setItem('api_token', token)
+                })
             // fetch('/api/user', {
             //     headers: {Authorization: `Bearer ${token}`},
             //     method: 'GET',
@@ -48,7 +53,7 @@ const Auth = ({children}) => {
         }
 
         return () => {
-            // abortController.abort()
+            abort()
         }
 
     }, [token])
@@ -57,10 +62,8 @@ const Auth = ({children}) => {
 
         post('/api/login', {email: email, password: password},
             {})
-            .then((data) => console.log(data))
-            .catch(() => console.log('error'))
+            .then((data) => setToken(data.token))
             .finally(() => {
-               console.log('hi!')
             });
         // const abortController = new AbortController()
         //
@@ -92,9 +95,9 @@ const Auth = ({children}) => {
 
     return (
         <AuthContext.Provider value={{
-            // user: user,
+            user: user,
             login: login,
-            // logout: logout,
+            logout: logout,
             loading: loading,
             // error: error
         }}>{children}</AuthContext.Provider>

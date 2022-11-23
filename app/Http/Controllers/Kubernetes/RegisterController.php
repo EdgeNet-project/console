@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Kubernetes;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Model\User;
 use Auth;
 use GuzzleHttp\Client;
 use Illuminate\Auth\Events\Registered;
