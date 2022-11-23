@@ -43,11 +43,12 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
 
-        $this->mapKubernetesRoutes();
+//        $this->mapKubernetesRoutes();
 
+        $this->mapAuthenticationRoutes();
         $this->mapApiRoutes();
 
-        $this->mapEdgenetRoutes();
+//        $this->mapEdgenetRoutes();
 
         $this->mapWebRoutes();
 
@@ -66,6 +67,19 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
+    }
+
+    /**
+     * Define the API authentication routes for the application.
+     *
+     * @return void
+     */
+    protected function mapAuthenticationRoutes()
+    {
+        Route::prefix('api')
+            ->middleware('api')
+            ->namespace($this->namespace . '\Authentication')
+            ->group(base_path('routes/authentication.php'));
     }
 
     /**

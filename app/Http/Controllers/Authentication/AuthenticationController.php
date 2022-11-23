@@ -1,13 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Authentication;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
 {
+
+    public function user()
+    {
+        return auth()->user();
+    }
+
     public function login()
     {
         validator(request()->all(), [
@@ -24,11 +30,6 @@ class AuthenticationController extends Controller
         }
 
         return response()->json(['message' => 'authentication failed'], 301);
-    }
-
-    public function user()
-    {
-        return auth()->user();
     }
 
     public function logout()

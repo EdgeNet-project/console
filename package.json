@@ -23,6 +23,7 @@
         "@emotion/react": "^11.10.5",
         "@mantine/core": "^5.8.0",
         "@mantine/dates": "^5.8.0",
+        "@mantine/ds": "^5.8.0",
         "@mantine/form": "^5.8.0",
         "@mantine/hooks": "^5.8.0",
         "@mantine/notifications": "^5.8.0",
