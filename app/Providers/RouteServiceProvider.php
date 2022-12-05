@@ -43,7 +43,7 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
 
-//        $this->mapKubernetesRoutes();
+        $this->mapKubernetesRoutes();
 
         $this->mapAuthenticationRoutes();
         $this->mapApiRoutes();
@@ -110,12 +110,12 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('kubernetes')
             ->middleware('kubernetes')
             ->namespace($this->namespace . '\Kubernetes')
-            ->group(base_path('routes/kubernetes.php'));
+            ->group(base_path('routes/kubernetes/authentication.php'));
 
-        Route::prefix('api/v1')
-            ->middleware('kubernetes')
-            ->namespace($this->namespace . '\Kubernetes')
-            ->group(base_path('routes/kubernetes_api.php'));
+//        Route::prefix('api/v1')
+//            ->middleware('kubernetes')
+//            ->namespace($this->namespace . '\Kubernetes')
+//            ->group(base_path('routes/kubernetes_api.php'));
 
     }
 

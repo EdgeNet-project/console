@@ -46,7 +46,6 @@ class Kernel extends HttpKernel
 
         'kubernetes' => [
             'throttle:60,1',
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
         'edgenet' => [
