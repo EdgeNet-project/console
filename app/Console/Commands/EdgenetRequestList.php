@@ -33,6 +33,13 @@ class EdgenetRequestList extends Command
 
         $tenantRequests = $cluster->tenantRequest()->all();
 
+        if ($tenantRequests->count() == 0) {
+            $this->newLine();
+            $this->info('No pending tenant requests');
+            $this->newLine();
+            return Command::SUCCESS;
+        }
+
         $output = [];
         foreach ($tenantRequests as $t) {
             $contact = $t->getContact();

@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         \App\CRDs\TenantRequest::register();
+        \App\CRDs\Tenant::register();
     }
 
     /**
