@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Kubernetes;
 
 use App\Http\Controllers\Controller;
-use App\Model\User;
-use Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -16,9 +15,10 @@ use Illuminate\Support\Facades\Log;
  */
 class AuthenticationController extends Controller
 {
-    public function authenticate(Request $request)
+    public function webhook(Request $request)
     {
-        Log::channel('kubernetes')->info(var_export($request->all(), true));
+        Log::channel('auth-webhook')
+            ->debug(var_export($request->all(), true));
 
         $failed = [
             'apiVersion' => 'authentication.k8s.io/v1beta1',
@@ -28,18 +28,29 @@ class AuthenticationController extends Controller
 
 
         if ($request->input('kind') != 'TokenReview') {
+            Log::channel('auth-webhook')
+                ->error('Wrong Kind subject');
             return response()->json($failed, 400);
         }
 
         if (!$request->has('spec.token')) {
+            Log::channel('auth-webhook')
+                ->error('No token specified');
             return response()->json($failed, 401);
         }
 
-        if (!$user = User::where('api_token', $request->input('spec.token'))->first()) {
+        try {
+            $user = PersonalAccessToken::findToken($request->input('spec.token'))->tokenable();
+        } catch (\Exception $e) {
+
+            Log::channel('auth-webhook')
+                ->debug($e->getMessage());
+
+            Log::channel('auth-webhook')
+                ->error('Invalid token, User not authenticated');
+
             return response()->json($failed, 401);
         }
-
-        Log::channel('kubernetes')->info('User ' . $user->name . ' authenticated');
 
         $groups = [];
 
@@ -64,12 +75,27 @@ class AuthenticationController extends Controller
                 'authenticated' => true,
                 'user' => [
                     'username' => $user->email,
+                    // we don't use uid ATM
+                    // 'uid' => 123,
                     'groups' => $groups,
+                    // Optional additional information provided by the authenticator.
+                    // This should not contain confidential data, as it can be recorded in logs
+                    // or API objects, and is made available to admission webhooks.
+//                    'extra' => [
+//                        'extrafield1' => [
+//                            'extravalue1',
+//                            'extravalue2'
+//                        ]
+//                    ]
                 ]
             ]
         ];
 
-        Log::channel('kubernetes')->info(print_r($response, true));
+        Log::channel('auth-webhook')
+            ->debug(print_r($response, true));
+
+        Log::channel('auth-webhook')
+            ->info('User ' . $user->name . ' authenticated');
 
         return response()->json($response);
     }

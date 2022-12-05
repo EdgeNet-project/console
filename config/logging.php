@@ -41,6 +41,13 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'auth-webhook' => [
+            'driver' => 'monthly',
+            'path' => storage_path('logs/auth-webhook.log'),
+            'level' => 'info',
+            'days' => 360,
+        ],
+
         'kubernetes' => [
             'driver' => 'daily',
             'path' => storage_path('logs/kubernetes.log'),
