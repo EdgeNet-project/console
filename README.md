@@ -5,7 +5,7 @@
 ### Dashboard webhook authentication
 To setup the webhook auth api
 
-- Create the file authn-config.yaml like so. 
+- Create the file webhook-config.yaml like so. 
 "server" should point to the authentication endpoint configured in the routes
 ```
 apiVersion: v1
@@ -25,16 +25,9 @@ contexts:
 current-context: webhook
 ```
 
-- Copy this file in a dir mounted by the K8s API container
-
-```
-# you can retreive info on the api pod
-$ kubectl describe pod kube-apiserver-XX -n kube-system
-
-```
-
+- Copy this file in /etc/kubernetes/authn (create the dir)
 - Modify the Dashboard API server configuraton by adding the
---authentication-token-webhook-config-file command option
+--authentication-token-webhook-config-file command option and a new mounted read only host path
 
 ```
 # vi /etc/kubernetes/manifests/kube-apiserver.yaml
@@ -55,9 +48,27 @@ spec:
   - command:
     - kube-apiserver
     - ...
-    - --authentication-token-webhook-config-file=/etc/kubernetes/pki/authn-config.yaml
+    - --authentication-token-webhook-config-file=/etc/kubernetes/authn/webhook-config.yaml
     - ...
 [...]
+  volumeMounts:
+    - mountPath: /etc/kubernetes/authn
+      name: k8s-authn
+      readOnly: true
+valumes:
+  ...
+  - hostPath:
+      path: /etc/kubernetes/authn
+      type: DirectoryOrCreate
+    name: k8s-authn
+
+```
+Verify that the configuration is taken into account
+
+```
+# you can retreive info on the api pod
+$ kubectl describe pod kube-apiserver-XX -n kube-system
+
 ```
 
 ## NOTES

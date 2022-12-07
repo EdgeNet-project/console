@@ -42,10 +42,9 @@ return [
         ],
 
         'auth-webhook' => [
-            'driver' => 'monthly',
+            'driver' => 'single',
             'path' => storage_path('logs/auth-webhook.log'),
             'level' => 'info',
-            'days' => 360,
         ],
 
         'kubernetes' => [

@@ -19,7 +19,7 @@ const Auth = ({children}) => {
 
     useEffect(() => {
         setToken(
-            sessionStorage.getItem('api_token', null)
+            sessionStorage.getItem('api_token')
         )
     }, [])
 

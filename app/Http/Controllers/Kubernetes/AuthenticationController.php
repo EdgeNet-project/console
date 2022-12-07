@@ -39,19 +39,36 @@ class AuthenticationController extends Controller
             return response()->json($failed, 401);
         }
 
-        try {
-            $user = PersonalAccessToken::findToken($request->input('spec.token'))->tokenable();
-        } catch (\Exception $e) {
+        $token = PersonalAccessToken::findToken($request->input('spec.token'));
 
+        if (!$token) {
+            /*
+             * We don't have this token, return 401, Kubernetes will then
+             * try other authentication methods.
+             * Note: logging is ind ebug only mode to avoid polluting the logs.
+             */
             Log::channel('auth-webhook')
-                ->debug($e->getMessage());
-
-            Log::channel('auth-webhook')
-                ->error('Invalid token, User not authenticated');
+                ->debug('Invalid token, User not authenticated');
 
             return response()->json($failed, 401);
         }
 
+        $user = $token->tokenable();
+
+        if (!$user) {
+            /*
+             * For some reason the user does not exist, we keep this as a file safe
+             * but it should not happen.
+             */
+            Log::channel('auth-webhook')
+                ->error('Invalid user, User not authenticated');
+
+            return response()->json($failed, 401);
+        }
+
+        // TODO: check user is active and user permissions
+
+        // TODO: manage groups
         $groups = [];
 
         /*
