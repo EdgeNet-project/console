@@ -20,7 +20,8 @@ class CreateUsersTable extends Migration
             /*
              * Global switch to disable user access
              */
-            $table->boolean('enabled')->default(false);
+            $table->boolean('enabled')
+                ->default(true);
 
             $table->string('title')->nullable();
             $table->string('firstname');
