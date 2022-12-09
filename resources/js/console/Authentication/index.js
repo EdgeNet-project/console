@@ -1,5 +1,5 @@
-import { Auth, AuthContext, AuthConsumer, useAuth } from "./Auth";
+import { Authentication, AuthenticationContext, AuthenticationConsumer, useAuthentication } from "./Authentication";
 
 export {
-    Auth, AuthContext, AuthConsumer, useAuth
+    Authentication, AuthenticationContext, AuthenticationConsumer, useAuthentication
 }

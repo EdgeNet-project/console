@@ -1,5 +1,20 @@
 import { useState } from "react";
 
+const options = {
+
+    set token(token) {
+        this.headers = {
+            ...this.headers,
+            Authorization: `Bearer ${token}`
+        }
+    },
+
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    }
+};
+
 const useFetch = (url = '') => {
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(null)
@@ -17,9 +32,7 @@ const useFetch = (url = '') => {
         setLoading(true)
         return fetch(url + path, {
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                ...(token && { Authorization: `Bearer ${token}` }),
+                ...options.headers,
                 ...headers
             },
             method: method,
@@ -55,6 +68,8 @@ const useFetch = (url = '') => {
         error,
         get,
         post,
+
+        options,
 
         abort,
     }

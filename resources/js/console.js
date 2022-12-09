@@ -1,21 +1,26 @@
 import React from "react";
 import { createRoot } from 'react-dom/client';
+import {
+    RouterProvider,
+} from "react-router-dom";
 
 import { MantineProvider } from '@mantine/core';
-import Application from "./console/Application";
-import { Auth } from "./console/Authentication";
+import { Authentication } from "./console/Authentication";
+import Demo from "./console/Application/Demo";
+import router from "./console/Router";
 
 const Console = () => {
 
     return (
         <MantineProvider withGlobalStyles withNormalizeCSS>
-            <Auth>
-                <Application />
-            </Auth>
+            <Authentication>
+                <RouterProvider router={router} />
+                <Demo />
+            </Authentication>
         </MantineProvider>
     )
 }
 
 const container = document.getElementById('console');
-const root = createRoot(container); // createRoot(container!) if you use TypeScript
-root.render(<Console tab="home" />);
+const root = createRoot(container)
+    .render(<Console />);

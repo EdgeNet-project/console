@@ -2,19 +2,13 @@ import React from 'react';
 import { useAuth } from "../Auth";
 
 const Authenticated = ({children}) => {
-    const { user } = useAuth();
+    const { isAuthenticated } = useAuth();
 
-    if (!user) {
+    if (!isAuthenticated) {
         return null;
     }
 
     return children;
 };
 
-const isAuthenticated = () => {
-    const { user } = useAuth();
-
-    return !!user
-}
-
-export { Authenticated, isAuthenticated };
+export default Authenticated;

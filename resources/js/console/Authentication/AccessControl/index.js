@@ -1,5 +1,5 @@
-import { Authenticated, isAuthenticated } from "./Authenticated";
+import Authenticated from "./Authenticated";
 
 export {
-    Authenticated, isAuthenticated
+    Authenticated
 }

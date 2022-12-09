@@ -1,9 +1,6 @@
-import React from "react";
-import Login from "../Authentication/Login/Login"
-import { isAuthenticated } from "../Authentication/AccessControl";
+import React, { useState }  from "react";
 
 
-import { useState } from 'react';
 import {
     createStyles,
     Container,
@@ -12,7 +9,6 @@ import {
     Group,
     Text,
     Menu,
-    Tabs,
     Burger, Image,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -28,6 +24,7 @@ import {
     IconChevronDown,
 } from '@tabler/icons';
 import {useAuth} from "../Authentication";
+import Main from "./Main";
 
 const useStyles = createStyles((theme) => ({
     header: {
@@ -68,59 +65,12 @@ const useStyles = createStyles((theme) => ({
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
     },
 
-    tabs: {
-        [theme.fn.smallerThan('sm')]: {
-            display: 'none',
-        },
-    },
-
-    tabsList: {
-        borderBottom: '0 !important',
-    },
-
-    tab: {
-        fontWeight: 500,
-        height: 38,
-        backgroundColor: 'transparent',
-
-        '&:hover': {
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
-        },
-
-        '&[data-active]': {
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-            borderColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[2],
-        },
-    },
 }));
-
-const tabs = [
-    "Home",
-    "Orders",
-    "Education",
-    "Community",
-    "Forums",
-    "Support",
-    "Account",
-    "Helpdesk"
-]
 
 const Application = () => {
     const { classes, theme, cx } = useStyles();
     const [opened, { toggle }] = useDisclosure(false);
     const [userMenuOpened, setUserMenuOpened] = useState(false);
-    const { user } = useAuth();
-
-    if (!isAuthenticated()) {
-        return <Login />
-    }
-
-    const items = tabs.map((tab) => (
-        <Tabs.Tab value={tab} key={tab}>
-            {tab}
-        </Tabs.Tab>
-    ));
-
 
     return (
         <div className={classes.header}>
@@ -183,17 +133,7 @@ const Application = () => {
                 </Group>
             </Container>
             <Container>
-                <Tabs
-                    onTabChange={(value) => console.log(value)}
-                    defaultValue="Home"
-                    variant="outline"
-                    classNames={{
-                        root: classes.tabs,
-                        tabsList: classes.tabsList,
-                        tab: classes.tab,
-                    }}>
-                    <Tabs.List>{items}</Tabs.List>
-                </Tabs>
+                <Main />
             </Container>
         </div>
     );
