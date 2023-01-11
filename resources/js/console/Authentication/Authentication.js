@@ -25,13 +25,9 @@ const Authentication = ({children}) => {
     const [ token, setToken ] = useState(sessionStorage.getItem(AUTH_TOKEN));
     const [ user, setUser ] = useState(null);
     // const [ error, setError ] = useState(null);
-    const [ loading, setLoading ] = useState(false);
+    const [ loading, setLoading ] = useState(true);
     const [ submitting, setSubmitting ] = useState(false);
     const { error, get, post, abort, options } = useFetch()
-
-    useEffect(() => {
-
-    }, [])
 
     useEffect(() => {
         const xsrf_token = getXsrfToken();
@@ -58,6 +54,9 @@ const Authentication = ({children}) => {
                 })
                 .catch(() => {
 
+                })
+                .finally(() => {
+                    setLoading(false)
                 })
             // fetch('/api/user', {
             //     headers: {Authorization: `Bearer ${token}`},
@@ -124,13 +123,16 @@ const Authentication = ({children}) => {
 
     console.log(token, user, loading)
 
-    if (!!token && !user && !loading) {
-        return 'wait'
-    }
-
-    if (loading) {
-        return 'loading'
-    }
+    // if (!!token && !user && !loading) {
+    //     /*
+    //      *
+    //      */
+    //     return 'wait'
+    // }
+    //
+    // if (loading) {
+    //     return 'loading'
+    // }
 
     return (
         <AuthenticationContext.Provider value={{

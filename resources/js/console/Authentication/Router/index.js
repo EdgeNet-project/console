@@ -3,6 +3,7 @@ import {
 } from "react-router-dom";
 
 import Login from "../Login/Panel";
+import {UserRegistrationForm} from "../Registration/UserRegistrationForm";
 
 const router = createBrowserRouter([
     {
@@ -11,11 +12,7 @@ const router = createBrowserRouter([
         loader: null,
         action: null, // login
         children: [
-            {
-                path: "team",
-                element: null,
-                loader: null,
-            },
+
         ],
     },
     {
@@ -30,6 +27,11 @@ const router = createBrowserRouter([
             //     loader: null,
             // },
         ],
+    },
+    {
+        path: "/registration",
+        element: <UserRegistrationForm />,
+        loader: null,
     },
 ]);
 

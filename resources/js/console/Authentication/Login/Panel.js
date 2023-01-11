@@ -77,8 +77,10 @@ export function Panel() {
                     <Image src="/images/edgenet.png" alt="EdgeNet" height={100} fit="contain" my="xl"/>
 
                     <form onSubmit={form.onSubmit((values) => login(values))}>
-                        <TextInput label="Email address" {...form.getInputProps('email')} placeholder="hello@gmail.com" size="md" />
-                        <PasswordInput label="Password" {...form.getInputProps('password')} placeholder="Your password" mt="md" size="md" />
+                        <TextInput label="Email address" {...form.getInputProps('email')}
+                                   placeholder="hello@gmail.com" />
+                        <PasswordInput label="Password" {...form.getInputProps('password')}
+                                       placeholder="Your password" mt="md" size="md" />
                         <Checkbox label="Keep me logged in" mt="xl" size="md" />
                         <Button disabled={loading} type="submit" fullWidth mt="xl" size="md">
                             Login
@@ -87,7 +89,7 @@ export function Panel() {
 
                     <Text align="center" mt="md">
                         Don&apos;t have an account?{' '}
-                        <Anchor href="#" weight={700} onClick={(event) => event.preventDefault()}>
+                        <Anchor href="/ registration" weight={700} onClick={(event) => event.preventDefault()}>
                         Register
                         </Anchor>
                     </Text>

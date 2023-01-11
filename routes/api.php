@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\TenantController;
+
+Route::get('/tenants', [ TenantController::class, 'list' ]);
+
 //Route::group(['middleware' => 'auth:api'], function () {
 
 //    Route::get('/user', 'ConsoleController@user');

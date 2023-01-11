@@ -8,38 +8,32 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class RegistrationController extends Controller
 {
 
     public function register(Request $request)
     {
-        Validator::make($request->all(), [
+        $data = $request->validate([
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ])->validate();
+        ]);
 
 
-
-
-
-        event(new Registered($user = $this->createUser($request->all())));
-    }
-
-    private function createUser($data)
-    {
-        return User::create([
+        $user = User::create([
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+
+        event(new Registered($user));
     }
 
-    private function createAuthority($data)
+    private function createTenant()
     {
 
     }
