@@ -3,7 +3,7 @@ import axios from "axios";
 import {RouterProvider} from "react-router-dom";
 
 import {useFetch} from "../Fetch";
-import router from "./Router";
+import routes from "./routes";
 
 const AuthenticationContext = React.createContext({
     user: null
@@ -28,13 +28,13 @@ const Authentication = ({children}) => {
     // const [ error, setError ] = useState(null);
     const [ loading, setLoading ] = useState(false);
     const [ submitting, setSubmitting ] = useState(false);
-    const { error, get, post, abort, options } = useFetch()
+    // const { error, get, post, abort, options } = useFetch()
 
     useEffect(() => {
         const xsrf_token = getXsrfToken();
         if (!xsrf_token) {
             /* Updates and sets the CSFR cookie */
-            fetch('/sanctum/csrf-cookie')
+            // fetch('/sanctum/csrf-cookie')
         }
 
     }, [])
@@ -55,7 +55,7 @@ const Authentication = ({children}) => {
 
             // console.log('aa', token)
             axios.get('/api/user')
-                .then(data => {
+                .then(({data}) => {
                     setUser(data)
                 })
                 .then(() => {
@@ -90,7 +90,7 @@ const Authentication = ({children}) => {
         }
 
         return () => {
-            abort()
+            // abort()
         }
 
     }, [token])
@@ -100,7 +100,7 @@ const Authentication = ({children}) => {
         axios.post('/api/login', {email: email, password: password},
             {})
             .then(({data}) => {
-                console.log(data)
+                // console.log(data)
                 setToken(data.token)
             })
             .finally(() => {
@@ -129,16 +129,16 @@ const Authentication = ({children}) => {
     }
 
     const logout = () => {
-        sessionStorage.setItem('api_token', null)
+        sessionStorage.removeItem(AUTH_TOKEN)
         setToken(null)
-        // setUser(null)
+        setUser(null)
     }
 
     const isAuthenticated = () => {
         return !!token && !!user && !loading;
     }
 
-    console.log(isAuthenticated(), token, user, loading)
+    // console.log(isAuthenticated(), token, user, loading)
 
     // if (!!token && !user && !loading) {
     //     /*
@@ -161,7 +161,7 @@ const Authentication = ({children}) => {
 
             isAuthenticated: isAuthenticated
         }}>
-            {isAuthenticated() ? children : <RouterProvider router={router} />}
+            {isAuthenticated() ? children : <RouterProvider router={routes} />}
         </AuthenticationContext.Provider>
     )
 }

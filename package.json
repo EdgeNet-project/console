@@ -31,6 +31,7 @@
         "dayjs": "^1.11.6",
         "filesize": "^10.0.5",
         "flag-icon-css": "^4.1.7",
+        "react-gravatar": "^2.6.3",
         "react-router": "^6.4.5",
         "react-router-dom": "^6.4.5",
         "use-clippy": "^1.0"
