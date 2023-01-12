@@ -1,7 +1,11 @@
 <?php
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Authentication\AuthenticationController;
 use App\Http\Controllers\Api\RegistrationController;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Model\User;
 
 //Route::get('/password/reset/{token?}', function () {
 //    return view('console');
@@ -12,10 +16,13 @@ use App\Http\Controllers\Api\RegistrationController;
 
 Route::post('login', [ AuthenticationController::class, 'login' ])
     ->name('login');
+
 Route::post('logout', [ AuthenticationController::class, 'logout' ])
     ->name('auth.logout');
+
 Route::post('register', [ RegistrationController::class, 'register' ])
     ->name('auth.register');
+
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('user', [AuthenticationController::class, 'user'])

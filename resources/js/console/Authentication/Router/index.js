@@ -3,7 +3,8 @@ import {
 } from "react-router-dom";
 
 import Login from "../Login/Panel";
-import {UserRegistrationForm} from "../Registration/UserRegistrationForm";
+import UserRegistrationForm from "../Registration/UserRegistrationForm";
+import EmailVerification from "../Registration/EmailVerification";
 
 const router = createBrowserRouter([
     {
@@ -14,6 +15,15 @@ const router = createBrowserRouter([
         children: [
 
         ],
+    },
+    {
+        path: "/registration",
+        element: <UserRegistrationForm />,
+        loader: null,
+    },
+    {
+        path: "/email/verify/:id/:hash",
+        element: <EmailVerification />,
     },
     {
         path: "/password",
@@ -28,11 +38,7 @@ const router = createBrowserRouter([
             // },
         ],
     },
-    {
-        path: "/registration",
-        element: <UserRegistrationForm />,
-        loader: null,
-    },
+
 ]);
 
 export default router;

@@ -2,7 +2,7 @@ import {
     createBrowserRouter,
 } from "react-router-dom";
 import Application from "./Application";
-import {UserRegistrationForm} from "./Authentication/Registration/UserRegistrationForm";
+import UserRegistrationForm from "./Authentication/Registration/UserRegistrationForm";
 
 const router = createBrowserRouter([
     {
@@ -10,12 +10,13 @@ const router = createBrowserRouter([
         element: <Application />,
         loader: null,
         children: [
-            {
-                path: "registration",
-                element: <UserRegistrationForm />,
-                loader: null,
-            },
+
         ],
+    },
+    {
+        path: "registration",
+        element: <UserRegistrationForm />,
+        loader: null,
     },
 ]);
 

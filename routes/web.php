@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -75,18 +80,29 @@ Route::get('/data/users', function() {
 Route::view('/test', 'test');
 Route::view('/users', 'users');
 
+
+
 /*
  * User email verification route
+ * https://laravel.com/docs/9.x/verification
  */
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
+})->name('verification.notice');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
 
+Route::get('/email/verify/{id}/{hash}', function (Request $request, $id) {
+
+    $user = User::findOrFail($id);
+
+    if (! $user->hasVerifiedEmail()) {
+        $user->markEmailAsVerified();
+
+        event(new Verified($user));
+    }
     return redirect('/');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+})->middleware(['signed'])->name('verification.verify');
+
 
 Route::view('/{any?}', 'console')
     ->where('any', '.*');

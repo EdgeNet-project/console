@@ -5,13 +5,14 @@ import { RouterProvider } from "react-router-dom";
 import { MantineProvider } from "@mantine/core";
 import { Authentication } from "./console/Authentication";
 import { Application } from "./console/Application";
-import router from "./console/routes";
+// import router from "./console/routes";
 
 const Console = () => {
 
     return (
         <MantineProvider withGlobalStyles withNormalizeCSS>
             <Authentication>
+                
             </Authentication>
         </MantineProvider>
     )

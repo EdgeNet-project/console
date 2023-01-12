@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
+import axios from "axios";
 import {RouterProvider} from "react-router-dom";
 
 import {useFetch} from "../Fetch";
@@ -25,7 +26,7 @@ const Authentication = ({children}) => {
     const [ token, setToken ] = useState(sessionStorage.getItem(AUTH_TOKEN));
     const [ user, setUser ] = useState(null);
     // const [ error, setError ] = useState(null);
-    const [ loading, setLoading ] = useState(true);
+    const [ loading, setLoading ] = useState(false);
     const [ submitting, setSubmitting ] = useState(false);
     const { error, get, post, abort, options } = useFetch()
 
@@ -39,21 +40,34 @@ const Authentication = ({children}) => {
     }, [])
 
     useEffect(() => {
-        // setLoading(true)
+
 
         // const abortController = new AbortController()
 
         if (token) {
-            options.token = token;
+
+            setLoading(true)
+
+            axios.defaults.headers.common = {
+                Authorization: "Bearer " + token,
+                Accept: "application/json"
+            };
 
             // console.log('aa', token)
-            get('/api/user')
-                .then(data => setUser(data))
+            axios.get('/api/user')
+                .then(data => {
+                    setUser(data)
+                })
                 .then(() => {
-                    sessionStorage.setItem(AUTH_TOKEN, token)
+                    sessionStorage.setItem(AUTH_TOKEN, token);
                 })
                 .catch(() => {
-
+                    axios.defaults.headers.common = {
+                        Authorization: null,
+                        Accept: "application/json"
+                    };
+                    setToken(null);
+                    sessionStorage.removeItem(AUTH_TOKEN);
                 })
                 .finally(() => {
                     setLoading(false)
@@ -82,12 +96,15 @@ const Authentication = ({children}) => {
     }, [token])
 
     const login = ({email, password}) => {
-
-        post('/api/login', {email: email, password: password},
+        setLoading(true)
+        axios.post('/api/login', {email: email, password: password},
             {})
-            .then((data) => setToken(data.token))
+            .then(({data}) => {
+                console.log(data)
+                setToken(data.token)
+            })
             .finally(() => {
-
+                setLoading(false)
             });
         // const abortController = new AbortController()
         //
@@ -121,7 +138,7 @@ const Authentication = ({children}) => {
         return !!token && !!user && !loading;
     }
 
-    console.log(token, user, loading)
+    console.log(isAuthenticated(), token, user, loading)
 
     // if (!!token && !user && !loading) {
     //     /*

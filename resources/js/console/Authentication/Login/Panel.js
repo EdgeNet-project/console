@@ -89,7 +89,7 @@ export function Panel() {
 
                     <Text align="center" mt="md">
                         Don&apos;t have an account?{' '}
-                        <Anchor href="/ registration" weight={700} onClick={(event) => event.preventDefault()}>
+                        <Anchor href="/registration" weight={700} >
                         Register
                         </Anchor>
                     </Text>

@@ -1,19 +1,15 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import axios from "axios";
 import {
-    Button,
-    createStyles,
-    Select, Stack,
+    Button, LoadingOverlay, Stack,
 } from '@mantine/core';
 import {useForm} from "@mantine/form";
 import { Panel, TextInput, PasswordInput } from "../../UI";
 import {useDisclosure} from "@mantine/hooks";
-import {useAuthentication} from "../Authentication";
 
-export function UserRegistrationForm() {
+export default function UserRegistrationForm() {
     const [visible, { toggle }] = useDisclosure(false);
     const [ loading, setLoading ] = useState(false)
-    const [ errors, setErrors ] = useState({})
 
     const form = useForm({
         initialValues: {
@@ -31,16 +27,14 @@ export function UserRegistrationForm() {
 
     const handleSubmit = (values) => {
         setLoading(true)
-        setErrors({})
         axios.post('api/register', values)
             .then((res) => {
                 console.log(res)
             })
             .catch(({message, response: {data: {errors}}}) => {
-                console.log(message)
+                // console.log(message)
                 // setErrors(errors)
                 form.setErrors(errors);
-
             })
             .finally(() => {
                 setLoading(false)
@@ -53,7 +47,9 @@ export function UserRegistrationForm() {
 
 
             <form onSubmit={form.onSubmit(handleSubmit)}>
-                <Stack sx={{ maxWidth: 380 }} mx="auto">
+                <Stack sx={{ maxWidth: 380 }} mx="auto" style={{position:'relative'}}>
+
+                    <LoadingOverlay visible={loading} overlayBlur={2} />
                     <TextInput label="Firstname" {...form.getInputProps('firstname')}
                                placeholder="Firstname" />
                     <TextInput label="Lastname" {...form.getInputProps('lastname')}
@@ -88,6 +84,7 @@ export function UserRegistrationForm() {
                     <Button disabled={loading} type="submit" fullWidth>
                         Register
                     </Button>
+
                 </Stack>
             </form>
 
