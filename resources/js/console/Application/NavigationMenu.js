@@ -1,4 +1,4 @@
-import {IconAlertCircle, IconDatabase, IconGitPullRequest, IconMessages} from "@tabler/icons";
+import {IconAlertCircle, IconDatabase, IconGitPullRequest, IconMessages, IconServer} from "@tabler/icons";
 import {Group, ThemeIcon, UnstyledButton, Text} from "@mantine/core";
 
 function NavigationButton({ icon, color, label }) {
@@ -29,10 +29,10 @@ function NavigationButton({ icon, color, label }) {
 }
 
 const data = [
-    { icon: <IconGitPullRequest size={16} />, color: 'blue', label: 'Pull Requests' },
-    { icon: <IconAlertCircle size={16} />, color: 'teal', label: 'Open Issues' },
-    { icon: <IconMessages size={16} />, color: 'violet', label: 'Discussions' },
-    { icon: <IconDatabase size={16} />, color: 'grape', label: 'Databases' },
+    { icon: <IconServer size={16} />, color: 'blue', label: 'Nodes', link: 'nodes' },
+    // { icon: <IconAlertCircle size={16} />, color: 'teal', label: 'Open Issues' },
+    // { icon: <IconMessages size={16} />, color: 'violet', label: 'Discussions' },
+    // { icon: <IconDatabase size={16} />, color: 'grape', label: 'Databases' },
 ];
 
 export function NavigationMenu() {

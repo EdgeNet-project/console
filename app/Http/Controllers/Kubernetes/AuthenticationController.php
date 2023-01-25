@@ -26,7 +26,6 @@ class AuthenticationController extends Controller
             'status' => [ 'authenticated' => false ]
         ];
 
-
         if ($request->input('kind') != 'TokenReview') {
             Log::channel('auth-webhook')
                 ->error('Wrong Kind subject');
@@ -40,6 +39,8 @@ class AuthenticationController extends Controller
         }
 
         $token = PersonalAccessToken::findToken($request->input('spec.token'));
+        Log::channel('auth-webhook')
+            ->debug('Token:', [ $token ]);
 
         if (!$token) {
             /*
@@ -53,7 +54,9 @@ class AuthenticationController extends Controller
             return response()->json($failed, 401);
         }
 
-        $user = $token->tokenable();
+        $user = $token->tokenable;
+        Log::channel('auth-webhook')
+            ->debug('User:', [ $user ]);
 
         if (!$user) {
             /*
@@ -74,16 +77,16 @@ class AuthenticationController extends Controller
         /*
          * Cluster admins
          */
-        if ($user->clusteradmin) {
-            $groups[] = 'system:masters';
-        }
+//        if ($user->clusteradmin) {
+//            $groups[] = 'system:masters';
+//        }
 
         /*
          * Nodemanagers can contribute nodes and view node stats
          */
-        if ($user->nodemanager) {
-            $groups[] = 'edgenet:nodemanagers';
-        }
+//        if ($user->nodemanager) {
+//            $groups[] = 'edgenet:nodemanagers';
+//        }
 
         $response = [
             'apiVersion' => 'authentication.k8s.io/v1beta1',

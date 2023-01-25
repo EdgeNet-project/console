@@ -2,6 +2,9 @@
 
 return [
     'cluster' => [
+        'url' => env('CLUSTER_URL', 'https://edgenet.planet-lab.eu:6443'),
+
+        // ??
         'api' => [
             'url' => env('EDGENET_API_SERVER', 'https://api.edge-net.org'),
             'prefix' => '/api/v1'

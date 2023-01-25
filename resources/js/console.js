@@ -19,5 +19,4 @@ const Console = () => {
 }
 
 const container = document.getElementById('console');
-const root = createRoot(container)
-    .render(<Console />);
+createRoot(container).render(<Console />);
