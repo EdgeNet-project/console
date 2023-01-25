@@ -1,25 +1,29 @@
-import {IconAlertCircle, IconDatabase, IconGitPullRequest, IconMessages, IconServer} from "@tabler/icons";
-import {Group, ThemeIcon, UnstyledButton, Text, Navbar} from "@mantine/core";
+import {IconAlertCircle, IconDatabase, IconGitPullRequest, IconMessages, IconFileSettings, IconServer} from "@tabler/icons";
+import {Group, ThemeIcon, UnstyledButton, Text, Navbar, useMantineTheme} from "@mantine/core";
 import NavigationUser from "./NavigationUser";
-import {Link} from "react-router-dom";
+import {Link, useMatch} from "react-router-dom";
 
 function NavigationButton({ icon, color, label, link }) {
+    const theme = useMantineTheme();
+    const match = useMatch(link)
+
+    const backgroundColor = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
+
     return (
         <UnstyledButton
             component={Link}
             to={link}
-            sx={(theme) => ({
+            sx={{
                 display: 'block',
                 width: '100%',
                 padding: theme.spacing.xs,
                 borderRadius: theme.radius.sm,
                 color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-
+                backgroundColor: match ? backgroundColor : null,
                 '&:hover': {
-                    backgroundColor:
-                        theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+                    backgroundColor: backgroundColor,
                 },
-            })}
+            }}
         >
             <Group>
                 <ThemeIcon color={color} variant="light">
@@ -33,6 +37,7 @@ function NavigationButton({ icon, color, label, link }) {
 }
 
 const data = [
+    { icon: <IconFileSettings size={16} />, color: 'teal', label: 'KubeConfig', link: '/kubeconfig' },
     { icon: <IconServer size={16} />, color: 'blue', label: 'Nodes', link: '/nodes' },
     // { icon: <IconAlertCircle size={16} />, color: 'teal', label: 'Open Issues' },
     // { icon: <IconMessages size={16} />, color: 'violet', label: 'Discussions' },
