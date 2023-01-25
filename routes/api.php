@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\ClusterController;
 use App\Http\Controllers\Api\TenantController;
 use App\Http\Controllers\Api\NodeController;
 
@@ -14,6 +15,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 //    Route::post('/users', 'ConsoleController@createUser');
 //    Route::patch('/users/{name}', 'ConsoleController@patchUser');
 
-//    Route::get('/cluster', 'ConsoleController@cluster');
+    Route::get('/cluster', [ ClusterController::class, 'get' ]);
+
     Route::get('/nodes', [ NodeController::class, 'list' ]);
 });
