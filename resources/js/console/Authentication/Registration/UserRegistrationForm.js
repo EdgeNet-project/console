@@ -1,15 +1,37 @@
 import {useState} from "react";
 import axios from "axios";
 import {
-    Button, LoadingOverlay, Stack,
+    Anchor,
+    Button, LoadingOverlay, Stack, Text,
 } from '@mantine/core';
 import {useForm} from "@mantine/form";
 import { Panel, TextInput, PasswordInput } from "../../UI";
 import {useDisclosure} from "@mantine/hooks";
 
+const UserRegistrationSuccess = () => {
+    return (
+        <Panel>
+            <Text mt="md">
+                Thank you for registering.
+            </Text>
+            <Text mt="md">
+                You will receive shortly a message for validating your email,
+                you will then be able to login and continue with the registration process.
+
+            </Text>
+            <Text mt="md">
+                <Anchor href="/" weight={700} >
+                    Go back to the login page
+                </Anchor>
+            </Text>
+        </Panel>
+    )
+}
+
 export default function UserRegistrationForm() {
     const [visible, { toggle }] = useDisclosure(false);
     const [ loading, setLoading ] = useState(false)
+    const [ registered, setRegistered ] = useState(false)
 
     const form = useForm({
         initialValues: {
@@ -29,7 +51,7 @@ export default function UserRegistrationForm() {
         setLoading(true)
         axios.post('api/register', values)
             .then((res) => {
-                console.log(res)
+                setRegistered(true)
             })
             .catch(({message, response: {data: {errors}}}) => {
                 // console.log(message)
@@ -41,6 +63,11 @@ export default function UserRegistrationForm() {
             })
     }
 
+    if (registered) {
+        return (
+            <UserRegistrationSuccess/>
+        );
+    }
 
     return (
         <Panel>

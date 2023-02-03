@@ -15,9 +15,15 @@ class NamespaceController extends Controller
         $cluster->withoutSslChecks();
         $cluster->withToken($request->bearerToken());
 
-        $namespaces = $cluster
-            ->namespace()
-            ->all();
+//        $namespaces = $cluster
+//            ->namespace()
+//            ->all();
+
+
+$namespaces = $cluster
+    ->roleBinding()
+    ->setNamespace('cslash')
+    ->all();
 
         return response()->json($namespaces);
     }

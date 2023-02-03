@@ -1,11 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Authentication\AuthenticationController;
-use App\Http\Controllers\Api\RegistrationController;
-use Illuminate\Auth\Events\Verified;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Model\User;
+use App\Http\Controllers\Authentication\RegistrationController;
 
 //Route::get('/password/reset/{token?}', function () {
 //    return view('console');

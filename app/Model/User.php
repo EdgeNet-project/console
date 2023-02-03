@@ -41,4 +41,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'admin' => 'boolean',
         'nodemanager' => 'boolean',
     ];
+
+    protected $with = [
+        'tenants'
+    ];
+
+    public function tenants()
+    {
+        return $this->belongsToMany(Tenant::class);
+    }
 }
