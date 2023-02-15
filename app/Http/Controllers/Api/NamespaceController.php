@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 use RenokiCo\PhpK8s\KubernetesCluster;
 
 class NamespaceController extends Controller
@@ -20,10 +21,20 @@ class NamespaceController extends Controller
 //            ->all();
 
 
-$namespaces = $cluster
-    ->roleBinding()
-    ->setNamespace('cslash')
-    ->all();
+        $namespaces = $cluster
+            ->tenant()
+//            ->setNamespace('cslash')
+            ->all();
+
+//        $admin = K8s::getCluster();
+//        $namespaces = $admin
+//            ->roleBinding()
+//            ->allNamespaces();
+
+//        $namespaces = $cluster
+//            ->
+//            ->setNamespace('cslash')
+//            ->all();
 
         return response()->json($namespaces);
     }

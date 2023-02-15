@@ -24,13 +24,13 @@ class CreateUsersTable extends Migration
                 ->default(true);
 
             $table->string('title')->nullable();
-            $table->string('firstname');
-            $table->string('lastname');
+            $table->string('firstname')->nullable();
+            $table->string('lastname')->nullable();
 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
 
-            $table->string('password');
+            $table->string('password')->nullable();
 
         });
     }

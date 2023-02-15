@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('enabled')
                 ->default(true);
 
-            $table->string('role')
+            $table->json('roles')
                 ->nullable();
 
             $table->bigInteger('tenant_id')->unsigned();
@@ -34,6 +34,10 @@ return new class extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
+
+            $table->unique([
+                'tenant_id', 'user_id'
+            ]);
         });
     }
 
@@ -44,6 +48,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tenant_users');
+        Schema::dropIfExists('tenant_user');
     }
 };

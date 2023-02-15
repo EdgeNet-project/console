@@ -56,7 +56,11 @@ class EdgenetTenant extends Command
                 'State: ' . $tenant->getState() . "\n" .
                 'Message: ' . $tenant->getMessage() . "\n");
 
-            $this->getClusterRoles('edgenet:tenants:' . $tenant->getName() . '-owner' );
+            $role_bindings = $this->cluster->rolebinding()->setNamespace('cslash')->getByName('edgenet:tenant-owner');
+
+            dd($role_bindings);
+
+            $this->getClusterRoles('edgenet:tenant-owner', $this->getName() );
 
             return Command::SUCCESS;
         }
@@ -96,10 +100,8 @@ class EdgenetTenant extends Command
         return Command::SUCCESS;
     }
 
-    protected function getClusterRoles($name = null)
+    protected function getClusterRoles($name, $namespace)
     {
-        $role_bindings = $this->cluster->clusterrolebinding()->getByName($name);
 
-        dd($role_bindings);
     }
 }

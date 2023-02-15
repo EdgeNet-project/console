@@ -21,8 +21,8 @@ return new class extends Migration
                 ->default(true);
 
             $table->string('name')->unique();
-            $table->string('fullname');
-            $table->string('shortname');
+            $table->string('fullname')->nullable();
+            $table->string('shortname')->nullable();
 
             $table->string('url')->nullable();
 
@@ -31,6 +31,10 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('region')->nullable();
             $table->string('country')->nullable();
+
+            $table->string('contact_name')->nullable();
+            $table->string('contact_email')->nullable();
+            $table->string('contact_phone')->nullable();
 
         });
     }

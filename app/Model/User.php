@@ -18,8 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'firstname', 'lastname', 'email', 'password', 'name', 'authority',
-        'address', 'zipcode', 'city', 'country', 'url'
+        'firstname', 'lastname', 'email', 'password',
     ];
 
     /**
@@ -37,9 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'admin' => 'boolean',
-        'nodemanager' => 'boolean',
+        'email_verified_at' => 'datetime'
     ];
 
     protected $with = [
@@ -48,6 +45,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function tenants()
     {
-        return $this->belongsToMany(Tenant::class);
+        return $this->belongsToMany(Tenant::class)
+            ->withPivot('roles')
+            ->withTimestamps();
     }
+
+//    protected function roles(): Attribute
+//    {
+//        return Attribute::make(
+//            get: fn () => $this->pivot->roles,
+//            set: fn (array $roles) => $this->tenants()->updateExistingPivot($tenantId, [ 'roles' => $roles])
+//        );
+//    }
 }
