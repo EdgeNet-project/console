@@ -12,5 +12,4 @@ class TenantUser extends Pivot
     protected $casts = [
         'roles' => 'array'
     ];
-
 }

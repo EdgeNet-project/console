@@ -46,15 +46,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function tenants()
     {
         return $this->belongsToMany(Tenant::class)
+            ->using(TenantUser::class)
             ->withPivot('roles')
             ->withTimestamps();
     }
-
-//    protected function roles(): Attribute
-//    {
-//        return Attribute::make(
-//            get: fn () => $this->pivot->roles,
-//            set: fn (array $roles) => $this->tenants()->updateExistingPivot($tenantId, [ 'roles' => $roles])
-//        );
-//    }
 }
