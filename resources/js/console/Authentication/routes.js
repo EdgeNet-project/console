@@ -2,20 +2,13 @@ import {
     createBrowserRouter,
 } from "react-router-dom";
 
-import Login from "./Login/Panel";
+import Login from "./Login/LoginForm";
 import UserRegistrationForm from "./Registration/UserRegistrationForm";
 import EmailVerification from "./Registration/EmailVerification";
+import PasswordResetLink from "./Login/PasswordResetLink";
+import PasswordResetForm from "./Login/PasswordResetForm";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Login />,
-        loader: null,
-        action: null, // login
-        children: [
-
-        ],
-    },
     {
         path: "/registration",
         element: <UserRegistrationForm />,
@@ -27,7 +20,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/password",
-        element: null,
+        element: <PasswordResetLink />,
         loader: null,
         action: null, // forgot password
         children: [
@@ -36,6 +29,28 @@ const router = createBrowserRouter([
             //     element: null,
             //     loader: null,
             // },
+        ],
+    },
+    {
+        path: "/password/reset/:id/:signature",
+        element: <PasswordResetForm />,
+        loader: null,
+        action: null, // forgot password
+        children: [
+            // {
+            //     path: "team",
+            //     element: null,
+            //     loader: null,
+            // },
+        ],
+    },
+    {
+        path: "/*",
+        element: <Login />,
+        loader: null,
+        action: null, // login
+        children: [
+
         ],
     },
 

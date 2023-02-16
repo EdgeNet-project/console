@@ -1,4 +1,5 @@
 import React from "react";
+import { redirect } from "react-router-dom";
 
 import {AppShell, Container} from "@mantine/core";
 import NavigationHeader from "./NavigationHeader";
@@ -10,7 +11,6 @@ import TenantSelect from "../Authentication/Views/TenantSelect";
 
 const Application = () => {
     const { user, isAuthenticated } = useAuthentication()
-
     // User must have verified his email address
     if (!user.email_verified_at) {
         // return 'email not verified';
@@ -32,7 +32,7 @@ const Application = () => {
     // }
 
     if (!isAuthenticated()) {
-
+        return redirect("/");
     }
 
     return (

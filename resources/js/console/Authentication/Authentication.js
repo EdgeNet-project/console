@@ -54,7 +54,7 @@ const Authentication = ({children}) => {
             };
 
             // console.log('aa', token)
-            axios.get('/api/user')
+            axios.get('/user')
                 .then(({data}) => {
                     setUser(data)
                 })
@@ -97,7 +97,7 @@ const Authentication = ({children}) => {
 
     const login = ({email, password}) => {
         setLoading(true)
-        axios.post('/api/login', {email: email, password: password},
+        axios.post('/login', {email: email, password: password},
             {})
             .then(({data}) => {
                 // console.log(data)

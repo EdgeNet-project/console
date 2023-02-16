@@ -49,7 +49,7 @@ export default function UserRegistrationForm() {
 
     const handleSubmit = (values) => {
         setLoading(true)
-        axios.post('api/register', values)
+        axios.post('register', values)
             .then((res) => {
                 setRegistered(true)
             })

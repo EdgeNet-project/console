@@ -5,7 +5,8 @@ import UserRegistrationForm from "./Authentication/Registration/UserRegistration
 import UserProfile from "./Views/UserProfile";
 import Application from "./Application";
 import NodeList from "./Views/NodeList";
-import KubeConfig from "./Views/KubeConfig";
+import Tokens from "./Views/Tokens";
+import Requests from "./Views/Requests";
 
 const router = createBrowserRouter([
     {
@@ -27,8 +28,12 @@ const router = createBrowserRouter([
                 loader: null,
             },
             {
-                path: "/kubeconfig",
-                element: <KubeConfig />,
+                path: "/tokens",
+                element: <Tokens />,
+            },
+            {
+                path: "/requests",
+                element: <Requests />,
             },
             {
                 path: "/nodes",

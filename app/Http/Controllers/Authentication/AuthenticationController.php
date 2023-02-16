@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Authentication;
 use App\Http\Controllers\Controller;
 use App\Model\User;
 use Illuminate\Support\Facades\Hash;
-use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 
 class AuthenticationController extends Controller
 {

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Authentication\AuthenticationController;
 use App\Http\Controllers\Authentication\RegistrationController;
+use App\Http\Controllers\Authentication\ForgotPasswordController;
+use Illuminate\Http\Request;
 
 //Route::get('/password/reset/{token?}', function () {
 //    return view('console');
@@ -19,6 +21,11 @@ Route::post('logout', [ AuthenticationController::class, 'logout' ])
 Route::post('register', [ RegistrationController::class, 'register' ])
     ->name('auth.register');
 
+Route::post('password/link', [ ForgotPasswordController::class, 'sendPasswordResetLink' ])
+    ->name('password.email');
+
+Route::post('password/reset/{user}/{signature}', [ ForgotPasswordController::class, 'resetPassword' ])
+    ->name('password.reset');
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('user', [AuthenticationController::class, 'user'])
