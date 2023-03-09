@@ -31,39 +31,7 @@ class RoleRequest extends K8sResource implements InteractsWithK8sCluster
      */
     protected static $namespaceable = true;
 
-    public function getAddress()
-    {
-        return $this->getAttribute('spec.address');
-    }
 
-    public function getFulladdress()
-    {
-        return $this->getAttribute('spec.address.street') . ', ' .
-            $this->getAttribute('spec.address.zip') . ' ' .
-            $this->getAttribute('spec.address.city') . ', ' .
-            ($this->hasAttribute('spec.address.region') ? $this->getAttribute('spec.address.region') . '. ' : '' ) .
-            $this->getAttribute('spec.address.country');
-    }
-
-    public function getContact()
-    {
-        return $this->getAttribute('spec.contact');
-    }
-
-    public function getFullname()
-    {
-        return $this->getAttribute('spec.fullname');
-    }
-
-    public function getShortname()
-    {
-        return $this->getAttribute('spec.shortname');
-    }
-
-    public function getUrl()
-    {
-        return $this->getAttribute('spec.url');
-    }
     public function isApproved()
     {
         return $this->getAttribute('spec.approved');
@@ -86,4 +54,5 @@ class RoleRequest extends K8sResource implements InteractsWithK8sCluster
     {
         return $this->getStatus('state');
     }
+
 }

@@ -5,7 +5,7 @@ import {
     IconQuestionCircle,
     IconFileSettings,
     IconServer,
-    IconKey
+    IconKey, IconUser
 } from "@tabler/icons";
 import {Group, ThemeIcon, UnstyledButton, Text, Navbar, useMantineTheme} from "@mantine/core";
 import NavigationUser from "./NavigationUser";
@@ -55,7 +55,7 @@ const menu = [
 
 const ownerMenu = [
     { icon: <IconQuestionCircle size={16} />, color: 'blue', label: 'Requests', link: '/requests' },
-    // { icon: <IconAlertCircle size={16} />, color: 'teal', label: 'Open Issues' },
+    { icon: <IconUser size={16} />, color: 'teal', label: 'Users', link: '/users' },
     // { icon: <IconMessages size={16} />, color: 'violet', label: 'Discussions' },
     // { icon: <IconDatabase size={16} />, color: 'grape', label: 'Databases' },
 ];

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Model\Tenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
@@ -40,5 +41,16 @@ class TenantController extends Controller
 
         }
         return response()->json($output);
+    }
+
+    public function get()
+    {
+
+    }
+
+    public function users(Tenant $tenant)
+    {
+
+        return response()->json($tenant->users);
     }
 }

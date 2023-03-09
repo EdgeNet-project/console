@@ -94,7 +94,6 @@ class ForgotPasswordController extends Controller
             return response()->json(['message' => 'The signature is invalid.'], 401);
         }
 
-
         $request->validate([
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required'
@@ -103,12 +102,6 @@ class ForgotPasswordController extends Controller
         $user->update([
             'password' => Hash::make($request->input('password'))
         ]);
-
-//        if (!$user) {
-//            return response()->json(['message' => 'User does not exist'], 400);
-//        }
-
-//        DB::table('password_resets')->where(['email'=> $request->email])->delete();
 
         return response()->json([
             'message' => 'Your password has been changed!'

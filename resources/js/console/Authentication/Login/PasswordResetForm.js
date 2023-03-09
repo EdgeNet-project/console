@@ -2,28 +2,28 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {
     Anchor,
-    Button, LoadingOverlay, Stack, Text,
+    Button, Divider, LoadingOverlay, Stack, Text,
 } from '@mantine/core';
 import {useForm} from "@mantine/form";
 import {Panel, PasswordInput, TextInput} from "../../UI";
 import {useParams} from "react-router";
 import {useDisclosure} from "@mantine/hooks";
+import {IconArrowBack} from "@tabler/icons";
 
 const PasswordResetFormSuccess = () => {
     return (
-        <Panel>
+        <>
             <Text mt="md">
                 Your password has been successfully updated!
             </Text>
             <Text mt="md">
 
             </Text>
-            <Text mt="md">
-                <Anchor href="/" weight={700} >
-                    Go back to the login page
-                </Anchor>
-            </Text>
-        </Panel>
+            <Divider my="xl" />
+            <Anchor href="/">
+                <IconArrowBack size={14} /> Go back to the login page
+            </Anchor>
+        </>
     )
 }
 
@@ -67,13 +67,12 @@ export default function PasswordResetForm() {
     }
 
     return (
-        <Panel>
             <form onSubmit={form.onSubmit(handleSubmit)}>
-                <Stack sx={{ maxWidth: 380 }} mx="auto" style={{position:'relative'}}>
+                <Stack style={{position:'relative'}}>
 
                     <LoadingOverlay visible={loading} overlayBlur={2} />
 
-                    <Text mt="md">
+                    <Text>
                         Please reset your password. <br />
                     </Text>
 
@@ -101,7 +100,6 @@ export default function PasswordResetForm() {
 
                 </Stack>
             </form>
-        </Panel>
     );
 
 

@@ -2,7 +2,7 @@ import React from "react";
 import { createRoot } from 'react-dom/client';
 
 import { MantineProvider } from "@mantine/core";
-import { Authentication } from "./console/Authentication";
+import { AuthenticationProvider } from "./console/Authentication";
 import routes from "./console/routes";
 import {RouterProvider} from "react-router-dom";
 // import routes from "./console/routes";
@@ -11,9 +11,9 @@ const Console = () => {
 
     return (
         <MantineProvider withGlobalStyles withNormalizeCSS>
-            <Authentication>
+            <AuthenticationProvider>
                 <RouterProvider router={routes} />
-            </Authentication>
+            </AuthenticationProvider>
         </MantineProvider>
     )
 }

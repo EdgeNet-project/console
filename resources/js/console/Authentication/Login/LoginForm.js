@@ -1,13 +1,15 @@
 import {
     createStyles,
-    TextInput,
-    PasswordInput,
     Checkbox,
     Button,
     Text,
-    Anchor, Stack, Divider, Grid, Image, Container, Center
+    Anchor, Stack, Divider, Grid, Image, Container, Center, Group
 } from '@mantine/core';
-import { useAuthentication } from "../Authentication"
+import {
+    TextInput,
+    PasswordInput
+} from "../../UI"
+import { useAuthentication } from "../AuthenticationProvider"
 import {useForm} from "@mantine/form";
 import {GithubIcon} from "@mantine/ds";
 
@@ -119,37 +121,33 @@ export function LoginForm() {
     });
 
     return (
-        <Grid grow>
-            <Grid.Col span={2}>
-                <Container size={400}>
-                    <Image src="/images/edgenet.png" alt="EdgeNet" height={100} fit="contain" my="xl"/>
+        <>
 
-                    <form onSubmit={form.onSubmit((values) => login(values))}>
-                        <TextInput label="Email address" {...form.getInputProps('email')}
-                                   placeholder="hello@gmail.com" />
-                        <PasswordInput label="Password" {...form.getInputProps('password')}
-                                       placeholder="Your password" mt="md" size="md" />
-                        <Checkbox label="Keep me logged in" mt="xl" size="md" />
-                        <Button disabled={loading} type="submit" fullWidth mt="xl" size="md">
+            <form onSubmit={form.onSubmit((values) => login(values))}>
+                <Stack>
+                    <TextInput label="Email address" {...form.getInputProps('email')}
+                               placeholder="hello@email.com" />
+                    <PasswordInput label="Password" {...form.getInputProps('password')}
+                                   placeholder="Your password" />
+
+                    <Group>
+                        <Button disabled={loading} type="submit" >
                             Login
                         </Button>
-                    </form>
-
-                    <Text align="center" mt="md">
-                        Don&apos;t have an account?{' '}
-                        <Anchor href="/registration" weight={700} >
-                        Register
+                        <Anchor href="/password" >
+                            forgot your password?
                         </Anchor>
-                    </Text>
+                    </Group>
+                </Stack>
+            </form>
 
-                    <Text align="center" mt="md">
-                        Click here if you{' '}
-                        <Anchor href="/password" weight={700} >
-                            forgot your password
-                        </Anchor>
-                    </Text>
+            <Divider my="xl" />
 
-                    <Divider my="sm" />
+            Don&apos;t have an account?{' '}
+            <Anchor href="/registration">
+                Register
+            </Anchor>
+
 
                     {/*<Stack position="center">*/}
                     {/*    <GoogleLogin fullWidth mt="md" size="md">*/}
@@ -159,10 +157,8 @@ export function LoginForm() {
                     {/*        Login with GitHub*/}
                     {/*    </GithubLogin>*/}
                     {/*</Stack>*/}
-                </Container>
-            </Grid.Col>
-            <Grid.Col span={2} className={classes.panel}></Grid.Col>
-        </Grid>
+
+        </>
     );
 }
 

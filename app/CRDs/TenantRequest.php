@@ -60,10 +60,6 @@ class TenantRequest extends K8sResource implements InteractsWithK8sCluster
         return $this->getAttribute('spec.shortname');
     }
 
-    public function getUrl()
-    {
-        return $this->getAttribute('spec.url');
-    }
     public function isApproved()
     {
         return $this->getAttribute('spec.approved');

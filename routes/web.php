@@ -78,7 +78,7 @@ Route::get('/data/users', function() {
     '));
 });
 Route::view('/test', 'test');
-Route::view('/users', 'users');
+//Route::view('/users', 'users');
 
 
 

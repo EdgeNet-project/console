@@ -2,26 +2,26 @@ import {useState} from "react";
 import axios from "axios";
 import {
     Anchor,
-    Button, LoadingOverlay, Stack, Text,
+    Button, Divider, LoadingOverlay, Stack, Text,
 } from '@mantine/core';
 import {useForm} from "@mantine/form";
 import { Panel, TextInput } from "../../UI";
+import {IconArrowBack} from "@tabler/icons";
 
 const PasswordResetLinkSuccess = () => {
     return (
-        <Panel>
+        <>
             <Text mt="md">
                 We sent you an email with instructions on how to reset yout password.
             </Text>
             <Text mt="md">
 
             </Text>
-            <Text mt="md">
-                <Anchor href="/" weight={700} >
-                    Go back to the login page
-                </Anchor>
-            </Text>
-        </Panel>
+            <Divider my="xl" />
+            <Anchor href="/">
+                <IconArrowBack size={14} /> Go back to the login page
+            </Anchor>
+        </>
     )
 }
 
@@ -62,13 +62,13 @@ export default function PasswordResetLink() {
     }
 
     return (
-        <Panel>
+        <>
             <form onSubmit={form.onSubmit(handleSubmit)}>
-                <Stack sx={{ maxWidth: 380 }} mx="auto" style={{position:'relative'}}>
+                <Stack style={{position:'relative'}}>
 
                     <LoadingOverlay visible={loading} overlayBlur={2} />
 
-                    <Text mt="md">
+                    <Text>
                         Please provide the mail you registered with. <br />
                         We will send you an email with instructions on how to reset your password.
                     </Text>
@@ -76,13 +76,17 @@ export default function PasswordResetLink() {
                     <TextInput label="Email address" {...form.getInputProps('email')}
                                placeholder="hello@gmail.com" />
 
-                    <Button disabled={loading} type="submit" fullWidth>
+                    <Button disabled={loading} type="submit" >
                         Submit
                     </Button>
 
                 </Stack>
             </form>
-        </Panel>
+            <Divider my="xl" />
+            <Anchor href="/">
+                <IconArrowBack size={14} /> Go back to the login page
+            </Anchor>
+        </>
     );
 
 

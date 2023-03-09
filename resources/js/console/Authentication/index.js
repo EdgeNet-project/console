@@ -1,5 +1,13 @@
-import { Authentication, AuthenticationContext, AuthenticationConsumer, useAuthentication } from "./Authentication";
+import {
+    AuthenticationProvider,
+    AuthenticationContext,
+    AuthenticationConsumer,
+    useAuthentication
+} from "./AuthenticationProvider";
 
 export {
-    Authentication, AuthenticationContext, AuthenticationConsumer, useAuthentication
+    AuthenticationProvider,
+    AuthenticationContext,
+    AuthenticationConsumer,
+    useAuthentication
 }

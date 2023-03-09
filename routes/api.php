@@ -19,8 +19,17 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('/cluster', [ ClusterController::class, 'get' ]);
 
+    Route::group(['prefix' => 'tenants'], function () {
+        Route::get('/', [ TenantController::class, 'list' ]);
+
+        Route::group(['prefix' => '{tenant:name}'], function () {
+            Route::get('/', [ TenantController::class, 'get' ]);
+            Route::get('/users', [ TenantController::class, 'users' ]);
+        });
+    });
+
     Route::group(['prefix' => 'requests'], function () {
-        Route::get('/roles', [ RoleRequestController::class, 'list' ]);
+        Route::get('/roles/{namespace?}', [ RoleRequestController::class, 'list' ]);
     });
 
 

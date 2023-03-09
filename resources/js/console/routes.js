@@ -1,12 +1,13 @@
 import {
     createBrowserRouter,
 } from "react-router-dom";
-import UserRegistrationForm from "./Authentication/Registration/UserRegistrationForm";
+import UserRegistration from "./Authentication/Registration/UserRegistration";
 import UserProfile from "./Views/UserProfile";
 import Application from "./Application";
 import NodeList from "./Views/NodeList";
 import Tokens from "./Views/Tokens";
-import Requests from "./Views/Requests";
+import RoleRequests from "./Views/RoleRequests";
+import TenantUsers from "./Views/TenantUsers";
 
 const router = createBrowserRouter([
     {
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "registration",
-                element: <UserRegistrationForm />,
+                element: <UserRegistration />,
                 loader: null,
             },
             {
@@ -33,7 +34,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "/requests",
-                element: <Requests />,
+                element: <RoleRequests />,
+            },
+            {
+                path: "/users",
+                element: <TenantUsers />,
             },
             {
                 path: "/nodes",

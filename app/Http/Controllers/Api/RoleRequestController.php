@@ -11,7 +11,7 @@ use RenokiCo\PhpK8s\KubernetesCluster;
 class RoleRequestController extends Controller
 {
 
-    public function list(Request $request)
+    public function list(Request $request, $namespace = null)
     {
 
         $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
@@ -19,30 +19,42 @@ class RoleRequestController extends Controller
         $cluster->withoutSslChecks();
         $cluster->withToken($request->bearerToken());
 
-        $rolerequests = $cluster->rolerequest()->all();
+        if ($namespace) {
 
-        $output = [];
-        foreach ($rolerequests as $r) {
-//            $contact = $t->getContact();
-//            $address = $t->getAddress();
-
-            $output[] = [
-                'name' => $r->getName(),
-//                'fullname' => $t->getFullname(),
-//                'shortname' => $t->getShortname(),
-//                'url' => $t->getUrl(),
-//                'address' => $address,
-//                'contact' => $contact,
-
-                'enabled' => $r->isEnabled(),
-                'state' => $r->getStatus('state'),
-                'message' => $r->getStatus('message'),
-
-            ];
-
-
-
+            $rolerequests = $cluster
+                ->roleRequest()
+                ->whereNamespace('cslash')
+                ->all();
+        } else {
+            $rolerequests = $cluster
+                ->roleRequest()
+                ->allNamespaces();
         }
+
+//        $output = [];
+//        foreach ($rolerequests as $r) {
+////            $contact = $t->getContact();
+////            $address = $t->getAddress();
+//
+//            $output[] = [
+//                'name' => $r->getName(),
+////                'fullname' => $t->getFullname(),
+////                'shortname' => $t->getShortname(),
+////                'url' => $t->getUrl(),
+////                'address' => $address,
+////                'contact' => $contact,
+//
+//                'enabled' => $r->isEnabled(),
+//
+//
+//                'expiry' => $r->getStatus('expiry'),
+//                'state' => $r->getStatus('state'),
+//                'message' => $r->getStatus('message'),
+//
+//            ];
+//
+//        }
+
         return response()->json($rolerequests);
     }
 }
