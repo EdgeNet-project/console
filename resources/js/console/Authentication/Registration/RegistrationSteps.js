@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { Title, Stepper, Button, Group, Container, Radio } from '@mantine/core';
-import NavigationHeader from "../../Application/NavigationHeader";
-import TenantSelect from "../Views/TenantSelect";
+import {
+    Title,
+    Stepper,
+    Button,
+    Group,
+    Container, Image, Header
+} from '@mantine/core';
 import AUP from "./AUP";
-import {TenantRegistration} from "../Views/TenantRegistration";
+import RegistrationTeam from "./RegistrationTeam";
 
-export default function RegistrationSteps({initialStep = 0}) {
+export default function RegistrationSteps({initialStep = 2}) {
     const [active, setActive] = useState(initialStep);
     const [join, setJoin] = useState('tenant');
 
@@ -14,43 +18,32 @@ export default function RegistrationSteps({initialStep = 0}) {
 
     return (
         <>
-        <NavigationHeader />
-        <Container size="sm" px="xs" sx={(theme) => ({ margin: '25px auto'})}>
-            <Title>Welcome to EdgeNet</Title>
-            <div>
-                Please complete your registration
-            </div>
-        </Container>
-        <Container size="sm" px="xs">
+        <Header>
+            <Container size="sm" sx={(theme) => ({ margin: '25px auto'})}>
+                <Group sx={{ height: '100%' }} spacing="sm" pb="xl" position="start">
+                    <div><Image src="/images/edgenet-logo.png" alt="EdgeNet" height={60} fit="contain" /></div>
+                    <Title order={1} weight={400}>EdgeNet</Title>
+                </Group>
+                <div>
+                    Welcome to the EdgeNet platform, please complete your registration.
+                </div>
+            </Container>
+        </Header>
+
+        <Container size="sm" sx={(theme) => ({ margin: '25px auto'})}>
             <Stepper active={active} onStepClick={setActive} breakpoint="sm">
                 <Stepper.Step label="Verification" description="Verify your email">
                     Verify email
                 </Stepper.Step>
-                <Stepper.Step label="Terms of service" description="">
+                <Stepper.Step label="Terms of service" description="Review our policies">
                     <AUP />
                 </Stepper.Step>
-                <Stepper.Step label="Your Team" description="Select or create a Team">
-                    <Radio.Group
-                        name="tenant"
-                        label="Select your favorite framework/library"
-                        description="This is anonymous"
-                        value={join}
-                        onChange={setJoin}
-                    >
-                        <Group mt="xs">
-                            <Radio value="tenant" label="Join a Tenant (?)" />
-                            <Radio value="subnamespace" label="Join a Subnamespace (?)" />
-                            <Radio value="create" label="Create a new Tenant (?)" />
-                        </Group>
-                    </Radio.Group>
-                    <br/>
-                    {join === 'tenant' && <TenantSelect />}
-                    {join === 'subnamespace' && <div>Select a subnamespace: should be Class/Workshop etc.</div>}
-                    {join === 'create' && <TenantRegistration />}
+                <Stepper.Step label="Your Team" description="Join or create a Team">
+                    <RegistrationTeam />
                 </Stepper.Step>
-                <Stepper.Step label="Welcome!" description="Get full access">
-                    Welcome!
-                </Stepper.Step>
+                {/*<Stepper.Step label="Welcome!" description="Get full access">*/}
+                {/*    Welcome!*/}
+                {/*</Stepper.Step>*/}
                 <Stepper.Completed>
                     Completed
                 </Stepper.Completed>

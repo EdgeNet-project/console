@@ -25,6 +25,10 @@ class AuthenticationController extends Controller
 
         $user = User::where('email', request('email'))->first();
 
+        if (!$user) {
+            return response()->json(['message' => 'authentication failed'], 401);
+        }
+
         if (Hash::check(request('password'), $user->getAuthPassword())) {
 
             $token = $user->createToken('app-admins');
@@ -34,7 +38,7 @@ class AuthenticationController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'authentication failed'], 301);
+        return response()->json(['message' => 'authentication failed'], 401);
     }
 
     public function logout()

@@ -3,7 +3,8 @@ import axios from "axios";
 import {RouterProvider} from "react-router-dom";
 
 // import routes from "./routes";
-import authenticationRouter from "./routes/authentication";
+import authenticationRoutes from "./routes/authentication";
+import registrationRoutes from "./routes/registration";
 
 const AuthenticationContext = React.createContext({
     user: null
@@ -138,6 +139,13 @@ const AuthenticationProvider = ({children}) => {
         return !!token && !!user && !loading;
     }
 
+    const hasEmailVerified = () => {
+        if (!isAuthenticated()) {
+            return false;
+        }
+
+        return !!user.email_verified_at;
+    }
     // console.log(isAuthenticated(), token, user, loading)
 
     // if (!!token && !user && !loading) {
@@ -147,23 +155,25 @@ const AuthenticationProvider = ({children}) => {
     //     return 'wait'
     // }
     //
-    // if (loading) {
-    //     return 'loading'
-    // }
 
-    if (!token) {
+    if (loading) {
+        return 'loading'
+    }
+
+    /**
+     * User is not authenticated
+     */
+    if (!isAuthenticated()) {
         return (
             <AuthenticationContext.Provider value={{
                 user: user,
-                token: token,
                 login: login,
-                logout: logout,
                 loading: loading,
                 // error: error
 
                 isAuthenticated: isAuthenticated
             }}>
-                <RouterProvider router={authenticationRouter} />
+                <RouterProvider router={authenticationRoutes} />
             </AuthenticationContext.Provider>
         )
     }
@@ -172,6 +182,28 @@ const AuthenticationProvider = ({children}) => {
         return "no user"
     }
 
+    /**
+     * User is authenticated but registration is not complete
+     * - email not yet verified
+     */
+    // if (!hasEmailVerified()) {
+    //     return (
+    //         <AuthenticationContext.Provider value={{
+    //             user: user,
+    //             login: login,
+    //             loading: loading,
+    //             // error: error
+    //
+    //             isAuthenticated: isAuthenticated
+    //         }}>
+    //             <RouterProvider router={registrationRoutes} />
+    //         </AuthenticationContext.Provider>
+    //     )
+    // }
+
+    /**
+     * User is authenticated
+     */
     return (
         <AuthenticationContext.Provider value={{
             user: user,
@@ -183,7 +215,7 @@ const AuthenticationProvider = ({children}) => {
 
             isAuthenticated: isAuthenticated
         }}>
-            {isAuthenticated() ? children : <RouterProvider router={authenticationRouter} />}
+            {children}
         </AuthenticationContext.Provider>
     )
 }

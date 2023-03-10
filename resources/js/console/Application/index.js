@@ -7,7 +7,6 @@ import Navigation from "./Navigation";
 
 import {useAuthentication} from "../Authentication";
 import {Outlet} from "react-router-dom";
-import TenantSelect from "../Authentication/Views/TenantSelect";
 import RegistrationSteps from "../Authentication/Registration/RegistrationSteps";
 
 const Application = () => {
@@ -15,7 +14,7 @@ const Application = () => {
     // User must have verified his email address
     if (!user.email_verified_at) {
         // return 'email not verified';
-        // return <RegistrationSteps />
+        return <RegistrationSteps />
     }
 
     // Check if user is part of at least one tenant

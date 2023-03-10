@@ -3,7 +3,7 @@ import {createBrowserRouter, redirect, RouterProvider, Outlet} from "react-route
 
 import Authentication from "../Views/Authentication";
 import Login from "../Login/LoginForm";
-import UserRegistration from "../Registration/UserRegistration";
+import RegistrationForm from "../Registration/RegistrationForm";
 import EmailVerification from "../Registration/EmailVerification";
 import PasswordResetLink from "../Login/PasswordResetLink";
 import PasswordResetForm from "../Login/PasswordResetForm";
@@ -22,7 +22,7 @@ export default createBrowserRouter([
             },
             {
                 path: "/registration",
-                element: <UserRegistration />,
+                element: <RegistrationForm />,
                 loader: null,
             },
             {

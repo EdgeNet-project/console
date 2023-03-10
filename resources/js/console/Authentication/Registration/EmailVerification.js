@@ -28,14 +28,14 @@ export default function EmailVerification() {
 
 
     return (
-        <Panel>
+        <>
 
                     Email Verification
 
                     <LoadingOverlay visible={loading} overlayBlur={2} />
 
 
-        </Panel>
+        </>
     );
 
 

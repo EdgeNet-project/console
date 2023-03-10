@@ -1,23 +1,28 @@
-import {
-    createBrowserRouter,
-} from "react-router-dom";
+import React from "react";
+import {createBrowserRouter, redirect, RouterProvider, Outlet} from "react-router-dom";
 
-import Login from "./Login/LoginForm";
-import UserRegistration from "./Registration/UserRegistration";
-import EmailVerification from "./Registration/EmailVerification";
-import PasswordResetLink from "./Login/PasswordResetLink";
-import PasswordResetForm from "./Login/PasswordResetForm";
+import Authentication from "../Views/Authentication";
+import Login from "../Login/LoginForm";
+import RegistrationForm from "../Registration/RegistrationForm";
+import EmailVerification from "../Registration/EmailVerification";
+import PasswordResetLink from "../Login/PasswordResetLink";
+import PasswordResetForm from "../Login/PasswordResetForm";
 
-const router = createBrowserRouter([
+
+export default createBrowserRouter([
     {
         path: "/",
-        element: <Login />,
+        element: <Authentication />,
         loader: null,
         action: null, // login
         children: [
             {
+                path: "/",
+                element: <Login />,
+            },
+            {
                 path: "/registration",
-                element: <UserRegistration />,
+                element: <RegistrationForm />,
                 loader: null,
             },
             {
@@ -52,9 +57,15 @@ const router = createBrowserRouter([
             },
         ],
     },
+    {
+        path: "/registration",
+        element: <Authentication />,
+        loader: null,
+        action: null, // login
+        children: [
+        ]
+    },
 
 
 
 ]);
-
-export default router;
