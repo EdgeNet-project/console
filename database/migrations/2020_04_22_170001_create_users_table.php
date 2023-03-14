@@ -44,7 +44,7 @@ class CreateUsersTable extends Migration
             $table->string('password')
                 ->nullable();
 
-            $table->timestamp('aup_approved_at')
+            $table->timestamp('aup_accepted_at')
                 ->nullable();
 
         });

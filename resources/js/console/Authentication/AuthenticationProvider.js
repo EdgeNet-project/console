@@ -55,25 +55,9 @@ const AuthenticationProvider = ({children}) => {
                 Accept: "application/json"
             };
 
+            loadUser()
             // console.log('aa', token)
-            axios.get('/user')
-                .then(({data}) => {
-                    setUser(data)
-                })
-                .then(() => {
-                    sessionStorage.setItem(AUTH_TOKEN, token);
-                })
-                .catch(() => {
-                    axios.defaults.headers.common = {
-                        Authorization: null,
-                        Accept: "application/json"
-                    };
-                    setToken(null);
-                    sessionStorage.removeItem(AUTH_TOKEN);
-                })
-                .finally(() => {
-                    setLoading(false)
-                })
+
             // fetch('/api/user', {
             //     headers: {Authorization: `Bearer ${token}`},
             //     method: 'GET',
@@ -98,6 +82,28 @@ const AuthenticationProvider = ({children}) => {
         }
 
     }, [token])
+
+    const loadUser = () => {
+        console.log('load user')
+        axios.get('/user')
+            .then(({data}) => {
+                setUser(data)
+            })
+            .then(() => {
+                sessionStorage.setItem(AUTH_TOKEN, token);
+            })
+            .catch(() => {
+                axios.defaults.headers.common = {
+                    Authorization: null,
+                    Accept: "application/json"
+                };
+                setToken(null);
+                sessionStorage.removeItem(AUTH_TOKEN);
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+    }
 
     const login = ({email, password}) => {
         setLoading(true)
@@ -219,6 +225,7 @@ const AuthenticationProvider = ({children}) => {
                 user: user,
                 login: login,
                 loading: loading,
+                loadUser: loadUser,
                 // error: error
 
                 isAuthenticated: isAuthenticated
@@ -244,6 +251,7 @@ const AuthenticationProvider = ({children}) => {
             login: login,
             logout: logout,
             loading: loading,
+            loadUser: loadUser,
             // error: error
 
             isAuthenticated: isAuthenticated
@@ -254,10 +262,10 @@ const AuthenticationProvider = ({children}) => {
 }
 
 const useAuthentication = () => {
-    const { user, token, login, logout, loading, error, isAuthenticated } = useContext(AuthenticationContext)
+    const { user, token, login, logout, loadUser, loading, error, isAuthenticated } = useContext(AuthenticationContext)
 
     return {
-        user, token, login, logout, loading, error,
+        user, token, login, logout, loadUser, loading, error,
 
         isAuthenticated
     }

@@ -1,8 +1,59 @@
 import React from 'react';
-import {ScrollArea} from "@mantine/core";
+import {Checkbox, ScrollArea} from "@mantine/core";
 
-export default () =>
-    <ScrollArea h={250}>
+import {useState} from "react";
+import axios from "axios";
+import {
+    Group,
+    Button,
+    LoadingOverlay
+} from '@mantine/core';
+import {useAuthentication} from "../AuthenticationProvider";
+
+export default function AUP() {
+    const [ agree, setAgree ] = useState(false)
+    const [ loading, setLoading ] = useState(false)
+    const { loadUser } = useAuthentication()
+
+    const setAUPAccepted = () => {
+        setLoading(true)
+        axios.post('/aup/accept')
+            .then((res) => {
+                console.log(res)
+                loadUser()
+            })
+            .catch(({message, response}) => {
+                console.log(message, response)
+                // setErrors(errors)
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+    }
+
+
+    return (
+        <>
+            <h1>EdgeNet Acceptable Use Policy
+            </h1>
+            <AUPText />
+
+            <Group position="right" my="lg">
+                <Checkbox value={agree} onClick={() => setAgree(!agree)} label="I agree to the EdgeNet Acceptable Use Policy" />
+                <Button disabled={!agree || loading} onClick={setAUPAccepted}>
+                    Submit
+                </Button>
+            </Group>
+            {loading && <LoadingOverlay visible={loading} overlayBlur={2} />}
+
+
+        </>
+    );
+
+
+}
+
+const AUPText = () => <ScrollArea h={250}>
         <h3>The Nature of the EdgeNet Testbed</h3>
         <p>
             EdgeNet consists of computational resources hosted by organizations

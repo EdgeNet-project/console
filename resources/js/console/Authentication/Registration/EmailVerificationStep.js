@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import axios from "axios";
 import {
     Button,
@@ -14,8 +14,8 @@ export default function EmailVerificationStep() {
             .then((res) => {
                 console.log(res)
             })
-            .catch(({message, response: {data: {errors}}}) => {
-                // console.log(message)
+            .catch(({message, response}) => {
+                console.log(message, response)
                 // setErrors(errors)
             })
             .finally(() => {

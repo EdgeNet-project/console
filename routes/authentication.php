@@ -34,6 +34,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // resend email verification notice
     Route::post('email/verification', [ RegistrationController::class, 'sendEmailVerificationLink' ])
         ->name('email.verification');
+
+    // Approve AUP
+    Route::post('aup/accept', [ RegistrationController::class, 'setAUPAccepted' ])
+        ->name('aup.accept');
+
 });
 
 

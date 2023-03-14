@@ -52,6 +52,18 @@ class RegistrationController extends Controller
         ]);
     }
 
+    public function setAUPAccepted()
+    {
+        $user = auth()->user();
+        $user->aup_accepted_at = now();
+        $user->save();
+
+        return response()->json([
+            'message' => 'AUP accepted'
+        ]);
+
+    }
+
     private function createTenant()
     {
 
