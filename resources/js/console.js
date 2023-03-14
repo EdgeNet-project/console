@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 import { MantineProvider } from "@mantine/core";
 import { AuthenticationProvider } from "./console/Authentication";
-import routes from "./console/routes";
+import routes from "./console/Application/routes/routes";
 import {RouterProvider} from "react-router-dom";
 // import routes from "./console/routes";
 

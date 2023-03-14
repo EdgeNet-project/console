@@ -5,6 +5,7 @@ import {RouterProvider} from "react-router-dom";
 // import routes from "./routes";
 import authenticationRoutes from "./routes/authentication";
 import registrationRoutes from "./routes/registration";
+import Registration from "./Views/Registration";
 
 const AuthenticationContext = React.createContext({
     user: null
@@ -27,7 +28,7 @@ const AuthenticationProvider = ({children}) => {
     const [ token, setToken ] = useState(sessionStorage.getItem(AUTH_TOKEN));
     const [ user, setUser ] = useState(null);
     // const [ error, setError ] = useState(null);
-    const [ loading, setLoading ] = useState(false);
+    const [ loading, setLoading ] = useState(true);
     const [ submitting, setSubmitting ] = useState(false);
     // const { error, get, post, abort, options } = useFetch()
 
@@ -146,6 +147,18 @@ const AuthenticationProvider = ({children}) => {
 
         return !!user.email_verified_at;
     }
+
+    const hasAcceptedAup = () => {
+        if (!isAuthenticated()) {
+            return false;
+        }
+
+        return !!user.aup_accepted_at;
+    }
+
+    const hasFinishedRegistration = () => {
+        return hasEmailVerified() && hasAcceptedAup()
+    }
     // console.log(isAuthenticated(), token, user, loading)
 
     // if (!!token && !user && !loading) {
@@ -157,13 +170,16 @@ const AuthenticationProvider = ({children}) => {
     //
 
     if (loading) {
-        return 'loading'
+        return null;
     }
+    console.log('loading', loading)
+
+    console.log('u => ',user)
 
     /**
      * User is not authenticated
      */
-    if (!isAuthenticated()) {
+    if (!loading && !isAuthenticated()) {
         return (
             <AuthenticationContext.Provider value={{
                 user: user,
@@ -178,28 +194,43 @@ const AuthenticationProvider = ({children}) => {
         )
     }
 
-    if (!user) {
-        return "no user"
-    }
-
     /**
      * User is authenticated but registration is not complete
      * - email not yet verified
+     * - AUP not accepted
+     * - has NO Teams
      */
-    // if (!hasEmailVerified()) {
-    //     return (
-    //         <AuthenticationContext.Provider value={{
-    //             user: user,
-    //             login: login,
-    //             loading: loading,
-    //             // error: error
-    //
-    //             isAuthenticated: isAuthenticated
-    //         }}>
-    //             <RouterProvider router={registrationRoutes} />
-    //         </AuthenticationContext.Provider>
-    //     )
+    if (!hasFinishedRegistration()) {
+        let step = 0;
+
+        if (hasEmailVerified()) {
+            step = 1
+        }
+
+        if (hasAcceptedAup()) {
+            step = 2
+        }
+
+        return (
+            <AuthenticationContext.Provider value={{
+                user: user,
+                login: login,
+                loading: loading,
+                // error: error
+
+                isAuthenticated: isAuthenticated
+            }}>
+                {/*<RouterProvider router={registrationRoutes} />*/}
+                <Registration step={step} />
+            </AuthenticationContext.Provider>
+        )
+    }
+
+    // if (!user) {
+    //     return "no user"
     // }
+
+
 
     /**
      * User is authenticated

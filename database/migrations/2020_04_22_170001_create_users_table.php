@@ -23,14 +23,29 @@ class CreateUsersTable extends Migration
             $table->boolean('enabled')
                 ->default(true);
 
-            $table->string('title')->nullable();
-            $table->string('firstname')->nullable();
-            $table->string('lastname')->nullable();
+            /*
+             * Global switch if user is cluster admin
+             */
+            $table->boolean('admin')
+                ->default(false);
 
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('title')
+                ->nullable();
+            $table->string('firstname')
+                ->nullable();
+            $table->string('lastname')
+                ->nullable();
 
-            $table->string('password')->nullable();
+            $table->string('email')
+                ->unique();
+            $table->timestamp('email_verified_at')
+                ->nullable();
+
+            $table->string('password')
+                ->nullable();
+
+            $table->timestamp('aup_approved_at')
+                ->nullable();
 
         });
     }

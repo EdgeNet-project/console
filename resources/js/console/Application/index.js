@@ -7,15 +7,15 @@ import Navigation from "./Navigation";
 
 import {useAuthentication} from "../Authentication";
 import {Outlet} from "react-router-dom";
-import RegistrationSteps from "../Authentication/Registration/RegistrationSteps";
+import Registration from "../Authentication/Views/Registration";
 
 const Application = () => {
-    const { user, isAuthenticated } = useAuthentication()
-    // User must have verified his email address
-    if (!user.email_verified_at) {
-        // return 'email not verified';
-        return <RegistrationSteps />
-    }
+    // const { user, isAuthenticated } = useAuthentication()
+    // // User must have verified his email address
+    // if (!user.email_verified_at) {
+    //     // return 'email not verified';
+    //     return <RegistrationSteps />
+    // }
 
     // Check if user is part of at least one tenant
     // if (user.tenants.length <= 0) {
@@ -32,9 +32,9 @@ const Application = () => {
     //     return 'AUP'
     // }
 
-    if (!isAuthenticated()) {
-        return redirect("/");
-    }
+    // if (!isAuthenticated()) {
+    //     return redirect("/");
+    // }
 
     return (
         <AppShell
