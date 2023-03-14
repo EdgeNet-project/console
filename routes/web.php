@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\RegistrationController;
+use App\Model\User;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;

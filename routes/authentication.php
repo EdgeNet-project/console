@@ -30,6 +30,10 @@ Route::post('password/reset/{user}/{signature}', [ ForgotPasswordController::cla
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('user', [AuthenticationController::class, 'user'])
         ->name('auth.user');
+
+    // resend email verification notice
+    Route::post('email/verification', [ RegistrationController::class, 'sendEmailVerificationLink' ])
+        ->name('email.verification');
 });
 
 

@@ -36,6 +36,8 @@ const Application = () => {
     //     return redirect("/");
     // }
 
+    console.log('HII')
+
     return (
         <AppShell
             padding="md"

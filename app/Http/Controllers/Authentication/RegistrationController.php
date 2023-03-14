@@ -43,8 +43,19 @@ class RegistrationController extends Controller
         ]);
     }
 
+    public function sendEmailVerificationLink()
+    {
+        event(new Registered(auth()->user()));
+
+        return response()->json([
+            'message' => 'notification sent'
+        ]);
+    }
+
     private function createTenant()
     {
 
     }
+
+
 }

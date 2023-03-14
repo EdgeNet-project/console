@@ -9,6 +9,7 @@ import {
 
 import AUP from "../Registration/AUP";
 import RegistrationTeam from "../Registration/RegistrationTeam";
+import EmailVerificationStep from "../Registration/EmailVerificationStep";
 
 export default function Registration({step = 1}) {
 
@@ -30,7 +31,7 @@ export default function Registration({step = 1}) {
         <Container size="sm" sx={(theme) => ({ margin: '25px auto'})}>
             <Stepper active={step} onStepClick={null} breakpoint="sm">
                 <Stepper.Step label="Verification" description="Verify your email">
-                    Verify email
+                    <EmailVerificationStep />
                 </Stepper.Step>
                 <Stepper.Step label="Terms of service" description="Review our policies">
                     <AUP />

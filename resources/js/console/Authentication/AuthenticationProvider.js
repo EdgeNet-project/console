@@ -89,6 +89,8 @@ const AuthenticationProvider = ({children}) => {
             //     .finally(() => {
             //         setLoading(false)
             //     });
+        } else {
+            setLoading(false)
         }
 
         return () => {
@@ -168,11 +170,12 @@ const AuthenticationProvider = ({children}) => {
     //     return 'wait'
     // }
     //
+    console.log('loading', loading)
 
     if (loading) {
         return null;
     }
-    console.log('loading', loading)
+
 
     console.log('u => ',user)
 
@@ -220,7 +223,6 @@ const AuthenticationProvider = ({children}) => {
 
                 isAuthenticated: isAuthenticated
             }}>
-                {/*<RouterProvider router={registrationRoutes} />*/}
                 <Registration step={step} />
             </AuthenticationContext.Provider>
         )
