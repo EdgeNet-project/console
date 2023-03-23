@@ -1,50 +1,56 @@
 import React, {useEffect, useState} from "react";
 import { useAuthentication } from "../Authentication";
-import {Anchor, Button, Code, CopyButton, Group, Box, Text, Title} from "@mantine/core";
+import {
+    Anchor,
+    Button,
+    Code,
+    Group,
+    Box,
+    Text,
+    Title,
+    Modal,
+    TextInput,
+    Stack,
+    Table, Paper, ActionIcon
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { Prism } from '@mantine/prism';
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {IconDownload} from "@tabler/icons";
+import {IconBuilding, IconDownload, IconKey, IconTrash} from "@tabler/icons";
+import {useForm} from "@mantine/form";
 
-export default function Tokens() {
-    const [ cluster, setCluster ] = useState({})
-    const { user, token } = useAuthentication();
-    const navigate = useNavigate();
+const CreateToken = ({onClose}) => {
+    const [ loading, setLoading ] = useState(false);
+    const [ cluster, setCluster ] = useState(null);
+    const { user } = useAuthentication();
+    const [ token, setToken ] = useState(null);
 
     useEffect(() => {
-            axios.get('/api/cluster', {
-                // params: { ...queryParams, page: current_page + 1 },
-                // paramsSerializer: qs.stringify,
+        axios.get('/api/cluster').then(({data}) => {
+                setCluster(data);
             })
-            .then(({data}) => {
-                    console.log(data)
-                    setCluster(data);
-                    // this.setState({
-                    //     ...data, loading: false
-                    // });
-                })
-                .catch(error => {
-                    console.log(error)
-                });
+            .catch(error => {
+                console.log(error)
+            });
     }, []);
 
-    const copyToClipboard = () => {
-        // textareaEl.current.focus();
-        textareaEl.current.select()
-        document.execCommand("copy")
-    }
+    const form = useForm({
+        initialValues: {
+            name: '',
+        },
+
+        validate: {
+        },
+    });
 
     const downloadConfig = () => {
-        const element = document.createElement("a");
-        const file = new Blob([config], {type: 'text/yaml'});
-        element.href = URL.createObjectURL(file);
-        element.download = "edgenet-" + user.authority + "-" + user.name + ".yml";
-        document.body.appendChild(element); // Required for this to work in FireFox
-        element.click();
-    }
+        if (!token.plainTextToken) {
+            return
+        }
 
-    const config = `apiVersion: v1
+        const config = `apiVersion: v1
 kind: Config
 clusters:
 - name: edgenet-cluster
@@ -55,25 +61,193 @@ contexts:
 - name: edgenet
   context:
     cluster: edgenet-cluster
-    namespace: authority-` + user.authority + `
+    namespace: ` + user.authority + `
     user: ` + user.email + `
 current-context: edgenet
 users:
 - name: ` + user.email + `
   user:
-    token: ` + token;
+    token: ` + token.plainTextToken;
+
+        const element = document.createElement("a");
+        const file = new Blob([config], {type: 'text/yaml'});
+        element.href = URL.createObjectURL(file);
+        element.download = "edgenet-" + user.authority + "-" + user.name + ".yml";
+        document.body.appendChild(element); // Required for this to work in FireFox
+        element.click();
+    }
+
+
+    const handleSubmit = (values) => {
+        setLoading(true)
+
+        axios.post('/api/tokens', values)
+            .then(({data: {token}}) => {
+                setToken(token)
+                console.log(token)
+            })
+            .catch(({message, response: {data: {errors}}}) => {
+                // console.log(message)
+                // setErrors(errors)
+                //form.setErrors(errors);
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+    }
+
+    if (token && token.plainTextToken) {
+        return (
+            <Stack>
+                <Text size="sm" >
+                    You can see below the newly created token. for security reasons this token will not
+                    be stored on our server, you should copy and store it somewhere safe.
+                </Text>
+                <Text size="sm" >
+                    Once you close this window you will not be able to retrieve this token anymore.
+                </Text>
+                <Text size="sm" >
+                    You can also download a preconfigured Kubernetes config file already setup with this token.
+                </Text>
+                <Prism block p="sm">{token.plainTextToken}</Prism>
+                <Group position="apart">
+                    <Button disabled={loading} color="gray" onClick={onClose}>
+                        Close
+                    </Button>
+                    <Button disabled={loading} onClick={downloadConfig}>
+                        Download Config
+                    </Button>
+                </Group>
+            </Stack>
+        )
+    }
 
     return (
-        <div>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+            <Stack>
+                <TextInput label="Name" placeholder="my-token-name"
+                           {...form.getInputProps('name')} />
+                <Button disabled={loading} type="submit" fullWidth>
+                    Submit
+                </Button>
+            </Stack>
+        </form>
+    )
+}
+
+const DeleteToken = ({token, onClose}) => {
+
+    const deleteToken = (name) => {
+        axios.delete('/api/tokens/' + token.name)
+            .then(({data}) => {
+                console.log(data)
+                // this.setState({
+                //     ...data, loading: false
+                // });
+            })
+            .catch(error => {
+                console.log(error)
+            })
+            .finally(() => {
+                onClose()
+            });
+    }
+
+    return (
+        <>
+            <Text size="sm">Are you sure you want to delete the following token?</Text>
+            <Code block>{token.name}</Code>
+            <Group position="apart" mt="sm">
+                <Button onClick={onClose} color="gray">Cancel</Button>
+                <Button onClick={deleteToken} color="red">Delete</Button>
+            </Group>
+        </>
+    )
+}
+
+export default function Tokens() {
+    const [ tokens, setTokens ] = useState([])
+    const [ deleteToken, setDeleteToken ] = useState(null)
+    const { user } = useAuthentication();
+    const [opened, { open, close }] = useDisclosure(false);
+    const [deleteOpened, deleteDialogHandlers] = useDisclosure(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        refreshTokens()
+    }, [opened, deleteOpened]);
+
+    useEffect(() => {
+        if (deleteToken) {
+            deleteDialogHandlers.open()
+        }
+    }, [deleteToken])
+
+    const refreshTokens = () => {
+        axios.get('/api/tokens', {
+            // params: { ...queryParams, page: current_page + 1 },
+            // paramsSerializer: qs.stringify,
+        })
+        .then(({data}) => {
+            console.log(data)
+            setTokens(data);
+            // this.setState({
+            //     ...data, loading: false
+            // });
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
+    return (
+        <>
+            <Modal opened={opened}
+                   closeOnClickOutside={false}
+                   closeOnEscape={false}
+                   onClose={close} title="Create a new Token" centered>
+                <CreateToken onClose={close} />
+            </Modal>
+
+            <Modal opened={deleteOpened} onClose={deleteDialogHandlers.close} title="Delete Token" centered>
+                <DeleteToken token={deleteToken}
+                             onClose={deleteDialogHandlers.close} />
+            </Modal>
+
             <Title order={2}>
-                EdgeNet configuration
+                Access Tokens
             </Title>
-            <Prism language="yaml">
-                {config}
-            </Prism>
+            <Paper shadow="xs" p="md">
+                <Text size="md"><IconKey size={20} /> </Text>
+                <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Abilities</th>
+                        <th>Created</th>
+                        <th>Expires</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {tokens.map((token) => <tr key={token.id}>
+                        <td>{token.name}</td>
+                        <td>{token.abilities}</td>
+                        <td>{token.created_at}</td>
+                        <td>{token.expires_at}</td>
+                        <td>
+                            <ActionIcon variant="filled" color="red" onClick={() => setDeleteToken(token)}>
+                                <IconTrash size="1rem" />
+                            </ActionIcon>
+                        </td>
+                    </tr>)}
+                    </tbody>
+                </Table>
+            </Paper>
 
             <Box sx={{margin:'25px 0'}}>
-                <Button leftIcon={<IconDownload size={16} />} onClick={downloadConfig}>Download Configuration</Button>
+                <Button onClick={open}>Create Token</Button>
+                {/*<Button leftIcon={<IconDownload size={16} />} onClick={downloadConfig}>Download Configuration</Button>*/}
             </Box>
 
             <Title sx={{borderTop:'solid 1px gray', paddingTop:'10px', marginTop:'25px'}} order={4}>
@@ -151,7 +325,7 @@ users:
             </Text>
 
 
-        </div>
+        </>
 
     );
 }

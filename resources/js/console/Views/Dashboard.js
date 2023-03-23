@@ -4,10 +4,10 @@ import {useFetch} from "../Fetch";
 const Dashboard = () => {
     const { get } = useFetch()
 
-    useEffect(() => {
-        get('kubernetes/config')
-            .then(data => console.log(data))
-    }, [])
+    // useEffect(() => {
+    //     get('kubernetes/config')
+    //         .then(data => console.log(data))
+    // }, [])
 
     return (
         <div>

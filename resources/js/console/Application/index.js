@@ -38,14 +38,14 @@ const Application = () => {
 
     return (
         <AppShell
-            padding="md"
+            // padding="md"
             navbar={<Navigation />}
             header={<NavigationHeader />}
             styles={(theme) => ({
                 main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
             })}
         >
-            <Outlet />
+            <Container><Outlet /></Container>
         </AppShell>
     )
 

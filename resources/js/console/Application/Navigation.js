@@ -5,7 +5,7 @@ import {
     IconQuestionCircle,
     IconFileSettings,
     IconServer,
-    IconKey, IconUser
+    IconKey, IconUser, IconDashboard
 } from "@tabler/icons";
 import {Group, ThemeIcon, UnstyledButton, Text, Navbar, useMantineTheme} from "@mantine/core";
 import NavigationUser from "./NavigationUser";
@@ -46,6 +46,7 @@ function NavigationButton({ icon, color, label, link }) {
 }
 
 const menu = [
+    { icon: <IconDashboard size={16} />, color: 'indigo', label: 'Dashboard', link: '/' },
     { icon: <IconKey size={16} />, color: 'teal', label: 'Tokens', link: '/tokens' },
     // { icon: <IconServer size={16} />, color: 'blue', label: 'Nodes', link: '/nodes' },
     // { icon: <IconAlertCircle size={16} />, color: 'teal', label: 'Open Issues' },

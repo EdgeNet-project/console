@@ -24,6 +24,10 @@ return new class extends Migration
             $table->string('fullname')->nullable();
             $table->string('shortname')->nullable();
 
+            $table->string('affiliation')->nullable();
+            $table->text('joining_reason')->nullable();
+            $table->string('joining_category')->nullable();
+
             $table->string('url')->nullable();
 
             $table->string('street')->nullable();
@@ -36,6 +40,8 @@ return new class extends Migration
             $table->string('contact_email')->nullable();
             $table->string('contact_phone')->nullable();
 
+            $table->boolean('enabled')
+                ->default(false);
         });
     }
 

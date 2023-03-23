@@ -66,7 +66,7 @@ export default function RoleRequests() {
                 console.log(error)
             });
     }, []);
-    console.log(roleRequests)
+    //console.log(roleRequests)
     return (
         <Stack spacing="sm">
             <Title>Requests</Title>
