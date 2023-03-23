@@ -164,26 +164,21 @@ const AuthenticationProvider = ({children}) => {
         return !!user.aup_accepted_at;
     }
 
-    const hasFinishedRegistration = () => {
-        return hasEmailVerified() && hasAcceptedAup()
-    }
-    // console.log(isAuthenticated(), token, user, loading)
+    const hasTeam = () => {
+        if (!isAuthenticated()) {
+            return false;
+        }
 
-    // if (!!token && !user && !loading) {
-    //     /*
-    //      *
-    //      */
-    //     return 'wait'
-    // }
-    //
-    console.log('loading', loading)
+        return user.tenants.length > 0
+    }
+
+    const hasFinishedRegistration = () => {
+        return hasEmailVerified() && hasAcceptedAup() && hasTeam()
+    }
 
     if (loading) {
         return null;
     }
-
-
-    console.log('u => ',user)
 
     /**
      * User is not authenticated

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Authentication;
 
+use App\CRDs\RoleRequest;
 use App\Http\Controllers\Controller;
 use App\Model\User;
 use Illuminate\Auth\Events\Registered;
@@ -64,10 +65,7 @@ class RegistrationController extends Controller
 
     }
 
-    private function createTenant()
-    {
 
-    }
 
 
 }

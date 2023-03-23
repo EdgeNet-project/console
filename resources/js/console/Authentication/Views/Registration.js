@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Title,
     Stepper,
-    Button,
     Group,
     Container, Image, Header
 } from '@mantine/core';
@@ -12,7 +11,6 @@ import RegistrationTeam from "../Registration/RegistrationTeam";
 import EmailVerificationStep from "../Registration/EmailVerificationStep";
 
 export default function Registration({step = 1}) {
-
 
     return (
         <>
@@ -39,18 +37,10 @@ export default function Registration({step = 1}) {
                 <Stepper.Step label="Your Team" description="Join or create a Team">
                     <RegistrationTeam />
                 </Stepper.Step>
-                {/*<Stepper.Step label="Welcome!" description="Get full access">*/}
-                {/*    Welcome!*/}
-                {/*</Stepper.Step>*/}
                 <Stepper.Completed>
                     Completed
                 </Stepper.Completed>
             </Stepper>
-
-            {/*<Group position="center" mt="xl">*/}
-            {/*    <Button variant="default" onClick={prevStep}>Back</Button>*/}
-            {/*    <Button onClick={nextStep}>Next step</Button>*/}
-            {/*</Group>*/}
         </Container>
         </>
     );

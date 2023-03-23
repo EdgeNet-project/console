@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {Select, Anchor, Text, Space, Card, Button} from "@mantine/core";
+import {Select, Anchor, Text, Space, Card, Button, Paper, Center} from "@mantine/core";
+import {useAuthentication} from "../AuthenticationProvider";
 
-const Address = ({address}) => {
-
+const TenantAddress = ({address}) => {
     return (
         <>
             {address.street} <br />
@@ -13,27 +13,18 @@ const Address = ({address}) => {
     )
 }
 
-const Contact = ({contact}) =>
+const TenantContact = ({contact}) =>
     <>
         {contact.firstname} {contact.lastname} <br />
         <Anchor href={"mailto:" + contact.email}>{contact.email}</Anchor> <br />
         {contact.phone}
     </>;
 
-const Tenant = ({tenant}) => {
-
-
-    return (
-        <>
-            {tenant.fullname} ({tenant.shortname}) <br />
-            <Anchor size="sm" target="_blank">{tenant.url}</Anchor>
-        </>
-    )
-}
-
 export default function RegistrationTeamJoin({handleTenant}) {
     const [tenants, setTenants] = useState([]);
     const [selectedTenant, setSelectedTenant] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const { user } = useAuthentication();
 
     useEffect(() => {
         axios.get('/api/tenants')
@@ -44,6 +35,24 @@ export default function RegistrationTeamJoin({handleTenant}) {
 
     const handleSelect = (value) => {
         setSelectedTenant(tenants.find(tenant => tenant.name === value))
+    }
+
+    const handleRequest = () => {
+        setLoading(true)
+        axios.post('/api/requests/roles',
+            {
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email,
+                namespace: selectedTenant.name
+            },
+            {})
+            .then(({data}) => {
+                // console.log(data)
+            })
+            .finally(() => {
+                setLoading(false)
+            });
     }
 
 
@@ -58,33 +67,28 @@ export default function RegistrationTeamJoin({handleTenant}) {
             </p>
             <Select
                     data={data}
-                    placeholder="EdgeNet institutions"
+                    placeholder="EdgeNet Teams"
                     nothingFound="Nothing found"
                     searchable
-                    creatable
                     clearable
                     onChange={handleSelect}
-                    getCreateLabel={(query) => `+ Create ${query}`}
-                    onCreate={(query) => {
-                        const item = { value: query, label: query };
-                        setTenants((current) => [...current, item]);
-                        return item;
-                    }}
             />
             <Space h="md" />
-            {selectedTenant && <Card shadow="sm" p="lg" radius="md" withBorder>
-                <Card.Section withBorder inheritPadding py="xs">
-                    <Tenant tenant={selectedTenant} />
-                    <Space h="xs" />
-                    <Text fz="sm">
-                        <Address address={selectedTenant.address} />
-                    </Text>
-                    {/*<Contact contact={selectedTenant.contact} />*/}
-                </Card.Section>
-                <Button variant="light" color="blue" fullWidth mt="md" radius="md">
-                    Request to join institution
-                </Button>
-            </Card>}
+            {selectedTenant &&
+                <Paper px="xs">
+                    {selectedTenant.fullname} ({selectedTenant.shortname}) <br />
+                    <Anchor size="sm" target="_blank" href={selectedTenant.url}>{selectedTenant.url}</Anchor>
+                        {selectedTenant.address && <Text fz="sm">
+                        <TenantAddress address={selectedTenant.address} />
+                    </Text>}
+                    {/*<TenantContact contact={selectedTenant.contact} />*/}
+                    <Center>
+                        <Button my="sm" onClick={handleRequest} disabled={loading}>
+                            Request to join Team
+                        </Button>
+                    </Center>
+                </Paper>
+              }
 
         </>
     )

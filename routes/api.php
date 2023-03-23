@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::group(['prefix' => 'requests'], function () {
         Route::get('/roles/{namespace?}', [ RoleRequestController::class, 'list' ]);
+        Route::post('/roles', [ RoleRequestController::class, 'create' ]);
     });
 
 
