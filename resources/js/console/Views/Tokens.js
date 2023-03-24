@@ -214,11 +214,10 @@ export default function Tokens() {
                              onClose={deleteDialogHandlers.close} />
             </Modal>
 
-            <Title order={2}>
-                Access Tokens
+            <Title order={2} mb="sm">
+                <IconKey size={22} /> Access Tokens
             </Title>
             <Paper shadow="xs" p="md">
-                <Text size="md"><IconKey size={20} /> </Text>
                 <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
                     <thead>
                     <tr>

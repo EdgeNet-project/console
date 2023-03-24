@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
-import {useFetch} from "../Fetch";
+
 
 const Dashboard = () => {
-    const { get } = useFetch()
+
 
     // useEffect(() => {
     //     get('kubernetes/config')

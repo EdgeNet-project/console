@@ -8,6 +8,7 @@ import Navigation from "./Navigation";
 import {useAuthentication} from "../Authentication";
 import {Outlet} from "react-router-dom";
 import Registration from "../Authentication/Views/Registration";
+import {Workspace} from "./Workspace";
 
 const Application = () => {
     // const { user, isAuthenticated } = useAuthentication()
@@ -37,16 +38,18 @@ const Application = () => {
     // }
 
     return (
-        <AppShell
-            // padding="md"
-            navbar={<Navigation />}
-            header={<NavigationHeader />}
-            styles={(theme) => ({
-                main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
-            })}
-        >
-            <Container><Outlet /></Container>
-        </AppShell>
+        <Workspace>
+            <AppShell
+                // padding="md"
+                navbar={<Navigation />}
+                header={<NavigationHeader />}
+                styles={(theme) => ({
+                    main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
+                })}
+            >
+                <Container><Outlet /></Container>
+            </AppShell>
+        </Workspace>
     )
 
     // <RouterProvider router={router} />
