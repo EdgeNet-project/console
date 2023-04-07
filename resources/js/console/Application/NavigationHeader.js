@@ -34,7 +34,7 @@ export default function NavigationHeader() {
                 {/*<ActionIcon variant="default" onClick={() => toggleColorScheme()} size={30}>*/}
                 {/*    {colorScheme === 'dark' ? <IconSun size={16} /> : <IconMoonStars size={16} />}*/}
                 {/*</ActionIcon>*/}
-                <NavigationNamespaceSelect />
+                {/*<NavigationNamespaceSelect />*/}
             </Group>
         </Header>
     )

@@ -78,7 +78,7 @@ export default function RegistrationTeam() {
     return (
         <>
             <p>
-                To start using EdgeNet you have to join a Team or create new one.
+                To start using EdgeNet you have to join a Workspace or create new one.
             </p>
             <Radio.Group
                 name="tenant"
@@ -96,14 +96,14 @@ export default function RegistrationTeam() {
                     <RegistrationTeamOption value="tenant"
                                             checked={join == 'tenant'}
                                             handleChange={setJoin}
-                                            title="Join a Team"
-                                            description="Choose an existing Team"
+                                            title="Join a Workspace"
+                                            description="Choose an existing Workspace"
                                             icon={<IconUsers />}/>
                     <RegistrationTeamOption value="create"
                                             checked={join == 'create'}
                                             handleChange={setJoin}
-                                            title="Create a new Team"
-                                            description="Xyz"
+                                            title="Create a Team"
+                                            description="Create a new Team"
                                             icon={<IconSquarePlus />} />
                 </SimpleGrid>
             </Radio.Group>

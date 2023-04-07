@@ -7,10 +7,11 @@ import {
     IconServer,
     IconKey, IconUser, IconDashboard
 } from "@tabler/icons";
-import {Group, ThemeIcon, UnstyledButton, Text, Navbar, useMantineTheme} from "@mantine/core";
+import {Group, ThemeIcon, UnstyledButton, Text, Navbar, useMantineTheme, Divider} from "@mantine/core";
 import NavigationUser from "./NavigationUser";
 import {Link, useMatch} from "react-router-dom";
 import {useAuthentication} from "../Authentication";
+import NavigationTeams from "./NavigationTeams";
 
 function NavigationButton({ icon, color, label, link }) {
     const theme = useMantineTheme();
@@ -45,8 +46,7 @@ function NavigationButton({ icon, color, label, link }) {
     );
 }
 
-const menu = [
-    { icon: <IconDashboard size={16} />, color: 'indigo', label: 'Dashboard', link: '/' },
+const menuAccount = [
     { icon: <IconKey size={16} />, color: 'teal', label: 'Tokens', link: '/tokens' },
     // { icon: <IconServer size={16} />, color: 'blue', label: 'Nodes', link: '/nodes' },
     // { icon: <IconAlertCircle size={16} />, color: 'teal', label: 'Open Issues' },
@@ -68,10 +68,8 @@ const NavigationMenu = () => {
         return role === 'owner'
     })
 
-    console.log(is_owner)
 
     const links = [
-        ...menu.map((link) => <NavigationButton {...link} key={link.label} link={link.link} />),
         ...(is_owner ? ownerMenu.map((link) => <NavigationButton {...link} key={link.label} link={link.link} />) : [])
     ];
 
@@ -83,7 +81,13 @@ export default function Navigation() {
     return (
         <Navbar width={{ base: 300 }} p="xs">
             <Navbar.Section grow mt="xs">
+                <NavigationButton icon={<IconDashboard size={16} />} color="indigo" link="/" label="Dashboard" />
+                <NavigationTeams />
                 <NavigationMenu />
+
+                <Divider label="Account" />
+                <NavigationButton icon={<IconKey size={16} />} color="teal" link="/tokens" label="Tokens" />
+
             </Navbar.Section>
             <Navbar.Section>
                 <NavigationUser />

@@ -8,6 +8,8 @@ import NodeList from "../../Views/NodeList";
 import Tokens from "../../Views/Tokens";
 import RoleRequests from "../../Views/RoleRequests";
 import TenantUsers from "../../Views/TenantUsers";
+import Dashboard from "../../Views/Dashboard";
+import TeamView from "../../Teams/TeamView";
 
 const router = createBrowserRouter([
     {
@@ -17,7 +19,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: 'dash',
+                element: <Dashboard />,
             },
             {
                 path: "/profile",
@@ -43,6 +45,10 @@ const router = createBrowserRouter([
             {
                 path: "/nodes",
                 element: <NodeList />,
+            },
+            {
+                path: "/team/:team",
+                element: <TeamView />,
             },
         ],
     },

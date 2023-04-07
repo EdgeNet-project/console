@@ -79,7 +79,8 @@ export default function RegistrationTeamCreate() {
         <>
             <LoadingOverlay visible={loading} overlayBlur={2} />
             <p>
-                Create new Team by filling the information below, an administrator will review your application.
+                Create new top level Workspace by filling the information below,
+                an administrator will review your application.
             </p>
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Grid>
