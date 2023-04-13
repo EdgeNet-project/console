@@ -29,7 +29,7 @@ class SubNamespace extends K8sResource implements InteractsWithK8sCluster
      *
      * @var bool
      */
-    protected static $namespaceable = false;
+    protected static $namespaceable = true;
 
 
     public function isEnabled()

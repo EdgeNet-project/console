@@ -16,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
         \App\CRDs\TenantRequest::register();
         \App\CRDs\RoleRequest::register();
         \App\CRDs\Tenant::register();
+        \App\CRDs\SubNamespace::register();
     }
 
     /**

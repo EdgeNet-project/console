@@ -18,4 +18,9 @@ class Tenant extends Model
             ->withPivot('roles')
             ->withTimestamps();
     }
+
+    public function subnamespaces()
+    {
+        return $this->hasMany(SubNamespace::class);
+    }
 }
