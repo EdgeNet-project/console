@@ -8,6 +8,7 @@ import {
 import {IconPlus, IconMinus, IconUsersPlus} from "@tabler/icons-react";
 import {Link} from "react-router-dom";
 import CreateTeam from "../Teams/CreateTeam";
+import JoinWorkspaceDialog from "../Workspace/JoinWorkspaceDialog";
 
 const myThemes = {
         edgenetTeamsTheme: {
@@ -161,7 +162,7 @@ const NavigationTeams = () => {
                        RenderIcon={TreeIcon}
                        RenderNode={TreeNode}
             />
-            <CreateTeam />
+            <JoinWorkspaceDialog />
         </>
     )
 }

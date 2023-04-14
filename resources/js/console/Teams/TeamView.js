@@ -4,6 +4,7 @@ import {
     IconServer, IconBox, IconUsers, IconUser
 
 } from "@tabler/icons";
+import CreateWorkspaceDialog from "../Workspace/CreateWorkspaceDialog";
 const items = [
     { title: 'Sorbonne', href: '#' },
     { title: 'Networking Class', href: '#' },
@@ -85,7 +86,7 @@ export default function TeamView() {
                         <Divider />
                         <Text>Team B</Text>
                         <Divider />
-                        <Button>Create a new Workspace</Button>
+                        <CreateWorkspaceDialog />
                     </Stack>
                 </Paper>
             </SimpleGrid>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {Select, Anchor, Text, Space, Card, Button, Paper, Center} from "@mantine/core";
 import {useAuthentication} from "../AuthenticationProvider";
+import WorkspaceSelect from "../../Workspace/WorkspaceSelect";
 
 const TenantAddress = ({address}) => {
     return (
@@ -25,13 +26,13 @@ export default function RegistrationTeamJoin({handleTenant}) {
     const [selectedTenant, setSelectedTenant] = useState(null);
     const [loading, setLoading] = useState(false);
     const { user } = useAuthentication();
-
-    useEffect(() => {
-        axios.get('/api/tenants')
-            .then(({data}) => {
-                setTenants(data)
-            })
-    }, [])
+    //
+    // useEffect(() => {
+    //     axios.get('/api/tenants')
+    //         .then(({data}) => {
+    //             setTenants(data)
+    //         })
+    // }, [])
 
     const handleSelect = (value) => {
         setSelectedTenant(tenants.find(tenant => tenant.name === value))
@@ -56,23 +57,24 @@ export default function RegistrationTeamJoin({handleTenant}) {
     }
 
 
-    const data = tenants.map(d => { return { value: d.name, label: d.fullname } })
+    // const data = tenants.map(d => { return { value: d.name, label: d.fullname } })
 
     return (
         <>
             <p>
-                Please select a Team to start using EdgeNet, an administrator will review your application.
+                Please select a Workspace to start using EdgeNet, an administrator will review your application.
                 <br />
-                You can join more Teams once your first application has been approved.
+                You can join more Workspaces once your first application has been approved.
             </p>
-            <Select
-                    data={data}
-                    placeholder="EdgeNet Teams"
-                    nothingFound="Nothing found"
-                    searchable
-                    clearable
-                    onChange={handleSelect}
-            />
+            <WorkspaceSelect onChange={setSelectedTenant} />
+            {/*<Select*/}
+            {/*        data={data}*/}
+            {/*        placeholder="EdgeNet Workspaces"*/}
+            {/*        nothingFound="Nothing found"*/}
+            {/*        searchable*/}
+            {/*        clearable*/}
+            {/*        onChange={handleSelect}*/}
+            {/*/>*/}
             <Space h="md" />
             {selectedTenant &&
                 <Paper px="xs">
