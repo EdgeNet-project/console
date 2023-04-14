@@ -14,6 +14,13 @@ class TenantController extends Controller
     public function list()
     {
 
+        $tenants = Tenant::where([
+            ['enabled', true]
+        ])->orderBy('name')->get();
+
+        return response()->json($tenants);
+
+        /*
         $cluster = K8s::getCluster();
 
         $tenants = $cluster->tenant()->all();
@@ -41,16 +48,21 @@ class TenantController extends Controller
 
         }
         return response()->json($output);
+        */
     }
 
-    public function get()
+    public function get(Tenant $tenant)
     {
-
+        return response()->json($tenant);
     }
 
     public function users(Tenant $tenant)
     {
-
         return response()->json($tenant->users);
+    }
+
+    public function subnamespaces(Tenant $tenant)
+    {
+        return response()->json($tenant->subnamespaces);
     }
 }

@@ -11,6 +11,14 @@ class Tenant extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'enabled' => 'boolean'
+    ];
+
+    protected $with = [
+        'subnamespaces'
+    ];
+
     public function users()
     {
         return $this->belongsToMany(User::class)

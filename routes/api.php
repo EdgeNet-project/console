@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::group(['prefix' => '{tenant:name}'], function () {
             Route::get('/', [ TenantController::class, 'get' ]);
             Route::get('/users', [ TenantController::class, 'users' ]);
+            Route::get('/subnamespaces', [ TenantController::class, 'subnamespaces' ]);
         });
     });
 
