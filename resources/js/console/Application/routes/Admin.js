@@ -2,7 +2,7 @@ import {
     createBrowserRouter,
 } from "react-router-dom";
 import RegistrationForm from "../../Authentication/Registration/RegistrationForm";
-import UserProfile from "../../Views/UserProfile";
+import UserProfile from "../../Profile/UserProfile";
 import Application from "../index";
 import NodeList from "../../Views/NodeList";
 import Tokens from "../../Views/Tokens";

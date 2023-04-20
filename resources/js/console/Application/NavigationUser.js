@@ -3,6 +3,7 @@ import {IconChevronLeft, IconChevronRight} from "@tabler/icons";
 import Gravatar from 'react-gravatar';
 import {Link, useMatch} from "react-router-dom";
 import {useAuthentication} from "../Authentication";
+import {UserInfo} from "../User/UserAvatar";
 
 export default function NavigationUser() {
     const theme = useMantineTheme();
@@ -37,16 +38,7 @@ export default function NavigationUser() {
 
             >
                 <Group>
-                    <Gravatar email={user.email} />
-
-                    <Box sx={{ flex: 1 }}>
-                        <Text size="sm" weight={500}>
-                            {user.firstname} {user.lastname}
-                        </Text>
-                        <Text color="dimmed" size="xs">
-                            {user.email}
-                        </Text>
-                    </Box>
+                    <UserInfo user={user} />
 
                     {theme.dir === 'ltr' ? <IconChevronRight size={18} /> : <IconChevronLeft size={18} />}
                 </Group>

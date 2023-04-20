@@ -69,8 +69,8 @@ export default function JoinWorkspaceDialog() {
 
     const form = useForm({
         initialValues: {
-            firstname: user.firstname,
-            lastname: user.lastname,
+            firstname: user.firstname ?? '',
+            lastname: user.lastname ?? '',
             email: user.email,
             namespace: '',
         },
@@ -83,9 +83,7 @@ export default function JoinWorkspaceDialog() {
     const handleSubmit = (values) => {
         setLoading(true)
 
-        axios.post('/api/requests/roles', {
-            name: name, ...values
-        })
+        axios.post('/api/requests/roles', values)
             .then((res) => {
                 console.log(res)
                 //setRegistered(true)

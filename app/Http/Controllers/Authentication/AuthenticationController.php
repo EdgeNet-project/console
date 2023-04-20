@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Authentication;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\User;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +15,20 @@ class AuthenticationController extends Controller
         $user = auth()->user();
 
         return response()->json($user);
+    }
+
+    public function updateUser(Request $request)
+    {
+        $data = $request->validate([
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
+        ]);
+        $user = auth()->user();
+        $user->firstname = $data['firstname'];
+        $user->lastname = $data['lastname'];
+        $user->save();
+
+        return response()->json(['message' => 'saved']);
     }
 
     public function login()
