@@ -16,6 +16,7 @@ import {IconSquarePlus} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
 import WorkspaceSelect from "./WorkspaceSelect";
+import {useAuthentication} from "../Authentication";
 
 const useStyles = createStyles((theme) => ({
     root: {
@@ -45,20 +46,18 @@ export default function JoinWorkspaceDialog() {
     const [opened, { open, close }] = useDisclosure(false);
     const { classes } = useStyles();
     const theme = useMantineTheme();
-    const [ selectedWorkspace, setSelectedWorkspace ] = useState(false)
+    // const [ selectedWorkspace, setSelectedWorkspace ] = useState(false)
     const [ loading, setLoading ] = useState(false)
+    const { user } = useAuthentication()
 
     const backgroundColor = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
 
     const form = useForm({
         initialValues: {
-            fullname: '',
-            shortname: '',
-            affiliation: '',
-            country: '',
-            url: '',
-            joining_reason: '',
-            joining_category: '',
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            namespace: '',
         },
 
         validate: {
@@ -89,10 +88,14 @@ export default function JoinWorkspaceDialog() {
     //     form.setFieldValue('name', createNamespace(value));
     // }
 
+    const selectWorkspace = (workspace) => {
+        form.setFieldValue('namespace', workspace.namespace)
+    }
+
     const handleSubmit = (values) => {
         setLoading(true)
 
-        axios.post('/api/requests/subnamespaces', {
+        axios.post('/api/requests/roles', {
             name: name, ...values
         })
             .then((res) => {
@@ -118,7 +121,7 @@ export default function JoinWorkspaceDialog() {
                         <Text>
                             Select a Workspace to join, a request will be sent to the managers.
                         </Text>
-                        <WorkspaceSelect withinPortal onChange={null} />
+                        <WorkspaceSelect withinPortal onChange={selectWorkspace} />
 
                         {/*<TextInput label="Name" placeholder="My new Team name" classNames={classes} withAsterisk*/}
                         {/*           {...form.getInputProps('fullname')}*/}

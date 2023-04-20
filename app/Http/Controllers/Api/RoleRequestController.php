@@ -76,6 +76,10 @@ class RoleRequestController extends Controller
         $cluster->withToken($request->bearerToken());
 
         $roleRequest = new RoleRequest($cluster, [
+            'metadata' => [
+                'name' => $data['namespace'] . '-' . Str::lower(Str::random(4)),
+                'namespace' => $data['namespace'],
+            ],
             'spec' => [
                 'firstname' => $data['firstname'],
                 'lastname' => $data['lastname'],
@@ -87,10 +91,10 @@ class RoleRequestController extends Controller
             ],
         ]);
 
+        Log::info($roleRequest->toArray());
+
         try {
             $roleRequest
-                ->setName($data['namespace'] . '-' . Str::lower(Str::random(4)))
-                ->setNamespace($data['namespace'])
                 ->create();
         } catch (PhpK8sException $e) {
 

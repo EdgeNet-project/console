@@ -26,8 +26,9 @@ export default function WorkspaceSelect({onChange, ...props}) {
     // const [loading, setLoading] = useState(false);
 
     const handleSelect = (value) => {
-        console.log(value)
-        setSelected(workspaces.find(tenant => tenant.name === value))
+        setSelected(workspaces.find(wp => wp.value === value))
+
+        onChange(workspaces.find(wp => wp.value === value))
     }
 
     useEffect(() => {
@@ -37,19 +38,23 @@ export default function WorkspaceSelect({onChange, ...props}) {
                 data.forEach(tenant => {
 
                     workspacesData.push( {
-                        value: tenant.id,
+                        value: 'tenant-' + tenant.id,
                         label: tenant.fullname + ' (' + tenant.shortname + ')',
                         namespace: tenant.name,
-                        description: 'hello'
+                        type: 'tenant',
+                        id: tenant.id,
+                        // description: 'hello'
                     } )
 
                     if (tenant.subnamespaces.length > 0) {
                         tenant.subnamespaces.forEach(subnamespace => {
                             workspacesData.push( {
-                                value: subnamespace.name + '-' + subnamespace.id,
+                                value: 'subnamespace-' + subnamespace.id,
                                 label: subnamespace.name,
                                 namespace: tenant.fullname,
-                                description: 'hi'
+                                type: 'subnamespace',
+                                id: subnamespace.id,
+                                // description: 'hi'
                             } )
                         })
 
@@ -82,21 +87,21 @@ export default function WorkspaceSelect({onChange, ...props}) {
                 onChange={handleSelect}
                 {...props}
             />
-            {selected &&
-                <Paper px="xs">
-                    {selectedTenant.fullname} ({selectedTenant.shortname}) <br />
-                    <Anchor size="sm" target="_blank" href={selectedTenant.url}>{selectedTenant.url}</Anchor>
-                    {selectedTenant.address && <Text fz="sm">
-                        <TenantAddress address={selectedTenant.address} />
-                    </Text>}
-                    {/*<TenantContact contact={selectedTenant.contact} />*/}
-                    <Center>
-                        <Button my="sm" onClick={handleRequest} disabled={loading}>
-                            Request to join Team
-                        </Button>
-                    </Center>
-                </Paper>
-            }
+            {/*{selected &&*/}
+            {/*    <Paper px="xs">*/}
+            {/*        {selected.fullname} ({selected.shortname}) <br />*/}
+            {/*        <Anchor size="sm" target="_blank" href={selected.url}>{selected.url}</Anchor>*/}
+            {/*        {selected.address && <Text fz="sm">*/}
+            {/*            <TenantAddress address={selected.address} />*/}
+            {/*        </Text>}*/}
+            {/*        /!*<TenantContact contact={selectedTenant.contact} />*!/*/}
+            {/*        <Center>*/}
+            {/*            <Button my="sm" onClick={handleRequest} disabled={loading}>*/}
+            {/*                Request to join Team*/}
+            {/*            </Button>*/}
+            {/*        </Center>*/}
+            {/*    </Paper>*/}
+            {/*}*/}
         </Stack>
     )
 }
