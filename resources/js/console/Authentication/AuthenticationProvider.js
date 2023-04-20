@@ -84,7 +84,6 @@ const AuthenticationProvider = ({children}) => {
     }, [token])
 
     const loadUser = () => {
-        console.log('load user')
         axios.get('/user')
             .then(({data}) => {
                 setUser(data)

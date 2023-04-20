@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Model\SubNamespace as SubNamespaceModel;
 use App\CRDs\RoleRequest;
 use App\CRDs\SubNamespace;
 use App\Http\Controllers\Controller;
@@ -46,9 +47,23 @@ metadata:
  */
 class SubnamespaceController extends Controller
 {
-    public function list()
+    public function list(Request $request, $namespace = null, $name = null)
     {
+        if ($namespace && $name) {
+            return response()->json(
+                SubNamespaceModel::where([
+                    ['namespace', $namespace], ['name', $name]
+                ])->first());
+        }
 
+        if ($namespace) {
+            return response()->json(
+                SubNamespaceModel::where([
+                    ['namespace', $namespace]
+                ])->get());
+        }
+
+        return response()->json(SubNamespaceModel::all());
     }
 
     public function create(Request $request)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\CRDs\RoleRequest;
+use App\CRDs\TenantRequest;
 use App\Http\Controllers\Controller;
 use App\Model\Tenant;
 use Illuminate\Http\Request;
@@ -75,18 +76,19 @@ class TenantRequestController extends Controller
             'joining_category' => ['required', 'string', 'max:255'],
         ]);
 
-        $tenant = new Tenant($data);
-        $tenant->name = Str::slug($data['shortname']);
-        $tenant->save();
-        $tenant->users()->attach(auth()->user(), ['roles' => ['owner']]);
+        $user = auth()->user();
 
-/*
+        $TenantName = Str::slug($data['shortname']);
+
         $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
 
         $cluster->withoutSslChecks();
         $cluster->withToken($request->bearerToken());
 
         $tenantRequest = new TenantRequest($cluster, [
+            'metadata' => [
+                'name' => $TenantName
+            ],
             'spec' => [
                 'fullname' => $data['fullname'],
                 'shortname' => $data['shortname'],
@@ -95,15 +97,17 @@ class TenantRequestController extends Controller
 
                 ],
                 'contact' => [
-
+                    'firstname' => $user->firstname,
+                    'lastname' => $user->lastname,
+                    'email' => $user->email,
                 ]
             ],
         ]);
 
         try {
             $tenantRequest
-                ->setName($data['namespace'] . '-' . Str::lower(Str::random(4)))
-                ->setNamespace($data['namespace'])
+//                ->setName($data['namespace'] . '-' . Str::lower(Str::random(4)))
+//                ->setNamespace($data['namespace'])
                 ->create();
         } catch (PhpK8sException $e) {
 
@@ -115,7 +119,12 @@ class TenantRequestController extends Controller
             ], 400);
         }
 
-        */
+        $tenant = new Tenant($data);
+        $tenant->name = $TenantName;
+        $tenant->save();
+        $tenant->users()->attach(auth()->user(), ['roles' => ['owner']]);
+
+
         return response()->json([
             'message' => 'tenant request created'
         ]);

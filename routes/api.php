@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     });
 
     Route::group(['prefix' => 'subnamespaces'], function () {
+        Route::get('/', [ SubnamespaceController::class, 'list' ]);
+        Route::get('/{namespace?}/{name?}', [ SubnamespaceController::class, 'list' ]);
         Route::post('/', [ SubnamespaceController::class, 'create' ]);
     });
 

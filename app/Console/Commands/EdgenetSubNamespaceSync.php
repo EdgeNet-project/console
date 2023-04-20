@@ -52,6 +52,9 @@ class EdgenetSubnamespaceSync extends Command
                 'namespace' => $subnamespace->getNamespace(),
                 'tenant_id' => $tenant->id
             ]);
+
+//            $roleBindings = $this->cluster->rolebinding()
+//                ->setNamespace($tenant->getName());
         }
         return;
 

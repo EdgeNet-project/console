@@ -55,9 +55,6 @@ class AuthenticationController extends Controller
         }
 
         $user = $token->tokenable;
-        Log::channel('auth-webhook')
-            ->debug('User:', [ $user ]);
-
         if (!$user) {
             /*
              * For some reason the user does not exist, we keep this as a file safe
@@ -115,7 +112,7 @@ class AuthenticationController extends Controller
             ->debug(print_r($response, true));
 
         Log::channel('auth-webhook')
-            ->info('User ' . $user->name . ' authenticated');
+            ->info('User ' . $user->email . ' authenticated');
 
         return response()->json($response);
     }

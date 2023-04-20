@@ -10,6 +10,7 @@ import RoleRequests from "../../Views/RoleRequests";
 import TenantUsers from "../../Views/TenantUsers";
 import Dashboard from "../../Views/Dashboard";
 import TeamView from "../../Teams/TeamView";
+import WorkspaceView from "../../Workspace/WorkspaceView";
 
 const router = createBrowserRouter([
     {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
             {
                 path: "/team/:team",
                 element: <TeamView />,
+            },
+            {
+                path: "/team/:team/:workspace",
+                element: <WorkspaceView />,
             },
         ],
     },

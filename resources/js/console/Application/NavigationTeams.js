@@ -90,7 +90,7 @@ const TreeNode = ({
 
     return (
             <Anchor component={Link}
-                to={'/team/' + node.id}><Text size="sm" ml="md">{node.label}</Text></Anchor>
+                to={node.path}><Text size="sm" ml="md">{node.label}</Text></Anchor>
     )
 }
 
@@ -115,20 +115,22 @@ const NavigationTeams = () => {
         user.tenants.forEach(tenant => {
 
             workspacesData.push( {
-                id: tenant.name,
+                id: 'tenant-' + tenant.name,
                 parentId: null,
                 label: tenant.fullname,
                 namespace: tenant.name,
-                // description: 'hello'
+                path: '/team/' + tenant.name
             } )
 
             if (tenant.subnamespaces.length > 0) {
                 tenant.subnamespaces.forEach(subnamespace => {
                     workspacesData.push( {
+                        id: subnamespace.name + '-' + subnamespace.id,
+                        parentId: 'tenant-' + tenant.name,
                         value: subnamespace.name + '-' + subnamespace.id,
                         label: subnamespace.name,
                         namespace: tenant.fullname,
-                        description: 'hi'
+                        path: '/team/' + tenant.name + '/' + subnamespace.name
                     } )
                 })
 

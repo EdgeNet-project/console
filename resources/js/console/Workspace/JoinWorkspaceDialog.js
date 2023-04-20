@@ -74,10 +74,6 @@ export default function JoinWorkspaceDialog() {
             email: user.email,
             namespace: '',
         },
-
-        validate: {
-            // email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-        },
     });
 
     const selectWorkspace = (workspace) => {

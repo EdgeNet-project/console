@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {Select, Anchor, Text, Space, Card, Button, Paper, Center} from "@mantine/core";
+import {Select, Anchor, Text, Space, Card, Button, Paper, Center, Group, Stack} from "@mantine/core";
 import {useAuthentication} from "../AuthenticationProvider";
 import WorkspaceSelect from "../../Workspace/WorkspaceSelect";
+import {useForm} from "@mantine/form";
 
 const TenantAddress = ({address}) => {
     return (
@@ -22,10 +23,27 @@ const TenantContact = ({contact}) =>
     </>;
 
 export default function RegistrationTeamJoin({handleTenant}) {
-    const [tenants, setTenants] = useState([]);
-    const [selectedTenant, setSelectedTenant] = useState(null);
+    // const [tenants, setTenants] = useState([]);
+    // const [selectedTenant, setSelectedTenant] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [ error, setError ] = useState()
+    const [ success, setSuccess ] = useState(false)
     const { user } = useAuthentication();
+
+    const form = useForm({
+        initialValues: {
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            namespace: '',
+        },
+    });
+
+    const selectWorkspace = (workspace) => {
+        console.log(workspace)
+        form.setFieldValue('namespace', workspace.namespace)
+    }
+
     //
     // useEffect(() => {
     //     axios.get('/api/tenants')
@@ -34,26 +52,28 @@ export default function RegistrationTeamJoin({handleTenant}) {
     //         })
     // }, [])
 
-    const handleSelect = (value) => {
-        setSelectedTenant(tenants.find(tenant => tenant.name === value))
-    }
+    // const handleSelect = (value) => {
+    //     setSelectedTenant(tenants.find(tenant => tenant.name === value))
+    // }
 
-    const handleRequest = () => {
+    const handleSubmit = (values) => {
         setLoading(true)
-        axios.post('/api/requests/roles',
-            {
-                firstname: user.firstname,
-                lastname: user.lastname,
-                email: user.email,
-                namespace: selectedTenant.name
-            },
-            {})
-            .then(({data}) => {
-                // console.log(data)
+
+        axios.post('/api/requests/roles', {
+            name: name, ...values
+        })
+            .then((res) => {
+                console.log(res)
+                //setRegistered(true)
+            })
+            .catch(({ response: {data: {message, errors}}}) => {
+                // console.log(message)
+                setError(message)
+                form.setErrors(errors);
             })
             .finally(() => {
                 setLoading(false)
-            });
+            })
     }
 
 
@@ -61,12 +81,25 @@ export default function RegistrationTeamJoin({handleTenant}) {
 
     return (
         <>
-            <p>
-                Please select a Workspace to start using EdgeNet, an administrator will review your application.
-                <br />
-                You can join more Workspaces once your first application has been approved.
-            </p>
-            <WorkspaceSelect onChange={setSelectedTenant} />
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+                <Stack spacing="md">
+                    <Text>
+                        Please select a Workspace to start using EdgeNet, an administrator will review your application.
+                        <br />
+                        You can join more Workspaces once your first application has been approved.
+                    </Text>
+                    <WorkspaceSelect withinPortal onChange={selectWorkspace} />
+
+                    {error && <Text color="red">{error}</Text>}
+                    <Group position="center">
+
+                        <Button disabled={loading} type="submit">
+                            Submit request
+                        </Button>
+                    </Group>
+
+                </Stack>
+            </form>
             {/*<Select*/}
             {/*        data={data}*/}
             {/*        placeholder="EdgeNet Workspaces"*/}
@@ -75,22 +108,22 @@ export default function RegistrationTeamJoin({handleTenant}) {
             {/*        clearable*/}
             {/*        onChange={handleSelect}*/}
             {/*/>*/}
-            <Space h="md" />
-            {selectedTenant &&
-                <Paper px="xs">
-                    {selectedTenant.fullname} ({selectedTenant.shortname}) <br />
-                    <Anchor size="sm" target="_blank" href={selectedTenant.url}>{selectedTenant.url}</Anchor>
-                        {selectedTenant.address && <Text fz="sm">
-                        <TenantAddress address={selectedTenant.address} />
-                    </Text>}
-                    {/*<TenantContact contact={selectedTenant.contact} />*/}
-                    <Center>
-                        <Button my="sm" onClick={handleRequest} disabled={loading}>
-                            Request to join Team
-                        </Button>
-                    </Center>
-                </Paper>
-              }
+            {/*<Space h="md" />*/}
+            {/*{selectedTenant &&*/}
+            {/*    <Paper px="xs">*/}
+            {/*        {selectedTenant.fullname} ({selectedTenant.shortname}) <br />*/}
+            {/*        <Anchor size="sm" target="_blank" href={selectedTenant.url}>{selectedTenant.url}</Anchor>*/}
+            {/*            {selectedTenant.address && <Text fz="sm">*/}
+            {/*            <TenantAddress address={selectedTenant.address} />*/}
+            {/*        </Text>}*/}
+            {/*        /!*<TenantContact contact={selectedTenant.contact} />*!/*/}
+            {/*        <Center>*/}
+            {/*            <Button my="sm" onClick={handleRequest} disabled={loading}>*/}
+            {/*                Request to join Team*/}
+            {/*            </Button>*/}
+            {/*        </Center>*/}
+            {/*    </Paper>*/}
+            {/*  }*/}
 
         </>
     )

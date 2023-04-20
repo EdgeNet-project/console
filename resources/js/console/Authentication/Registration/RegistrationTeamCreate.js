@@ -2,6 +2,7 @@ import {createStyles, rem, Group, Radio, TextInput, Textarea, Grid, LoadingOverl
 import axios from "axios";
 import React, {useState} from "react";
 import {useForm} from "@mantine/form";
+import {useAuthentication} from "../AuthenticationProvider";
 
 const useStyles = createStyles((theme) => ({
     root: {
@@ -30,6 +31,8 @@ const useStyles = createStyles((theme) => ({
 export default function RegistrationTeamCreate() {
     const { classes } = useStyles();
     const [ loading, setLoading ] = useState(false)
+    const { loadUser } = useAuthentication()
+    // const [ registered, setLoading ] = useState(false)
 
     const form = useForm({
         initialValues: {
@@ -63,7 +66,7 @@ export default function RegistrationTeamCreate() {
         })
             .then((res) => {
                 console.log(res)
-                //setRegistered(true)
+                loadUser()
             })
             .catch(({message, response: {data: {errors}}}) => {
                 // console.log(message)
@@ -91,6 +94,10 @@ export default function RegistrationTeamCreate() {
                     <Grid.Col md={4}>
                         <TextInput label="Abbreviation" placeholder="MTN" classNames={classes} withAsterisk
                                    {...form.getInputProps('shortname')} />
+                    </Grid.Col>
+                    <Grid.Col md={12}>
+                        To evaluate your application and for reporting purposes please let us know a bit more of
+                        who you are and why you are using EdgeNet.
                     </Grid.Col>
                     <Grid.Col md={8}>
                         <TextInput label="Affiliation" placeholder="Université Sorbonne" classNames={classes} withAsterisk
