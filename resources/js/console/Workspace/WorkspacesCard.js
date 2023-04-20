@@ -4,7 +4,7 @@ import {IconBoxPadding as IconWorkspace} from "@tabler/icons";
 import React from "react";
 
 
-export default ({workspaces}) => {
+export default ({team, workspaces}) => {
 
 
     return (
@@ -51,7 +51,7 @@ export default ({workspaces}) => {
                 </Table>
             </ScrollArea>
             <Divider my="md" />
-            <CreateWorkspaceDialog />
+            <CreateWorkspaceDialog team={team} />
         </Card>
     )
 }

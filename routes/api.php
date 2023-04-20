@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\TokenController;
 use App\Http\Controllers\Api\ClusterController;
 use App\Http\Controllers\Api\NamespaceController;
 use App\Http\Controllers\Api\TenantController;
+use App\Http\Controllers\Api\SubnamespaceController;
 use App\Http\Controllers\Api\RoleRequestController;
 use App\Http\Controllers\Api\TenantRequestController;
 use App\Http\Controllers\Api\NodeController;
@@ -35,6 +36,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::get('/users', [ TenantController::class, 'users' ]);
             Route::get('/subnamespaces', [ TenantController::class, 'subnamespaces' ]);
         });
+    });
+
+    Route::group(['prefix' => 'subnamespaces'], function () {
+        Route::post('/', [ SubnamespaceController::class, 'create' ]);
     });
 
     Route::group(['prefix' => 'requests'], function () {

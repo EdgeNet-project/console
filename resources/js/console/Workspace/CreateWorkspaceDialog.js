@@ -15,6 +15,7 @@ import {useDisclosure} from "@mantine/hooks";
 import {IconSquarePlus} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
+import {useParams} from "react-router";
 
 const useStyles = createStyles((theme) => ({
     root: {
@@ -40,7 +41,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export default function CreateWorkspaceDialog({currentWorkspace}) {
+export default function CreateWorkspaceDialog({team}) {
     const [opened, { open, close }] = useDisclosure(false);
     const { classes } = useStyles();
     const theme = useMantineTheme();
@@ -50,13 +51,8 @@ export default function CreateWorkspaceDialog({currentWorkspace}) {
 
     const form = useForm({
         initialValues: {
-            fullname: '',
-            shortname: '',
-            affiliation: '',
-            country: '',
-            url: '',
-            joining_reason: '',
-            joining_category: '',
+            label: '',
+            name: '',
         },
 
         validate: {
@@ -64,6 +60,7 @@ export default function CreateWorkspaceDialog({currentWorkspace}) {
         },
     });
 
+    // console.log(team)
     const createNamespace = (str) => {
         str = str.replace(/^\s+|\s+$/g, ''); // trim
         str = str.toLowerCase();
@@ -82,16 +79,16 @@ export default function CreateWorkspaceDialog({currentWorkspace}) {
         return str;
     }
 
-    const onFullnameChange = ({target: {value}}) => {
-        form.setFieldValue('fullname', value);
+    const onLabelChange = ({target: {value}}) => {
+        form.setFieldValue('label', value);
         form.setFieldValue('name', createNamespace(value));
     }
 
     const handleSubmit = (values) => {
         setLoading(true)
 
-        axios.post('/api/requests/subnamespaces', {
-            name: name, ...values
+        axios.post('/api/subnamespaces', {
+            namespace: team.name, ...values
         })
             .then((res) => {
                 console.log(res)
@@ -107,18 +104,26 @@ export default function CreateWorkspaceDialog({currentWorkspace}) {
             })
     }
 
+    if (!team) {
+        return;
+    }
     return (
         <>
             <Modal opened={opened} onClose={close} title="Create a new Workspace">
                 <form onSubmit={form.onSubmit(handleSubmit)}>
                     <Stack spacing="md">
-
-                        <TextInput label="Name" placeholder="My new Team name" classNames={classes} withAsterisk
-                                   {...form.getInputProps('fullname')}
-                                   onChange={onFullnameChange}
+                        <Text>
+                            Create a new workspace under the team <br />
+                            {team.fullname}
+                            <br />
+                            The name must be unique.
+                        </Text>
+                        <TextInput label="Label" placeholder="My workspace name" classNames={classes} withAsterisk
+                                   {...form.getInputProps('label')}
+                                   onChange={onLabelChange}
                         />
 
-                        <TextInput label="Namespace" placeholder="" classNames={classes} withAsterisk
+                        <TextInput label="Name" placeholder="my-workspace-name" classNames={classes} withAsterisk
                                    {...form.getInputProps('name')} />
 
                         <Group position="apart">
