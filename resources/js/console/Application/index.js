@@ -40,7 +40,7 @@ const Application = () => {
     return (
         <Workspace>
             <AppShell
-                // padding="md"
+                padding="xs"
                 navbar={<Navigation />}
                 header={<NavigationHeader />}
                 styles={(theme) => ({

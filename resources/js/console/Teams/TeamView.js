@@ -90,8 +90,9 @@ export default function TeamView() {
                     {/*<Text size="sm" color="gray">{workspace.shortname}</Text>*/}
                     <Text fz="xl">{workspace.fullname}</Text>
                     <Anchor size="xs" href={workspace.url}>{workspace.url}</Anchor> <br />
+                    <Text>Namespace: {workspace.name}</Text>
                 </div>
-                <Text>Namespace: {workspace.name}</Text>
+
             </Group>}
 
             <SimpleGrid cols={2}>

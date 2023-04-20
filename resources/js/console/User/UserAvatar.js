@@ -1,4 +1,5 @@
-import {Avatar} from "@mantine/core";
+import {Avatar, Group, Text} from "@mantine/core";
+import React from "react";
 
 //  Formatted version of a popular md5 implementation
 //  Original copyright (c) Paul Johnston & Greg Holt.
@@ -71,4 +72,22 @@ const UserAvatar = ({email = '', fullname = ''}) => {
     )
 }
 
-export { UserAvatar }
+const UserInfo = ({user, size = 30}) => {
+
+    return (
+        <Group>
+            <UserAvatar size={size}
+                        rating="pg"
+                        email={user.email} />
+            <div>
+                <Text>
+                    {user.firstname} {user.lastname}
+                </Text>
+                <Text size="xs" color="dimmed">
+                    {user.email}
+                </Text>
+            </div>
+        </Group>
+    )
+}
+export { UserInfo, UserAvatar }

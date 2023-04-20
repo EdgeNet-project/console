@@ -77,6 +77,20 @@ class EdgenetTenantSync extends Command
             try {
                 $roleBindings = $this->cluster->rolebinding()
                     ->setNamespace($tenant->getName())
+                    ->getByName('edgenet:tenant-admin');
+
+                foreach($roleBindings->getSubjects() as $subject) {
+                    $this->line('  -> admin ' . $subject->getName());
+
+                    $users[$subject->getName()][] = 'admin';
+                }
+            } catch (KubernetesAPIException $e) {
+                $this->line(  '  #> no admins');
+            }
+
+            try {
+                $roleBindings = $this->cluster->rolebinding()
+                    ->setNamespace($tenant->getName())
                     ->getByName('edgenet:tenant-collaborator');
 
                 foreach ($roleBindings->getSubjects() as $subject) {

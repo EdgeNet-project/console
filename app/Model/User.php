@@ -37,7 +37,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'aup_approved_at' => 'datetime'
+        'aup_approved_at' => 'datetime',
+        'enabled' => 'boolean'
     ];
 
     protected $with = [
@@ -45,7 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $appends = [
-        'roles'
+        'roles',
     ];
 
     public function tenants()
@@ -57,14 +58,21 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     protected function getRolesAttribute() {
-        $roles = [];
-        foreach($this->tenants as $tenant) {
-            if ($tenant->pivot->roles) {
-                $roles = [...$roles, ...$tenant->pivot->roles];
-            }
+        if ($this->pivot) {
+            return $this->pivot->roles;
         }
-
-        return $roles;
+        return [];
     }
+
+//    protected function getRolesAttribute() {
+//        $roles = [];
+//        foreach($this->tenants as $tenant) {
+//            if ($tenant->pivot->roles) {
+//                $roles = [...$roles, ...$tenant->pivot->roles];
+//            }
+//        }
+//
+//        return $roles;
+//    }
 
 }
