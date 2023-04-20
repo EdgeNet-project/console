@@ -42,10 +42,25 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
+const SuccessMessage = ({close}) => {
+
+    return (
+        <Stack spacing="md">
+            <Text>A request has been sent</Text>
+            <Group position="right">
+                <Button color="gray" onClick={close}>
+                    Close
+                </Button>
+            </Group>
+        </Stack>
+    )
+}
 export default function JoinWorkspaceDialog() {
     const [opened, { open, close }] = useDisclosure(false);
     const { classes } = useStyles();
     const theme = useMantineTheme();
+    const [ error, setError ] = useState()
+    const [ success, setSuccess ] = useState(false)
     // const [ selectedWorkspace, setSelectedWorkspace ] = useState(false)
     const [ loading, setLoading ] = useState(false)
     const { user } = useAuthentication()
@@ -65,29 +80,6 @@ export default function JoinWorkspaceDialog() {
         },
     });
 
-    // const createNamespace = (str) => {
-    //     str = str.replace(/^\s+|\s+$/g, ''); // trim
-    //     str = str.toLowerCase();
-    //
-    //     // remove accents, swap ñ for n, etc
-    //     var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    //     var to   = "aaaaeeeeiiiioooouuuunc------";
-    //     for (var i=0, l=from.length ; i<l ; i++) {
-    //         str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-    //     }
-    //
-    //     str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-    //         .replace(/\s+/g, '-') // collapse whitespace and replace by -
-    //         .replace(/-+/g, '-'); // collapse dashes
-    //
-    //     return str;
-    // }
-
-    // const onFullnameChange = ({target: {value}}) => {
-    //     form.setFieldValue('fullname', value);
-    //     form.setFieldValue('name', createNamespace(value));
-    // }
-
     const selectWorkspace = (workspace) => {
         form.setFieldValue('namespace', workspace.namespace)
     }
@@ -102,9 +94,9 @@ export default function JoinWorkspaceDialog() {
                 console.log(res)
                 //setRegistered(true)
             })
-            .catch(({message, response: {data: {errors}}}) => {
+            .catch(({ response: {data: {message, errors}}}) => {
                 // console.log(message)
-                // setErrors(errors)
+                setError(message)
                 form.setErrors(errors);
             })
             .finally(() => {
@@ -116,21 +108,14 @@ export default function JoinWorkspaceDialog() {
         <>
             <Modal opened={opened} onClose={close} title="Join a workspace">
                 <form onSubmit={form.onSubmit(handleSubmit)}>
-                    <Stack spacing="md">
-
+                    {success ? <SuccessMessage close={close}/>
+                    : <Stack spacing="md">
                         <Text>
                             Select a Workspace to join, a request will be sent to the managers.
                         </Text>
                         <WorkspaceSelect withinPortal onChange={selectWorkspace} />
 
-                        {/*<TextInput label="Name" placeholder="My new Team name" classNames={classes} withAsterisk*/}
-                        {/*           {...form.getInputProps('fullname')}*/}
-                        {/*           onChange={onFullnameChange}*/}
-                        {/*/>*/}
-
-                        {/*<TextInput label="Namespace" placeholder="" classNames={classes} withAsterisk*/}
-                        {/*           {...form.getInputProps('name')} />*/}
-
+                        {error && <Text color="red">{error}</Text>}
                         <Group position="apart">
                             <Button color="gray" onClick={close}>
                                 Cancel
@@ -142,6 +127,7 @@ export default function JoinWorkspaceDialog() {
                         </Group>
 
                     </Stack>
+                    }
                 </form>
             </Modal>
             <UnstyledButton onClick={open}
