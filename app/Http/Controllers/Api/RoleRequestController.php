@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\CRDs\RoleRequest;
 use App\Http\Controllers\Controller;
+use App\Model\TenantUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
+use RenokiCo\PhpK8s\Exceptions\KubernetesAPIException;
 use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
 use RenokiCo\PhpK8s\KubernetesCluster;
 
@@ -26,7 +28,7 @@ class RoleRequestController extends Controller
 
             $rolerequests = $cluster
                 ->roleRequest()
-                ->whereNamespace('cslash')
+                ->whereNamespace($namespace)
                 ->all();
         } else {
             $rolerequests = $cluster
@@ -109,5 +111,60 @@ class RoleRequestController extends Controller
         return response()->json([
             'message' => 'role request created'
         ]);
+    }
+
+    public function update(Request $request, $namespace, $name)
+    {
+        $data = $request->validate([
+            'approved' => ['required', 'boolean'],
+        ]);
+
+        $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
+
+        $cluster->withoutSslChecks();
+        $cluster->withToken($request->bearerToken());
+
+        try {
+
+            $roleRequest = $cluster->roleRequest()
+                ->whereNamespace($namespace)
+                ->getByName($name);
+
+        } catch (KubernetesAPIException $e) {
+
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+
+        }
+
+        try {
+            $roleRequest->setAttribute('spec.approved', $data['approved']);
+            $roleRequest->update();
+        } catch (KubernetesAPIException $e) {
+
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+
+        }
+
+        $requestTenant = Tenant::where('name', $roleRequest->getAttribute('metadata.namespace'));
+        $requestUser = User::where('email', $roleRequest->getAttribute('spec.email'));
+
+        $roles = [
+            'collaborator'
+        ];
+
+        TenantUser::updateOrCreate(
+            ['user_id' => $requestUser->id, 'tenant_id' => $requestTenant->id],
+            ['roles' => $roles]
+        );
+
+        return response()->json([
+            'message' => 'ok'
+        ]);
+
+
     }
 }

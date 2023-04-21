@@ -87,6 +87,7 @@ export default function Navigation() {
 
                 <Divider label="Account" />
                 <NavigationButton icon={<IconKey size={16} />} color="teal" link="/tokens" label="Tokens" />
+                <NavigationButton icon={<IconQuestionCircle size={16} />} color="blue" link="/requests" label="Requests" />
 
             </Navbar.Section>
             <Navbar.Section>

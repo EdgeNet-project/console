@@ -6,7 +6,7 @@ import UserProfile from "../../Profile/UserProfile";
 import Application from "../index";
 import NodeList from "../../Views/NodeList";
 import Tokens from "../../Views/Tokens";
-import RoleRequests from "../../Views/RoleRequests";
+import JoinRequestsView from "../../Requests/JoinRequestsView";
 import TenantUsers from "../../Views/TenantUsers";
 import Dashboard from "../../Views/Dashboard";
 import TeamView from "../../Teams/TeamView";
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/requests",
-                element: <RoleRequests />,
+                element: <JoinRequestsView />,
             },
             {
                 path: "/users",
