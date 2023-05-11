@@ -23,7 +23,7 @@ class Tenant extends Model
     {
         return $this->belongsToMany(User::class)
             ->using(TenantUser::class)
-            ->withPivot('roles')
+            ->withPivot('role')
             ->withTimestamps();
     }
 

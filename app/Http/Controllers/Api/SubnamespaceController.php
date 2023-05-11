@@ -6,11 +6,11 @@ use App\Model\SubNamespace as SubNamespaceModel;
 use App\CRDs\RoleRequest;
 use App\CRDs\SubNamespace;
 use App\Http\Controllers\Controller;
+use App\Services\Edgenet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
-use RenokiCo\PhpK8s\KubernetesCluster;
 
 /*
 - apiVersion: core.edgenet.io/v1alpha1
@@ -44,6 +44,41 @@ metadata:
   resourceVersion: ""
   selfLink: ""
 
+
+====
+ROLE
+
+[root@edgenet ~]# kubectl get rolebindings -n cslashwp-2fd00611 -o yaml
+apiVersion: v1
+items:
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    creationTimestamp: "2023-04-21T14:02:46Z"
+    labels:
+      edge-net.io/generated: "true"
+    name: edgenet:tenant-collaborator
+    namespace: cslashwp-2fd00611
+    resourceVersion: "1164437661"
+    uid: a2d5fb75-13d8-4c5f-b87b-62562359fa16
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: edgenet:tenant-collaborator
+  subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: cscognamiglio@gmail.com
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: ciro.scognamiglio@cslash.com
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: berat.senel@lip6.fr
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: root@cslash.com
+
  */
 class SubnamespaceController extends Controller
 {
@@ -66,7 +101,7 @@ class SubnamespaceController extends Controller
         return response()->json(SubNamespaceModel::all());
     }
 
-    public function create(Request $request)
+    public function create(Request $request, Edgenet $edgenet)
     {
         $data = $request->validate([
             'label' => ['required', 'string', 'max:255'],
@@ -74,12 +109,8 @@ class SubnamespaceController extends Controller
             'namespace' => ['required', 'string', 'max:255'],
         ]);
 
-        $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
 
-        $cluster->withoutSslChecks();
-        $cluster->withToken($request->bearerToken());
-
-        $subnamespace = new SubNamespace($cluster, [
+        $subnamespace = new SubNamespace($edgenet->getCluster(), [
             'metadata' => [
                 'name' => $data['name'],
                 'namespace' => $data['namespace'],
@@ -126,7 +157,7 @@ class SubnamespaceController extends Controller
         ]);
     }
 
-    public function join(Request $request)
+    public function join(Request $request, Edgenet $edgenet)
     {
 
         $data = $request->validate([
@@ -134,12 +165,7 @@ class SubnamespaceController extends Controller
             'namespace' => ['required', 'string', 'max:255'],
         ]);
 
-        $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
-
-        $cluster->withoutSslChecks();
-        $cluster->withToken($request->bearerToken());
-
-        $roleRequest = new RoleRequest($cluster, [
+        $roleRequest = new RoleRequest($edgenet->getCluster(), [
             'spec' => [
                 'firstname' => $data['firstname'],
                 'lastname' => $data['lastname'],

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Services\EdgenetAdmin;
 use Illuminate\Console\Command;
-use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 
 class EdgenetRequestList extends Command
 {
@@ -26,12 +26,10 @@ class EdgenetRequestList extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(EdgenetAdmin $edgenetAdmin)
     {
 
-        $cluster = K8s::getCluster();
-
-        $tenantRequests = $cluster->tenantRequest()->all();
+        $tenantRequests = $edgenetAdmin->getCluster()->tenantRequest()->all();
 
         if ($tenantRequests->count() == 0) {
             $this->newLine();
@@ -67,4 +65,5 @@ class EdgenetRequestList extends Command
 
         return Command::SUCCESS;
     }
+
 }

@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\CRDs\RoleRequest;
 use App\Http\Controllers\Controller;
 use App\Model\TenantUser;
+use App\Services\Edgenet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 use RenokiCo\PhpK8s\Exceptions\KubernetesAPIException;
 use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
 use RenokiCo\PhpK8s\KubernetesCluster;
@@ -16,22 +16,17 @@ use RenokiCo\PhpK8s\KubernetesCluster;
 class RoleRequestController extends Controller
 {
 
-    public function list(Request $request, $namespace = null)
+    public function list(Request $request, Edgenet $edgenet, $namespace = null)
     {
-
-        $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
-
-        $cluster->withoutSslChecks();
-        $cluster->withToken($request->bearerToken());
 
         if ($namespace) {
 
-            $rolerequests = $cluster
+            $rolerequests = $edgenet->getCluster()
                 ->roleRequest()
                 ->whereNamespace($namespace)
                 ->all();
         } else {
-            $rolerequests = $cluster
+            $rolerequests = $edgenet->getCluster()
                 ->roleRequest()
                 ->allNamespaces();
         }
@@ -63,7 +58,7 @@ class RoleRequestController extends Controller
         return response()->json($rolerequests);
     }
 
-    public function create(Request $request)
+    public function create(Request $request, Edgenet $edgenet)
     {
         $data = $request->validate([
             'firstname' => ['required', 'string', 'max:255'],
@@ -72,19 +67,14 @@ class RoleRequestController extends Controller
             'namespace' => ['required', 'string', 'max:255'],
         ]);
 
-        $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
-
-        $cluster->withoutSslChecks();
-        $cluster->withToken($request->bearerToken());
-
-        $roleRequest = new RoleRequest($cluster, [
+        $roleRequest = new RoleRequest($edgenet->getCluster(), [
             'metadata' => [
                 'name' => $data['namespace'] . '-' . Str::lower(Str::random(4)),
                 'namespace' => $data['namespace'],
             ],
             'spec' => [
-                'firstname' => $data['firstname'],
-                'lastname' => $data['lastname'],
+//                'firstname' => $data['firstname'],
+//                'lastname' => $data['lastname'],
                 'email' => $data['email'],
                 'roleref' => [
                     'kind' => 'ClusterRole',
@@ -113,20 +103,17 @@ class RoleRequestController extends Controller
         ]);
     }
 
-    public function update(Request $request, $namespace, $name)
+    public function update(Request $request, Edgenet $edgenet, $namespace, $name)
     {
         $data = $request->validate([
             'approved' => ['required', 'boolean'],
         ]);
 
-        $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
-
-        $cluster->withoutSslChecks();
-        $cluster->withToken($request->bearerToken());
 
         try {
 
-            $roleRequest = $cluster->roleRequest()
+            $roleRequest = $edgenet->getCluster()
+                ->roleRequest()
                 ->whereNamespace($namespace)
                 ->getByName($name);
 

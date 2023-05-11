@@ -10,6 +10,5 @@ class SubNamespaceUser extends Pivot
     use HasFactory;
 
     protected $casts = [
-        'roles' => 'array'
     ];
 }
