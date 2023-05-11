@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Services\Edgenet;
+use App\Services\EdgenetAdmin;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
         \App\CRDs\RoleRequest::register();
         \App\CRDs\Tenant::register();
         \App\CRDs\SubNamespace::register();
+
+        $this->app->singleton('edgenet-admin', function ($app) {
+            return new EdgenetAdmin($app);
+        });
+
+        $this->app->singleton('edgenet', function ($app) {
+            return new Edgenet($app);
+        });
     }
 
     /**
