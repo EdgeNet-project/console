@@ -93,12 +93,12 @@ class TenantRequestController extends Controller
                 'fullname' => $data['fullname'],
                 'shortname' => $data['shortname'],
                 'url' => $data['url'],
-                'address' => [
-
-                ],
+//                'address' => [
+//
+//                ],
                 'contact' => [
-                    'firstname' => $user->firstname,
-                    'lastname' => $user->lastname,
+//                    'firstname' => $user->firstname,
+//                    'lastname' => $user->lastname,
                     'email' => $user->email,
                 ]
             ],
