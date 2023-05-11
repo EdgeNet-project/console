@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('enabled')
                 ->default(true);
 
-            $table->json('roles')
+            $table->string('role')
                 ->nullable();
 
             $table->bigInteger('tenant_id')->unsigned();

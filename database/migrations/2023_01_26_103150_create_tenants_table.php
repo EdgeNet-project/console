@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->boolean('enabled')
-                ->default(true);
+                ->default(false);
 
             $table->string('name')->unique();
             $table->string('fullname')->nullable();

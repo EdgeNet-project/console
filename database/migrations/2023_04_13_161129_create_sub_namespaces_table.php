@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
+            $table->boolean('enabled')
+                ->default(false);
+
             $table->string('namespace');
             $table->string('name');
 
