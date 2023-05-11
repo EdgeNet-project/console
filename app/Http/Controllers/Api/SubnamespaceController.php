@@ -85,18 +85,20 @@ class SubnamespaceController extends Controller
                 'namespace' => $data['namespace'],
             ],
             'spec' => [
-                'resourceallocation' => [
-                    'cpu' => "4000m",
-                    'memory' => "4Gi",
-                ],
-                'inheritance' => [
-                    'rbac' => true,
-                    'networkpolicy' => false,
-                    'limitrange' => true,
-                    'configmap' => true,
-                    'sync' => false,
-                    'sliceclaim' => 'lab-exercises',
-                    'expiry' => "2023-09-01T09:00:00Z"
+                'workspace' => [
+                    'resourceallocation' => [
+                        'cpu' => "4000m",
+                        'memory' => "4Gi",
+                    ],
+                    'inheritance' => [
+                        'rbac' => true,
+                        'networkpolicy' => false,
+                        'limitrange' => true,
+                        'configmap' => true,
+                        'sync' => false,
+    //                    'sliceclaim' => 'lab-exercises',
+                        'expiry' => "2023-09-01T09:00:00Z"
+                    ],
                 ],
             ]
         ]);
