@@ -206,7 +206,6 @@ const NavigationTeams = () => {
                        RenderIcon={TreeIcon}
                        RenderNode={TreeNode}
             />
-            <JoinWorkspaceDialog />
         </>
     )
 }

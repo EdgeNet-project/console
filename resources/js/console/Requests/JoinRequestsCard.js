@@ -19,13 +19,13 @@ const RoleRequest = ({item, handleRequest}) => {
             </td>
             <td>
                 <Text size="sm" weight={500}>
-                    {item.status.state}
+                    {item.status?.state}
                 </Text>
                 <Text size="xs" color="dimmed">
-                    {item.status.message}
+                    {item.status?.message}
                 </Text>
                 <Text size="xs" color="dimmed">
-                    {item.status.expiry}
+                    {item.status?.expiry}
                 </Text>
             </td>
             <td>

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {
     Button,
     createStyles,
@@ -12,7 +12,7 @@ import {
     useMantineTheme
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import {IconSquarePlus} from "@tabler/icons";
+import {IconBoxPadding as IconWorkspace} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
 import WorkspaceSelect from "./WorkspaceSelect";
@@ -55,15 +55,25 @@ const SuccessMessage = ({close}) => {
         </Stack>
     )
 }
-export default function JoinWorkspaceDialog() {
+
+export default ({workspace = null}) => {
     const [opened, { open, close }] = useDisclosure(false);
     const { classes } = useStyles();
     const theme = useMantineTheme();
     const [ error, setError ] = useState()
     const [ success, setSuccess ] = useState(false)
-    // const [ selectedWorkspace, setSelectedWorkspace ] = useState(false)
     const [ loading, setLoading ] = useState(false)
     const { user } = useAuthentication()
+
+    useEffect(() => {
+        if (workspace) {
+            form.setFieldValue('namespace', workspace.namespace)
+        }
+
+        return () => {
+            form.setFieldValue('namespace', '')
+        }
+    }, [workspace])
 
     const backgroundColor = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
 
@@ -100,14 +110,16 @@ export default function JoinWorkspaceDialog() {
 
     return (
         <>
-            <Modal opened={opened} onClose={close} title="Join a workspace">
+            <Modal opened={opened} onClose={close} title={workspace ? 'Join ' + workspace.name : 'Join a Workspace'}>
+                {success ? <SuccessMessage close={close}/> :
                 <form onSubmit={form.onSubmit(handleSubmit)}>
-                    {success ? <SuccessMessage close={close}/>
-                    : <Stack spacing="md">
+                    <Stack spacing="md">
                         <Text>
-                            Select a Workspace to join, a request will be sent to the managers.
+                            {workspace ? 'A request will be sent to the admins of ' + workspace.name + ' for approval.' :
+                            'Select a Workspace to join, a request will be sent to the managers.'}
                         </Text>
-                        <WorkspaceSelect withinPortal onChange={selectWorkspace} />
+
+                        {!workspace && <WorkspaceSelect withinPortal onChange={selectWorkspace} />}
 
                         {error && <Text color="red">{error}</Text>}
                         <Group position="apart">
@@ -121,26 +133,16 @@ export default function JoinWorkspaceDialog() {
                         </Group>
 
                     </Stack>
-                    }
                 </form>
+                }
             </Modal>
-            <UnstyledButton onClick={open}
-                            sx={{
-                                display: 'block',
-                                width: '100%',
-                                padding: theme.spacing.xs,
-                                borderRadius: theme.radius.sm,
-                                color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-                                '&:hover': {
-                                    backgroundColor: backgroundColor,
-                                },
-                            }}>
+            <Button onClick={open}>
                 <Group>
-                    <IconSquarePlus />
+                    <IconWorkspace />
 
-                    <Text size="sm">Join a Workspace</Text>
+                    <Text size="sm">{workspace ? 'Join ' + workspace.name : 'Join a Workspace'}</Text>
                 </Group>
-            </UnstyledButton>
+            </Button>
         </>
 
     )

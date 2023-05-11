@@ -1,3 +1,4 @@
+import React, {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import axios from "axios";
 import {Alert, Anchor, Breadcrumbs, Button, Divider, Group, Paper, SimpleGrid, Stack, Text} from "@mantine/core";
@@ -8,10 +9,12 @@ import {
 } from "@tabler/icons";
 
 import CreateWorkspaceDialog from "../Workspace/CreateWorkspaceDialog";
-import React, {useEffect, useState} from "react";
+import WorkspaceCard from "../Workspace/WorkspaceCard";
 import WorkspacesCard from "../Workspace/WorkspacesCard";
 import UsersCard from "../User/UsersCard";
 import {Link} from "react-router-dom";
+import JoinWorkspaceDialog from "./JoinWorkspaceDialog";
+import TeamCard from "../Teams/TeamCard";
 const items = [
     { title: 'Sorbonne', href: '#' },
     { title: 'Networking Class', href: '#' },
@@ -93,27 +96,29 @@ export default () => {
 
     // return 'wip'
 
+    if (!workspaceResource) {
+        return null;
+    }
+
+    if (!teamResource) {
+        return null;
+    }
+
     return (
         <Stack>
 
-            {workspace && <Breadcrumbs separator="→" mt="xs">
+            <Breadcrumbs separator="→" mt="xs">
                 {teamResource && <Anchor component={Link} to={'/team/' + teamResource.name}>{teamResource.fullname}</Anchor>}
-                {workspaceResource && <Anchor component={Link} to={'/team/' + teamResource.name + '/' + workspaceResource.name}>{workspaceResource.name}</Anchor>}
-            </Breadcrumbs>}
+                {workspaceResource && <Anchor component={Link} to={'/team/' + teamResource.name + '/' + workspaceResource?.name}>{workspaceResource?.name}</Anchor>}
+            </Breadcrumbs>
 
-            {teamResource && <Group align="flex-start">
-                <Stack spacing="xs">
-                    {/*<Text size="sm" color="gray">{workspace.shortname}</Text>*/}
-                    <Text fz="xl">{teamResource.fullname}</Text>
-                    {teamResource.url && <Anchor size="xs" href={teamResource.url}>{workspace.url}</Anchor>}
-                    <Text>Namespace: {teamResource.name}</Text>
-                </Stack>
+            <TeamCard team={teamResource} />
+            <WorkspaceCard workspace={workspaceResource} />
 
-            </Group>}
 
             <SimpleGrid cols={2}>
 
-                <UsersCard users={users} />
+                <UsersCard team={workspace} users={users} />
                 <WorkspacesCard team={workspace} workspaces={subnamespaces} />
 
             </SimpleGrid>

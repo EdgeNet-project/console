@@ -7,10 +7,13 @@ import {
 
 } from "@tabler/icons";
 
+import JoinWorkspaceDialog from "../Workspace/JoinWorkspaceDialog";
 import CreateWorkspaceDialog from "../Workspace/CreateWorkspaceDialog";
 import React, {useEffect, useState} from "react";
+import TeamCard from "./TeamCard";
 import WorkspacesCard from "../Workspace/WorkspacesCard";
 import UsersCard from "../User/UsersCard";
+
 const items = [
     { title: 'Sorbonne', href: '#' },
     { title: 'Networking Class', href: '#' },
@@ -53,7 +56,7 @@ export default function TeamView() {
     const [ users, setUsers ] = useState([])
     const [ subnamespaces, setSubnamespaces ] = useState([])
 
-    console.log('wp',workspace)
+    // console.log('wp',workspace)
 
     useEffect(() => {
         axios.get('/api/tenants/' + team)
@@ -79,22 +82,20 @@ export default function TeamView() {
             })
     }, [team])
 
+    if (!workspace) {
+        return null;
+    }
 
     return (
         <Stack>
+            {/*<SimpleGrid cols={2}>*/}
+            {/*    <Breadcrumbs separator="→" mt="xs">{workspace.shortname}</Breadcrumbs>*/}
 
-            {workspace && <Breadcrumbs separator="→" mt="xs">{workspace.shortname}</Breadcrumbs>}
-
-            {workspace && <Group align="flex-start">
-                <div>
-                    {/*<Text size="sm" color="gray">{workspace.shortname}</Text>*/}
-                    <Text fz="xl">{workspace.fullname}</Text>
-                    <Anchor size="xs" href={workspace.url}>{workspace.url}</Anchor> <br />
-                    <Text>Namespace: {workspace.name}</Text>
-                </div>
-
-            </Group>}
-
+            {/*    <Group align="center" position="right">*/}
+            {/*        <JoinWorkspaceDialog />*/}
+            {/*    </Group>*/}
+            {/*</SimpleGrid>*/}
+            <TeamCard team={workspace} />
             <SimpleGrid cols={2}>
                 {/*{workspace && <Paper key={workspace.name} shadow="xs" p="md">*/}
                 {/*    <Stack>*/}
@@ -197,7 +198,7 @@ export default function TeamView() {
                 {/*        </Stack>*/}
                 {/*    </Paper>*/}
                 {/*))}*/}
-                <UsersCard users={users} />
+                <UsersCard team={workspace} users={users} />
                 <WorkspacesCard team={workspace} workspaces={subnamespaces} />
                 {/*{workspace && <Paper shadow="xs" p="md">*/}
                 {/*    <Stack>*/}

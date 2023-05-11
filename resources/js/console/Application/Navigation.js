@@ -64,13 +64,13 @@ const ownerMenu = [
 const NavigationMenu = () => {
     const { user } = useAuthentication();
     //
-    const is_owner = user.roles.some(role => {
-        return role === 'owner'
-    })
+    // const is_owner = user.roles.some(role => {
+    //     return role === 'owner'
+    // })
 
 
     const links = [
-        ...(is_owner ? ownerMenu.map((link) => <NavigationButton {...link} key={link.label} link={link.link} />) : [])
+        // ...(is_owner ? ownerMenu.map((link) => <NavigationButton {...link} key={link.label} link={link.link} />) : [])
     ];
 
 

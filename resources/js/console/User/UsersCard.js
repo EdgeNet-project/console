@@ -20,14 +20,16 @@ import {useDisclosure} from "@mantine/hooks";
 import {useForm} from "@mantine/form";
 import {IconUserShield, IconUserUp} from "@tabler/icons-react";
 import UserFormManage from "./UserFormManage";
+import {useAuthentication} from "../Authentication";
 
 
-export default ({users}) => {
+export default ({team, users}) => {
     const [ selectedUser, setSelectedUser ] = useState(null)
     const [opened, { open, close }] = useDisclosure(false, {
         // onOpen: () => console.log('Opened'),
         // onClose: () => setSelectedUser(null),
     });
+    const { user } = useAuthentication()
 
     useEffect(() => {
         if (selectedUser) {
@@ -59,32 +61,32 @@ export default ({users}) => {
                 </Group>
 
                 <Text size="sm" color="dimmed">
-                    This is an example description text
+                    Users under {team?.name}
                 </Text>
 
                 <ScrollArea>
                     <Table highlightOnHover verticalSpacing="xs">
                         <tbody>
-                        {users.map(user =>
-                            <tr key={user.id}>
+                        {users.map(userItem =>
+                            <tr key={userItem.id}>
                                 <td>
-                                    <UserInfo user={user} />
+                                    <UserInfo user={userItem} />
                                 </td>
                                 <td>
                                     <Stack align="flex-start" justify="flex-start" spacing="xs">
-                                        {user.enabled ?
+                                        {userItem.enabled ?
                                             <Badge size="xs">Enabled</Badge> :
                                             <Badge size="xs" color="gray">Disabled</Badge>
                                         }
-                                        {user.roles.map(role => <Badge size="xs" color="pink" variant="light">
-                                            {role}
-                                        </Badge>)}
+                                        <Badge size="xs" color="pink" variant="light">
+                                            {userItem.role}
+                                        </Badge>
                                     </Stack>
                                 </td>
                                 <td>
-                                    <ActionIcon onClick={()=> manageUser(user)} variant="subtle" color="blue">
+                                    {(user.id !== userItem.id && user.role !== 'collaborator') && <ActionIcon onClick={()=> manageUser(userItem)} variant="subtle" color="blue">
                                         <IconEdit size="1rem" />
-                                    </ActionIcon>
+                                    </ActionIcon>}
                                 </td>
                             </tr>
                         )}

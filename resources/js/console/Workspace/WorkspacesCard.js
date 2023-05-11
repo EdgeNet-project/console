@@ -1,57 +1,119 @@
-import {Badge, Text, Card, Group, Table, ScrollArea, Divider} from "@mantine/core";
+import {Badge, Text, Card, Group, Table, ScrollArea, Divider, ActionIcon, Modal, Button, Stack} from "@mantine/core";
+import {useDisclosure} from "@mantine/hooks";
 import CreateWorkspaceDialog from "./CreateWorkspaceDialog";
-import {IconBoxPadding as IconWorkspace} from "@tabler/icons";
-import React from "react";
+import {IconBoxPadding as IconWorkspace, IconEdit, IconTrash} from "@tabler/icons";
+import React, {useEffect, useState} from "react";
+import {useAuthentication} from "../Authentication";
+import axios from "axios";
 
 
 export default ({team, workspaces}) => {
+    const [openedConfirmDelete, { openConfirmDelete, closeConfirmDelete }] = useDisclosure(false);
+    const { user } = useAuthentication()
+    const [ selectedWorkspace, setSelectedWorkspace ] = useState(null)
+    const [ loading, setLoading ] = useState()
+    const [ error, setError ] = useState()
 
+    useEffect(() => {
+        if (selectedWorkspace) {
+            openConfirmDelete()
+        }
+
+        return () => setSelectedWorkspace(null)
+    }, [selectedWorkspace])
+
+    const deleteWorkspace = () => {
+        setLoading(true)
+
+        axios.delete('/api/workspaces/' + selectedWorkspace.name)
+            .then((res) => {
+                console.log(res)
+                closeConfirmDelete()
+            })
+            .catch(({ response: {data: {message, errors}}}) => {
+                // console.log(message)
+                setError(message)
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+    }
 
     return (
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Group mb="xs">
-                <IconWorkspace />
-                <Text weight={500}>Workspaces</Text>
-                {/*<Badge color="pink" variant="light">*/}
-                {/*    On Sale*/}
-                {/*</Badge>*/}
-            </Group>
+        <>
+            <Modal opened={openedConfirmDelete} onClose={closeConfirmDelete} title="Confirm">
+                <Stack spacing="md">
+                    <Text>
+                        Are you sure you want to delete {selectedWorkspace?.name}?
+                    </Text>
 
-            <Text size="sm" color="dimmed">
-                This is an example description text
-            </Text>
+                    {error && <Text color="red">{error}</Text>}
+                    <Group position="apart">
+                        <Button color="gray" onClick={closeConfirmDelete}>
+                            Cancel
+                        </Button>
 
-            <ScrollArea>
-                <Table horizontalSpacing={0} verticalSpacing="xs">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Users</th>
-                        {/*<th>Status</th>*/}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {workspaces.map(workspace =>
-                        <tr key={workspace.name}>
-                            <td>
-                                <Text size="xs" color="dimmed">
-                                    {workspace.namespace}
-                                </Text>
-                                <Text>
-                                {workspace.name}
-                                </Text>
-                            </td>
-                            <td>
+                        <Button onClick={deleteWorkspace} disabled={loading} color="red">
+                            Delete
+                        </Button>
+                    </Group>
+                </Stack>
+            </Modal>
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+                <Stack sx={{height:'100%'}}>
+                    <Group mb="xs">
+                        <IconWorkspace />
+                        <Text weight={500}>Workspaces</Text>
+                    </Group>
 
-                            </td>
-                            {/*<td></td>*/}
-                        </tr>
-                    )}
-                    </tbody>
-                </Table>
-            </ScrollArea>
-            <Divider my="md" />
-            <CreateWorkspaceDialog team={team} />
-        </Card>
+                    <Text size="sm" color="dimmed">
+                        The workspaces under {team?.name}
+                    </Text>
+
+                    {workspaces.length > 0 ?
+                    <ScrollArea>
+                        <Table horizontalSpacing={0} verticalSpacing="xs">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Users</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {workspaces.map(workspace =>
+                                <tr key={workspace.name}>
+                                    <td>
+                                        <Text size="xs" color="dimmed">
+                                            {workspace.namespace}
+                                        </Text>
+                                        <Text>
+                                        {workspace.name}
+                                        </Text>
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td>
+                                        {(user.role !== 'collaborator') && <ActionIcon onClick={()=> setSelectedWorkspace(workspace)} variant="subtle" color="red">
+                                            <IconTrash size="1rem" />
+                                        </ActionIcon>}
+                                    </td>
+                                </tr>
+                            )}
+                            </tbody>
+                        </Table>
+                    </ScrollArea> :
+                    <Text size="sm">
+
+                    </Text>
+                    }
+
+                    <div style={{marginTop: 'auto'}}>
+                        <CreateWorkspaceDialog team={team} />
+                    </div>
+                </Stack>
+            </Card>
+        </>
     )
 }
