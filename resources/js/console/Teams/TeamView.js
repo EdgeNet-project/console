@@ -198,7 +198,7 @@ export default function TeamView() {
                 {/*        </Stack>*/}
                 {/*    </Paper>*/}
                 {/*))}*/}
-                <UsersCard team={workspace} users={users} />
+                <UsersCard title={'Users under ' + team?.name} users={users} />
                 <WorkspacesCard team={workspace} workspaces={subnamespaces} />
                 {/*{workspace && <Paper shadow="xs" p="md">*/}
                 {/*    <Stack>*/}

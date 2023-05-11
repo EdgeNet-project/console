@@ -1,30 +1,57 @@
 import {UserInfo} from "./UserAvatar";
-import {Button, Group, Radio, Stack, Switch} from "@mantine/core";
+import {Button, Text, Group, Radio, Stack, Switch} from "@mantine/core";
 import React from "react";
 import {useForm} from "@mantine/form";
+import axios from "axios";
 
 export default ({user, close}) => {
     const form = useForm({
         initialValues: {
             enabled: user.enabled,
-            role: 'admin'
+            role: user.role
         },
     });
 
-    console.log(form.isDirty(), form.touched)
+    const handleSubmit = (values) => {
+        // setLoading(true)
 
+        console.log(values)
+        // axios.post('/api/subnamespaces', {
+        //     namespace: team.name, ...values
+        // })
+        //     .then((res) => {
+        //         console.log(res)
+        //         //setRegistered(true)
+        //     })
+        //     .catch(({message, response: {data: {errors}}}) => {
+        //         // console.log(message)
+        //         // setErrors(errors)
+        //         form.setErrors(errors);
+        //     })
+        //     .finally(() => {
+        //         setLoading(false)
+        //     })
+    }
+
+    console.log(user)
+    // console.log(form.isDirty(), form.touched)
+
+    if (!user) {
+        return null
+    }
+
+    const name = (user.pivot.type === 'tenant' ? user.pivot.tenant.name : user.pivot.workspace.name)
 
     return (
-        <form onSubmit={form.onSubmit(null)}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
             <UserInfo user={user} />
-
             <Stack my="xl" spacing="lg">
                 <Switch {...form.getInputProps('enabled', { type: 'checkbox' })}
                         label="Enable or Disable user"
                 />
 
                 <Radio.Group {...form.getInputProps('role')}
-                             label="Change the user level permissions on this workspace"
+                             label={"Change the user level permissions in " + name}
                              description=""
                 >
                     <Stack mt="sm" spacing="xs">

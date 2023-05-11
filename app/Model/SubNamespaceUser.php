@@ -11,4 +11,14 @@ class SubNamespaceUser extends Pivot
 
     protected $casts = [
     ];
+
+    public function subnamespace()
+    {
+        return $this->belongsTo(SubNamespace::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

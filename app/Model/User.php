@@ -46,7 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $appends = [
-        'role',
+        'role', 'tenant'
     ];
 
     public function tenants()
@@ -61,7 +61,14 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($this->pivot) {
             return $this->pivot->role;
         }
-        return [];
+        return null;
+    }
+
+    protected function getTenantAttribute() {
+        if ($this->pivot) {
+            return $this->pivot->tenant;
+        }
+        return null;
     }
 
 //    protected function getRolesAttribute() {

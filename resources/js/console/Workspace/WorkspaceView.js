@@ -117,10 +117,8 @@ export default () => {
 
 
             <SimpleGrid cols={2}>
-
-                <UsersCard team={workspace} users={users} />
+                <UsersCard title={'Users under ' + workspace?.name} users={users} />
                 <WorkspacesCard team={workspace} workspaces={subnamespaces} />
-
             </SimpleGrid>
         </Stack>
     )
