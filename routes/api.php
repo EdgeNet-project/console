@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\SubnamespaceController;
 use App\Http\Controllers\Api\RoleRequestController;
 use App\Http\Controllers\Api\TenantRequestController;
 use App\Http\Controllers\Api\NodeController;
+use App\Http\Controllers\Api\InvitationController;
 
 Route::get('/tenants', [ TenantController::class, 'list' ]);
 
@@ -53,6 +54,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/tenants', [ TenantRequestController::class, 'create' ]);
     });
 
+    Route::group(['prefix' => 'invitations'], function () {
+        Route::post('/', [ InvitationController::class, 'create' ]);
+    });
 
     Route::get('/namespaces', [ NamespaceController::class, 'list' ]);
     Route::get('/nodes', [ NodeController::class, 'list' ]);

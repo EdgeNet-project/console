@@ -12,7 +12,7 @@ import {
     useMantineTheme
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import {IconSquarePlus} from "@tabler/icons";
+import { IconUsers} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
 
@@ -51,13 +51,7 @@ export default () => {
 
     const form = useForm({
         initialValues: {
-            fullname: '',
-            shortname: '',
-            affiliation: '',
-            country: '',
-            url: '',
-            joining_reason: '',
-            joining_category: '',
+            emails: ''
         },
 
         validate: {
@@ -65,47 +59,25 @@ export default () => {
         },
     });
 
-    // const createNamespace = (str) => {
-    //     str = str.replace(/^\s+|\s+$/g, ''); // trim
-    //     str = str.toLowerCase();
-    //
-    //     // remove accents, swap ñ for n, etc
-    //     var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    //     var to   = "aaaaeeeeiiiioooouuuunc------";
-    //     for (var i=0, l=from.length ; i<l ; i++) {
-    //         str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-    //     }
-    //
-    //     str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-    //         .replace(/\s+/g, '-') // collapse whitespace and replace by -
-    //         .replace(/-+/g, '-'); // collapse dashes
-    //
-    //     return str;
-    // }
-
-    // const onFullnameChange = ({target: {value}}) => {
-    //     form.setFieldValue('fullname', value);
-    //     form.setFieldValue('name', createNamespace(value));
-    // }
-
     const handleSubmit = (values) => {
         setLoading(true)
+
         //
-        // axios.post('/api/requests/subnamespaces', {
-        //     name: name, ...values
-        // })
-        //     .then((res) => {
-        //         console.log(res)
-        //         //setRegistered(true)
-        //     })
-        //     .catch(({message, response: {data: {errors}}}) => {
-        //         // console.log(message)
-        //         // setErrors(errors)
-        //         form.setErrors(errors);
-        //     })
-        //     .finally(() => {
-        //         setLoading(false)
-        //     })
+        axios.post('/api/invitations', {
+            emails: values.emails.split('\n')
+        })
+            .then((res) => {
+                console.log(res)
+                //setRegistered(true)
+            })
+            .catch(({message, response: {data: {errors}}}) => {
+                // console.log(message)
+                // setErrors(errors)
+                form.setErrors(errors);
+            })
+            .finally(() => {
+                setLoading(false)
+            })
     }
 
     return (
@@ -123,7 +95,7 @@ export default () => {
                                   autosize
                                   minRows={2}
                             // classNames={classes}
-                                   {...form.getInputProps('invitations')}
+                                   {...form.getInputProps('emails')}
                                    // onChange={}
                         />
 
@@ -143,11 +115,8 @@ export default () => {
                     </Stack>
                 </form>
             </Modal>
-            <Button onClick={open}>
-                <Group>
-                    <IconSquarePlus />
-                    <Text size="sm">Invite Users</Text>
-                </Group>
+            <Button leftIcon={<IconUsers />} onClick={open}>
+                Invite Users
             </Button>
         </div>
 

@@ -136,12 +136,8 @@ export default ({workspace = null}) => {
                 </form>
                 }
             </Modal>
-            <Button onClick={open}>
-                <Group>
-                    <IconWorkspace />
-
-                    <Text size="sm">{workspace ? 'Join ' + workspace.name : 'Join a Workspace'}</Text>
-                </Group>
+            <Button leftIcon={<IconWorkspace />} onClick={open}>
+                {workspace ? 'Join ' + workspace.name : 'Join a Workspace'}
             </Button>
         </>
 

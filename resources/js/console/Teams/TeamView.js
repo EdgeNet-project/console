@@ -13,6 +13,7 @@ import React, {useEffect, useState} from "react";
 import TeamCard from "./TeamCard";
 import WorkspacesCard from "../Workspace/WorkspacesCard";
 import UsersCard from "../User/UsersCard";
+import InviteUsersDialog from "../User/InviteUsersDialog";
 
 const items = [
     { title: 'Sorbonne', href: '#' },
@@ -96,6 +97,8 @@ export default function TeamView() {
             {/*    </Group>*/}
             {/*</SimpleGrid>*/}
             <TeamCard team={workspace} />
+
+
             <SimpleGrid cols={2}>
                 {/*{workspace && <Paper key={workspace.name} shadow="xs" p="md">*/}
                 {/*    <Stack>*/}

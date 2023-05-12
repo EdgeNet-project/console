@@ -12,7 +12,7 @@ import {
     useMantineTheme
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import {IconSquarePlus} from "@tabler/icons";
+import {IconBoxPadding as IconWorkspace} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
 import {useParams} from "react-router";
@@ -140,12 +140,8 @@ export default function CreateWorkspaceDialog({team}) {
                 </form>
             </Modal>
             <Group>
-                <Button onClick={open}>
-                    <Group>
-                        <IconSquarePlus />
-
-                        <Text size="sm">Create a new Workspace</Text>
-                    </Group>
+                <Button leftIcon={<IconWorkspace />} onClick={open}>
+                    Create a new Workspace
                 </Button>
             </Group>
         </>

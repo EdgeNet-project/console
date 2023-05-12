@@ -109,9 +109,6 @@ export default ({team, workspaces}) => {
                     </Text>
                     }
 
-                    <div style={{marginTop: 'auto'}}>
-                        <CreateWorkspaceDialog team={team} />
-                    </div>
                 </Stack>
             </Card>
         </>

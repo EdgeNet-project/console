@@ -43,10 +43,10 @@ export default ({title, users}) => {
                 {title}
             </Text>
             <UserList users={users} />
-            <Stack>
-                <Divider my="md" />
-                <InviteUsersDialog />
-            </Stack>
+            {/*<Stack>*/}
+            {/*    <Divider my="md" />*/}
+            {/*    <InviteUsersDialog />*/}
+            {/*</Stack>*/}
         </Card>
     )
 }
