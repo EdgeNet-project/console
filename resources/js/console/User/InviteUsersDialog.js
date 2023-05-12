@@ -40,7 +40,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export default () => {
+export default ({workspace}) => {
     const [opened, { open, close }] = useDisclosure(false);
     const { classes } = useStyles();
     const theme = useMantineTheme();
@@ -64,7 +64,8 @@ export default () => {
 
         //
         axios.post('/api/invitations', {
-            emails: values.emails.split('\n')
+            emails: values.emails.split('\n'),
+            workspace: workspace
         })
             .then((res) => {
                 console.log(res)
