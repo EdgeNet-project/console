@@ -47,6 +47,12 @@ return [
             'level' => 'info',
         ],
 
+        'nodes' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/nodes.log'),
+            'level' => 'info',
+        ],
+
         'kubernetes' => [
             'driver' => 'daily',
             'path' => storage_path('logs/kubernetes.log'),

@@ -50,6 +50,8 @@ class RouteServiceProvider extends ServiceProvider
 
 //        $this->mapEdgenetRoutes();
 
+        $this->mapBootRoutes();
+
         $this->mapWebRoutes();
 
         //
@@ -136,5 +138,19 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('edgenet')
             ->namespace($this->namespace . '\Edgenet')
             ->group(base_path('routes/edgenet/core.php'));
+    }
+
+    /**
+     * Define the "boot" routes for the application.
+     * Those are used by the NODES booting
+     *
+     * @return void
+     */
+    protected function mapBootRoutes()
+    {
+        Route::domain('boot.edge-net.io')
+            ->middleware('boot')
+            ->namespace($this->namespace . '\Boot')
+            ->group(base_path('routes/boot.php'));
     }
 }
