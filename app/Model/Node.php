@@ -12,7 +12,7 @@ class Node extends Model
     public const ODROID = 'odroid';
 
     protected $fillable = [
-        'mac', 'ipv4', 'gatewayv4', 'public_ipv4'
+        'type', 'mac', 'ipv4', 'gatewayv4', 'public_ipv4', 'ipv6',
     ];
 
     public function tenant()

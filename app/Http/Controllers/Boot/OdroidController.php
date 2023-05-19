@@ -34,8 +34,17 @@ class OdroidController extends Controller
             'gatewayv4' => 'required|ipv4',
         ]);
 
+        $ips = [];
+        if (filter_var($request->ip(), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            $ips['public_ipv4'] = $request->ip();
+        }
+
+        if (filter_var($request->ip(), FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            $ips['ipv6'] = $request->ip();
+        }
+
         $node = Node::updateOrCreate(array_merge(
-            $input, [ 'type' => Node::ODROID, 'public_ipv4' => $request->ip() ]
+            $input, [ 'type' => Node::ODROID ], $ips
         ));
 
         if ($node->installed == 0) {
@@ -47,6 +56,12 @@ class OdroidController extends Controller
         }
 
         return response($node->installed ? '1' : '0')
+            ->header('Content-Type','text/plain');
+    }
+
+    public function update(Request $request)
+    {
+        return response('', 200)
             ->header('Content-Type','text/plain');
     }
 

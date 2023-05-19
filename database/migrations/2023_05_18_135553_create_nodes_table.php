@@ -28,15 +28,29 @@ return new class extends Migration
 
             $table->macAddress('mac')
                 ->unique();
-            $table->ipAddress('ipv4');
-            $table->ipAddress('gatewayv4');
 
-            $table->ipAddress('public_ipv4');
+            $table->ipAddress('ipv4')
+                ->nullable();
+
+            $table->ipAddress('ipv6')
+                ->nullable();
+
+            $table->ipAddress('gatewayv4')
+                ->nullable();
+
+            $table->ipAddress('public_ipv4')
+                ->nullable();
 
             $table->string('hostname')
                 ->nullable();
 
             $table->string('type')
+                ->nullable();
+
+            $table->string('cluster')
+                ->nullable();
+
+            $table->string('contact')
                 ->nullable();
 
             $table->text('notes')
