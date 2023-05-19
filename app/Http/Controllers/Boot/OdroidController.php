@@ -14,6 +14,7 @@ class OdroidController extends Controller
         Log::channel('nodes')
             ->info('script request from ' . $request->ip());
 
+        // TODO: nodes should authenticate
 
         return response()
             ->view('boot/odroid', [
@@ -34,7 +35,7 @@ class OdroidController extends Controller
         ]);
 
         $node = Node::updateOrCreate(array_merge(
-            $input, [ 'public_ipv4' => $request->ip() ]
+            $input, [ 'type' => Node::ODROID, 'public_ipv4' => $request->ip() ]
         ));
 
         if ($node->installed == 0) {
