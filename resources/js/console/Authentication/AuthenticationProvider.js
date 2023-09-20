@@ -27,6 +27,7 @@ const getXsrfToken = () => {
 const AuthenticationProvider = ({children}) => {
     const [ token, setToken ] = useState(sessionStorage.getItem(AUTH_TOKEN));
     const [ user, setUser ] = useState(null);
+    const [ requests, setRequests ] = useState(null);
     // const [ error, setError ] = useState(null);
     const [ loading, setLoading ] = useState(true);
     const [ submitting, setSubmitting ] = useState(false);
@@ -56,6 +57,8 @@ const AuthenticationProvider = ({children}) => {
             };
 
             loadUser()
+
+            loadRequests()
             // console.log('aa', token)
 
             // fetch('/api/user', {
@@ -101,6 +104,18 @@ const AuthenticationProvider = ({children}) => {
             })
             .finally(() => {
                 setLoading(false)
+            })
+    }
+
+    const loadRequests = () => {
+        axios.get('/user/requests')
+            .then(({data}) => {
+                setRequests(data)
+            })
+            .catch(() => {
+
+            })
+            .finally(() => {
             })
     }
 

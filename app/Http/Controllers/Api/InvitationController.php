@@ -21,7 +21,7 @@ class InvitationController extends Controller
             'workspace' => 'exists:App\Model\SubNamespace,name'
         ]);
 
-        $workspace = SubNamespace::where('name', $input['name'])->firstOrFail();
+//        $workspace = SubNamespace::where('name', $input['workspace'])->firstOrFail();
 
         foreach ($input['emails'] as $email) {
             $user = User::where('email', $email)->first();

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\CRDs\RoleRequest;
 use App\Http\Controllers\Controller;
+use App\Model\UserRequest;
 use App\Model\TenantUser;
 use App\Services\Edgenet;
 use Illuminate\Http\Request;
@@ -67,32 +67,14 @@ class RoleRequestController extends Controller
             'namespace' => ['required', 'string', 'max:255'],
         ]);
 
-        $roleRequest = new RoleRequest($edgenet->getCluster(), [
-            'metadata' => [
+        try {
+            UserRequest::create([
                 'name' => $data['namespace'] . '-' . Str::lower(Str::random(4)),
                 'namespace' => $data['namespace'],
-            ],
-            'spec' => [
-//                'firstname' => $data['firstname'],
-//                'lastname' => $data['lastname'],
-                'email' => $data['email'],
-                'roleref' => [
-                    'kind' => 'ClusterRole',
-                    'name' => 'edgenet:tenant-collaborator'
-                ]
-            ],
-        ]);
-
-        Log::info($roleRequest->toArray());
-
-        try {
-            $roleRequest
-                ->create();
-        } catch (PhpK8sException $e) {
-
-            Log::error($e->getMessage());
-            Log::info($e->getPayload());
-
+                'type' => UserRequest::ROLE,
+                'user_id' => $request->user()->id
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()
             ], 400);

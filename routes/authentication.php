@@ -33,6 +33,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::patch('user', [AuthenticationController::class, 'updateUser'])
         ->name('auth.user.update');
 
+    Route::get('user/requests', [AuthenticationController::class, 'requests'])
+        ->name('auth.requests');
+
     // resend email verification notice
     Route::post('email/verification', [ RegistrationController::class, 'sendEmailVerificationLink' ])
         ->name('email.verification');

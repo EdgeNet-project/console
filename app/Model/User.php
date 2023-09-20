@@ -42,7 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $with = [
-        'tenants'
+        'tenants', 'requests'
     ];
 
     protected $appends = [
@@ -55,6 +55,11 @@ class User extends Authenticatable implements MustVerifyEmail
             ->using(TenantUser::class)
             ->withPivot('role')
             ->withTimestamps();
+    }
+
+    public function requests()
+    {
+        return $this->hasMany(UserRequest::class);
     }
 
     protected function getRoleAttribute() {

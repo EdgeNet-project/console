@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Authentication;
 
+use App\Services\Edgenet;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\User;
@@ -15,6 +16,21 @@ class AuthenticationController extends Controller
         $user = auth()->user();
 
         return response()->json($user);
+    }
+
+    public function requests(Edgenet $edgenet)
+    {
+
+        $tenantRequests = $edgenet->getCluster()
+            ->tenantRequest()->get();
+
+        $roleRequests = $edgenet->getCluster()
+            ->roleRequest()->get();
+
+        return response()->json([
+            'tenants' => $tenantRequests,
+            'roles' => $roleRequests
+        ]);
     }
 
     public function updateUser(Request $request)
