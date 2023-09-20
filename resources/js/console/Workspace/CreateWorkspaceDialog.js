@@ -7,12 +7,13 @@ import {
     Stack,
     Text,
     TextInput,
+    Alert,
     ThemeIcon,
     UnstyledButton,
-    useMantineTheme
+    useMantineTheme,
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import {IconBoxPadding as IconWorkspace} from "@tabler/icons";
+import {IconBoxPadding as IconWorkspace, IconAlertCircle} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
 import {useParams} from "react-router";
@@ -41,11 +42,12 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export default function CreateWorkspaceDialog({team}) {
+export default function CreateWorkspaceDialog({team, parent = null}) {
     const [opened, { open, close }] = useDisclosure(false);
     const { classes } = useStyles();
     const theme = useMantineTheme();
     const [ loading, setLoading ] = useState(false)
+    const [ error, setError ] = useState(null)
 
     const backgroundColor = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
 
@@ -53,6 +55,8 @@ export default function CreateWorkspaceDialog({team}) {
         initialValues: {
             label: '',
             name: '',
+            namespace: !!parent ? parent.namespace : team.namespace,
+            parent: !!parent ? 'subnamespace' : 'tenant',
         },
 
         validate: {
@@ -87,9 +91,7 @@ export default function CreateWorkspaceDialog({team}) {
     const handleSubmit = (values) => {
         setLoading(true)
 
-        axios.post('/api/subnamespaces', {
-            namespace: team.name, ...values
-        })
+        axios.post('/api/tenants/' + team.name + '/subnamespaces', values)
             .then((res) => {
                 console.log(res)
                 //setRegistered(true)
@@ -98,6 +100,7 @@ export default function CreateWorkspaceDialog({team}) {
                 // console.log(message)
                 // setErrors(errors)
                 form.setErrors(errors);
+                setError('Error creating a new Workspace')
             })
             .finally(() => {
                 setLoading(false)
@@ -125,6 +128,10 @@ export default function CreateWorkspaceDialog({team}) {
 
                         <TextInput label="Name" placeholder="my-workspace-name" classNames={classes} withAsterisk
                                    {...form.getInputProps('name')} />
+
+                        {error && <Alert icon={<IconAlertCircle size="1rem" />} color="red">
+                            {error}
+                        </Alert>}
 
                         <Group position="apart">
                             <Button color="gray" onClick={close}>

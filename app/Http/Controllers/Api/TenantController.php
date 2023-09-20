@@ -15,7 +15,7 @@ class TenantController extends Controller
     {
 
         $tenants = Tenant::where([
-            ['enabled', true],
+//            ['enabled', true],
             //['name', 'lip6-lab']
         ])->orderBy('name')->get();
 

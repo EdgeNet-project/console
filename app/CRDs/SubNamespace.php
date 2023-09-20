@@ -31,6 +31,10 @@ class SubNamespace extends K8sResource implements InteractsWithK8sCluster
      */
     protected static $namespaceable = true;
 
+    public function getChildNamespace()
+    {
+        return $this->getAttribute('status.child');
+    }
 
     public function isEnabled()
     {

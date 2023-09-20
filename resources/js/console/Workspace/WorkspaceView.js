@@ -112,7 +112,7 @@ export default () => {
                 {workspaceResource && <Anchor component={Link} to={'/team/' + teamResource.name + '/' + workspaceResource?.name}>{workspaceResource?.name}</Anchor>}
             </Breadcrumbs>
 
-            <TeamCard team={teamResource} />
+            {/*<TeamCard team={teamResource} />*/}
             <WorkspaceCard workspace={workspaceResource} />
 
 

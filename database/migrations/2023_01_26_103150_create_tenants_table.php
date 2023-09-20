@@ -21,6 +21,7 @@ return new class extends Migration
                 ->default(false);
 
             $table->string('name')->unique();
+
             $table->string('fullname')->nullable();
             $table->string('shortname')->nullable();
 

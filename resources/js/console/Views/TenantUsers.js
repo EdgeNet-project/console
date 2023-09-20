@@ -3,7 +3,7 @@ import {useAuthentication} from "../Authentication";
 import {Group, Paper, ScrollArea, Stack, Table, Text, Title} from "@mantine/core";
 import axios from "axios";
 import {IconBuilding, IconUser} from "@tabler/icons";
-import {useWorkspace} from "../Application/Workspace";
+// import {useWorkspace} from "../Application/Workspace";
 
 const User = ({item}) => {
 
@@ -44,24 +44,24 @@ const User = ({item}) => {
 export default function TenantUsers() {
     const { user } = useAuthentication();
     const [ users, setUsers ] = useState([])
-    const {namespace} = useWorkspace()
-
-    useEffect(() => {
-        axios.get('/api/tenants/'+namespace+'/users', {
-            // params: { ...queryParams, page: current_page + 1 },
-            // paramsSerializer: qs.stringify,
-        })
-            .then(({data}) => {
-                console.log(data)
-                setUsers(data);
-                // this.setState({
-                //     ...data, loading: false
-                // });
-            })
-            .catch(error => {
-                console.log(error)
-            });
-    }, []);
+    // const {namespace} = useWorkspace()
+    //
+    // useEffect(() => {
+    //     axios.get('/api/tenants/'+namespace+'/users', {
+    //         // params: { ...queryParams, page: current_page + 1 },
+    //         // paramsSerializer: qs.stringify,
+    //     })
+    //         .then(({data}) => {
+    //             console.log(data)
+    //             setUsers(data);
+    //             // this.setState({
+    //             //     ...data, loading: false
+    //             // });
+    //         })
+    //         .catch(error => {
+    //             console.log(error)
+    //         });
+    // }, []);
 
     return (
         <Stack spacing="sm">

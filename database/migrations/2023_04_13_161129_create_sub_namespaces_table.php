@@ -18,10 +18,13 @@ return new class extends Migration
             $table->timestamps();
 
             $table->boolean('enabled')
-                ->default(false);
+                ->default(true);
 
             $table->string('namespace');
             $table->string('name');
+
+            $table->string('label')->nullable();
+            $table->string('description')->nullable();
 
             $table->json('inheritance')->nullable();
             $table->json('resourceallocation')->nullable();
@@ -37,10 +40,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('sub_namespaces')
                 ->onDelete('cascade');
-
-            $table->unique([
-                'namespace', 'name'
-            ]);
         });
     }
 
