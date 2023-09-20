@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Model\SubNamespace;
+use App\Model\SubNamespaceUser;
 use App\Model\Tenant;
 use App\Model\TenantUser;
 use App\Model\User;
@@ -26,7 +27,7 @@ class EdgenetSubnamespaceSync extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'SubNamespaces sync';
 
     /**
      * Execute the console command.
@@ -51,21 +52,21 @@ class EdgenetSubnamespaceSync extends Command
 
             $localSubnamespace = SubNamespace::firstOrCreate([
                 'name' => $subnamespace->getName(),
-                'namespace' => $subnamespace->getNamespace(),
+                'namespace' => $subnamespace->getChildNamespace(),
                 'tenant_id' => $tenant->id
             ]);
 
 //            $roleBindings = $this->cluster->rolebinding()
 //                ->setNamespace($tenant->getName());
 
-            $this->syncUsers($cluster, $subnamespace->getName(), $localSubnamespace);
+            $this->syncUsers($cluster, $subnamespace->getChildNamespace(), $localSubnamespace);
         }
 
         return Command::SUCCESS;
     }
 
 
-    protected function syncUsers($cluster, $namespace, $localTenant)
+    protected function syncUsers($cluster, $namespace, $localSubnamespace)
     {
         $users = [];
         try {
@@ -112,13 +113,13 @@ class EdgenetSubnamespaceSync extends Command
         }
 
 
-//        foreach ($users as $email => $role) {
-//            $localUser = User::firstOrCreate(['email' => $email]);
-//
-//            TenantUser::updateOrCreate(
-//                ['user_id' => $localUser->id, 'tenant_id' => $localTenant->id],
-//                ['role' => $role]
-//            );
-//        }
+        foreach ($users as $email => $role) {
+            $localUser = User::firstOrCreate(['email' => $email]);
+
+            SubNamespaceUser::updateOrCreate(
+                ['user_id' => $localUser->id, 'sub_namespace_id' => $localSubnamespace->id],
+                ['role' => $role]
+            );
+        }
     }
 }

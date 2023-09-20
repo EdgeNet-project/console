@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\EdgenetAdmin;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
@@ -29,14 +30,14 @@ class EdgenetTenant extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(EdgenetAdmin $edgenetAdmin)
     {
 
-        $this->cluster = K8s::getCluster();
+        $cluster = $edgenetAdmin->getCluster();
 
         $name = $this->argument('name');
         if ($name) {
-            $tenant = $this->cluster->tenant()->getByName($name);
+            $tenant = $cluster->tenant()->getByName($name);
 //            dd($tenant);
 
             $contact = $tenant->getContact();
@@ -65,7 +66,7 @@ class EdgenetTenant extends Command
             return Command::SUCCESS;
         }
 
-        $tenants = $this->cluster->tenant()->all();
+        $tenants = $cluster->tenant()->all();
 
         if ($tenants->count() == 0) {
             $this->newLine();
