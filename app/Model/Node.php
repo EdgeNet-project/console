@@ -9,7 +9,7 @@ class Node extends Model
 {
     use HasFactory;
 
-    public const ODROID = 'odroid';
+    const ODROID = 'odroid';
 
     protected $fillable = [
         'type', 'mac', 'ipv4', 'gatewayv4', 'public_ipv4', 'ipv6',
