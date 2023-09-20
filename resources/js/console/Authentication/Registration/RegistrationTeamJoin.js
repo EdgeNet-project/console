@@ -64,6 +64,9 @@ export default function RegistrationTeamJoin({handleTenant}) {
         })
             .then((res) => {
                 console.log(res)
+
+                // TODO: refresh user with requests
+
                 //setRegistered(true)
             })
             .catch(({ response: {data: {message, errors}}}) => {

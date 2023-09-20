@@ -8,7 +8,7 @@ import Navigation from "./Navigation";
 import {useAuthentication} from "../Authentication";
 import {Outlet} from "react-router-dom";
 import Registration from "../Authentication/Views/Registration";
-import {Workspace} from "./Workspace";
+// import {Workspace} from "./Workspace";
 
 const Application = () => {
     // const { user, isAuthenticated } = useAuthentication()
@@ -38,7 +38,6 @@ const Application = () => {
     // }
 
     return (
-        <Workspace>
             <AppShell
                 padding="xs"
                 navbar={<Navigation />}
@@ -49,7 +48,6 @@ const Application = () => {
             >
                 <Container><Outlet /></Container>
             </AppShell>
-        </Workspace>
     )
 
     // <RouterProvider router={router} />

@@ -1,25 +1,25 @@
 import {Group, Header, Image, Text, Select} from "@mantine/core";
-import {useAuthentication} from "../Authentication";
-import {useWorkspace} from "./Workspace";
+// import {useAuthentication} from "../Authentication";
+// import {useWorkspace} from "./Workspace";
 
-const NavigationNamespaceSelect = () => {
-    const { user } = useAuthentication()
-    const { namespace, setNamespace } = useWorkspace()
-
-    return (
-        <Group spacing="sm" position="start">
-            <Text size="sm">Your current workspace:</Text>
-            <Select
-                onChange={(value) => setNamespace(value)}
-                value={namespace}
-                data={user.tenants.map(tenant => {
-                    return {label: tenant.fullname, value: tenant.name}
-                })}
-            />
-        </Group>
-
-    )
-}
+// const NavigationNamespaceSelect = () => {
+//     const { user } = useAuthentication()
+//     const { namespace, setNamespace } = useWorkspace()
+//
+//     return (
+//         <Group spacing="sm" position="start">
+//             <Text size="sm">Your current workspace:</Text>
+//             <Select
+//                 onChange={(value) => setNamespace(value)}
+//                 value={namespace}
+//                 data={user.tenants.map(tenant => {
+//                     return {label: tenant.fullname, value: tenant.name}
+//                 })}
+//             />
+//         </Group>
+//
+//     )
+// }
 export default function NavigationHeader() {
 
     return (
