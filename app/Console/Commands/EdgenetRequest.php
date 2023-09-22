@@ -12,7 +12,7 @@ class EdgenetRequestList extends Command
      *
      * @var string
      */
-    protected $signature = 'edgenet:request:list';
+    protected $signature = 'edgenet:request {command?}';
 
     /**
      * The console command description.
@@ -26,9 +26,25 @@ class EdgenetRequestList extends Command
      *
      * @return int
      */
-    public function handle(EdgenetAdmin $edgenetAdmin)
+    public function handle()
     {
 
+        $command = $this->argument('command');
+
+        switch($command) {
+            case 'approve':
+                break;
+            case 'list':
+            default:
+        }
+
+
+
+        return Command::SUCCESS;
+    }
+
+    private function listNamespaces(EdgenetAdmin $edgenetAdmin)
+    {
         $tenantRequests = $edgenetAdmin->getCluster()->tenantRequest()->all();
 
         if ($tenantRequests->count() == 0) {
@@ -62,8 +78,6 @@ class EdgenetRequestList extends Command
             ['Name', 'Info', 'Contact', 'Status'],
             $output
         );
-
-        return Command::SUCCESS;
     }
 
 }
