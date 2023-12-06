@@ -1,8 +1,9 @@
-import {createStyles, rem, Group, Radio, TextInput, Textarea, Grid, LoadingOverlay, Button} from '@mantine/core';
+import {createStyles, rem, Group, Radio, TextInput, Textarea, Grid, LoadingOverlay, Button, Alert} from '@mantine/core';
 import axios from "axios";
 import React, {useState} from "react";
 import {useForm} from "@mantine/form";
 import {useAuthentication} from "../AuthenticationProvider";
+import {IconInfoCircle} from "@tabler/icons";
 
 const useStyles = createStyles((theme) => ({
     root: {
@@ -31,6 +32,7 @@ const useStyles = createStyles((theme) => ({
 export default function RegistrationTeamCreate() {
     const { classes } = useStyles();
     const [ loading, setLoading ] = useState(false)
+    const [ error, setError ] = useState(null)
     const { loadUser } = useAuthentication()
     // const [ registered, setLoading ] = useState(false)
 
@@ -68,10 +70,11 @@ export default function RegistrationTeamCreate() {
                 console.log(res)
                 loadUser()
             })
-            .catch(({message, response: {data: {errors}}}) => {
-                // console.log(message)
-                // setErrors(errors)
-                form.setErrors(errors);
+            .catch(({message, response}) => {
+                console.log('1==>', message);
+                console.log('2==>', response.data)
+                setError(response.data.message ?? 'Error: Team creation')
+                //form.setErrors(errors);
             })
             .finally(() => {
                 setLoading(false)
@@ -81,6 +84,10 @@ export default function RegistrationTeamCreate() {
     return (
         <>
             <LoadingOverlay visible={loading} overlayBlur={2} />
+            {error &&
+            <Alert variant="light" color="red" title="Registration error" icon={<IconInfoCircle />}>
+                {error}
+            </Alert>}
             <p>
                 Create new top level Workspace by filling the information below,
                 an administrator will review your application.

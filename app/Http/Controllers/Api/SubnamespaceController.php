@@ -133,12 +133,12 @@ class SubnamespaceController extends Controller
         return response()->json(SubNamespaceModel::all());
     }
 
-    public function create(Request $request, TenantModel $tenant)
+    public function create(Request $request, Edgenet $edgenet, TenantModel $tenant)
     {
         $data = $request->validate([
             'label' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
-            'namespace' => ['required', 'string', 'max:255'],
+//            'namespace' => ['required', 'string', 'max:255'],
 
             'parent' => ['required', Rule::in(['tenant', 'subnamespace'])],
         ]);
@@ -148,10 +148,12 @@ class SubnamespaceController extends Controller
             $parent = SubNamespaceModel::where('name', $data['namespace'])->first();
         }
 
+        $namespace = !!$parent ? $parent->name : $tenant->name;
+
         $subnamespace = SubNamespaceModel::create([
             'label' => $data['label'],
             'name' => $data['name'],
-            'namespace' => !!$parent ? $parent->name : $tenant->name,
+            'namespace' => $namespace,
             'tenant_id' => $tenant->id,
             'parent_id' => !!$parent ? $parent->id : null
 //            'resourceallocation' => [
@@ -171,12 +173,12 @@ class SubnamespaceController extends Controller
 
         //Log::info($subnamespace->toArray());
 
-        return response()->json($subnamespace);
+
 
         $subnamespace = new SubNamespace($edgenet->getCluster(), [
             'metadata' => [
                 'name' => $data['name'],
-                'namespace' => $data['namespace'],
+                'namespace' => $namespace,
             ],
             'spec' => [
                 'workspace' => [

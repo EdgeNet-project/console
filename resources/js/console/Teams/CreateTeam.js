@@ -98,7 +98,7 @@ export default function CreateTeam() {
                 //setRegistered(true)
             })
             .catch(({message, response: {data: {errors}}}) => {
-                // console.log(message)
+                console.log(message, errors)
                 // setErrors(errors)
                 form.setErrors(errors);
             })

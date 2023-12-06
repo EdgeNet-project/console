@@ -38,7 +38,13 @@ export default function Registration({step = 1}) {
                     <RegistrationTeam />
                 </Stepper.Step>
                 <Stepper.Completed>
-                    Completed
+                    Thank you for completing the registration. <br />
+                    An admin will review your application as soon as possible. <br />
+                    Once your account is enabled you will receive a confirmation email.
+                    <br />
+                    <br />
+                    Best regards,<br />
+                    The EdgeNet Team
                 </Stepper.Completed>
             </Stepper>
         </Container>

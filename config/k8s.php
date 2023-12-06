@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'default' => env('KUBE_CONNECTION', null),
+    'default' => env('KUBE_CONNECTION', 'kubeconfig'),
 
     'connections' => [
 
@@ -29,8 +29,8 @@ return [
 
         'kubeconfig' => [
             'driver' => 'kubeconfig',
-            'path' => env('KUBECONFIG_PATH', '/.kube/config'),
-            'context' => env('KUBECONFIG_CONTEXT', 'minikube'),
+            'path' => env('KUBECONFIG_PATH', '/Users/moray/.kube/edgenet_admin.cfg'),
+            'context' => env('KUBECONFIG_CONTEXT', 'kubernetes-admin@kubernetes'),
         ],
 
         /*

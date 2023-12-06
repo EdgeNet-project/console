@@ -5,14 +5,14 @@ namespace App\Console\Commands;
 use App\Services\EdgenetAdmin;
 use Illuminate\Console\Command;
 
-class EdgenetRequestList extends Command
+class EdgenetRequest extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'edgenet:request {command?}';
+    protected $signature = 'edgenet:request {cmd=list}';
 
     /**
      * The console command description.
@@ -26,15 +26,16 @@ class EdgenetRequestList extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(EdgenetAdmin $edgenetAdmin)
     {
 
-        $command = $this->argument('command');
+        $command = $this->argument('cmd');
 
         switch($command) {
             case 'approve':
                 break;
             case 'list':
+                $this->listNamespaces($edgenetAdmin);
             default:
         }
 
@@ -43,7 +44,7 @@ class EdgenetRequestList extends Command
         return Command::SUCCESS;
     }
 
-    private function listNamespaces(EdgenetAdmin $edgenetAdmin)
+    private function listNamespaces($edgenetAdmin)
     {
         $tenantRequests = $edgenetAdmin->getCluster()->tenantRequest()->all();
 

@@ -78,7 +78,7 @@ class TenantRequestController extends Controller
 
         $user = auth()->user();
 
-        $TenantName = Str::slug($data['shortname']);
+        $tenantName = Str::slug($data['shortname']);
 
         $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
 
@@ -87,7 +87,7 @@ class TenantRequestController extends Controller
 
         $tenantRequest = new TenantRequest($cluster, [
             'metadata' => [
-                'name' => $TenantName
+                'name' => $tenantName
             ],
             'spec' => [
                 'fullname' => $data['fullname'],
@@ -111,18 +111,38 @@ class TenantRequestController extends Controller
                 ->create();
         } catch (PhpK8sException $e) {
 
-            Log::error($e->getMessage());
+            // TODO: better logging
+            Log::error(print_r($e->getMessage(), true));
+            // status object
+            /*
+             [
+                  'kind' => 'Status',
+                  'apiVersion' => 'v1',
+                  'metadata' =>
+                  array (
+                  ),
+                  'status' => 'Failure',
+                  'message' => 'tenantrequests.registration.edgenet.io "csnet" already exists',
+                  'reason' => 'AlreadyExists',
+                  'details' =>
+                  array (
+                    'name' => 'csnet',
+                    'group' => 'registration.edgenet.io',
+                    'kind' => 'tenantrequests',
+                  ),
+                  'code' => 409,
+                ]
+             */
             Log::info($e->getPayload());
 
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
+            return response()->json($e->getPayload(), $e->getCode());
         }
 
         $tenant = new Tenant($data);
-        $tenant->name = $TenantName;
+        $tenant->name = $tenantName;
         $tenant->save();
-        $tenant->users()->attach(auth()->user(), ['roles' => ['owner']]);
+        $tenant->users()
+            ->attach(auth()->user(), ['role' => 'owner']);
 
 
         return response()->json([

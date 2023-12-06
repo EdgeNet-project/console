@@ -34,8 +34,6 @@ class EdgenetTenantSync extends Command
      */
     public function handle(EdgenetAdmin $edgenetAdmin)
     {
-//        $this->cluster = K8s::getCluster();
-
         $cluster = $edgenetAdmin->getCluster();
 
         $tenants = $cluster->tenant()->all();

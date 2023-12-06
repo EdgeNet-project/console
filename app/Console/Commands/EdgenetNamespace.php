@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Services\EdgenetAdmin;
 use Illuminate\Console\Command;
+use RenokiCo\PhpK8s\K8s;
 
 class EdgenetNamespace extends Command
 {
@@ -29,6 +30,11 @@ class EdgenetNamespace extends Command
     public function handle(EdgenetAdmin $edgenetAdmin)
     {
 
+        foreach (K8s::getAllConfigMaps() as $cm) {
+            echo $cm->getName();
+        }
+
+        return Command::SUCCESS;
         $namespaces = $edgenetAdmin->getCluster()->getAllNamespaces();
 
         dd($namespaces[13]);

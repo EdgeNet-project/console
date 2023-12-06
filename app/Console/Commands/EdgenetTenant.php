@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Services\EdgenetAdmin;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
+use RenokiCo\PhpK8s\Exceptions\KubernetesAPIException;
 
 class EdgenetTenant extends Command
 {
@@ -32,13 +32,15 @@ class EdgenetTenant extends Command
      */
     public function handle(EdgenetAdmin $edgenetAdmin)
     {
-
         $cluster = $edgenetAdmin->getCluster();
 
         $name = $this->argument('name');
         if ($name) {
-            $tenant = $cluster->tenant()->getByName($name);
-//            dd($tenant);
+            try {
+                $tenant = $cluster->tenant()->getByName($name);
+            } catch (KubernetesAPIException $e) {
+                echo $e->getMessage();
+            }
 
             $contact = $tenant->getContact();
 
@@ -66,7 +68,15 @@ class EdgenetTenant extends Command
             return Command::SUCCESS;
         }
 
-        $tenants = $cluster->tenant()->all();
+        try {
+            $tenants = $cluster->tenant()->all();
+        } catch (KubernetesAPIException $e) {
+            dd([
+                $e->getMessage(),
+                $e->getPayload()
+            ]);
+        }
+
 
         if ($tenants->count() == 0) {
             $this->newLine();

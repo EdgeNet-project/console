@@ -21,7 +21,7 @@ class AuthenticationController extends Controller
             ->debug(var_export($request->all(), true));
 
         $failed = [
-            'apiVersion' => 'authentication.k8s.io/v1beta1',
+            'apiVersion' => 'authentication.k8s.io/v1',
             'kind' => 'TokenReview',
             'status' => [ 'authenticated' => false ]
         ];
@@ -86,7 +86,7 @@ class AuthenticationController extends Controller
 //        }
 
         $response = [
-            'apiVersion' => 'authentication.k8s.io/v1beta1',
+            'apiVersion' => 'authentication.k8s.io/v1',
             'kind' => 'TokenReview',
             'status' => [
                 'authenticated' => true,

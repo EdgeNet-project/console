@@ -229,6 +229,10 @@ const AuthenticationProvider = ({children}) => {
             step = 2
         }
 
+        if (hasFinishedRegistration()) {
+            step = 3
+        }
+
         return (
             <AuthenticationContext.Provider value={{
                 user: user,
