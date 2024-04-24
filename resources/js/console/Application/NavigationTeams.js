@@ -73,11 +73,7 @@ const TreeIcon = ({
     }
 
     return <IconWorkspace color="blue" />
-    // return (
-    //     <ThemeIcon color="blue" variant="light">
-    //         <IconUsers size={16} />
-    //     </ThemeIcon>
-    // )
+
 }
 
 const TreeNode = ({
@@ -99,16 +95,6 @@ const NavigationTeams = () => {
     const [ workspaces, setWorkspaces ] = useState([])
     const { user } = useAuthentication()
     const treeApi = useReactTreeApi()
-
-    // useEffect(() => {
-    //     axios.get('')
-    //         .then((data) => {
-    //             console.log(data)
-    //         })
-    //         .catch((error) => {
-    //             console.log(error)
-    //         })
-    // }, [])
 
     useEffect(() => {
         let workspacesData = [];
@@ -140,45 +126,6 @@ const NavigationTeams = () => {
         setWorkspaces(workspacesData)
     }, [])
 
-    // const data = [
-    //     {
-    //         "id": 'sorbonne',
-    //         "parentId": null,
-    //         "label": "Sorbonne",
-    //
-    //     },
-    //     {
-    //         "id": 'networking-class',
-    //         "label": "Networking Class",
-    //         "parentId": 'sorbonne',
-    //         items: [
-    //
-    //         ]
-    //     },
-    //     {
-    //         "id": 'team-a',
-    //         "parentId": 'networking-class',
-    //         "label": "Team A"
-    //     },
-    //     {
-    //         "id": 'team-b',
-    //         "parentId": 'networking-class',
-    //         "label": "Team B"
-    //     },
-    //     {
-    //         "id": 'research-lab',
-    //         "parentId": 'sorbonne',
-    //         "label": "Research Lab"
-    //     },
-    //     {
-    //         "id": 'measurement-lab',
-    //         "parentId": 'sorbonne',
-    //         "label": "Measurements Lab"
-    //     }
-    //
-    //
-    // ]
-
     const handleToggleTree = () => {
         setOpen(!open)
         treeApi.current.toggleAllNodesOpenState(open ? 'close' : 'open')
@@ -188,24 +135,27 @@ const NavigationTeams = () => {
     return (
         <>
             <Divider label="Workspaces" />
+            {workspaces.length > 0 ? <>
+                <UnstyledButton onClick={handleToggleTree} px="md">
+                    {open ? <Group spacing={4} align="center">
+                        <IconMinus style={{marginBottom:2}} size={12} color="gray" />
+                        <Text size="xs">Close all</Text>
+                    </Group> : <Group spacing={4} align="center">
+                        <IconPlus style={{marginBottom:2}} size={12} color="gray" />
+                        <Text size="xs">Expand all</Text>
+                    </Group>}
+                </UnstyledButton>
 
-            <UnstyledButton onClick={handleToggleTree} px="md">
-                {open ? <Group spacing={4} align="center">
-                    <IconMinus style={{marginBottom:2}} size={12} color="gray" />
-                    <Text size="xs">Close all</Text>
-                </Group> : <Group spacing={4} align="center">
-                    <IconPlus style={{marginBottom:2}} size={12} color="gray" />
-                    <Text size="xs">Expand all</Text>
-                </Group>}
-            </UnstyledButton>
+                <ReactTree nodes={workspaces} ref={treeApi}
+                           theme="edgenetTeamsTheme"
+                           themes={myThemes}
+                           containerStyles={treeStyle}
+                           RenderIcon={TreeIcon}
+                           RenderNode={TreeNode}
+                />
+            </> : <Text m="sm" size="xs">No workspaces</Text>}
 
-            <ReactTree nodes={workspaces} ref={treeApi}
-                       theme="edgenetTeamsTheme"
-                       themes={myThemes}
-                       containerStyles={treeStyle}
-                       RenderIcon={TreeIcon}
-                       RenderNode={TreeNode}
-            />
+
         </>
     )
 }

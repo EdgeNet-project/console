@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Authentication;
 
+use App\Services\EdgenetAdmin;
 use App\Services\Edgenet;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,7 +19,14 @@ class AuthenticationController extends Controller
         return response()->json($user);
     }
 
-    public function requests(Edgenet $edgenet)
+    /**
+     * @param EdgenetAdmin $edgenet
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * TODO: Requests filtering by user should be done by the edgenet access controller
+     * TODO: Requests should be filtered if user is NOT admin only own requests are returned
+     */
+    public function requests(EdgenetAdmin $edgenet)
     {
 
         $tenantRequests = $edgenet->getCluster()
@@ -28,7 +36,9 @@ class AuthenticationController extends Controller
             ->roleRequest()->get();
 
         return response()->json([
-            'tenants' => $tenantRequests,
+            'tenants' => $tenantRequests->filter(function($r) {
+                return $r->getEmail() != auth()->user()->email;
+            }),
             'roles' => $roleRequests
         ]);
     }

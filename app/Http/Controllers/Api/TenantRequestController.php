@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\CRDs\RoleRequest;
-use App\CRDs\TenantRequest;
+use App\Model\UserRequest;
+use App\Services\Edgenet;
+use App\Services\EdgenetAdmin;
 use App\Http\Controllers\Controller;
 use App\Model\Tenant;
 use Illuminate\Http\Request;
@@ -16,25 +18,22 @@ use RenokiCo\PhpK8s\KubernetesCluster;
 class TenantRequestController extends Controller
 {
 
-    public function list(Request $request, $namespace = null)
+    public function list(Request $request, EdgenetAdmin $edgenet, $namespace = null)
     {
-
-        $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
-
-        $cluster->withoutSslChecks();
-        $cluster->withToken($request->bearerToken());
-
-        if ($namespace) {
-
-            $rolerequests = $cluster
-                ->tenantRequest()
-                ->whereNamespace('cslash')
-                ->all();
-        } else {
-            $rolerequests = $cluster
-                ->tenantRequest()
-                ->allNamespaces();
-        }
+//
+//        if ($namespace) {
+//
+//            $rolerequests = $edgenet
+//                ->getCluster()
+//                ->tenantRequest()
+//                ->whereNamespace('cslash')
+//                ->all();
+//        } else {
+//            $rolerequests = $edgenet
+//                ->getCluster()
+//                ->tenantRequest()
+//                ->allNamespaces();
+//        }
 
 //        $output = [];
 //        foreach ($rolerequests as $r) {
@@ -63,90 +62,83 @@ class TenantRequestController extends Controller
         return response()->json($rolerequests);
     }
 
-    public function create(Request $request)
+    public function create(Request $request, Edgenet $edgenet)
     {
 
-        $data = $request->validate([
-            'fullname' => ['required', 'string', 'max:255'],
-            'shortname' => ['required', 'string', 'max:255'],
-            'country' => ['required', 'string', 'max:255'],
-            'affiliation' => ['required', 'string', 'max:255'],
-            'url' => ['required', 'string', 'max:255'],
-            'joining_reason' => ['required'],
-            'joining_category' => ['required', 'string', 'max:255'],
-        ]);
-
-        $user = auth()->user();
-
-        $tenantName = Str::slug($data['shortname']);
-
-        $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
-
-        $cluster->withoutSslChecks();
-        $cluster->withToken($request->bearerToken());
-
-        $tenantRequest = new TenantRequest($cluster, [
-            'metadata' => [
-                'name' => $tenantName
-            ],
-            'spec' => [
-                'fullname' => $data['fullname'],
-                'shortname' => $data['shortname'],
-                'url' => $data['url'],
-//                'address' => [
+//        $data = $request->validate([
+//            'fullname' => ['required', 'string', 'max:255'],
+//            'shortname' => ['required', 'string', 'max:255'],
+//            'country' => ['required', 'string', 'max:255'],
+//            'affiliation' => ['required', 'string', 'max:255'],
+//            'url' => ['required', 'string', 'max:255'],
+//            'joining_reason' => ['required'],
+//            'joining_category' => ['required', 'string', 'max:255'],
+//        ]);
 //
-//                ],
-                'contact' => [
-//                    'firstname' => $user->firstname,
-//                    'lastname' => $user->lastname,
-                    'email' => $user->email,
-                ]
-            ],
-        ]);
+//        $user = auth()->user();
+//
+//        $userRequest = UserRequest::create([
+//            'data' => $data,
+//            'type' => UserRequest::TENANT,
+//            'user_id' => $user->id
+//        ]);
+//
+//        $payload = [
+//            'metadata' => [
+//                'name' => $tenantName
+//            ],
+//            'spec' => [
+//                'fullname' => $data['fullname'],
+//                'shortname' => $data['shortname'],
+//                'url' => $data['url'],
+//                'contact' => [
+//                    'email' => $user->email,
+//                ]
+//            ]
+//        ];
+//
+//        $tenantRequest = new TenantRequest($edgenet->getCluster(), $payload);
+//
+//        try {
+//            $tenantRequest
+//                ->create();
+//        } catch (PhpK8sException $e) {
+//
+//
+//            // TODO: better logging
+////            Log::error(print_r($e->getMessage(), true));
+//            // status object
+//            /*
+//             [
+//                  'kind' => 'Status',
+//                  'apiVersion' => 'v1',
+//                  'metadata' =>
+//                  array (
+//                  ),
+//                  'status' => 'Failure',
+//                  'message' => 'tenantrequests.registration.edgenet.io "csnet" already exists',
+//                  'reason' => 'AlreadyExists',
+//                  'details' =>
+//                  array (
+//                    'name' => 'csnet',
+//                    'group' => 'registration.edgenet.io',
+//                    'kind' => 'tenantrequests',
+//                  ),
+//                  'code' => 409,
+//                ]
+//             */
+//            Log::info($e->getPayload());
+//
+//            return response()->json($e->getPayload(), $e->getCode());
+//        }
 
-        try {
-            $tenantRequest
-//                ->setName($data['namespace'] . '-' . Str::lower(Str::random(4)))
-//                ->setNamespace($data['namespace'])
-                ->create();
-        } catch (PhpK8sException $e) {
-
-            // TODO: better logging
-            Log::error(print_r($e->getMessage(), true));
-            // status object
-            /*
-             [
-                  'kind' => 'Status',
-                  'apiVersion' => 'v1',
-                  'metadata' =>
-                  array (
-                  ),
-                  'status' => 'Failure',
-                  'message' => 'tenantrequests.registration.edgenet.io "csnet" already exists',
-                  'reason' => 'AlreadyExists',
-                  'details' =>
-                  array (
-                    'name' => 'csnet',
-                    'group' => 'registration.edgenet.io',
-                    'kind' => 'tenantrequests',
-                  ),
-                  'code' => 409,
-                ]
-             */
-            Log::info($e->getPayload());
-
-            return response()->json($e->getPayload(), $e->getCode());
-        }
-
-        $tenant = new Tenant($data);
-        $tenant->name = $tenantName;
-        $tenant->save();
-        $tenant->users()
-            ->attach(auth()->user(), ['role' => 'owner']);
+//        $tenant = new Tenant($data);
+//        $tenant->name = $tenantName;
+//        $tenant->save();
+//        $tenant->users()
+//            ->attach(auth()->user(), ['role' => 'owner']);
 
 
-        return response()->json([
-            'message' => 'tenant request created'
-        ]);
+//        return response()->json($userRequest);
     }
 }

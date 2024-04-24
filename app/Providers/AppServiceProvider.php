@@ -15,16 +15,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        \App\CRDs\TenantRequest::register();
-        \App\CRDs\RoleRequest::register();
         \App\CRDs\Tenant::register();
         \App\CRDs\SubNamespace::register();
 
-        $this->app->singleton('edgenet-admin', function ($app) {
+        $this->app->singleton(EdgenetAdmin::class, function ($app) {
             return new EdgenetAdmin($app);
         });
 
-        $this->app->singleton('edgenet', function ($app) {
+        $this->app->singleton(Edgenet::class, function ($app) {
             return new Edgenet($app);
         });
     }

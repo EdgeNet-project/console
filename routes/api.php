@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\TenantRequestController;
 use App\Http\Controllers\Api\NodeController;
 use App\Http\Controllers\Api\InvitationController;
 
+use App\Http\Controllers\Api\UserRequestController;
+
 Route::get('/tenants', [ TenantController::class, 'list' ]);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -50,12 +52,14 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     });
 
     Route::group(['prefix' => 'requests'], function () {
-        Route::get('/roles/{namespace?}', [ RoleRequestController::class, 'list' ]);
-        Route::post('/roles', [ RoleRequestController::class, 'create' ]);
-        Route::patch('/roles/{namespace}/{name}', [ RoleRequestController::class, 'update' ]);
+//        Route::get('/roles/{namespace?}', [ RoleRequestController::class, 'list' ]);
+//        Route::post('/roles', [ RoleRequestController::class, 'create' ]);
+//        Route::patch('/roles/{namespace}/{name}', [ RoleRequestController::class, 'update' ]);
+//
+//        Route::get('/tenants/{namespace?}', [ TenantRequestController::class, 'list' ]);
+//        Route::post('/tenants', [ TenantRequestController::class, 'create' ]);
 
-        Route::get('/tenants/{namespace?}', [ TenantRequestController::class, 'list' ]);
-        Route::post('/tenants', [ TenantRequestController::class, 'create' ]);
+        Route::post('/team', [ UserRequestController::class, 'createTeam' ]);
     });
 
     Route::group(['prefix' => 'invitations'], function () {

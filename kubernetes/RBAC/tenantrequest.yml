@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: edgenet:user:tenantrequest
+rules:
+  - apiGroups: ["registration.edgenet.io"]
+    resources: ["tenantrequests"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: edgenet:user:tenantrequest
+subjects:
+  - kind: Group
+    name: edgenet:user
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: edgenet:user:tenantrequest
+  apiGroup: rbac.authorization.k8s.io

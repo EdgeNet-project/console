@@ -17,27 +17,19 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->boolean('enabled')
-                ->default(true);
-
-            $table->string('name');
-
-            $table->string('namespace')
-                ->nullable();
-
-            $table->string('type')
-                ->nullable();
+            $table->string('type'); // TENANT, ROLE
+            $table->string('action'); // CREATE, JOIN
+            $table->json('data');
 
             $table->string('message')
                 ->nullable();
 
             $table->string('status')
-                ->default('pending');
+                ->nullable();
 
-            $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
+            $table->foreignId('user_id')
+                ->constrained()
+                ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
     }

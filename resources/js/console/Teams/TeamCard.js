@@ -3,6 +3,7 @@ import React from "react";
 import JoinWorkspaceDialog from "../Workspace/JoinWorkspaceDialog";
 import InviteUsersDialog from "../User/InviteUsersDialog";
 import CreateWorkspaceDialog from "../Workspace/CreateWorkspaceDialog";
+import DownloadKubeConfig from "../Workspace/DownloadKubeConfig";
 
 export default ({team}) => {
 
@@ -21,6 +22,7 @@ export default ({team}) => {
 
             </Group>
             <Group mt="sm">
+                <DownloadKubeConfig workspace={team} />
                 <JoinWorkspaceDialog workspace={team}/>
                 <InviteUsersDialog team={team} />
                 <CreateWorkspaceDialog team={team} />

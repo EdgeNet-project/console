@@ -8,7 +8,7 @@ import NodeList from "../../Views/NodeList";
 import Tokens from "../../Views/Tokens";
 import JoinRequestsView from "../../Requests/JoinRequestsView";
 import TenantUsers from "../../Views/TenantUsers";
-import Dashboard from "../../Views/Dashboard";
+import Index from "../../Dashboard";
 
 const router = createBrowserRouter([
     {
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Dashboard />,
+                element: <Index />,
             },
             {
                 path: "/profile",

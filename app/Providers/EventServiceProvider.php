@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Model\SubNamespace;
 use App\Model\UserRequest;
 use App\Observers\SubNamespaceObserver;
+use App\Observers\TeamObserver;
 use App\Observers\UserRequestObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;

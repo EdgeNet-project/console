@@ -7,8 +7,6 @@ import {UserInfo} from "../User/UserAvatar";
 
 const RoleRequest = ({item, handleRequest}) => {
 
-
-
     return (
         <tr key={item.metadata.name}>
             <td>

@@ -17,13 +17,10 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->boolean('installed')
-                ->default(false);
-
             $table->boolean('enabled')
                 ->default(true);
 
-            $table->boolean('active')
+            $table->boolean('installed')
                 ->default(false);
 
             $table->macAddress('mac')
@@ -35,10 +32,10 @@ return new class extends Migration
             $table->ipAddress('ipv6')
                 ->nullable();
 
-            $table->ipAddress('gatewayv4')
+            $table->ipAddress('gateway_v4')
                 ->nullable();
 
-            $table->ipAddress('public_ipv4')
+            $table->ipAddress('public_ip_v4')
                 ->nullable();
 
             $table->string('hostname')
@@ -50,19 +47,16 @@ return new class extends Migration
             $table->string('cluster')
                 ->nullable();
 
-            $table->string('contact')
-                ->nullable();
-
             $table->text('notes')
                 ->nullable();
 
-            $table->bigInteger('tenant_id')
+            $table->bigInteger('user_id')
                 ->unsigned()
                 ->nullable();
-            $table->foreign('tenant_id')
+            $table->foreign('user_id')
                 ->references('id')
-                ->on('tenants')
-                ->onDelete('cascade');
+                ->on('users')
+                ->onDelete('set null');
 
 
         });

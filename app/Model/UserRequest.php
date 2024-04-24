@@ -11,8 +11,22 @@ class UserRequest extends Model
 
     protected $guarded = [];
 
-    const ROLE = 'role';
-    const TENANT = 'tenant';
+    protected $casts = [
+        'data' => 'array'
+    ];
+
+    /* TYPES */
+    const TEAM = 'team';
+
+
+    /* ACTIONS */
+    const CREATE = 'create';
+    const JOIN = 'join';
+
+    /* STATUS */
+    const PENDING = 'pending';
+    const APPROVED = 'approved';
+    const DENIED = 'denied';
 
     public function user()
     {

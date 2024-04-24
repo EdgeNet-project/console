@@ -23,12 +23,19 @@ class TokenController extends Controller
     public function create(Request $request)
     {
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:255']
+            'name' => ['required', 'string', 'max:255'],
+            'overwrite' => ['boolean']
         ]);
 
         $user = auth()->user();
 
-        if ($user->tokens->where('name', $data['name'])->count() > 0) {
+        $currentTokens = $user->tokens->where('name', $data['name']);
+
+        if ($request->input('overwrite', false)) {
+            $currentTokens->each(function($token) {
+                (Sanctum::$personalAccessTokenModel)::find($token->id)->delete();
+            });
+        } else if ($currentTokens->count() > 0) {
             return response()->json([
                 'message' => 'Token with the same name already exists'
             ], 400);

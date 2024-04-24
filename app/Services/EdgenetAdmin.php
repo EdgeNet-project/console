@@ -27,4 +27,5 @@ class EdgenetAdmin {
     {
         return $this->cluster;
     }
+
 }

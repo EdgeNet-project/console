@@ -69,21 +69,9 @@ class AuthenticationController extends Controller
         // TODO: check user is active and user permissions
 
         // TODO: manage groups
-        $groups = [];
-
-        /*
-         * Cluster admins
-         */
-//        if ($user->clusteradmin) {
-//            $groups[] = 'system:masters';
-//        }
-
-        /*
-         * Nodemanagers can contribute nodes and view node stats
-         */
-//        if ($user->nodemanager) {
-//            $groups[] = 'edgenet:nodemanagers';
-//        }
+        $groups = [
+            'edgenet:user'
+        ];
 
         $response = [
             'apiVersion' => 'authentication.k8s.io/v1',

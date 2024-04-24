@@ -62,6 +62,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserRequest::class);
     }
 
+    public function getNameAttribute()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
     protected function getRoleAttribute() {
         if ($this->pivot) {
             return $this->pivot->role;

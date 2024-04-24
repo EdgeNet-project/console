@@ -4,7 +4,6 @@ import {RouterProvider} from "react-router-dom";
 
 // import routes from "./routes";
 import authenticationRoutes from "./routes/authentication";
-import registrationRoutes from "./routes/registration";
 import Registration from "./Views/Registration";
 
 const AuthenticationContext = React.createContext({
@@ -27,7 +26,7 @@ const getXsrfToken = () => {
 const AuthenticationProvider = ({children}) => {
     const [ token, setToken ] = useState(sessionStorage.getItem(AUTH_TOKEN));
     const [ user, setUser ] = useState(null);
-    const [ requests, setRequests ] = useState(null);
+    const [ requests, setRequests ] = useState([]);
     // const [ error, setError ] = useState(null);
     const [ loading, setLoading ] = useState(true);
     const [ submitting, setSubmitting ] = useState(false);
@@ -58,7 +57,7 @@ const AuthenticationProvider = ({children}) => {
 
             loadUser()
 
-            loadRequests()
+            //loadRequests()
             // console.log('aa', token)
 
             // fetch('/api/user', {
@@ -183,11 +182,11 @@ const AuthenticationProvider = ({children}) => {
             return false;
         }
 
-        return user.tenants.length > 0
+        return user.tenants.length > 0 || user.requests.length > 0
     }
 
     const hasFinishedRegistration = () => {
-        return hasEmailVerified() && hasAcceptedAup() && hasTeam()
+        return hasEmailVerified() && hasAcceptedAup()
     }
 
     if (loading) {
@@ -229,9 +228,9 @@ const AuthenticationProvider = ({children}) => {
             step = 2
         }
 
-        if (hasFinishedRegistration()) {
-            step = 3
-        }
+        // if (hasFinishedRegistration()) {
+        //     step = 3
+        // }
 
         return (
             <AuthenticationContext.Provider value={{
@@ -265,6 +264,8 @@ const AuthenticationProvider = ({children}) => {
             logout: logout,
             loading: loading,
             loadUser: loadUser,
+
+            requests: requests,
             // error: error
 
             isAuthenticated: isAuthenticated
@@ -275,11 +276,12 @@ const AuthenticationProvider = ({children}) => {
 }
 
 const useAuthentication = () => {
-    const { user, token, login, logout, loadUser, loading, error, isAuthenticated } = useContext(AuthenticationContext)
+    const { user, requests, token, login, logout, loadUser, loading, error, isAuthenticated } = useContext(AuthenticationContext)
 
     return {
         user, token, login, logout, loadUser, loading, error,
 
+        requests,
         isAuthenticated
     }
 }

@@ -2,105 +2,62 @@
 
 namespace App\Observers;
 
-use App\Facades\Edgenet;
 use App\Model\UserRequest;
-use App\CRDs\RoleRequest as RoleRequestCRD;
-
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
 
 class UserRequestObserver
 {
-
     /**
-     * Handle the UserRequest "created" event.
+     * Handle the TeamRequest "created" event.
      *
-     * @param  \App\Model\UserRequest  $userRequest
-     *
+     * @param  \App\Model\UserRequest $teamRequest
      * @return void
      */
-    public function creating(UserRequest $userRequest)
+    public function created(UserRequest $teamRequest)
     {
-        $roleRequest = new RoleRequestCRD(Edgenet::getCluster(), [
-            'metadata' => [
-                'name' => $userRequest->name,
-                'namespace' => $userRequest->namespace,
-            ],
-            'spec' => [
-                'email' => $userRequest->user->email,
-                'roleref' => [
-                    'kind' => 'ClusterRole',
-                    'name' => 'edgenet:tenant-collaborator'
-                ]
-            ],
-        ]);
-
-        Log::info($roleRequest->toArray());
-
-        try {
-            $roleRequest
-                ->create();
-        } catch (PhpK8sException $e) {
-
-            Log::error($e->getMessage());
-            Log::info($e->getPayload());
-
-            throw new \Exception('API error, role creation');
-        }
+        Log::info('Created Team request '. $teamRequest->id);
     }
 
     /**
-     * Handle the UserRequest "created" event.
+     * Handle the TeamRequest "updated" event.
      *
-     * @param  \App\Model\UserRequest  $userRequest
+     * @param  \App\Model\UserRequest $teamRequest
      * @return void
      */
-    public function created(UserRequest $userRequest)
+    public function updated(UserRequest $teamRequest)
+    {
+        Log::info('Updated Team request '. $teamRequest->id);
+    }
+
+    /**
+     * Handle the TeamRequest "deleted" event.
+     *
+     * @param  \App\Model\UserRequest $teamRequest
+     * @return void
+     */
+    public function deleted(UserRequest $teamRequest)
     {
         //
     }
 
     /**
-     * Handle the UserRequest "updated" event.
+     * Handle the TeamRequest "restored" event.
      *
-     * @param  \App\Model\UserRequest  $userRequest
+     * @param  \App\Model\UserRequest $teamRequest
      * @return void
      */
-    public function updated(UserRequest $userRequest)
+    public function restored(UserRequest $teamRequest)
     {
         //
     }
 
     /**
-     * Handle the UserRequest "deleted" event.
+     * Handle the TeamRequest "force deleted" event.
      *
-     * @param  \App\Model\UserRequest  $userRequest
+     * @param  \App\Model\UserRequest $teamRequest
      * @return void
      */
-    public function deleted(UserRequest $userRequest)
-    {
-        //
-    }
-
-    /**
-     * Handle the UserRequest "restored" event.
-     *
-     * @param  \App\Model\UserRequest  $userRequest
-     * @return void
-     */
-    public function restored(UserRequest $userRequest)
-    {
-        //
-    }
-
-    /**
-     * Handle the UserRequest "force deleted" event.
-     *
-     * @param  \App\Model\UserRequest  $userRequest
-     * @return void
-     */
-    public function forceDeleted(UserRequest $userRequest)
+    public function forceDeleted(UserRequest $teamRequest)
     {
         //
     }
