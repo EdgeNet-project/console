@@ -3,7 +3,7 @@ import {
     Title,
     Stepper,
     Group,
-    Container, Image, Header
+    Container, Image
 } from '@mantine/core';
 
 import AUP from "../Registration/AUP";
@@ -14,7 +14,6 @@ export default function Registration({step = 1}) {
 
     return (
         <>
-        <Header height={140}>
             <Container size="sm" sx={(theme) => ({ margin: '25px auto'})}>
                 <Group sx={{ height: '100%' }} spacing="sm" pb="xl" position="start">
                     <div><Image src="/images/edgenet-logo.png" alt="EdgeNet" height={60} fit="contain" /></div>
@@ -24,7 +23,6 @@ export default function Registration({step = 1}) {
                     Welcome to the EdgeNet platform, please complete your registration.
                 </div>
             </Container>
-        </Header>
 
         <Container size="sm" sx={(theme) => ({ margin: '25px auto'})}>
             <Stepper active={step} onStepClick={null} breakpoint="sm">

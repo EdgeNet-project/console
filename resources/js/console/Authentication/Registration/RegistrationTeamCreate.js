@@ -1,36 +1,11 @@
-import {createStyles, rem, Group, Radio, TextInput, Textarea, Grid, LoadingOverlay, Button, Alert} from '@mantine/core';
+import {Group, Radio, TextInput, Textarea, Grid, LoadingOverlay, Button, Alert} from '@mantine/core';
 import axios from "axios";
 import React, {useState} from "react";
 import {useForm} from "@mantine/form";
 import {useAuthentication} from "../AuthenticationProvider";
 import {IconInfoCircle} from "@tabler/icons";
 
-const useStyles = createStyles((theme) => ({
-    root: {
-        position: 'relative',
-    },
-
-    input: {
-        height: rem(54),
-        paddingTop: rem(18),
-    },
-
-    textArea: {
-        paddingTop: rem(18),
-    },
-
-    label: {
-        position: 'absolute',
-        pointerEvents: 'none',
-        fontSize: theme.fontSizes.xs,
-        paddingLeft: theme.spacing.sm,
-        paddingTop: `calc(${theme.spacing.sm} / 2)`,
-        zIndex: 1,
-    },
-}));
-
 export default function RegistrationTeamCreate() {
-    const { classes } = useStyles();
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(null)
     const { loadUser } = useAuthentication()
@@ -95,11 +70,11 @@ export default function RegistrationTeamCreate() {
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Grid>
                     <Grid.Col md={8}>
-                        <TextInput label="Name" placeholder="My Team Name" classNames={classes} withAsterisk
+                        <TextInput label="Name" placeholder="My Team Name" withAsterisk
                                    {...form.getInputProps('fullname')} />
                     </Grid.Col>
                     <Grid.Col md={4}>
-                        <TextInput label="Abbreviation" placeholder="MTN" classNames={classes} withAsterisk
+                        <TextInput label="Abbreviation" placeholder="MTN" withAsterisk
                                    {...form.getInputProps('shortname')} />
                     </Grid.Col>
                     <Grid.Col md={12}>
@@ -107,7 +82,7 @@ export default function RegistrationTeamCreate() {
                         who you are and why you are using EdgeNet.
                     </Grid.Col>
                     <Grid.Col md={8}>
-                        <TextInput label="Affiliation" placeholder="Université Sorbonne" classNames={classes} withAsterisk
+                        <TextInput label="Affiliation" placeholder="Université Sorbonne" withAsterisk
                                    {...form.getInputProps('affiliation')} />
                     </Grid.Col>
                     <Grid.Col md={4}>
@@ -115,15 +90,15 @@ export default function RegistrationTeamCreate() {
                                    {...form.getInputProps('country')} />
                     </Grid.Col>
                     <Grid.Col md={12}>
-                        <TextInput label="URL" placeholder="https://www.sorbonne-universite.fr" classNames={classes} withAsterisk
+                        <TextInput label="URL" placeholder="https://www.sorbonne-universite.fr" withAsterisk
                                    {...form.getInputProps('url')} />
                     </Grid.Col>
                     <Grid.Col md={12}>
-                        <Textarea label="What is the reason for joining?" minRows={3} autosize placeholder="" classNames={classes} withAsterisk
+                        <Textarea label="What is the reason for joining?" minRows={3} autosize placeholder="" withAsterisk
                                   {...form.getInputProps('joining_reason')} />
                     </Grid.Col>
                     <Grid.Col md={8}>
-                        <Radio.Group label="" classNames={classes} withAsterisk
+                        <Radio.Group label="" withAsterisk
                                      {...form.getInputProps('joining_category')} >
                             <Group mt="xs">
                                 <Radio value="Research" label="Research" />
@@ -139,9 +114,9 @@ export default function RegistrationTeamCreate() {
                     </Grid.Col>
                 </Grid>
             </form>
-                {/*<TextInput label="Zipcode" placeholder="75004" classNames={classes} />*/}
-                {/*<TextInput label="City" placeholder="Paris" classNames={classes} />*/}
-                {/*<TextInput label="Region / State" placeholder="" classNames={classes} />*/}
+                {/*<TextInput label="Zipcode" placeholder="75004" />*/}
+                {/*<TextInput label="City" placeholder="Paris" />*/}
+                {/*<TextInput label="Region / State" placeholder="" />*/}
 
 
 

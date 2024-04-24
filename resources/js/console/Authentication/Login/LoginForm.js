@@ -1,5 +1,4 @@
 import {
-    createStyles,
     Checkbox,
     Button,
     Text,
@@ -11,7 +10,6 @@ import {
 } from "../../UI"
 import { useAuthentication } from "../AuthenticationProvider"
 import {useForm} from "@mantine/form";
-import {GithubIcon} from "@mantine/ds";
 
 
 const GoogleIcon = (props) => {
@@ -53,7 +51,7 @@ const GithubLogin = (props) => {
     return (
         <Button
             {...props}
-            leftIcon={<GithubIcon size={16} />}
+            leftIcon={null}
             sx={(theme) => ({
                 backgroundColor: theme.colors.dark[theme.colorScheme === 'dark' ? 9 : 6],
                 color: '#fff',
@@ -65,47 +63,7 @@ const GithubLogin = (props) => {
     );
 }
 
-const useStyles = createStyles((theme) => ({
-    panel: {
-        // borderRight: `1px solid ${
-        //     theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[3]
-        // }`,
-        minHeight: '100vh',
-        width: '60%',
-        backgroundSize: '80%',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center center',
-        backgroundImage:
-            'url(/images/platforms.png)',
-        // backgroundColor: '#b4d9ef',
-        backgroundColor: '#c9d6e8',
-    },
-    form: {
-        //minHeight: '100vh',
-        // maxWidth: 400,
-        // paddingTop: 80,
-
-        [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
-            maxWidth: '100%',
-        },
-    },
-
-    title: {
-        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-        fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-    },
-
-    logo: {
-        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-        width: 120,
-        display: 'block',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-    },
-}));
-
 export function LoginForm() {
-    const { classes } = useStyles();
     const { login, loading, error } = useAuthentication();
     const form = useForm({
         initialValues: {

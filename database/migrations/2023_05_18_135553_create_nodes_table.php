@@ -17,37 +17,65 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
+            $table->string('auth', 32)
+                ->unique();
+
+            $table->string('code', 6)
+                ->unique();
+
             $table->boolean('enabled')
-                ->default(true);
+                ->default(false);
 
             $table->boolean('installed')
                 ->default(false);
 
+            $table->string('type')
+                ->nullable();
+
             $table->macAddress('mac')
+                ->nullable()
                 ->unique();
 
-            $table->ipAddress('ipv4')
+            $table->boolean('dhcp')
+                ->default(true);
+
+            $table->ipAddress('ip_v4')
                 ->nullable();
 
-            $table->ipAddress('ipv6')
+            $table->ipAddress('gateway_ip_v4')
                 ->nullable();
 
-            $table->ipAddress('gateway_v4')
+            $table->ipAddress('dns1_ip_v4')
+                ->nullable();
+
+            $table->ipAddress('dns2_ip_v4')
                 ->nullable();
 
             $table->ipAddress('public_ip_v4')
                 ->nullable();
 
-            $table->string('hostname')
+            $table->ipAddress('ip_v6')
                 ->nullable();
 
-            $table->string('type')
+            $table->ipAddress('gateway_ip_v6')
+                ->nullable();
+
+            $table->ipAddress('dns1_ip_v6')
+                ->nullable();
+
+            $table->ipAddress('dns2_ip_v6')
+                ->nullable();
+
+            $table->string('hostname')
                 ->nullable();
 
             $table->string('cluster')
                 ->nullable();
 
             $table->text('notes')
+                ->nullable();
+
+            $table->json('info')
                 ->nullable();
 
             $table->bigInteger('user_id')

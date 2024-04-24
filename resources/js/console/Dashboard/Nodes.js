@@ -1,12 +1,36 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Alert, Anchor, Divider, Group, Paper, Stack, Text} from "@mantine/core";
 import {IconAlertTriangle, IconInfoCircle, IconServer} from "@tabler/icons";
 import {useAuthentication} from "../Authentication";
+import axios from "axios";
+import {useEffect, useState} from "react";
+import NodeStatus from "../Node/NodeStatus";
 
 const UserNodes = () => {
     const { user } = useAuthentication();
 
-    if (!user.nodes) {
+
+}
+export default () => {
+    const [ nodes, setNodes ] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        axios.get('/api/nodes')
+            .then(({data}) => {
+                console.log(data)
+                setNodes(data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+        return () => {
+            setNodes([])
+        }
+    }, [])
+
+    if (!nodes) {
         return (
             <Alert icon={<IconInfoCircle size="1rem"/>} title="You don't have any nodes yet!" color="blue">
                 <Text mt="xl">
@@ -16,15 +40,13 @@ const UserNodes = () => {
                 <Text mt="xl">
                     You can add a new node here:
                 </Text>
-                <Anchor component={Link} to="/workspace/create">
+                <Anchor component={Link} to="/nodes/create">
                     Add a new node
                 </Anchor>
 
             </Alert>
         )
     }
-}
-export default () => {
 
     return (
         <Paper shadow="xs" p="md">
@@ -35,6 +57,19 @@ export default () => {
                     <Text size="sm">Your Nodes</Text>
                 </Group>
                 <UserNodes />
+                {nodes.map((node) =>
+                    <Group justify="space-between">
+                        <div>
+                            <Text fz="sm" fw={500}>
+                                <Anchor component={Link} to={"/nodes/" + node.hostname}>{node.hostname}</Anchor>
+                            </Text>
+                            <Text fz="xs" c="dimmed">
+                                {node.public_ip_v4}
+                            </Text>
+                        </div>
+                        <NodeStatus />
+                    </Group>
+                )}
             </Stack>
         </Paper>
     )

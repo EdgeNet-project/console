@@ -14,7 +14,6 @@ import {
     Table, Paper, ActionIcon
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Prism } from '@mantine/prism';
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -109,7 +108,7 @@ users:
                 <Text size="sm" >
                     You can also download a preconfigured Kubernetes config file already setup with this token.
                 </Text>
-                <Prism block p="sm">{token.plainTextToken}</Prism>
+                <Text block p="sm">{token.plainTextToken}</Text>
                 <Group position="apart">
                     <Button disabled={loading} color="gray" onClick={onClose}>
                         Close

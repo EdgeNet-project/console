@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {
     Button,
-    createStyles,
     Group,
     Modal, rem,
     Stack,
@@ -16,40 +15,12 @@ import {useDisclosure} from "@mantine/hooks";
 import {IconBoxPadding as IconWorkspace, IconAlertCircle} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
-import {useParams} from "react-router";
-
-const useStyles = createStyles((theme) => ({
-    root: {
-        position: 'relative',
-    },
-
-    input: {
-        height: rem(54),
-        paddingTop: rem(18),
-    },
-
-    textArea: {
-        paddingTop: rem(18),
-    },
-
-    label: {
-        position: 'absolute',
-        pointerEvents: 'none',
-        fontSize: theme.fontSizes.xs,
-        paddingLeft: theme.spacing.sm,
-        paddingTop: `calc(${theme.spacing.sm} / 2)`,
-        zIndex: 1,
-    },
-}));
 
 export default function CreateWorkspaceDialog({team, parent = null}) {
     const [opened, { open, close }] = useDisclosure(false);
-    const { classes } = useStyles();
-    const theme = useMantineTheme();
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(null)
 
-    const backgroundColor = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
 
     const form = useForm({
         initialValues: {
@@ -121,12 +92,12 @@ export default function CreateWorkspaceDialog({team, parent = null}) {
                             <br />
                             The name must be unique.
                         </Text>
-                        <TextInput label="Label" placeholder="My workspace name" classNames={classes} withAsterisk
+                        <TextInput label="Label" placeholder="My workspace name" withAsterisk
                                    {...form.getInputProps('label')}
                                    onChange={onLabelChange}
                         />
 
-                        <TextInput label="Name" placeholder="my-workspace-name" classNames={classes} withAsterisk
+                        <TextInput label="Name" placeholder="my-workspace-name" withAsterisk
                                    {...form.getInputProps('name')} />
 
                         {error && <Alert icon={<IconAlertCircle size="1rem" />} color="red">

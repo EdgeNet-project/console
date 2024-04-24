@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Model\Node;
 use Illuminate\Http\Request;
 use RenokiCo\PhpK8s\KubernetesCluster;
 
@@ -10,15 +11,32 @@ class NodeController extends Controller
 {
     public function list(Request $request)
     {
-        $cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
+        return response()->json(
+            Node::where('user_id', $request->user()->id)->get()
+        );
+    }
 
-        $cluster->withoutSslChecks();
-        $cluster->withToken($request->bearerToken());
+    public function get(Request $request, Node $node)
+    {
+        return response()->json(
+            $node
+        );
+    }
 
-        $nodes = $cluster
-            ->node()
-            ->all();
+    public function create(Request $request)
+    {
+        $input = $request->validate([
+            'hostname' => 'required',
+            'type' => 'required'
+        ]);
 
-        return response()->json($nodes);
+        $node = Node::create([
+            'type' => $input['type'],
+            'hostname' => $input['hostname'],
+            'user_id' => $request->user()->id
+        ]);
+
+        return response()->json($node);
+
     }
 }

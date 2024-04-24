@@ -4,7 +4,6 @@ import {
 import RegistrationForm from "../../Authentication/Registration/RegistrationForm";
 import UserProfile from "../../Profile/UserProfile";
 import Application from "../index";
-import NodeList from "../../Views/NodeList";
 import Tokens from "../../Views/Tokens";
 import RequestsView from "../../Requests/RequestsView";
 import TenantUsers from "../../Views/TenantUsers";
@@ -13,6 +12,10 @@ import TeamView from "../../Teams/TeamView";
 import WorkspaceView from "../../Workspace/WorkspaceView";
 import TeamRegistration from "../../Teams/TeamRegistration";
 import WorkspaceRegistration from "../../Workspace/WorkspaceRegistration";
+
+import NodeList from "../../Node/NodeList";
+import CreateNode from "../../Node/CreateNode";
+import NodeView from "../../Node/NodeView";
 
 const router = createBrowserRouter([
     {
@@ -49,7 +52,14 @@ const router = createBrowserRouter([
                 path: "/nodes",
                 element: <NodeList />,
             },
-
+            {
+                path: "/nodes/create",
+                element: <CreateNode />,
+            },
+            {
+                path: "/nodes/:hostname",
+                element: <NodeView />,
+            },
             {
                 path: "/team/registration",
                 element: <TeamRegistration />,

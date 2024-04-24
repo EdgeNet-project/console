@@ -17,31 +17,6 @@ import {useForm} from "@mantine/form";
 import axios from "axios";
 import WorkspaceSelect from "./WorkspaceSelect";
 import {useAuthentication} from "../Authentication";
-
-const useStyles = createStyles((theme) => ({
-    root: {
-        position: 'relative',
-    },
-
-    input: {
-        height: rem(54),
-        paddingTop: rem(18),
-    },
-
-    textArea: {
-        paddingTop: rem(18),
-    },
-
-    label: {
-        position: 'absolute',
-        pointerEvents: 'none',
-        fontSize: theme.fontSizes.xs,
-        paddingLeft: theme.spacing.sm,
-        paddingTop: `calc(${theme.spacing.sm} / 2)`,
-        zIndex: 1,
-    },
-}));
-
 const SuccessMessage = ({close}) => {
 
     return (
@@ -58,8 +33,6 @@ const SuccessMessage = ({close}) => {
 
 export default ({workspace = null}) => {
     const [opened, { open, close }] = useDisclosure(false);
-    const { classes } = useStyles();
-    const theme = useMantineTheme();
     const [ error, setError ] = useState()
     const [ success, setSuccess ] = useState(false)
     const [ loading, setLoading ] = useState(false)
@@ -75,7 +48,6 @@ export default ({workspace = null}) => {
         }
     }, [workspace])
 
-    const backgroundColor = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
 
     const form = useForm({
         initialValues: {

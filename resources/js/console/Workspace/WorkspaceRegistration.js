@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {
     Button,
-    createStyles,
     Group,
     Modal, rem,
     Stack,
@@ -19,32 +18,7 @@ import axios from "axios";
 import {useParams} from "react-router";
 import {useNavigate} from "react-router-dom";
 
-const useStyles = createStyles((theme) => ({
-    root: {
-        position: 'relative',
-    },
-
-    input: {
-        height: rem(54),
-        paddingTop: rem(18),
-    },
-
-    textArea: {
-        paddingTop: rem(18),
-    },
-
-    label: {
-        position: 'absolute',
-        pointerEvents: 'none',
-        fontSize: theme.fontSizes.xs,
-        paddingLeft: theme.spacing.sm,
-        paddingTop: `calc(${theme.spacing.sm} / 2)`,
-        zIndex: 1,
-    },
-}));
-
 export default ({team, parent = null}) => {
-    const { classes } = useStyles();
     const theme = useMantineTheme();
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(null)
@@ -131,12 +105,12 @@ export default ({team, parent = null}) => {
                         <br />
                         The name must be unique.
                     </Text>
-                    <TextInput label="Label" placeholder="My workspace name" classNames={classes} withAsterisk
+                    <TextInput label="Label" placeholder="My workspace name" withAsterisk
                                {...form.getInputProps('label')}
                                onChange={onLabelChange}
                     />
 
-                    <TextInput label="Name" placeholder="my-workspace-name" classNames={classes} withAsterisk
+                    <TextInput label="Name" placeholder="my-workspace-name" withAsterisk
                                {...form.getInputProps('name')} />
 
                     {error && <Alert icon={<IconAlertCircle size="1rem" />} color="red">

@@ -1,56 +1,53 @@
 import React from "react";
-import { redirect } from "react-router-dom";
 
-import {AppShell, Container} from "@mantine/core";
-import NavigationHeader from "./NavigationHeader";
-import Navigation from "./Navigation";
+import {AppShell, Burger, Group, Image, Text} from "@mantine/core";
+import {useDisclosure} from "@mantine/hooks";
 
-import {useAuthentication} from "../Authentication";
+import NavigationMenu from "../Navigation/NavigationMenu";
 import {Outlet} from "react-router-dom";
-import Registration from "../Authentication/Views/Registration";
-// import {Workspace} from "./Workspace";
+
+const ApplicationHeader = () => {
+
+    return (
+        <Group sx={{ height: '100%' }} spacing="sm" px={20} position="apart">
+            <Group padding="sm" position="start">
+                <div><Image src="/images/edgenet-logo.png" alt="EdgeNet" height={28} fit="contain" /></div>
+                <Text fw={500} fz="lg">EdgeNet</Text>
+            </Group>
+        </Group>
+    )
+}
 
 const Application = () => {
-    // const { user, isAuthenticated } = useAuthentication()
-    // // User must have verified his email address
-    // if (!user.email_verified_at) {
-    //     // return 'email not verified';
-    //     return <RegistrationSteps />
-    // }
-
-    // Check if user is part of at least one tenant
-    // if (user.tenants.length <= 0) {
-    //     return <>
-    //             <NavigationHeader />
-    //             <Container size="xs" px="xs">
-    //                 <TenantSelect />
-    //             </Container>
-    //         </>;
-    // }
-
-    // Accept AUP
-    // if (!user.aup) {
-    //     return 'AUP'
-    // }
-
-    // if (!isAuthenticated()) {
-    //     return redirect("/");
-    // }
+    const [opened, { toggle }] = useDisclosure();
 
     return (
             <AppShell
-                padding="xs"
-                navbar={<Navigation />}
-                header={<NavigationHeader />}
-                styles={(theme) => ({
-                    main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
-                })}
+                header={{ height: 60 }}
+                navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+                padding="md"
             >
-                <Container><Outlet /></Container>
+
+                <AppShell.Header>
+                    <Group h="100%" px="md">
+                        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+                        <Group padding="sm" position="start">
+                            <div><Image src="/images/edgenet-logo.png" alt="EdgeNet" height={28} fit="contain" /></div>
+                            <Text fw={500} fz="lg">EdgeNet</Text>
+                        </Group>
+                    </Group>
+                </AppShell.Header>
+
+
+                <AppShell.Navbar>
+                    <NavigationMenu />
+                </AppShell.Navbar>
+
+                <AppShell.Main><Outlet /></AppShell.Main>
+
             </AppShell>
     )
 
-    // <RouterProvider router={router} />
 }
 
 export default Application;

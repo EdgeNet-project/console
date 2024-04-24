@@ -2,61 +2,19 @@ import React, {useState} from "react";
 import {
     UnstyledButton,
     Text,
-    SimpleGrid,
-    createStyles,
-    rem, Radio, Divider
+    SimpleGrid, Radio, Divider
 } from '@mantine/core';
 import {IconUsers, IconSquarePlus} from "@tabler/icons";
 
 import RegistrationTeamJoin from "./RegistrationTeamJoin";
 import RegistrationTeamCreate from "./RegistrationTeamCreate";
 
-const useStyles = createStyles((theme, { checked }) => ({
-    button: {
-        display: 'flex',
-        alignItems: 'center',
-        width: '100%',
-        transition: 'background-color 150ms ease, border-color 150ms ease',
-        border: `${rem(1)} solid ${
-            checked
-                ? theme.fn.variant({ variant: 'outline', color: theme.primaryColor }).border
-                : theme.colorScheme === 'dark'
-                    ? theme.colors.dark[8]
-                    : theme.colors.gray[3]
-        }`,
-        borderRadius: theme.radius.sm,
-        padding: theme.spacing.sm,
-        backgroundColor: checked
-            ? theme.fn.variant({ variant: 'light', color: theme.primaryColor }).background
-            : theme.colorScheme === 'dark'
-                ? theme.colors.dark[8]
-                : theme.white,
-    },
-
-    body: {
-        flex: 1,
-        marginLeft: theme.spacing.md,
-    },
-}));
-//
-// interface ImageCheckboxProps {
-//     checked?: boolean;
-//     defaultChecked?: boolean;
-//     onChange?(checked: boolean): void;
-//     title: string;
-//     description: string;
-//     image: string;
-// }
-
 function RegistrationTeamOption({ value, checked, handleChange, title, description, icon}) {
-    const { classes, cx } = useStyles({ checked: checked });
 
     return (
-        <UnstyledButton
-            onClick={() => handleChange(value)}
-            className={classes.button}>
+        <UnstyledButton onClick={() => handleChange(value)} >
             {icon}
-            <div className={classes.body}>
+            <div>
                 <Text weight={500} size="sm" sx={{ lineHeight: 1 }}>
                     {title}
                 </Text>

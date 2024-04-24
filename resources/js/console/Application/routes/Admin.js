@@ -4,7 +4,7 @@ import {
 import RegistrationForm from "../../Authentication/Registration/RegistrationForm";
 import UserProfile from "../../Profile/UserProfile";
 import Application from "../index";
-import NodeList from "../../Views/NodeList";
+import NodeList from "../../Node/NodeList";
 import Tokens from "../../Views/Tokens";
 import JoinRequestsView from "../../Requests/JoinRequestsView";
 import TenantUsers from "../../Views/TenantUsers";
