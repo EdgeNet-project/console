@@ -2,12 +2,9 @@ import {
     Checkbox,
     Button,
     Text,
+    PasswordInput, TextInput,
     Anchor, Stack, Divider, Grid, Image, Container, Center, Group
 } from '@mantine/core';
-import {
-    TextInput,
-    PasswordInput
-} from "../../UI"
 import { useAuthentication } from "../AuthenticationProvider"
 import {useForm} from "@mantine/form";
 
