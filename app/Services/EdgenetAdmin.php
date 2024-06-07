@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Illuminate\Container\Container;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
-use RenokiCo\PhpK8s\KubernetesCluster;
 
 class EdgenetAdmin {
 

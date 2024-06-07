@@ -148,7 +148,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapBootRoutes()
     {
-        Route::domain('boot.edge-net.io')
+        Route::domain(config('edgenet.boot.server'))
             ->middleware('boot')
             ->namespace($this->namespace . '\Boot')
             ->group(base_path('routes/boot.php'));

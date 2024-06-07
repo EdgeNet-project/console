@@ -5,6 +5,7 @@ import axios from "axios";
 import Nodes from "../Dashboard/Nodes";
 import NodeStatus from "./NodeStatus";
 import {IconInfoCircle} from "@tabler/icons";
+import NodeRawInfo from "./NodeRawInfo";
 
 const NodeView = () => {
     const { hostname } = useParams();
@@ -55,6 +56,7 @@ const NodeView = () => {
             <Text fz="sm" mt="xs">
 
             </Text>
+            <NodeRawInfo node={node} />
         </Container>
     )
 }

@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'boot' => [
+        // The boot server is used to boot/install nodes.
+        'server' => env('EDGENET_BOOT_SERVER', 'boot.edge-net.io')
+    ],
+
     'cluster' => [
         'url' => env('CLUSTER_URL', 'https://hades.edge-net.io:6443'),
 

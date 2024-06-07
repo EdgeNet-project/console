@@ -1,10 +1,24 @@
-import {Table, Progress, Anchor, Text, Group, ScrollArea, Badge, Container, Button, Title} from '@mantine/core';
+import {
+    Table,
+    Progress,
+    Anchor,
+    Text,
+    Group,
+    ScrollArea,
+    Badge,
+    Container,
+    Button,
+    Title,
+    ActionIcon
+} from '@mantine/core';
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {IconServer} from "@tabler/icons";
+import {IconInfoCircle, IconServer} from "@tabler/icons";
 import {Link, useNavigate} from "react-router-dom";
 import NodeStatus from "./NodeStatus";
 import NodeType from "./NodeType";
+import NodeEnabled from "./NodeEnabled";
+import NodeInstalled from "./NodeInstalled";
 
 
 const NodeAddresses = ({addresses}) => addresses.map((address, i) => <div key={'n-address-'+i}>
@@ -42,7 +56,7 @@ export default function NodeList() {
     }, [])
 
     const rows = nodes.map((item) => (
-        <Table.Tr key={item.name}>
+        <Table.Tr key={'node-' + item.id}>
             <Table.Td>
                 <Group gap="sm">
                     <NodeType type={item.type} />
@@ -51,13 +65,22 @@ export default function NodeList() {
                             <Anchor component={Link} to={"/nodes/" + item.hostname}>{item.hostname}</Anchor>
                         </Text>
                         <Text fz="xs" c="dimmed">
-                            {item.public_ip_v4}
+                            {item.ip_v4}
+                        </Text>
+                        <Text fz="xs" c="dimmed">
+                            {item.ip_v6}
                         </Text>
                     </div>
                 </Group>
             </Table.Td>
 
             <Table.Td>
+                <Text fz="sm" fw={500}>
+                    {item.type}
+                </Text>
+                <Text fz="xs" c="dimmed">
+
+                </Text>
                 {/*<Select*/}
                 {/*    data={rolesData}*/}
                 {/*    defaultValue={item.role}*/}
@@ -67,7 +90,10 @@ export default function NodeList() {
             </Table.Td>
             <Table.Td>{item.lastActive}</Table.Td>
             <Table.Td>
-                <NodeStatus status={item.status} />
+                <Group gap="xs">
+                    <NodeEnabled enabled={item.enabled}/>
+                    <NodeInstalled installed={item.installed} />
+                </Group>
             </Table.Td>
         </Table.Tr>
     ));

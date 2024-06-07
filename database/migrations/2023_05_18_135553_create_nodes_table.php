@@ -17,10 +17,12 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('auth', 32)
+            $table->string('auth', 6)
                 ->unique();
 
-            $table->string('code', 6)
+            $table->string('token_id', 6)
+                ->unique();
+            $table->string('token_secret', 16)
                 ->unique();
 
             $table->boolean('enabled')
@@ -32,47 +34,19 @@ return new class extends Migration
             $table->string('type')
                 ->nullable();
 
-            $table->macAddress('mac')
-                ->nullable()
-                ->unique();
-
-            $table->boolean('dhcp')
-                ->default(true);
-
             $table->ipAddress('ip_v4')
-                ->nullable();
-
-            $table->ipAddress('gateway_ip_v4')
-                ->nullable();
-
-            $table->ipAddress('dns1_ip_v4')
-                ->nullable();
-
-            $table->ipAddress('dns2_ip_v4')
-                ->nullable();
-
-            $table->ipAddress('public_ip_v4')
                 ->nullable();
 
             $table->ipAddress('ip_v6')
                 ->nullable();
 
-            $table->ipAddress('gateway_ip_v6')
-                ->nullable();
-
-            $table->ipAddress('dns1_ip_v6')
-                ->nullable();
-
-            $table->ipAddress('dns2_ip_v6')
-                ->nullable();
-
             $table->string('hostname')
                 ->nullable();
 
-            $table->string('cluster')
+            $table->text('notes')
                 ->nullable();
 
-            $table->text('notes')
+            $table->json('config')
                 ->nullable();
 
             $table->json('info')
