@@ -8,9 +8,11 @@ use App\Model\NodeStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 use Stevebauman\Location\Facades\Location;
 use Symfony\Component\Yaml\Yaml;
+use \Ovh\Api;
 
 function pem2der($pem_data) {
     $begin = "KEY-----";
@@ -145,9 +147,40 @@ class NodeController extends Controller
                 'longitude' => $position->longitude,
                 'timezone' => $position->timezone,
             ];
+
+            $node->name = Str::lower($position->countryCode . '-' . $position->regionCode . '-' . Str::random(3));
+
+            $node->hostname = $node->name . '.edge-net.io';
+
+            // this should go in a job
+            // https://eu.api.ovh.com/console/?section=%2Fdomain&branch=v1#post-/domain/zone/-zoneName-/record
+            try {
+                $ovh = new Api(
+                    env('OVH_APP_KEY'),
+                    env('OVH_APP_SECRET'),
+                    'ovh-eu',
+                    env('OVH_CONSUMER_KEY'));
+
+                Log::info('OVH Request to /domain/zone/'.env('OVH_DOMAIN').'/record');
+
+                $ovh->post('/domain/zone/'.env('OVH_DOMAIN').'/record', [
+                    'fieldType' => 'A', //  (type: )
+                    'subDomain' => $node->name, // Record subDomain (type: string, nullable)
+                    'target' => $node->ip_v4, // Target of the record (type: string)
+                    'ttl' => 3600,
+                ]);
+            } catch (GuzzleHttp\Exception\ClientException $e) {
+                $response = $e->getResponse();
+                $responseBodyAsString = $response->getBody()->getContents();
+                Log::error($responseBodyAsString);
+            } catch (\Exception $e) {
+                Log::error("OVH API ERROR", ['message' => $e->getMessage()]);
+            }
         } else {
             // Failed retrieving position.
             //return response()->json(['message' => 'failed position'], 500);
+            $node->name = $node->ip_v4;
+
         }
         $node->save();
 

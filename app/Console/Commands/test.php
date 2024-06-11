@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
+use Ovh\Api;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 
 class test extends Command
@@ -29,24 +31,47 @@ class test extends Command
     public function handle()
     {
 
+        try {
+            $ovh = new Api(
+                env('OVH_APP_KEY'),
+                env('OVH_APP_SECRET'),
+                'ovh-eu',
+                env('OVH_CONSUMER_KEY'));
 
-        foreach (K8s::getAllConfigMaps() as $cm) {
-            $cm->getName();
-        }
+            $this->info('OVH Request to /domain/zone/'.env('OVH_DOMAIN').'/record');
 
-        $cluster = K8s::getCluster();
-
-        $nodes = $cluster->node()->all();
-
-        foreach ($nodes as $node) {
-            dd([
-                $node->getInfo(),
-                $node->getImages(),
-            $node->getCapacity(),
-            $node->getAllocatableInfo(),
+            $ovh->post('/domain/zone/'.env('OVH_DOMAIN').'/record', [
+                'fieldType' => 'A', //  (type: )
+                'subDomain' => 'test-node-name', // Record subDomain (type: string, nullable)
+                'target' => "132.227.123.70", // Target of the record (type: string)
+                'ttl' => 3600,
             ]);
-
+        } catch (GuzzleHttp\Exception\ClientException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $this->error($responseBodyAsString);
+        } catch (\Exception $e) {
+            $this->error("OVH API ERROR", ['message' => $e->getMessage()]);
         }
+
+
+//        foreach (K8s::getAllConfigMaps() as $cm) {
+//            $cm->getName();
+//        }
+//
+//        $cluster = K8s::getCluster();
+//
+//        $nodes = $cluster->node()->all();
+//
+//        foreach ($nodes as $node) {
+//            dd([
+//                $node->getInfo(),
+//                $node->getImages(),
+//            $node->getCapacity(),
+//            $node->getAllocatableInfo(),
+//            ]);
+//
+//        }
 
         // Create a new instance of KubernetesCluster.
 //        $cluster = KubernetesCluster::fromUrl(

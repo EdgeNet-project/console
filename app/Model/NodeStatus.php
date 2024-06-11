@@ -10,6 +10,7 @@ class NodeStatus {
     const WARNING = "warning";
     const ERROR = "error";
     const DISABLED = "disabled";
+    const UNKNOWN = "unknown";
     const DEBUG = "debug";
 
     static function validateStatus($status)
@@ -20,6 +21,7 @@ class NodeStatus {
             NodeStatus::OK,
             NodeStatus::WARNING,
             NodeStatus::DISABLED,
+            NodeStatus::UNKNOWN,
             NodeStatus::DEBUG,
         ]);
     }

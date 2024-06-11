@@ -33,6 +33,12 @@ const NodeStatus = ({status}) => {
                     Installing
                 </Badge>
             )
+        case 'unknown':
+            return (
+                <Badge color="gray" variant="light">
+                    Unknown
+                </Badge>
+            )
         default:
         case '':
             return (

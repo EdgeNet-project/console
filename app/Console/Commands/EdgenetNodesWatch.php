@@ -47,6 +47,8 @@ class EdgenetNodesWatch extends Command
 
                         if ($c['status'] == 'True') {
                             $l_node->status = NodeStatus::OK;
+                        } else if ($c['status'] == 'Unknown') {
+                            $l_node->status = NodeStatus::UNKNOWN;
                         } else {
                             $l_node->status = NodeStatus::ERROR;
                         }
