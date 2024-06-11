@@ -75,8 +75,7 @@ EOF
 # Response will contain the kubelet configuration
 
 kubeadm_cmd=$(remote_post "nodes/register" "$info_json")
-echo $kubeadm_cmd
-exit
+
 @include('boot.setup.packages')
 
 @include('boot.setup.modules')

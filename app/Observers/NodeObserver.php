@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Model\Node;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class NodeObserver
@@ -53,7 +54,10 @@ class NodeObserver
      */
     public function updated(Node $node)
     {
-        //
+        // Node Status
+        if ($node->isDirty('status')) {
+            Log::info($node->hostname . " changed status to " . $node->status);
+        }
     }
 
     /**

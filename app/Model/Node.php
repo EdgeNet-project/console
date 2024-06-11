@@ -16,14 +16,14 @@ class Node extends Model
     ];
 
     protected $fillable = [
-        'status', 'type', 'hostname', 'ip_v4', 'ip_v6',
-        'cluster', 'notes', 'config', 'info', 'user_id'
+        'status', 'type', 'ip_v4', 'ip_v6', 'asn', 'hostname', 'name',
+        'notes', 'config', 'location', 'info',
+        'user_id'
     ];
 
     protected $casts = [
-        'enabled' => 'boolean',
-        'installed' => 'boolean',
         'info' => 'array',
+        'location' => 'array',
         'config' => 'array'
     ];
 

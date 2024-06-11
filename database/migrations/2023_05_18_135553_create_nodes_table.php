@@ -52,7 +52,7 @@ return new class extends Migration
             $table->json('config')
                 ->nullable();
 
-            $table->string('location')
+            $table->json('location')
                 ->nullable();
 
             $table->json('info')

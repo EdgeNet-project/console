@@ -54,11 +54,10 @@ class NodeController extends Controller
      */
     public function script(Node $node)
     {
-        if ($node->status && $node->status !== NodeStatus::TO_INSTALL) {
+        if ($node->status && $node->status == NodeStatus::OK) {
             return response()->view('boot.message', [
                 'message' => 'Node is already installed'
-            ])
-                ->header('Content-Type', 'text/plain');
+            ])->header('Content-Type', 'text/plain');
         }
 
         return response()->view('boot.kubeadm.index', [
