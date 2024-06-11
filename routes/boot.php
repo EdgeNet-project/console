@@ -19,11 +19,19 @@ Route::group([
     'controller' => NodeController::class,
     'prefix' => 'nodes'
 ], function () {
-    Route::get('/{node:auth}', 'boot')
+    Route::get('/{node:auth}', 'script')
         ->name('boot.script');
 
-    Route::post('/', 'register')
-        ->name('boot.register');
+    Route::group([
+        'middleware' => \App\Http\Middleware\AuthenticateNode::class
+    ], function() {
+
+        Route::post('/', 'register')
+            ->name('boot.register');
+
+        Route::post('/', 'log')
+            ->name('boot.log');
+    });
 
 //    Route::patch('/', 'update');
 //    Route::post('/', 'register');

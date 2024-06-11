@@ -9,6 +9,11 @@ fi
 
 . /etc/os-release
 
+@include('boot.common.remote')
+
+@include('boot.common.log')
+
+
 ##
 # KVM if it is a VM
 platform_name=$(cat /sys/devices/virtual/dmi/id/product_name)
@@ -24,6 +29,8 @@ hostname_ip=$(hostname -i)
 
 ip_address=$(ip addr show $(ip route | awk '/default/ { print $5 }') | grep "inet" | head -n 1 | awk '/inet/ {print $2}' | cut -d'/' -f1)
 gateway=$(ip r | grep default | awk '{print $3}')
+
+log_info "Node installation is starting" "installing"
 
 ##
 # GET IP information
@@ -69,11 +76,7 @@ EOF
 # Sends info to console
 # Response will contain the kubelet configuration
 
-echo $info_json | curl \
- --header "Content-Type: application/json" \
- --header 'Accept: application/json' \
- --data @- \
- https://boot.edge-net.io/nodes > /tmp/kubeadm
+kubeadm_cmd=$(remote_post "nodes" $info_json)
 
 @include('boot.setup.packages')
 
@@ -87,5 +90,10 @@ echo $info_json | curl \
 
 @include('boot.setup.firewall')
 
-chmod +x /tmp/kubeadm
-/tmp/kubeadm
+log_info "Node installation finishing, joining the cluster"
+
+##
+# executes kubeadm and join the cluster
+$kubeadm_cmd
+
+log_info "Node installation complete"

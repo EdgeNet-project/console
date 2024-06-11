@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Boot;
 
 use App\Http\Controllers\Controller;
 use App\Model\Node;
+use App\Model\NodeStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -28,13 +29,74 @@ function der2pem($der_data) {
 
 class NodeController extends Controller
 {
-    public function boot(Node $node)
+
+
+    /**
+     * @param Node $node
+     * @return \Illuminate\Http\Response
+     *
+     * Node authentication
+     */
+//    public function auth(Node $node)
+//    {
+//
+//        return response()
+//            ->view($node->createToken('node-authentication', ['node:management'])
+//                ->plainTextToken)
+//            ->header('Content-Type', 'text/plain');
+//    }
+
+    /**
+     * @param Node $node
+     * @return \Illuminate\Http\Response
+     *
+     * Renders the shell script used to boot/setup the node
+     */
+    public function script(Node $node)
     {
+        if ($node->status !== NodeStatus::TO_INSTALL) {
+            return response()->view('boot.message', [
+                'message' => 'Node is already installed'
+            ])
+                ->header('Content-Type', 'text/plain');
+        }
+
         return response()->view('boot.kubeadm.index', [
             'node' => $node
         ])->header('Content-Type', 'text/plain');
     }
 
+    public function log(Request $request)
+    {
+        $data = $request->validate([
+            'severity' => 'required|string',
+            'message' => 'required|string',
+            'status' => 'string',
+        ]);
+
+        $node = $request->get('node');
+
+        activity('nodes')
+            ->performedOn($node)
+            //->causedBy($user)
+            ->withProperties(['severity' => $data['severity']])
+            ->log($data['message']);
+
+        if (($data['status']) && (in_array(
+            [NodeStatus::INSTALLING, NodeStatus::OK], $data['status'],
+        ))) {
+            $node->status = $data['status'];
+        }
+
+        return response('');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     *
+     * STAGE 1: registers the node, uses the auth code to obtain a token
+     */
     public function register(Request $request)
     {
         $data = $request->validate([

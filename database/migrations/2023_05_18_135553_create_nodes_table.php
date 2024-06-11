@@ -25,11 +25,8 @@ return new class extends Migration
             $table->string('token_secret', 16)
                 ->unique();
 
-            $table->boolean('enabled')
-                ->default(false);
-
-            $table->boolean('installed')
-                ->default(false);
+            $table->string('status')
+                ->nullable();
 
             $table->string('type')
                 ->nullable();
@@ -38,6 +35,15 @@ return new class extends Migration
                 ->nullable();
 
             $table->ipAddress('ip_v6')
+                ->nullable();
+
+            $table->string('asn')
+                ->nullable();
+
+            $table->string('country')
+                ->nullable();
+
+            $table->string('name')
                 ->nullable();
 
             $table->string('hostname')

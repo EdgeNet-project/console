@@ -4,6 +4,9 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Installs some useful packages
+dnf install -y jq
+
 # Containerd
 dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 dnf makecache

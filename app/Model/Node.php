@@ -4,6 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 class Node extends Model
 {
@@ -14,7 +15,7 @@ class Node extends Model
     ];
 
     protected $fillable = [
-        'type', 'hostname', 'ip_v4', 'ip_v6',
+        'status', 'type', 'hostname', 'ip_v4', 'ip_v6',
         'cluster', 'notes', 'config', 'info', 'user_id'
     ];
 

@@ -17,9 +17,6 @@ import {IconInfoCircle, IconServer} from "@tabler/icons";
 import {Link, useNavigate} from "react-router-dom";
 import NodeStatus from "./NodeStatus";
 import NodeType from "./NodeType";
-import NodeEnabled from "./NodeEnabled";
-import NodeInstalled from "./NodeInstalled";
-
 
 const NodeAddresses = ({addresses}) => addresses.map((address, i) => <div key={'n-address-'+i}>
         <i>{address.type}</i> {address.address}</div>)
@@ -91,8 +88,7 @@ export default function NodeList() {
             <Table.Td>{item.lastActive}</Table.Td>
             <Table.Td>
                 <Group gap="xs">
-                    <NodeEnabled enabled={item.enabled}/>
-                    <NodeInstalled installed={item.installed} />
+                    <NodeStatus status={item.status}/>
                 </Group>
             </Table.Td>
         </Table.Tr>

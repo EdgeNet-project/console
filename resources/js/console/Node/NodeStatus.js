@@ -3,25 +3,44 @@ import {Badge} from "@mantine/core";
 const NodeStatus = ({status}) => {
 
     switch(status) {
-        case 'active':
+        case 'ok':
             return (
-                <Badge variant="light">
-                    Active
+                <Badge color="green" variant="light">
+                    Running
                 </Badge>
             )
-        case 'disabled':
+        case 'error':
             return (
-                <Badge color="gray" variant="light">
-                    Disabled
+                <Badge color="red" variant="light">
+                    Error
                 </Badge>
             )
-        default:
-        case '':
+        case 'warning':
+            return (
+                <Badge color="orange" variant="light">
+                    Warning
+                </Badge>
+            )
+        case 'to install':
             return (
                 <Badge variant="light">
                     To install
                 </Badge>
             )
+        case 'installing':
+            return (
+                <Badge variant="light">
+                    Installing
+                </Badge>
+            )
+        default:
+        case '':
+            return (
+                <Badge color="gray" variant="light">
+                    Disabled
+                </Badge>
+            )
+
     }
 
 }
