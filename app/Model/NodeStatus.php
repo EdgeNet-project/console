@@ -11,4 +11,16 @@ class NodeStatus {
     const ERROR = "error";
     const DISABLED = "disabled";
     const DEBUG = "debug";
+
+    static function validateStatus($status)
+    {
+        return in_array($status, [
+            NodeStatus::TO_INSTALL,
+            NodeStatus::INSTALLING,
+            NodeStatus::OK,
+            NodeStatus::WARNING,
+            NodeStatus::DISABLED,
+            NodeStatus::DEBUG,
+        ]);
+    }
 }

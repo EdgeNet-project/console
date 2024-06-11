@@ -4,11 +4,12 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Node extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $hidden = [
         'auth', 'token_id', 'token_secret'
@@ -33,6 +34,13 @@ class Node extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['status']);
+        // Chain fluent methods for configuration options
     }
 
     public function getTokenAttribute()

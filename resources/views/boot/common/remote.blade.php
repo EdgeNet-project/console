@@ -1,5 +1,5 @@
 function remote_get() {
-    curl \
+    curl -s \
     --header "Content-Type: application/json" \
     --header 'Accept: application/json' \
     --header "Authorization: Bearer {{$node->auth}}" \
@@ -8,7 +8,7 @@ function remote_get() {
 }
 
 function remote_post() {
-    echo $2 | curl \
+    echo "$2" | curl -s \
     --header "Content-Type: application/json" \
     --header 'Accept: application/json' \
     --header "Authorization: Bearer {{$node->auth}}" \

@@ -72,6 +72,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'nodes'], function () {
         Route::get('/', [ NodeController::class, 'list' ]);
         Route::get('/{node:hostname}', [ NodeController::class, 'get' ]);
+        Route::get('/{node:hostname}/activity', [ NodeController::class, 'activity' ]);
         Route::post('/', [ NodeController::class, 'create' ]);
     });
 });

@@ -54,7 +54,7 @@ class NodeController extends Controller
      */
     public function script(Node $node)
     {
-        if ($node->status !== NodeStatus::TO_INSTALL) {
+        if ($node->status && $node->status !== NodeStatus::TO_INSTALL) {
             return response()->view('boot.message', [
                 'message' => 'Node is already installed'
             ])
@@ -66,12 +66,17 @@ class NodeController extends Controller
         ])->header('Content-Type', 'text/plain');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     *
+     * Registers node activity
+     */
     public function log(Request $request)
     {
         $data = $request->validate([
             'severity' => 'required|string',
-            'message' => 'required|string',
-            'status' => 'string',
+            'message' => 'required|string'
         ]);
 
         $node = $request->get('node');
@@ -82,12 +87,6 @@ class NodeController extends Controller
             ->withProperties(['severity' => $data['severity']])
             ->log($data['message']);
 
-        if (($data['status']) && (in_array(
-            [NodeStatus::INSTALLING, NodeStatus::OK], $data['status'],
-        ))) {
-            $node->status = $data['status'];
-        }
-
         return response('');
     }
 
@@ -95,12 +94,11 @@ class NodeController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      *
-     * STAGE 1: registers the node, uses the auth code to obtain a token
+     *
      */
     public function register(Request $request)
     {
         $data = $request->validate([
-            'auth' => 'required',
             'host' => 'required|array',
             'ip' => 'required|array'
         ]);
@@ -110,27 +108,54 @@ class NodeController extends Controller
             'ip' => $data['ip']
         ]);
 
-        $node = Node::where('auth', $data['auth'])->first();
-        if (!$node) {
-            return response()->json('', 404);
-        }
-
+        $node = $request->get('node');
+        $node->status = NodeStatus::INSTALLING;
         $node->info = [
             'host' => $data['host'],
             'ip' => $data['ip']
         ];
         $node->ip_v4 = $data['host']['network']['ip'];
+
+
+        if ($position = Location::get($request->ip())) {
+            /*
+             * {
+             * "ip":"2001:660:3302:287b:5054:ff:fefb:472e",
+             * "driver":"Stevebauman\\Location\\Drivers\\IpData",
+             * "countryName":"France",
+             * "currencyCode":"EUR",
+             * "countryCode":"FR",
+             * "regionCode":"IDF",
+             * "regionName":"Île-de-France",
+             * "cityName":"Montreuil",
+             * "zipCode":"93100",
+             * "isoCode":null,
+             * "postalCode":"93100",
+             * "latitude":"48.86190032959",
+             * "longitude":"2.4505999088287",
+             * "metroCode":null,
+             * "areaCode":null,
+             * "timezone":"Europe/Paris"}
+             */
+            $node->location = [
+                'countryName' => $position->countryName,
+                'countryCode' => $position->countryCode,
+                'regionName' => $position->regionName,
+                'regionCode' => $position->regionCode,
+                'latitude' => $position->latitude,
+                'longitude' => $position->longitude,
+                'timezone' => $position->timezone,
+            ];
+        } else {
+            // Failed retrieving position.
+            //return response()->json(['message' => 'failed position'], 500);
+        }
         $node->save();
 
-//        if ($position = Location::get($node->ip_v4)) {
-//            // Successfully retrieved position.
-//            //print_r($position);
-//            //echo $position->countryName;
-//        } else {
-//            // Failed retrieving position.
-//            return response()->json(['message' => 'failed position'], 500);
-//        }
-
+        /**
+         * Create a bootstrap token so that the node can authenticate
+         * and join the cluster.
+         */
         $token = K8s::getCluster()->fromYaml(
 'apiVersion: v1
 kind: Secret
@@ -147,19 +172,8 @@ stringData:
   usage-bootstrap-signing: "true"
   auth-extra-groups: system:bootstrappers:kubeadm:default-node-token'
 );
-//
         $token->createOrUpdate();
 
-        /**
-         * Kubernetes API server and CA certificate needed by the kubelet config
-         */
-//        $contextCreate = stream_context_create([
-//            'ssl' => [
-//                'capture_peer_cert' => true,
-//                'allow_self_signed' => false,
-//                'verify_peer' => false
-//            ]
-//        ]);
 
         /**
          * This procedure creates the CA key hash needed for CA pinning.

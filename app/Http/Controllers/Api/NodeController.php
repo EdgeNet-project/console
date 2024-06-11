@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Node;
 use Illuminate\Http\Request;
 use RenokiCo\PhpK8s\KubernetesCluster;
+use Spatie\Activitylog\Models\Activity;
 
 class NodeController extends Controller
 {
@@ -20,6 +21,13 @@ class NodeController extends Controller
     {
         return response()->json(
             $node
+        );
+    }
+
+    public function activity(Request $request, Node $node)
+    {
+        return response()->json(
+            $node->activities
         );
     }
 

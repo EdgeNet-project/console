@@ -40,9 +40,6 @@ return new class extends Migration
             $table->string('asn')
                 ->nullable();
 
-            $table->string('country')
-                ->nullable();
-
             $table->string('name')
                 ->nullable();
 
@@ -53,6 +50,9 @@ return new class extends Migration
                 ->nullable();
 
             $table->json('config')
+                ->nullable();
+
+            $table->string('location')
                 ->nullable();
 
             $table->json('info')

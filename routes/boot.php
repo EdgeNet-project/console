@@ -26,10 +26,10 @@ Route::group([
         'middleware' => \App\Http\Middleware\AuthenticateNode::class
     ], function() {
 
-        Route::post('/', 'register')
+        Route::post('/register', 'register')
             ->name('boot.register');
 
-        Route::post('/', 'log')
+        Route::post('/log', 'log')
             ->name('boot.log');
     });
 

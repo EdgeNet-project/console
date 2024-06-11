@@ -24,6 +24,10 @@ function syntaxHighlight(json) {
 
 const NodeRawInfo = ({node}) => {
 
+    if (!node.info) {
+        return null;
+    }
+
     return (
             <Code block>
                 {JSON.stringify(node.info, null, 2)}

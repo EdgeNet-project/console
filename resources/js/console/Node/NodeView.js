@@ -6,7 +6,8 @@ import Nodes from "../Dashboard/Nodes";
 import NodeStatus from "./NodeStatus";
 import {IconInfoCircle} from "@tabler/icons";
 import NodeRawInfo from "./NodeRawInfo";
-import NodeInstall from "./View/NodeInstall";
+import NodeInstall from "./NodeInstall";
+import NodeActivity from "./NodeActivity";
 
 const NodeView = () => {
     const { hostname } = useParams();
@@ -44,10 +45,10 @@ const NodeView = () => {
             </Text>
 
             <NodeInstall node={node} />
-            <Text fz="sm" mt="xs">
 
-            </Text>
             <NodeRawInfo node={node} />
+
+            <NodeActivity node={node} />
         </Container>
     )
 }

@@ -30,7 +30,7 @@ hostname_ip=$(hostname -i)
 ip_address=$(ip addr show $(ip route | awk '/default/ { print $5 }') | grep "inet" | head -n 1 | awk '/inet/ {print $2}' | cut -d'/' -f1)
 gateway=$(ip r | grep default | awk '{print $3}')
 
-log_info "Node installation is starting" "installing"
+#log_info "Node installation is starting"
 
 ##
 # GET IP information
@@ -38,7 +38,6 @@ ip_info_json=$(curl -sL ip.guide/${hostname_ip})
 
 info_json=$(cat <<EOF
 {
-  "auth" : "{{$node->auth}}",
   "ip" : ${ip_info_json},
   "host" :
   {
@@ -71,13 +70,13 @@ info_json=$(cat <<EOF
 EOF
 )
 
-
 ##
 # Sends info to console
 # Response will contain the kubelet configuration
 
-kubeadm_cmd=$(remote_post "nodes" $info_json)
-
+kubeadm_cmd=$(remote_post "nodes/register" "$info_json")
+echo $kubeadm_cmd
+exit
 @include('boot.setup.packages')
 
 @include('boot.setup.modules')
