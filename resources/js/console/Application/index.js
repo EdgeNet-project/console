@@ -1,6 +1,6 @@
 import React from "react";
 
-import {AppShell, Burger, Container, Group, Image, Text} from "@mantine/core";
+import {Anchor, AppShell, Burger, Container, Group, Image, Text, UnstyledButton} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 
 import NavigationMenu from "../Navigation/NavigationMenu";
@@ -29,11 +29,17 @@ const Application = () => {
             >
 
                 <AppShell.Header>
-                    <Group h="100%" px="md">
+                    <Group h="100%" px="md" justify="space-between">
                         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
                         <Group padding="sm" position="start">
                             <div><Image src="/images/edgenet-logo.png" alt="EdgeNet" height={28} fit="contain" /></div>
                             <Text fw={500} fz="lg">EdgeNet</Text>
+                        </Group>
+                        <Group ml="xl" gap="lg" visibleFrom="sm">
+                            <Anchor target="_blank" href="">Home</Anchor>
+                            <Anchor target="_blank" href="">Blog</Anchor>
+                            <Anchor target="_blank" href="">Contacts</Anchor>
+                            <Anchor target="_blank" href="">Support</Anchor>
                         </Group>
                     </Group>
                 </AppShell.Header>

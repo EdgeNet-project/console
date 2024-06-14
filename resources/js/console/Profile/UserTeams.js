@@ -70,7 +70,7 @@ export default () => {
             </ScrollArea>
             <Divider my="md" />
             <Group>
-            <Button>Create a new Team</Button>
+                <Button>Create a new Team</Button>
             </Group>
         </Card>
     )

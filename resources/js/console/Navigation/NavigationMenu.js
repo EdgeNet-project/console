@@ -7,7 +7,18 @@ import {
     IconServer,
     IconKey, IconUser, IconDashboard, IconChevronRight, IconSwitchHorizontal, IconLogout
 } from "@tabler/icons";
-import {Group, ThemeIcon, UnstyledButton, Text, useMantineTheme, Divider, Code, Anchor, NavLink} from "@mantine/core";
+import {
+    Group,
+    ThemeIcon,
+    UnstyledButton,
+    Text,
+    useMantineTheme,
+    Divider,
+    Code,
+    Anchor,
+    NavLink,
+    Burger, Image
+} from "@mantine/core";
 import {NavLink as RouterNavLink, matchPath, useMatch, useMatches} from "react-router-dom";
 import {useAuthentication} from "../Authentication";
 import NavigationTeams from "./NavigationTeams";
