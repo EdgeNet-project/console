@@ -27,7 +27,7 @@ export default ({node}) => {
     const [ activity, setActivity ] = useState();
 
     useEffect(() => {
-        axios.get('/api/nodes/' + node.hostname + '/activity')
+        axios.get('/api/nodes/' + node.id + '/activity')
             .then(({data}) => {
                 console.log(data)
                 setActivity(data)

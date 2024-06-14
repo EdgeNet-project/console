@@ -40,7 +40,6 @@ export default function NodeList() {
     useEffect(() => {
         axios.get('/api/nodes')
             .then(({data}) => {
-                console.log(data)
                 setNodes(data)
             })
             .catch((error) => {
@@ -59,7 +58,9 @@ export default function NodeList() {
                     <NodeType type={item.type} />
                     <div>
                         <Text fz="sm" fw={500}>
-                            <Anchor component={Link} to={"/nodes/" + item.hostname}>{item.hostname}</Anchor>
+                            <Anchor component={Link} to={"/nodes/" + item.id}>
+                                {item.name ? item.name : "awaiting installation"}
+                            </Anchor>
                         </Text>
                         <Text fz="xs" c="dimmed">
                             {item.ip_v4}

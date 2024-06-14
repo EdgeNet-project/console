@@ -16,7 +16,7 @@ class Node extends Model
     ];
 
     protected $fillable = [
-        'status', 'type', 'ip_v4', 'ip_v6', 'asn', 'hostname', 'name',
+        'status', 'type', 'ip_v4', 'ip_v6', 'asn', 'name',
         'notes', 'config', 'location', 'info',
         'user_id'
     ];
@@ -41,6 +41,11 @@ class Node extends Model
         return LogOptions::defaults()
             ->logOnly(['status']);
         // Chain fluent methods for configuration options
+    }
+
+    public function getHostnameAttribute()
+    {
+        return $this->name . '.' . config('edgenet.cluster.domain');
     }
 
     public function getTokenAttribute()

@@ -69,10 +69,10 @@ export default function CreateNode() {
         setLoading(true)
 
         axios.post('/api/nodes', values)
-            .then((res) => {
-                console.log(res)
+            .then(({data}) => {
+                //console.log(res)
                 form.reset();
-                navigate('/nodes');
+                navigate('/nodes/' + data.id);
                 //setRegistered(true)
             })
             .catch(({message, response: {data: {errors}}}) => {
@@ -101,47 +101,44 @@ export default function CreateNode() {
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack spacing="md">
 
-                    <Radio.Group label="Node type"  withAsterisk
-                                 {...form.getInputProps('type')} >
-                        <Group mt="xs">
-                            <Radio value="metal" label="Physical server" />
-                            <Radio value="vm" label="Virtual Machine" />
-                            <Radio value="odroid" label="ODroid" />
-                        </Group>
-                    </Radio.Group>
-
-                    <NodeTypeInfo type={form.values.type} />
-
-
 
                     <Divider />
 
+
                     <Text>
-                        Network configuration
+                        If you are adding an existing node please provide the authentication code.
+                        <Text c="dimmed">
+                        (for instance a machine that you received by the EdgeNet team or a previously
+                        configured node)
+                        </Text>
                     </Text>
-
-                    <Checkbox label="Node uses DHCP"
-                        {...form.getInputProps('dhcp', { type: 'checkbox' })}
-                    />
-
                     <Group>
-                        <TextInput label="Hostname" placeholder="mynode.domain.com"  withAsterisk
-                                   {...form.getInputProps('hostname')}
+                        <TextInput label="Code" placeholder="ABCXYZ"
+                                   {...form.getInputProps('code')}
                         />
                     </Group>
+                    {/*<Checkbox label="Node uses DHCP"*/}
+                    {/*    {...form.getInputProps('dhcp', { type: 'checkbox' })}*/}
+                    {/*/>*/}
 
-                    <Group>
-                        <TextInput label="IP" placeholder="123.123.123.123"
-                                    withAsterisk
-                                   {...form.getInputProps('name')} />
+                    {/*<Group>*/}
+                    {/*    <TextInput label="Hostname" placeholder="mynode.domain.com"  withAsterisk*/}
+                    {/*               {...form.getInputProps('hostname')}*/}
+                    {/*    />*/}
+                    {/*</Group>*/}
 
-                        <TextInput label="Gateway" placeholder="123.123.123.123"
-                                    withAsterisk
-                                   {...form.getInputProps('name')} />
-                    </Group>
+                    {/*<Group>*/}
+                    {/*    <TextInput label="IP" placeholder="123.123.123.123"*/}
+                    {/*                withAsterisk*/}
+                    {/*               {...form.getInputProps('name')} />*/}
+
+                    {/*    <TextInput label="Gateway" placeholder="123.123.123.123"*/}
+                    {/*                withAsterisk*/}
+                    {/*               {...form.getInputProps('name')} />*/}
+                    {/*</Group>*/}
                     <Group>
                         <Button disabled={loading} type="submit">
-                            Submit
+                            Add a new node
                         </Button>
                         <Button variant="subtle" onClick={close}>
                             Cancel

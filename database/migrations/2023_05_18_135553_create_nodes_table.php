@@ -43,9 +43,6 @@ return new class extends Migration
             $table->string('name')
                 ->nullable();
 
-            $table->string('hostname')
-                ->nullable();
-
             $table->text('notes')
                 ->nullable();
 

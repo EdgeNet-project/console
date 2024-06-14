@@ -10,11 +10,11 @@ import NodeInstall from "./NodeInstall";
 import NodeActivity from "./NodeActivity";
 
 const NodeView = () => {
-    const { hostname } = useParams();
+    const { id } = useParams();
     const [ node, setNode ] = useState();
 
     useEffect(() => {
-        axios.get('/api/nodes/' + hostname)
+        axios.get('/api/nodes/' + id)
             .then(({data}) => {
                 console.log(data)
                 setNode(data)
@@ -31,14 +31,20 @@ const NodeView = () => {
     if (!node) {
         return null;
     }
+
+    if (!node.status || node.status === 'to install') {
+        return <NodeInstall node={node} />
+    }
+
     return (
         <Container>
+            {node.status === 'to install' ?
             <Group justify="apart">
                 <Title  order={1}>
-                    {node.hostname}
+                    {node.name ?? ''}
                 </Title>
                 <NodeStatus status={node.status} />
-            </Group>
+            </Group> : <Title order={1}>Node installation</Title>}
 
             <Text my="sm">
                 Review your node configuration and status.

@@ -29,6 +29,12 @@ Route::group([
         Route::post('/register', 'register')
             ->name('boot.register');
 
+        Route::get('/name', 'name')
+            ->name('boot.name');
+
+        Route::get('/hostname', 'hostname')
+            ->name('boot.hostname');
+
         Route::post('/log', 'log')
             ->name('boot.log');
     });

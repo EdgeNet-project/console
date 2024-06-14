@@ -57,7 +57,7 @@ const router = createBrowserRouter([
                 element: <CreateNode />,
             },
             {
-                path: "/nodes/:hostname",
+                path: "/nodes/:id",
                 element: <NodeView />,
             },
             {

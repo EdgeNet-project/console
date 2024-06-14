@@ -67,6 +67,24 @@ class NodeController extends Controller
         ])->header('Content-Type', 'text/plain');
     }
 
+    public function name(Request $request)
+    {
+        $node = $request->get('node');
+
+        return response()
+            ->view($node->name)
+            ->header('Content-Type', 'text/plain');
+    }
+
+    public function hostname(Request $request)
+    {
+        $node = $request->get('node');
+
+        return response()
+            ->view($node->hostname)
+            ->header('Content-Type', 'text/plain');
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -100,6 +118,7 @@ class NodeController extends Controller
     public function register(Request $request)
     {
         $data = $request->validate([
+            'name' => 'required',
             'host' => 'required|array',
             'ip' => 'required|array'
         ]);
@@ -109,7 +128,10 @@ class NodeController extends Controller
             'ip' => $data['ip']
         ]);
 
+        $domain = config('edgenet.cluster.domain');
+
         $node = $request->get('node');
+        $node->name = $data['name'];
         $node->status = NodeStatus::INSTALLING;
         $node->info = [
             'host' => $data['host'],
@@ -120,7 +142,6 @@ class NodeController extends Controller
 
         if ($position = Location::get($request->ip())) {
             /*
-             * {
              * "ip":"2001:660:3302:287b:5054:ff:fefb:472e",
              * "driver":"Stevebauman\\Location\\Drivers\\IpData",
              * "countryName":"France",
@@ -148,27 +169,52 @@ class NodeController extends Controller
                 'timezone' => $position->timezone,
             ];
 
-            $node->name = Str::lower($position->countryCode . '-' . $position->regionCode . '-' . Str::random(3));
+            if (!$node->name) {
+                $node->name = Str::lower($position->countryCode . '-' . $position->regionCode . '-' . Str::random(3));
+            }
 
-            $node->hostname = $node->name . '.edge-net.io';
+            //$node->hostname = $node->name . '.' . $domain;
 
             // this should go in a job
             // https://eu.api.ovh.com/console/?section=%2Fdomain&branch=v1#post-/domain/zone/-zoneName-/record
+            $ovh = new Api(
+                env('OVH_APP_KEY'),
+                env('OVH_APP_SECRET'),
+                'ovh-eu',
+                env('OVH_CONSUMER_KEY'));
+
+
+
             try {
-                $ovh = new Api(
-                    env('OVH_APP_KEY'),
-                    env('OVH_APP_SECRET'),
-                    'ovh-eu',
-                    env('OVH_CONSUMER_KEY'));
 
-                Log::info('OVH Request to /domain/zone/'.env('OVH_DOMAIN').'/record');
-
-                $ovh->post('/domain/zone/'.env('OVH_DOMAIN').'/record', [
-                    'fieldType' => 'A', //  (type: )
-                    'subDomain' => $node->name, // Record subDomain (type: string, nullable)
-                    'target' => $node->ip_v4, // Target of the record (type: string)
-                    'ttl' => 3600,
+                Log::info('OVH Request to /domain/zone/'.$domain.'/record');
+                $record = $ovh->get('/domain/zone/'.$domain.'/record', [
+                    'fieldType' => 'A',
+                    'subDomain' => $node->name,
                 ]);
+
+                if ($record && isset($record[0])) {
+                    // update record
+                    Log::info('OVH updating ' . $node->name. ' => ' . $node->ip_v4);
+                    $ovh->put('/domain/zone/'.$domain.'/record/' . $record[0], [
+                        'subDomain' => $node->name,
+                        'target' => $node->ip_v4,
+                        'ttl' => 3600,
+                    ]);
+                } else {
+                    // create a new record
+                    Log::info('OVH creating ' . $node->name. ' => ' . $node->ip_v4);
+                    $ovh->post('/domain/zone/'.$domain.'/record', [
+                        'fieldType' => 'A',
+                        'subDomain' => $node->name,
+                        'target' => $node->ip_v4,
+                        'ttl' => 3600,
+                    ]);
+                }
+
+                // refreshing the zone to update the changes
+                $ovh->post('/domain/zone/'.$domain.'/refresh');
+
             } catch (GuzzleHttp\Exception\ClientException $e) {
                 $response = $e->getResponse();
                 $responseBodyAsString = $response->getBody()->getContents();
@@ -241,6 +287,8 @@ stringData:
 
         // the kubeadm command line
         $kubeadm = 'kubeadm join '.str_replace('https://','', config('edgenet.cluster.url')).
+            ' --v=5' .
+            ' --node-name ' . $node->hostname .
             ' --token ' . $node->token .
             ' --discovery-token-ca-cert-hash sha256:' . $digest;
 

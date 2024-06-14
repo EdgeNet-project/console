@@ -7,6 +7,7 @@ return [
     ],
 
     'cluster' => [
+        'domain' => 'edge-net.io',
         'url' => env('CLUSTER_URL', 'https://hades.edge-net.io:6443'),
 
         // ??

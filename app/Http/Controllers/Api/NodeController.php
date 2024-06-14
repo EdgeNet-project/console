@@ -34,13 +34,10 @@ class NodeController extends Controller
     public function create(Request $request)
     {
         $input = $request->validate([
-            'hostname' => 'required',
-            'type' => 'required'
+            'code' => 'string',
         ]);
 
         $node = Node::create([
-            'type' => $input['type'],
-            'hostname' => $input['hostname'],
             'user_id' => $request->user()->id
         ]);
 

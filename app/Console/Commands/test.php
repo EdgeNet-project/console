@@ -40,18 +40,26 @@ class test extends Command
 
             $this->info('OVH Request to /domain/zone/'.env('OVH_DOMAIN').'/record');
 
-            $ovh->post('/domain/zone/'.env('OVH_DOMAIN').'/record', [
-                'fieldType' => 'A', //  (type: )
-                'subDomain' => 'test-node-name', // Record subDomain (type: string, nullable)
-                'target' => "132.227.123.70", // Target of the record (type: string)
-                'ttl' => 3600,
+            $r = $ovh->get('/domain/zone/'.env('OVH_DOMAIN').'/record', [
+//                'target' => '213.186.33.5'
+                'fieldType' => 'A',
+                'subDomain' => 'ingress',
             ]);
+
+            dd($r);
+//            $ovh->post('/domain/zone/'.env('OVH_DOMAIN').'/record', [
+//                'fieldType' => 'A', //  (type: )
+//                'subDomain' => 'test-node-name', // Record subDomain (type: string, nullable)
+//                'target' => "132.227.123.70", // Target of the record (type: string)
+//                'ttl' => 3600,
+//            ]);
         } catch (GuzzleHttp\Exception\ClientException $e) {
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $this->error($responseBodyAsString);
         } catch (\Exception $e) {
-            $this->error("OVH API ERROR", ['message' => $e->getMessage()]);
+            dd($e);
+            //$this->error("OVH API ERROR", ['message' => $e->getMessage()]);
         }
 
 
