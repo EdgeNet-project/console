@@ -49,21 +49,22 @@ const statusMapping = {
 
 export default () => {
     return (
-        <Container>
-            <Title order={1}>
-                Welcome to EdgeNet!
-            </Title>
-            <Text>
-                To use EdgeNet you have to join a Workspace. Alternatively you can create a new Team.
-            </Text>
-            <Text mb="xl">
-                If you want you can also contribute a node to the cluster.
-            </Text>
+        <>
+            <Stack my="lg">
+                <Title order={1}>
+                    Welcome to EdgeNet!
+                </Title>
+                <Text>
+                    To use EdgeNet you have to join a Workspace. Alternatively you can create a new Team.
+                    <br />
+                    If you want you can also contribute a node to the cluster.
+                </Text>
+            </Stack>
             <SimpleGrid cols={2}>
                 <Teams />
                 <Workspaces />
                 <Nodes />
             </SimpleGrid>
-        </Container>
+        </>
     );
 }

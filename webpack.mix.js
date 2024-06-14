@@ -12,7 +12,7 @@ const mix = require('laravel-mix');
  */
 
 mix.copy('node_modules/flag-icon-css/css/flag-icons.min.css', 'public/css')
-    .copyDirectory('node_modules/flag-icon-css/flags', 'public/flags')
+    //.copyDirectory('node_modules/flag-icon-css/flags', 'public/flags')
     .js('resources/js/console.js', 'public/js')
     // .js('resources/js/test.js', 'public/js')
     // .js('resources/js/users.js', 'public/js')

@@ -57,18 +57,14 @@ function md5(inputString) {
  * @param rating Maximum rating (inclusive) [ g | pg | r | x ]
  * @return String containing either just a URL or a complete image tag
  */
-function gravatarUrl(email,
-                     size = 200,
-                     imageset = 'mp',
-                     rating = 'pg') {
-
+function gravatarUrl(email, size = 200, imageset = 'mp', rating = 'pg') {
     return "https://secure.gravatar.com/avatar/" + md5(email.toLowerCase().trim()) + "?s=" + size + "&d=" + encodeURIComponent(imageset) + "&r=" + rating
 }
 
 const UserAvatar = ({email = '', fullname = ''}) => {
 
     return (
-        <Avatar src={gravatarUrl(email)} alt="Ciro Sco" radius="xl" />
+        <Avatar src={gravatarUrl(email)} alt="" radius="xl" />
     )
 }
 
@@ -76,9 +72,7 @@ const UserInfo = ({user, size = 30}) => {
 
     return (
         <Group>
-            <UserAvatar size={size}
-                        rating="pg"
-                        email={user.email} />
+            <UserAvatar size={size} rating="pg" email={user.email} />
             <div>
                 <Text>
                     {user.firstname} {user.lastname}

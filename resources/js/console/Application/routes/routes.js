@@ -4,10 +4,10 @@ import {
 import RegistrationForm from "../../Authentication/Registration/RegistrationForm";
 import UserProfile from "../../Profile/UserProfile";
 import Application from "../index";
-import Tokens from "../../Views/Tokens";
+import Tokens from "../../Tokens";
 import RequestsView from "../../Requests/RequestsView";
 import TenantUsers from "../../Views/TenantUsers";
-import Index from "../../Dashboard";
+import Dashboard from "../../Dashboard";
 import TeamView from "../../Teams/TeamView";
 import WorkspaceView from "../../Workspace/WorkspaceView";
 import TeamRegistration from "../../Teams/TeamRegistration";
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Index />,
+                element: <Dashboard />,
             },
             {
                 path: "/profile",

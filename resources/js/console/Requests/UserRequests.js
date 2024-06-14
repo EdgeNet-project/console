@@ -8,11 +8,15 @@ export default () => {
     const { user } = useAuthentication();
 
     if (user.requests.length == 0) {
-        return null;
+        return (
+            <Paper p="md">
+                There are no pending requests.
+            </Paper>
+        );
     }
 
     return (
-        <Paper shadow="xs" p="md">
+        <Paper p="md">
             <Group mb="xs">
                 <IconWorkspace />
                 <Text weight={500}>(Tenant)</Text>

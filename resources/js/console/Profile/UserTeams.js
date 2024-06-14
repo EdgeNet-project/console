@@ -69,7 +69,9 @@ export default () => {
                 </Table>
             </ScrollArea>
             <Divider my="md" />
+            <Group>
             <Button>Create a new Team</Button>
+            </Group>
         </Card>
     )
 }

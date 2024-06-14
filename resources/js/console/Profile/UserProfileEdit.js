@@ -61,7 +61,7 @@ export default () => {
     // }
     return (
         <>
-            <Modal opened={opened} onClose={close} title="Create a new Workspace">
+            <Modal opened={opened} onClose={close} title="">
                 <form onSubmit={form.onSubmit(handleSubmit)}>
                     <Stack spacing="md">
                         <Text>

@@ -7,8 +7,8 @@ import {
     IconServer,
     IconKey, IconUser, IconDashboard, IconChevronRight, IconSwitchHorizontal, IconLogout
 } from "@tabler/icons";
-import {Group, ThemeIcon, UnstyledButton, Text, useMantineTheme, Divider, Code, Anchor} from "@mantine/core";
-import {Link, useMatch} from "react-router-dom";
+import {Group, ThemeIcon, UnstyledButton, Text, useMantineTheme, Divider, Code, Anchor, NavLink} from "@mantine/core";
+import {NavLink as RouterNavLink, matchPath, useMatch, useMatches} from "react-router-dom";
 import {useAuthentication} from "../Authentication";
 import NavigationTeams from "./NavigationTeams";
 
@@ -22,7 +22,7 @@ const NavigationUser = () => {
 
     return (
         <UnstyledButton className={classes.user}>
-            <Group>
+            <Group justify="space-between">
                 <UserInfo user={user} />
 
                 <IconChevronRight size={18} />
@@ -60,63 +60,73 @@ const nav = {
     },
 };
 
-const NavLink = ({link}) => {
-    const match = useMatch(link.to)
+// const NavLink = ({link}) => {
+//     const match = useMatch(link.to)
+//
+//     return (
+//         <Anchor component={Link}
+//                 to={link.to}
+//                 className={classes.link}
+//                 data-active={match}>
+//             <link.icon className={classes.linkIcon} stroke={1.5}/>
+//             <span>{link.label}</span>
+//         </Anchor>
+//     )
+// }
+// const NavLinks = ({links}) => {
+//
+//     return links.map((link) =>
+//         <NavLink
+//             href={link.to}
+//             label={link.label}
+//         // leftSection={<IconHome2 size="1rem" stroke={1.5} />}
+//             leftSection={<link.icon size="1rem" stroke={1.5} />}/>
+//     );
+//
+//     return links.map((item) => <NavLink link={item} key={item.label} />);
+// }
+
+const NavMenu = ({to, label, icon, rightSection}) => {
+    const match = useMatch(to)
 
     return (
-        <Anchor component={Link}
-                to={link.to}
-                className={classes.link}
-                data-active={match}>
-            <link.icon className={classes.linkIcon} stroke={1.5}/>
-            <span>{link.label}</span>
-        </Anchor>
+        <NavLink
+            component={RouterNavLink}
+            className={classes.link}
+            to={to}
+            label={label}
+            active={match}
+            leftSection={icon}
+            rightSection={rightSection}
+        />
     )
-}
-const NavLinks = ({links}) => {
-    return links.map((item) => <NavLink link={item} key={item.label} />);
 }
 
 export default function NavigationMenu() {
+    const {user} = useAuthentication();
+
     return (
-        <nav className={classes.navbar}>
+        <>
             <div className={classes.navbarMain}>
                 {/*<Group className={classes.header} justify="space-between">*/}
                 {/*    <Code fw={700}>v3.1.2</Code>*/}
                 {/*</Group>*/}
 
-                <NavLinks links={nav.main.links} />
-
+                <NavMenu to="" label="Dashboard" icon={<IconDashboard size="1rem" stroke={1.5} />}/>
                 <NavigationTeams />
 
                 <Divider label="Nodes" mt="sm" />
-                <NavLinks links={nav.nodes.links} />
+                <NavMenu to="nodes" label="Nodes" icon={<IconServer size="1rem" stroke={1.5} />}/>
 
                 <Divider label="Account" mt="sm"/>
-                <NavLinks links={nav.account.links} />
+                <NavMenu to="tokens" label="Tokens" icon={<IconKey size="1rem" stroke={1.5} />}/>
+                <NavMenu to="requests" label="Requests" icon={<IconQuestionCircle size="1rem" stroke={1.5} />}/>
             </div>
 
             <div className={classes.footer}>
-                <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-                    <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-                    <span>Change account</span>
-                </a>
-
-                <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-                    <IconLogout className={classes.linkIcon} stroke={1.5} />
-                    <span>Logout</span>
-                </a>
-                <NavigationUser />
+                <NavMenu to="profile" label={<UserInfo user={user} />}
+                         rightSection={<IconChevronRight size={18} />}/>
             </div>
-        </nav>
+        </>
     );
-
-    return (
-        <Navbar width={{ base: 300 }} p="xs">
-
-            <Navbar.Section>
-                <NavigationUser />
-            </Navbar.Section>
-        </Navbar>
-    )
 }

@@ -37,7 +37,7 @@ const NodeView = () => {
     }
 
     return (
-        <Container>
+        <>
             {node.status === 'to install' ?
             <Group justify="apart">
                 <Title  order={1}>
@@ -55,7 +55,7 @@ const NodeView = () => {
             <NodeRawInfo node={node} />
 
             <NodeActivity node={node} />
-        </Container>
+        </>
     )
 }
 

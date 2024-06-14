@@ -1,6 +1,6 @@
 import React from "react";
 
-import {AppShell, Burger, Group, Image, Text} from "@mantine/core";
+import {AppShell, Burger, Container, Group, Image, Text} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 
 import NavigationMenu from "../Navigation/NavigationMenu";
@@ -25,7 +25,7 @@ const Application = () => {
             <AppShell
                 header={{ height: 60 }}
                 navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
-                padding="md"
+                // padding="md"
             >
 
                 <AppShell.Header>
@@ -43,7 +43,11 @@ const Application = () => {
                     <NavigationMenu />
                 </AppShell.Navbar>
 
-                <AppShell.Main><Outlet /></AppShell.Main>
+                <AppShell.Main style={{backgroundColor:"#e4ecfb"}}>
+                    <Container>
+                        <Outlet />
+                    </Container>
+                </AppShell.Main>
 
             </AppShell>
     )

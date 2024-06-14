@@ -50,7 +50,7 @@ const UserTeam = () => {
 export default () => {
 
     return (
-        <Paper shadow="xs" p="md">
+        <Paper p="md">
             <Stack>
                 <Group justify="flex-start">
                     <IconUsers />

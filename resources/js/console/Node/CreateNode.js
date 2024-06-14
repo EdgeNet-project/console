@@ -10,9 +10,9 @@ import {
     TextInput,
     ThemeIcon, Title,
     UnstyledButton,
-    useMantineTheme
+    useMantineTheme, Paper
 } from "@mantine/core";
-import {IconInfoCircle, IconSquarePlus} from "@tabler/icons";
+import {IconAlertTriangle, IconInfoCircle, IconServer, IconSquarePlus, IconTerminal2, IconUsers} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -86,37 +86,49 @@ export default function CreateNode() {
     }
 
     return (
-        <Container>
-            <Title order={1}>
-                Add a new Node
-            </Title>
-            <LoadingOverlay visible={loading} overlayBlur={2} />
-            {error &&
-                <Alert variant="light" color="red" title="Registration error" icon={<IconInfoCircle />}>
-                    {error}
-                </Alert>}
-            <p>
-                Add a new node to your account.
-            </p>
+        <>
+            <Stack my="lg">
+                <Title order={1}>
+                    Add a new Node
+                </Title>
+                <LoadingOverlay visible={loading} overlayBlur={2} />
+                {error &&
+                    <Alert variant="light" color="red" title="Registration error" icon={<IconInfoCircle />}>
+                        {error}
+                    </Alert>}
+                <Text>
+                    Add a new node to your account.
+                </Text>
+            </Stack>
             <form onSubmit={form.onSubmit(handleSubmit)}>
+                <Paper p="md">
+                    <Stack>
+                        <Group justify="flex-start">
+                            <IconServer />
+                            <Text size="sm"></Text>
+                        </Group>
+                        <Text>
+                            If you are adding an existing node please provide the authentication code.
+                            <Text c="dimmed">
+                                (for instance a machine that you received by the EdgeNet team or a previously
+                                configured node)
+                            </Text>
+                        </Text>
+                        <Group>
+                            <TextInput label="Code" placeholder="ABCXYZ"
+                                       {...form.getInputProps('code')}
+                            />
+                        </Group>
+                    </Stack>
+                </Paper>
                 <Stack spacing="md">
 
 
                     <Divider />
 
 
-                    <Text>
-                        If you are adding an existing node please provide the authentication code.
-                        <Text c="dimmed">
-                        (for instance a machine that you received by the EdgeNet team or a previously
-                        configured node)
-                        </Text>
-                    </Text>
-                    <Group>
-                        <TextInput label="Code" placeholder="ABCXYZ"
-                                   {...form.getInputProps('code')}
-                        />
-                    </Group>
+
+
                     {/*<Checkbox label="Node uses DHCP"*/}
                     {/*    {...form.getInputProps('dhcp', { type: 'checkbox' })}*/}
                     {/*/>*/}
@@ -147,6 +159,6 @@ export default function CreateNode() {
 
                 </Stack>
             </form>
-        </Container>
+        </>
     )
 }

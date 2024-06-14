@@ -3,7 +3,7 @@ import {Alert, Anchor, Divider, Group, Paper, Stack, Text} from "@mantine/core";
 export default () => {
 
     return (
-        <Paper key={item.title} shadow="xs" p="md">
+        <Paper key={item.title} p="md">
             <Stack>
 
                 <Group justify="flex-start">

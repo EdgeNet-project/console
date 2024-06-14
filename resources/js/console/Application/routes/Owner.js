@@ -5,7 +5,7 @@ import RegistrationForm from "../../Authentication/Registration/RegistrationForm
 import UserProfile from "../../Profile/UserProfile";
 import Application from "../index";
 import NodeList from "../../Node/NodeList";
-import Tokens from "../../Views/Tokens";
+import Index from "../../Tokens";
 import JoinRequestsView from "../../Requests/JoinRequestsView";
 import TenantUsers from "../../Views/TenantUsers";
 import Index from "../../Dashboard";
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/tokens",
-                element: <Tokens />,
+                element: <Index />,
             },
             {
                 path: "/requests",

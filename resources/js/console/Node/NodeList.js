@@ -9,7 +9,7 @@ import {
     Container,
     Button,
     Title,
-    ActionIcon
+    ActionIcon, Paper, Stack
 } from '@mantine/core';
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -96,28 +96,32 @@ export default function NodeList() {
     ));
 
     return (
-        <Container>
-            <Group justify="space-between">
-                <Title order={1}>Nodes</Title>
-                <Button onClick={() => navigate('/nodes/create')}>Add a Node</Button>
-            </Group>
-            <Text>
-                The list of nodes you have contributed to EdgeNet.
-            </Text>
-            <Table.ScrollContainer minWidth={800}>
-                <Table verticalSpacing="sm">
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th>Node</Table.Th>
-                            <Table.Th>Type</Table.Th>
-                            <Table.Th>Last active</Table.Th>
-                            <Table.Th>Status</Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>{rows}</Table.Tbody>
-                </Table>
-            </Table.ScrollContainer>
-        </Container>
+        <>
+            <Stack my="lg">
+                <Group justify="space-between">
+                    <Title order={1}>Nodes</Title>
+                    <Button onClick={() => navigate('/nodes/create')}>Add a Node</Button>
+                </Group>
+                <Text>
+                    The list of nodes you have contributed to EdgeNet.
+                </Text>
+            </Stack>
+            <Paper p="md">
+                <Table.ScrollContainer minWidth={800}>
+                    <Table verticalSpacing="sm">
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th>Node</Table.Th>
+                                <Table.Th>Type</Table.Th>
+                                <Table.Th>Last active</Table.Th>
+                                <Table.Th>Status</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>{rows}</Table.Tbody>
+                    </Table>
+                </Table.ScrollContainer>
+            </Paper>
+        </>
     );
 
 }
