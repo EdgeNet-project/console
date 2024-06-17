@@ -17,15 +17,16 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('type'); // TENANT, ROLE
-            $table->string('action'); // CREATE, JOIN
+            $table->string('type');
+
             $table->json('data');
 
             $table->string('message')
                 ->nullable();
 
-            $table->string('status')
-                ->nullable();
+            $table->string('status');
+
+            $table->nullableMorphs('object');
 
             $table->foreignId('user_id')
                 ->constrained()

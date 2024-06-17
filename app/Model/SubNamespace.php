@@ -6,6 +6,7 @@ use App\Services\Edgenet;
 use App\Services\EdgenetAdmin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use RenokiCo\PhpK8s\Exceptions\KubernetesAPIException;
 use RenokiCo\PhpK8s\Kinds\K8sRoleBinding;
 
@@ -26,6 +27,14 @@ class SubNamespace extends Model
     public function tenant()
     {
         return $this->belongsTo(Tenant::class);
+    }
+
+    /**
+     * Requests about Subnamespaces (create, join...)
+     */
+    public function requests(): MorphOne
+    {
+        return $this->morphOne(UserRequest::class, 'object');
     }
 
     public function addUser(EdgenetAdmin $edgenetAdmin)

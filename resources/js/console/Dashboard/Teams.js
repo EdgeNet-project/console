@@ -9,7 +9,7 @@ const UserTeam = () => {
     if (user.tenants.length > 0) {
         return (
             <Stack>
-                {user.tenants.map(tenant => <div>
+                {user.tenants.map(tenant => <div key={"userteam_tenant_"+tenant.id}>
                     <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
                         {tenant.name}
                     </Text>

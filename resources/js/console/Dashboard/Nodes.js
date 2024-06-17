@@ -58,7 +58,7 @@ export default () => {
                 </Group>
 
                 {!nodes ? <NodesAlert /> : nodes.map((node) =>
-                    <Group justify="space-between">
+                    <Group key={"nodes_"+node.id} justify="space-between">
                         <div>
                             <Text fz="sm" fw={500}>
                                 <Anchor component={Link} to={"/nodes/" + node.hostname}>{node.hostname}</Anchor>

@@ -4,6 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Tenant extends Model
 {
@@ -30,5 +31,13 @@ class Tenant extends Model
     public function subnamespaces()
     {
         return $this->hasMany(SubNamespace::class);
+    }
+
+    /**
+     * Requests about Tenants (create, join...)
+     */
+    public function requests(): MorphOne
+    {
+        return $this->morphOne(UserRequest::class, 'object');
     }
 }

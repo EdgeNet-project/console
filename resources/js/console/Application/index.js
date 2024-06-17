@@ -32,7 +32,7 @@ const Application = () => {
                     <Group h="100%" px="md" justify="space-between">
                         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
                         <Group padding="sm" position="start">
-                            <div><Image src="/images/edgenet-logo.png" alt="EdgeNet" height={28} fit="contain" /></div>
+                            <Image src="/images/edgenet-logo.png" alt="EdgeNet" height={28} fit="contain" />
                             <Text fw={500} fz="lg">EdgeNet</Text>
                         </Group>
                         <Group ml="xl" gap="lg" visibleFrom="sm">

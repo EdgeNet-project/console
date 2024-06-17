@@ -59,7 +59,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 //        Route::get('/tenants/{namespace?}', [ TenantRequestController::class, 'list' ]);
 //        Route::post('/tenants', [ TenantRequestController::class, 'create' ]);
 
-        Route::post('/team', [ UserRequestController::class, 'createTeam' ]);
+        Route::post('/teams', [ UserRequestController::class, 'createTeam' ]);
+        Route::post('/teams/{tenant}/join', [ UserRequestController::class, 'joinTeam' ]);
+        Route::post('/workspaces', [ UserRequestController::class, 'createWorkspace' ]);
+        Route::post('/workspaces/{subnamespace}/join', [ UserRequestController::class, 'joinWorkspace' ]);
     });
 
     Route::group(['prefix' => 'invitations'], function () {

@@ -11,15 +11,16 @@ const UserWorkspaces = () => {
             <>
                 <Stack>
                     {user.tenants.map(tenant => {
-                        if (!tenant.subnamespaces) return <></>
+                        if (!tenant.subnamespaces) return null
 
                         return (
-                            <div>
+                            <div key={"user_workspaces_tenant_" + tenant.id}>
                                 <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
                                     {tenant.name}
                                 </Text>
                                 <Text fz="md" fw={500}>
-                                    {tenant.subnamespaces.map(s => <div>{s.name}</div>)}
+                                    {tenant.subnamespaces.map(s =>
+                                        <span key={"user_workspaces_" + s.id}>{s.name}</span>)}
                                 </Text>
                             </div>
                         )

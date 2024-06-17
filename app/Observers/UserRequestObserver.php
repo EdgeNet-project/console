@@ -3,61 +3,75 @@
 namespace App\Observers;
 
 use App\Model\UserRequest;
+use App\Model\UserRequestStatus;
 use Illuminate\Support\Facades\Log;
 
 class UserRequestObserver
 {
     /**
-     * Handle the TeamRequest "created" event.
+     * Handle the userRequest "creating" event.
      *
-     * @param  \App\Model\UserRequest $teamRequest
+     * @param  \App\Model\UserRequest $userRequest
      * @return void
      */
-    public function created(UserRequest $teamRequest)
+    public function creating(UserRequest $userRequest)
     {
-        Log::info('Created Team request '. $teamRequest->id);
+        Log::info('Creating Request '. $userRequest->type->name);
+
+        $userRequest->status = UserRequestStatus::Pending;
     }
 
     /**
-     * Handle the TeamRequest "updated" event.
+     * Handle the userRequest "created" event.
      *
-     * @param  \App\Model\UserRequest $teamRequest
+     * @param  \App\Model\UserRequest $userRequest
      * @return void
      */
-    public function updated(UserRequest $teamRequest)
+    public function created(UserRequest $userRequest)
     {
-        Log::info('Updated Team request '. $teamRequest->id);
+        Log::info('Created Team request '. $userRequest->type->name . ' (' . $userRequest->id . ')');
     }
 
     /**
-     * Handle the TeamRequest "deleted" event.
+     * Handle the userRequest "updated" event.
      *
-     * @param  \App\Model\UserRequest $teamRequest
+     * @param  \App\Model\UserRequest $userRequest
      * @return void
      */
-    public function deleted(UserRequest $teamRequest)
+    public function updated(UserRequest $userRequest)
+    {
+        Log::info('Updated Team request '. $userRequest->id);
+    }
+
+    /**
+     * Handle the userRequest "deleted" event.
+     *
+     * @param  \App\Model\UserRequest $userRequest
+     * @return void
+     */
+    public function deleted(UserRequest $userRequest)
     {
         //
     }
 
     /**
-     * Handle the TeamRequest "restored" event.
+     * Handle the userRequest "restored" event.
      *
-     * @param  \App\Model\UserRequest $teamRequest
+     * @param  \App\Model\UserRequest $userRequest
      * @return void
      */
-    public function restored(UserRequest $teamRequest)
+    public function restored(UserRequest $userRequest)
     {
         //
     }
 
     /**
-     * Handle the TeamRequest "force deleted" event.
+     * Handle the userRequest "force deleted" event.
      *
-     * @param  \App\Model\UserRequest $teamRequest
+     * @param  \App\Model\UserRequest $userRequest
      * @return void
      */
-    public function forceDeleted(UserRequest $teamRequest)
+    public function forceDeleted(UserRequest $userRequest)
     {
         //
     }
