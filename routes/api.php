@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     });
 
     Route::group(['prefix' => 'requests'], function () {
+
 //        Route::get('/roles/{namespace?}', [ RoleRequestController::class, 'list' ]);
 //        Route::post('/roles', [ RoleRequestController::class, 'create' ]);
 //        Route::patch('/roles/{namespace}/{name}', [ RoleRequestController::class, 'update' ]);
@@ -59,6 +60,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 //        Route::get('/tenants/{namespace?}', [ TenantRequestController::class, 'list' ]);
 //        Route::post('/tenants', [ TenantRequestController::class, 'create' ]);
 
+        Route::get('/', [ UserRequestController::class, 'list' ]);
+        Route::patch('/{userRequest}', [ UserRequestController::class, 'update' ]);
         Route::post('/teams', [ UserRequestController::class, 'createTeam' ]);
         Route::post('/teams/{tenant}/join', [ UserRequestController::class, 'joinTeam' ]);
         Route::post('/workspaces', [ UserRequestController::class, 'createWorkspace' ]);

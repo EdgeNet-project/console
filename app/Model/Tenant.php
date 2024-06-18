@@ -4,6 +4,8 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Tenant extends Model
@@ -17,10 +19,10 @@ class Tenant extends Model
     ];
 
     protected $with = [
-        'subnamespaces'
+        'subnamespaces',
     ];
 
-    public function users()
+    public function users() : BelongsToMany
     {
         return $this->belongsToMany(User::class)
             ->using(TenantUser::class)
@@ -36,8 +38,13 @@ class Tenant extends Model
     /**
      * Requests about Tenants (create, join...)
      */
-    public function requests(): MorphOne
+    public function requests(): MorphMany
     {
-        return $this->morphOne(UserRequest::class, 'object');
+        return $this->morphMany(UserRequest::class, 'object');
+    }
+
+    public function getOwnersAttribute()
+    {
+        return $this->users()->wherePivot('role','owner')->get();
     }
 }

@@ -66,4 +66,9 @@ class TenantController extends Controller
     {
         return response()->json($tenant->subnamespaces);
     }
+
+    public function requests(Tenant $tenant)
+    {
+
+    }
 }

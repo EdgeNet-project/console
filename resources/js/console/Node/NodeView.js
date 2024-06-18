@@ -40,7 +40,7 @@ const NodeView = () => {
         <>
             {node.status === 'to install' ?
             <Group justify="apart">
-                <Title  order={1}>
+                <Title order={1}>
                     {node.name ?? ''}
                 </Title>
                 <NodeStatus status={node.status} />

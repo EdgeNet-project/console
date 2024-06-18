@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Model\SubNamespace;
 use App\Model\Tenant;
 use App\Model\UserRequest;
+use App\Model\UserRequestStatus;
 use App\Model\UserRequestType;
 use Illuminate\Http\Request;
 
@@ -89,5 +90,75 @@ class UserRequestController extends Controller
         ]);
 
         return response()->json($userRequest);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * The UserRequests the user can moderate:
+     * - Tenant Owner: Join Tenant, Join and Create Workspace requests
+     */
+    public function list(Request $request)
+    {
+//        $user = auth()->user();
+
+        // only admins can view create team
+//        if ($user->admin) {
+//            $createTeamRequests = UserRequest::where([
+//                ['type' => UserRequestType::CreateTeam],
+//            ])->get();
+//        }
+
+//        $tenants = [];
+//        foreach ($user->tenants as $tenant) {
+//            if ($tenant->pivot !== 'owner') {
+//                continue;
+//            }
+//
+//            $tenants[] = $tenant;
+//
+//        }
+//        $q2->wherePivot('role', 'owner');
+
+        $joinTeamRequests = UserRequest::whereHasMorph('object',
+            [Tenant::class], function($q1) {
+                $q1->whereHas('users', function($q2) {
+                    $q2->where('user_id', auth()->user()->id);
+                });
+                return $q1;
+            })
+            ->whereIn('type', [
+                UserRequestType::JoinTeam,
+                UserRequestType::JoinWorkspace,
+                UserRequestType::CreateWorkspace,
+            ])
+            ->get();
+
+        //$joinTeamRequests = UserRequest::whereHasMorph('object', [Tenant::class])->get();
+        return response()->json($joinTeamRequests);
+
+    }
+
+    public function update(Request $request, UserRequest $userRequest)
+    {
+        $validatedData = $request->validate([
+            'action' => 'required|string'
+        ]);
+
+        switch($validatedData['action']) {
+            case 'approve':
+                $userRequest->status = UserRequestStatus::Approved;
+                break;
+            case 'deny':
+                $userRequest->status = UserRequestStatus::Denied;
+                break;
+
+        }
+
+        $userRequest->save();
+
+        return response()->json($userRequest);
+
     }
 }

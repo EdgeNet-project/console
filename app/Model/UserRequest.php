@@ -12,6 +12,10 @@ class UserRequest extends Model
 
     protected $guarded = [];
 
+    protected $with = [
+        'user', 'object'
+    ];
+
     protected $casts = [
         'data' => 'array',
         'type' => UserRequestType::class,

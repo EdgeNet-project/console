@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Model\UserRequest;
 use App\Model\UserRequestStatus;
+use App\Model\UserRequestType;
 use Illuminate\Support\Facades\Log;
 
 class UserRequestObserver
@@ -30,6 +31,30 @@ class UserRequestObserver
     public function created(UserRequest $userRequest)
     {
         Log::info('Created Team request '. $userRequest->type->name . ' (' . $userRequest->id . ')');
+    }
+
+    /**
+     * Handle the userRequest "updated" event.
+     *
+     * @param  \App\Model\UserRequest $userRequest
+     * @return void
+     */
+    public function updating(UserRequest $userRequest)
+    {
+        Log::info('Updated Team request '. $userRequest->id);
+        switch($userRequest->type) {
+            case UserRequestType::CreateTeam:
+                if ($userRequest->status == UserRequestStatus::Approved) {
+
+                }
+                break;
+            case UserRequestType::JoinTeam:
+                break;
+            case UserRequestType::CreateWorkspace:
+                break;
+            case UserRequestType::JoinWorkspace:
+                break;
+        }
     }
 
     /**
