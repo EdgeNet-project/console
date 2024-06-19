@@ -50,14 +50,17 @@ const UserNodes = () => {
         <Table>
             <Table.Tbody>
                 {nodes.map(node =>
-                    <Table.Tr key={"userworkspaces_"+subnamespace.id}>
+                    <Table.Tr key={"usernodes_"+node.id}>
                         <Table.Td>
                             <Text size="xs" c="dimmed">
-                                {node.public_ip_v4}
+                                {node.ip_v4}
                             </Text>
                             <Text size="md">
-                                <Anchor component={Link} to={"/nodes/" + node.hostname}>{node.hostname}</Anchor>
+                                <Anchor component={Link} to={"/nodes/" + node.name}>{node.name}</Anchor>
                             </Text>
+                        </Table.Td>
+                        <Table.Td>
+                            <NodeStatus status={node.status} />
                         </Table.Td>
                     </Table.Tr>
                 )}

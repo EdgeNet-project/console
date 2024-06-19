@@ -27,7 +27,7 @@ const AlertUserWorkspaces = () => {
 const UserWorkspaces = () => {
     const { user } = useAuthentication();
 
-    if (!user.subnamespaces || user.subnamespaces.length <= 0) {
+    if (!user.subnamespaces || user.subnamespaces?.length <= 0) {
         return <AlertUserWorkspaces />
     }
 
