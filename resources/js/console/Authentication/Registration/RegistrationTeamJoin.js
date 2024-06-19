@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {Select, Anchor, Text, Space, Card, Button, Paper, Center, Group, Stack} from "@mantine/core";
 import {useAuthentication} from "../AuthenticationProvider";
-import WorkspaceSelect from "../../Workspace/WorkspaceSelect";
+import WorkspaceSelect from "../../Workspaces/WorkspaceSelect";
 import {useForm} from "@mantine/form";
 
 const TenantAddress = ({address}) => {

@@ -1,7 +1,6 @@
 import {useState, useEffect} from "react";
 import {Button, Card, Divider, Group, ScrollArea, Table, Text} from "@mantine/core";
 import {IconBoxPadding as IconWorkspace} from "@tabler/icons";
-import CreateWorkspaceDialog from "../Workspace/CreateWorkspaceDialog";
 import axios from "axios";
 import {useAuthentication} from "../Authentication";
 

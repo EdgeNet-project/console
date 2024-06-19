@@ -4,18 +4,25 @@ import {
 import RegistrationForm from "../../Authentication/Registration/RegistrationForm";
 import UserProfile from "../../Profile/UserProfile";
 import Application from "../index";
-import Tokens from "../../Tokens";
-import RequestsView from "../../Requests";
 import TenantUsers from "../../Views/TenantUsers";
-import Dashboard from "../../Dashboard";
-import TeamView from "../../Teams/TeamView";
-import WorkspaceView from "../../Workspace/WorkspaceView";
-import TeamRegistration from "../../Teams/TeamRegistration";
-import WorkspaceRegistration from "../../Workspace/WorkspaceRegistration";
 
-import NodeList from "../../Node/NodeList";
-import CreateNode from "../../Node/CreateNode";
-import NodeView from "../../Node/NodeView";
+import Dashboard from "../../Dashboard";
+
+import TeamsView from "../../Teams";
+
+import WorkspaceView from "../../Workspaces";
+
+// import TeamRegistration from "../../Teams/TeamRegistration";
+// import WorkspaceRegistration from "../../Workspaces/WorkspaceRegistration";
+
+import NodeList from "../../Nodes/NodeList";
+import NodeView from "../../Nodes";
+import CreateNode from "../../Nodes/CreateNode";
+
+import RequestsView from "../../Requests";
+
+import Tokens from "../../Tokens";
+
 
 const router = createBrowserRouter([
     {
@@ -60,26 +67,26 @@ const router = createBrowserRouter([
                 path: "/nodes/:id",
                 element: <NodeView />,
             },
-            {
-                path: "/team/registration",
-                element: <TeamRegistration />,
-            },
+            // {
+            //     path: "/team/registration",
+            //     element: <TeamRegistration />,
+            // },
             {
                 path: "/team/join",
-                element: <TeamView />,
+                element: null,
             },
             {
-                path: "/team/:team",
-                element: <TeamView />,
-            },
-
-            {
-                path: "/workspace/registration",
-                element: <WorkspaceRegistration />,
+                path: "/team/:id",
+                element: <TeamsView />,
             },
 
+            // {
+            //     path: "/workspace/registration",
+            //     element: <WorkspaceRegistration />,
+            // },
+
             {
-                path: "/team/:team/:workspace",
+                path: "/workspaces/:id",
                 element: <WorkspaceView />,
             },
         ],

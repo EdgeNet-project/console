@@ -4,15 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Model\Tenant as TenantModel;
-use App\Model\SubNamespace as SubNamespaceModel;
+use App\Model\SubNamespace;
 use App\CRDs\RoleRequest;
-use App\CRDs\SubNamespace;
 use App\Services\Edgenet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
+
+use App\Http\Resources\SubNamespaceResource;
+
 
 /*
 - apiVersion: core.edgenet.io/v1alpha1
@@ -131,6 +133,11 @@ class SubnamespaceController extends Controller
         }
 
         return response()->json(SubNamespaceModel::all());
+    }
+
+    public function get(SubNamespace $sub_namespace)
+    {
+        return response()->json(new SubNamespaceResource($sub_namespace));
     }
 
     public function create(Request $request, Edgenet $edgenet, TenantModel $tenant)

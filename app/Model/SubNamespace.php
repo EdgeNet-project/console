@@ -20,7 +20,7 @@ class SubNamespace extends Model
     {
         return $this->belongsToMany(User::class)
             ->using(SubNamespaceUser::class)
-            ->withPivot('roles')
+            ->withPivot('role')
             ->withTimestamps();
     }
 

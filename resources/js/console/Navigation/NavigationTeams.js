@@ -7,8 +7,6 @@ import {
 } from "@tabler/icons";
 import {IconPlus, IconMinus, IconUsersPlus} from "@tabler/icons-react";
 import {Link} from "react-router-dom";
-import CreateTeam from "../Teams/CreateTeam";
-import JoinWorkspaceDialog from "../Workspace/JoinWorkspaceDialog";
 import {useAuthentication} from "../Authentication";
 
 const myThemes = {
@@ -116,7 +114,7 @@ const NavigationTeams = () => {
                         value: subnamespace.name + '-' + subnamespace.id,
                         label: subnamespace.name,
                         namespace: tenant.fullname,
-                        path: '/team/' + tenant.name + '/' + subnamespace.name
+                        path: '/workspaces/' + subnamespace.id
                     } )
                 })
 

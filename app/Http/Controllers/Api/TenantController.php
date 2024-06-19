@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TenantResource;
 use App\Model\Tenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -54,7 +55,7 @@ class TenantController extends Controller
 
     public function get(Tenant $tenant)
     {
-        return response()->json($tenant);
+        return response()->json(new TenantResource($tenant));
     }
 
     public function users(Tenant $tenant)
