@@ -65,10 +65,17 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
         Route::get('/', [ UserRequestController::class, 'list' ]);
         Route::patch('/{userRequest}', [ UserRequestController::class, 'update' ]);
-        Route::post('/teams', [ UserRequestController::class, 'createTeam' ]);
-        Route::post('/teams/{tenant}/join', [ UserRequestController::class, 'joinTeam' ]);
-        Route::post('/workspaces', [ UserRequestController::class, 'createWorkspace' ]);
-        Route::post('/workspaces/{subnamespace}/join', [ UserRequestController::class, 'joinWorkspace' ]);
+
+        Route::group(['prefix' => 'teams'], function () {
+            Route::post('/', [UserRequestController::class, 'createTeam']);
+            Route::post('/{tenant}', [UserRequestController::class, 'joinTeam']);
+            Route::post('/{tenant}/workspace', [UserRequestController::class, 'createTeamWorkspace']);
+        });
+
+        Route::group(['prefix' => 'workspaces'], function () {
+//            Route::post('/', [UserRequestController::class, 'createWorkspace']);
+            Route::post('/{sub_namespace}', [UserRequestController::class, 'joinWorkspace']);
+        });
     });
 
     Route::group(['prefix' => 'invitations'], function () {

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Group, Paper, Table, Text} from "@mantine/core";
+import {Code, Group, Paper, Table, Text} from "@mantine/core";
 import dayjs from "dayjs";
 import axios from "axios";
 import UserRequestType from "./UserRequestType";
@@ -50,7 +50,8 @@ export default ({requests, updateRequest}) => {
                                 </Table.Td>
                                 <Table.Td>
                                     {r.message && <Text size="sm">{r.message}</Text>}
-                                    {r.data && r.data.map((k, v) => <Group><Text size="sm" c="dimmed">{k}</Text><Text size="sm">{v}</Text></Group>)}
+                                    {r.data && <Code block>{JSON.stringify(r.data, null, 4)}</Code>}
+
                                 </Table.Td>
                                 <Table.Td>
                                     <UserRequestStatus status={r.status} />

@@ -2,7 +2,7 @@ import {Anchor, Group, Paper, Stack, Text} from "@mantine/core";
 import React from "react";
 import JoinWorkspaceDialog from "./JoinWorkspaceDialog";
 import InviteUsersDialog from "../User/InviteUsersDialog";
-import _CreateWorkspaceDialog from "./_CreateWorkspaceDialog";
+import createWorkspace from "../Teams/CreateWorkspace";
 
 export default ({workspace}) => {
 
@@ -23,7 +23,7 @@ export default ({workspace}) => {
             <Group mt="sm">
                 <JoinWorkspaceDialog workspace={workspace} />
                 <InviteUsersDialog team={workspace} />
-                <_CreateWorkspaceDialog workspace={workspace} />
+                <createWorkspace workspace={workspace} />
             </Group>
         </Paper>
     )

@@ -71,8 +71,8 @@ export default ({team}) => {
         <Panel title={team.shortname + " users"}
                icon={<IconUsers />}
                buttons={[
-                   <Button size="xs" onClick={() => navigate('/team/create')}>Create a new Team</Button>,
-                   <Button size="xs" onClick={() => navigate('/team/join')}>Join an existing Team</Button>
+                   // <Button size="xs" onClick={() => navigate('/team/create')}>Create a new Team</Button>,
+                   // <Button size="xs" onClick={() => navigate('/team/join')}>Join an existing Team</Button>
                ]}>
             <TeamUsers team={team} />
         </Panel>

@@ -86,7 +86,7 @@ export default ({team, parent = null}) => {
     return (
         <Container>
             <Title order={1}>
-                Register a new Worspace
+                Create a new Workspace
             </Title>
             <LoadingOverlay visible={loading} overlayBlur={2} />
             {error &&

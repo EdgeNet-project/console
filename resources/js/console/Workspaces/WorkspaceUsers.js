@@ -72,8 +72,8 @@ export default ({workspace}) => {
         <Panel title={workspace.name + " users"}
                icon={<IconUsers />}
                buttons={[
-                   <Button size="xs" onClick={() => navigate('/team/create')}>Create a new Team</Button>,
-                   <Button size="xs" onClick={() => navigate('/team/join')}>Join an existing Team</Button>
+                   // <Button size="xs" onClick={() => navigate('/team/create')}>Create a new Team</Button>,
+                   // <Button size="xs" onClick={() => navigate('/team/join')}>Join an existing Team</Button>
                ]}>
             <WorkspaceUsers workspace={workspace} />
         </Panel>

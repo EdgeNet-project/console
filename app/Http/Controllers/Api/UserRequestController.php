@@ -59,11 +59,12 @@ class UserRequestController extends Controller
         return response()->json($userRequest);
     }
 
-    public function createWorkspace(Request $request)
+    public function createTeamWorkspace(Request $request, Tenant $tenant)
     {
 
         $validatedData = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'label' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255']
 
         ]);
 
@@ -72,6 +73,8 @@ class UserRequestController extends Controller
             'type' => UserRequestType::CreateWorkspace,
             'user_id' => auth()->user()->id
         ]);
+
+        $tenant->requests()->save($userRequest);
 
         return response()->json($userRequest);
     }

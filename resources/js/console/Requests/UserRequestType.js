@@ -4,19 +4,19 @@ const UserRequestType = ({request}) => {
     switch(request.type) {
         case 'CreateTeam':
             return <Text size="sm">
-                {request.user.firstname} is asking to create a new Team
+                {request.user.firstname} is asking to create a new team
             </Text>;
         case 'CreateWorkspace':
             return <Text size="sm">
-                {request.user.firstname} is asking to create a new Workspace
+                {request.user.firstname} is asking to create a new workspace in {request.object.name}
             </Text>;
         case 'JoinTeam':
             return <Text size="sm">
-                {request.user.firstname} is asking to join the Team {request.object?.fullname} ({request.object?.shortname})
+                {request.user.firstname} is asking to join the team {request.object?.fullname} ({request.object?.shortname})
             </Text>;
         case 'JoinWorkspace':
             return <Text size="sm">
-                {request.user.firstname} is asking to join the Workspace {request.object?.name}
+                {request.user.firstname} is asking to join the workspace {request.object?.name}
             </Text>;
     }
 

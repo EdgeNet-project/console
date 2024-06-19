@@ -2,21 +2,18 @@ import {useState} from "react";
 import {
     Button,
     Group,
-    Modal, rem,
+    Modal,
     Stack,
     Text,
     TextInput,
     Alert,
-    ThemeIcon,
-    UnstyledButton,
-    useMantineTheme,
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import {IconBoxPadding as IconWorkspace, IconAlertCircle} from "@tabler/icons";
+import {IconBoxPadding as IconWorkspace, IconAlertCircle, IconInfoCircle} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
 
-export default function _CreateWorkspaceDialog({team, parent = null}) {
+export default ({team}) => {
     const [opened, { open, close }] = useDisclosure(false);
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(null)
@@ -27,7 +24,6 @@ export default function _CreateWorkspaceDialog({team, parent = null}) {
             label: '',
             name: '',
             namespace: !!parent ? parent.namespace : team.namespace,
-            parent: !!parent ? 'subnamespace' : 'tenant',
         },
 
         validate: {
@@ -62,7 +58,7 @@ export default function _CreateWorkspaceDialog({team, parent = null}) {
     const handleSubmit = (values) => {
         setLoading(true)
 
-        axios.post('/api/tenants/' + team.name + '/subnamespaces', values)
+        axios.post('/api/requests/teams/' + team.id + '/workspace', values)
             .then((res) => {
                 console.log(res)
                 //setRegistered(true)
@@ -81,17 +77,22 @@ export default function _CreateWorkspaceDialog({team, parent = null}) {
     if (!team) {
         return;
     }
+
     return (
         <>
             <Modal opened={opened} onClose={close} title="Create a new Workspace">
                 <form onSubmit={form.onSubmit(handleSubmit)}>
                     <Stack spacing="md">
                         <Text>
-                            Create a new workspace under the team <br />
-                            {team.fullname}
-                            <br />
-                            The name must be unique.
+                             Please specify a label and a name for the new workspace.
                         </Text>
+                        <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
+                            A request will be sent to the admins of {team.shortname} for evaluation.
+                            Once approved the workspace will be created under {team.fullname}.<br/>
+                            <br />
+                            If you are an admin or owner of {team.shortname} the workspace will be created
+                            automatically.
+                        </Alert>
                         <TextInput label="Label" placeholder="My workspace name" withAsterisk
                                    {...form.getInputProps('label')}
                                    onChange={onLabelChange}
@@ -105,23 +106,20 @@ export default function _CreateWorkspaceDialog({team, parent = null}) {
                         </Alert>}
 
                         <Group position="apart">
-                            <Button color="gray" onClick={close}>
-                                Cancel
-                            </Button>
-
                             <Button disabled={loading} type="submit">
                                 Submit
+                            </Button>
+                            <Button color="gray" onClick={close} variant="light">
+                                Cancel
                             </Button>
                         </Group>
 
                     </Stack>
                 </form>
             </Modal>
-            <Group>
-                <Button leftIcon={<IconWorkspace />} onClick={open}>
-                    Create a new Workspace
-                </Button>
-            </Group>
+            <Button leftIcon={<IconWorkspace />} onClick={open}>
+                Create a new Workspace
+            </Button>
         </>
 
     )
