@@ -16,9 +16,9 @@ class UserRequestPolicy
      */
     public function before(User $user, string $ability): bool|null
     {
-        if ($user->admin) {
-            return true;
-        }
+//        if ($user->admin) {
+//            return true;
+//        }
 
         return null;
     }
@@ -66,6 +66,24 @@ class UserRequestPolicy
      */
     public function update(User $user, UserRequest $userRequest)
     {
+
+        if ($userRequest->type == UserRequestType::JoinTeam &&
+            $user->isOwnerOf($userRequest->object)) {
+            return true;
+        }
+
+        if ($userRequest->type == UserRequestType::CreateWorkspace &&
+            $user->isOwnerOf($userRequest->object)) {
+            return true;
+        }
+
+        if ($userRequest->type == UserRequestType::JoinWorkspace &&
+            $user->isOwnerOf($userRequest->object)) {
+            return true;
+        }
+
+        return false;
+
         //
 //        switch($userRequest->type) {
 //            case UserRequestType::CreateTeam:

@@ -66,6 +66,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->firstname . ' ' . $this->lastname;
     }
 
+    /*
+     *
+     */
+    public function isOwnerOf($team)
+    {
+        return $this->tenants->contains(function ($value) use ($team) {
+            return $value->id == $team->id;
+        });
+    }
 //    protected function getRoleAttribute() {
 //        if ($this->pivot) {
 //            return $this->pivot->role;

@@ -101,25 +101,6 @@ class UserRequestController extends Controller
      */
     public function list(Request $request)
     {
-//        $user = auth()->user();
-
-        // only admins can view create team
-//        if ($user->admin) {
-//            $createTeamRequests = UserRequest::where([
-//                ['type' => UserRequestType::CreateTeam],
-//            ])->get();
-//        }
-
-//        $tenants = [];
-//        foreach ($user->tenants as $tenant) {
-//            if ($tenant->pivot !== 'owner') {
-//                continue;
-//            }
-//
-//            $tenants[] = $tenant;
-//
-//        }
-//        $q2->wherePivot('role', 'owner');
 
         $joinTeamRequests = UserRequest::whereHasMorph('object',
             [Tenant::class], function($q1) {
@@ -142,6 +123,10 @@ class UserRequestController extends Controller
 
     public function update(Request $request, UserRequest $userRequest)
     {
+        if ($request->user()->cannot('update', $userRequest)) {
+            abort(403);
+        }
+
         $validatedData = $request->validate([
             'action' => 'required|string'
         ]);

@@ -11,7 +11,7 @@ use App\Http\Controllers\Api\RoleRequestController;
 use App\Http\Controllers\Api\TenantRequestController;
 use App\Http\Controllers\Api\NodeController;
 use App\Http\Controllers\Api\InvitationController;
-
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserRequestController;
 
 Route::get('/tenants', [ TenantController::class, 'list' ]);
@@ -22,6 +22,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 //    Route::get('/users/{name?}', 'ConsoleController@users');
 //    Route::post('/users', 'ConsoleController@createUser');
 //    Route::patch('/users/{name}', 'ConsoleController@patchUser');
+
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/requests', [UserController::class, 'requests']);
+    });
 
     Route::group(['prefix' => 'tokens'], function () {
         Route::get('/', [ TokenController::class, 'list' ]);
