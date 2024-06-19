@@ -6,6 +6,7 @@ import {
     IconAlertCircle, IconAlertTriangle, IconArrowRight, IconCheck,
 } from "@tabler/icons";
 import WorkspaceUsers from "./WorkspaceUsers";
+import WorkspaceKubeConfig from "./WorkspaceKubeConfig";
 
 
 export default () => {
@@ -29,6 +30,7 @@ export default () => {
             <Stack my="lg">
                 <Group justify="space-between">
                     <Title order={1}>Workspace → {workspace.name}</Title>
+                    <WorkspaceKubeConfig workspace={workspace} />
                     {/*<Button onClick={() => navigate('/nodes/create')}>Add a Node</Button>*/}
                 </Group>
                 <Text size="sm">

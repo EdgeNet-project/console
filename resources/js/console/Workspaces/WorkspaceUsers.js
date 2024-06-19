@@ -1,8 +1,9 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Alert, Anchor, Badge, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
 import {IconInfoCircle, IconUsers} from "@tabler/icons";
 import {useAuthentication} from "../Authentication";
 import {UserInfo} from "../User/UserAvatar";
+import Panel from "../Components/Panel";
 
 const AlertWorkspaceUsers = () => {
     return (
@@ -44,7 +45,7 @@ const WorkspaceUsers = ({workspace}) => {
                             <UserInfo user={user} />
                         </Table.Td>
                         <Table.Td>
-                            <Stack align="flex-start" justify="flex-start" spacing="xs">
+                            <Stack align="flex-start" justify="center" gap="xs">
                                 {user.enabled ?
                                     <Badge size="xs">Enabled</Badge> :
                                     <Badge size="xs" color="gray">Disabled</Badge>
@@ -63,26 +64,18 @@ const WorkspaceUsers = ({workspace}) => {
 
 
 }
+
 export default ({workspace}) => {
+    const navigate = useNavigate();
 
     return (
-        <Paper p="md">
-            <Stack justify="space-between">
-                <Stack>
-                    <Group justify="flex-start">
-                        <IconUsers />
-                        <Title order={2} size="h4">{workspace.name} users</Title>
-                    </Group>
-                    <WorkspaceUsers workspace={workspace} />
-                </Stack>
-                <Stack>
-                    <Divider />
-                    <Group justify="flex-end">
-                        <Button size="xs" onClick={() => navigate('/team/create')}>Create a new Team</Button>
-                        <Button size="xs" onClick={() => navigate('/team/join')}>Join an existing Team</Button>
-                    </Group>
-                </Stack>
-            </Stack>
-        </Paper>
+        <Panel title={workspace.name + " users"}
+               icon={<IconUsers />}
+               buttons={[
+                   <Button size="xs" onClick={() => navigate('/team/create')}>Create a new Team</Button>,
+                   <Button size="xs" onClick={() => navigate('/team/join')}>Join an existing Team</Button>
+               ]}>
+            <WorkspaceUsers workspace={workspace} />
+        </Panel>
     )
 }

@@ -1,7 +1,8 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Alert, Anchor, Badge, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
-import {IconInfoCircle, IconUsers} from "@tabler/icons";
+import {IconBoxPadding, IconInfoCircle, IconUsers} from "@tabler/icons";
 import {UserInfo} from "../User/UserAvatar";
+import Panel from "../Components/Panel";
 
 const AlertWorkspaceUsers = () => {
     return (
@@ -62,26 +63,18 @@ const TeamUsers = ({team}) => {
 
 
 }
+
 export default ({team}) => {
+    const navigate = useNavigate();
 
     return (
-        <Paper p="md">
-            <Stack justify="space-between">
-                <Stack>
-                    <Group justify="flex-start">
-                        <IconUsers />
-                        <Title order={2} size="h4">{team.shortname} users</Title>
-                    </Group>
-                    <TeamUsers team={team} />
-                </Stack>
-                <Stack>
-                    <Divider />
-                    <Group justify="flex-end">
-                        <Button size="xs" onClick={() => navigate('/team/create')}>Create a new Team</Button>
-                        <Button size="xs" onClick={() => navigate('/team/join')}>Join an existing Team</Button>
-                    </Group>
-                </Stack>
-            </Stack>
-        </Paper>
+        <Panel title={team.shortname + " users"}
+               icon={<IconUsers />}
+               buttons={[
+                   <Button size="xs" onClick={() => navigate('/team/create')}>Create a new Team</Button>,
+                   <Button size="xs" onClick={() => navigate('/team/join')}>Join an existing Team</Button>
+               ]}>
+            <TeamUsers team={team} />
+        </Panel>
     )
 }

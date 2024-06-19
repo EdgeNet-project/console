@@ -1,6 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
 import {Alert, Anchor, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
 import {IconBoxPadding, IconInfoCircle} from "@tabler/icons";
+import Panel from "../Components/Panel";
 
 const AlertTeamWorkspaces = () => {
     return (
@@ -50,18 +51,12 @@ export default ({team}) => {
     const navigate = useNavigate();
 
     return (
-        <Paper p="md">
-            <Stack>
-                <Group justify="flex-start">
-                    <IconBoxPadding />
-                    <Title order={2} size="h4">{team.shortname} workspaces</Title>
-                </Group>
-                <TeamWorkspaces team={team} />
-                <Divider />
-                <Group justify="flex-end">
-                    <Button size="xs" onClick={() => navigate('/workspace/create')}>Create a new Workspace</Button>
-                </Group>
-            </Stack>
-        </Paper>
+        <Panel title={team.shortname + " workspaces"}
+               icon={<IconBoxPadding />}
+               buttons={[
+                   <Button size="xs" onClick={() => navigate('/workspace/create')}>Create a new Workspace</Button>
+               ]}>
+            <TeamWorkspaces team={team} />
+        </Panel>
     )
 }
