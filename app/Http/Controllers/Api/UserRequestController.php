@@ -147,7 +147,7 @@ class UserRequestController extends Controller
 
         $userRequest->save();
 
-        return response()->json($userRequest);
+        return response()->json(new UserRequestResource($userRequest));
 
     }
 }

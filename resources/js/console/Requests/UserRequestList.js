@@ -1,14 +1,16 @@
-import React, {useEffect, useState} from "react";
-import {Badge, Box, Button, Group, LoadingOverlay, Modal, Paper, Stack, Table, Text} from "@mantine/core";
+import React, {useState} from "react";
+import {Box, Button, Group, LoadingOverlay, Modal, Paper, Stack, Table, Text} from "@mantine/core";
 import dayjs from "dayjs";
 import {UserInfo} from "../User/UserAvatar";
 import axios from "axios";
 import {useDisclosure} from "@mantine/hooks";
 import UserRequestType from "./UserRequestType";
 import UserRequestStatus from "./UserRequestStatus";
+import {useAuthentication} from "../Authentication";
 
 const UserRequestManage = ({request, onClose}) => {
     const [visible, { toggle }] = useDisclosure(false);
+    const {updateRequest} = useAuthentication();
 
     const manageRequest = (action, message) => {
         toggle()
@@ -52,32 +54,7 @@ const UserRequestManage = ({request, onClose}) => {
 
 export default () => {
     const [ moderateRequest, setModerateRequest ] = useState(null);
-    const [userRequests, setUserRequests] = useState([]);
-
-    useEffect(() => {
-        axios.get('/api/requests')
-            .then(({data}) => {
-                setUserRequests(data)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-
-        return () => {
-            setUserRequests([])
-        }
-    }, []);
-
-    const updateRequest = (request) => {
-        const idx = userRequests.findIndex(i => i.id === request.id);
-        if (idx !== -1) {
-            setUserRequests(
-                userRequests.slice(0, idx)
-                    .concat([request])
-                    .concat(userRequests.slice(idx + 1))
-            );
-        }
-    }
+    const {userRequests} = useAuthentication();
 
     if (!userRequests || userRequests.length <= 0) {
         return null;
@@ -126,7 +103,6 @@ export default () => {
                 </Table>
             </Paper>
             {moderateRequest && <UserRequestManage request={moderateRequest}
-                                                   updateRequest={updateRequest}
                                                    onClose={() => setModerateRequest(null)} />}
         </>
 

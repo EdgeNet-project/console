@@ -200,6 +200,17 @@ const AuthenticationProvider = ({children}) => {
         return null;
     }
 
+    const updateRequest = (userRequest) => {
+        const idx = userRequests.findIndex(i => i.id === userRequest.id);
+        if (idx !== -1) {
+            setUserRequests(
+                userRequests.slice(0, idx)
+                    .concat([userRequest])
+                    .concat(userRequests.slice(idx + 1))
+            );
+        }
+    }
+
     /**
      * User is not authenticated
      */
@@ -273,6 +284,7 @@ const AuthenticationProvider = ({children}) => {
             loadUser: loadUser,
 
             userRequests: userRequests,
+            updateRequest: updateRequest,
             // error: error
 
             isAuthenticated: isAuthenticated
@@ -283,12 +295,14 @@ const AuthenticationProvider = ({children}) => {
 }
 
 const useAuthentication = () => {
-    const { user, userRequests, token, login, logout, loadUser, loading, error, isAuthenticated } = useContext(AuthenticationContext)
+    const { user, token, login, logout, loadUser, loading, error, isAuthenticated,
+        userRequests, updateRequest
+    } = useContext(AuthenticationContext)
 
     return {
         user, token, login, logout, loadUser, loading, error,
 
-        userRequests,
+        userRequests, updateRequest,
         isAuthenticated
     }
 }
