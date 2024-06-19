@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserRequestResource;
 use App\Model\Tenant;
 use App\Model\UserRequest;
 use App\Model\UserRequestType;
@@ -22,7 +23,7 @@ class UserController extends Controller
 
         $userRequests = UserRequest::where('user_id', auth()->user()->id)->get();
 
-        return response()->json($userRequests);
+        return response()->json(UserRequestResource::collection($userRequests));
 
     }
 }

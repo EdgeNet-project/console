@@ -13,7 +13,7 @@ class UserRequest extends Model
     protected $guarded = [];
 
     protected $with = [
-        'user', 'object'
+//        'user', 'object'
     ];
 
     protected $casts = [

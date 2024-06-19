@@ -8,6 +8,8 @@ import {Title, Text, Alert, Paper, SimpleGrid, Divider, Group, Anchor, Progress,
 import Teams from "./Teams";
 import Workspaces from "./Workspaces";
 import Nodes from "./Nodes";
+import {useAuthentication} from "../Authentication";
+import {Link} from "react-router-dom";
 
 const categories = [
     {
@@ -47,7 +49,28 @@ const statusMapping = {
     "Critical performance": {icon: <IconAlertCircle size="1rem" />, color: 'red'}
 };
 
+const RequestsAlert = ({own, requests}) => {
+    const {user, userRequests} = useAuthentication();
+
+    if (user.requests.length > 0) {
+
+    }
+
+    return (
+        <Alert icon={<IconAlertTriangle size="1.5rem"/>} title="Pending requests" color="orange" variant="light">
+            {user.requests.length > 0 && <Text size="sm">
+                You have <Anchor component={Link} to="/requests">{user.requests.length} pending {user.requests.length > 1 ? 'requests' : 'request'}</Anchor> pending for review.
+            </Text>}
+            {userRequests.length > 0 && <Text size="sm">
+                You are managing one or more Teams and you have <Anchor component={Link} to="/requests">{userRequests.length} pending {userRequests.length > 1 ? 'requests' : 'request'}</Anchor> to review.
+            </Text>}
+        </Alert>
+    )
+}
+
 export default () => {
+
+
     return (
         <>
             <Stack my="lg">
@@ -59,6 +82,7 @@ export default () => {
                     <br />
                     If you want you can also contribute a node to the cluster.
                 </Text>
+                <RequestsAlert />
             </Stack>
             <SimpleGrid cols={2}>
                 <Teams />

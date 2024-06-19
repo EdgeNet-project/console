@@ -17,7 +17,7 @@ import {
     Code,
     Anchor,
     NavLink,
-    Burger, Image
+    Burger, Image, Badge
 } from "@mantine/core";
 import {NavLink as RouterNavLink, matchPath, useMatch, useMatches} from "react-router-dom";
 import {useAuthentication} from "../Authentication";
@@ -114,7 +114,9 @@ const NavMenu = ({to, label, icon, rightSection}) => {
 }
 
 export default function NavigationMenu() {
-    const {user} = useAuthentication();
+    const {user, userRequests} = useAuthentication();
+
+    const countRequests = user.requests.length + userRequests.length;
 
     return (
         <>
@@ -131,7 +133,9 @@ export default function NavigationMenu() {
 
                 <Divider label="Account" mt="sm"/>
                 <NavMenu to="tokens" label="Tokens" icon={<IconKey size="1rem" stroke={1.5} />}/>
-                <NavMenu to="requests" label="Requests" icon={<IconQuestionCircle size="1rem" stroke={1.5} />}/>
+                <NavMenu to="requests" label="Requests"
+                         rightSection={countRequests > 0 && <Badge size="xs" circle>{countRequests}</Badge>}
+                         icon={<IconQuestionCircle size="1rem" stroke={1.5} />}/>
             </div>
 
             <div className={classes.footer}>

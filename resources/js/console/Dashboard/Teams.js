@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import {Alert, Anchor, Divider, Group, Paper, Stack, Text} from "@mantine/core";
+import {Alert, Anchor, Divider, Group, Paper, Stack, Text, Title} from "@mantine/core";
 import {IconAlertTriangle, IconInfoCircle, IconUsers} from "@tabler/icons";
 import {useAuthentication} from "../Authentication";
 
@@ -54,11 +54,8 @@ export default () => {
             <Stack>
                 <Group justify="flex-start">
                     <IconUsers />
-                    <Text size="sm">Your Teams</Text>
+                    <Title order={2} size="h4">Your Teams</Title>
                 </Group>
-                <Alert icon={<IconAlertTriangle size="1rem"/>} title="A request is pending" color="orange">
-                    This is an example of a request pending
-                </Alert>
                 <UserTeam />
             </Stack>
         </Paper>

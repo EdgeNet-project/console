@@ -31,6 +31,7 @@ const AuthenticationProvider = ({children}) => {
     const [ loading, setLoading ] = useState(true);
     const [ submitting, setSubmitting ] = useState(false);
     // const { error, get, post, abort, options } = useFetch()
+    const [userRequests, setUserRequests] = useState([]);
 
     useEffect(() => {
         const xsrf_token = getXsrfToken();
@@ -85,6 +86,22 @@ const AuthenticationProvider = ({children}) => {
 
     }, [token])
 
+    useEffect(() => {
+        if (user && user.id) {
+            axios.get('/api/requests')
+                .then(({data}) => {
+                    setUserRequests(data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
+
+        return () => {
+            setUserRequests([])
+        }
+    }, [user]);
+
     const loadUser = () => {
         axios.get('/user')
             .then(({data}) => {
@@ -106,17 +123,7 @@ const AuthenticationProvider = ({children}) => {
             })
     }
 
-    const loadRequests = () => {
-        axios.get('/user/requests')
-            .then(({data}) => {
-                setRequests(data)
-            })
-            .catch(() => {
 
-            })
-            .finally(() => {
-            })
-    }
 
     const login = ({email, password}) => {
         setLoading(true)
@@ -265,7 +272,7 @@ const AuthenticationProvider = ({children}) => {
             loading: loading,
             loadUser: loadUser,
 
-            requests: requests,
+            userRequests: userRequests,
             // error: error
 
             isAuthenticated: isAuthenticated
@@ -276,12 +283,12 @@ const AuthenticationProvider = ({children}) => {
 }
 
 const useAuthentication = () => {
-    const { user, requests, token, login, logout, loadUser, loading, error, isAuthenticated } = useContext(AuthenticationContext)
+    const { user, userRequests, token, login, logout, loadUser, loading, error, isAuthenticated } = useContext(AuthenticationContext)
 
     return {
         user, token, login, logout, loadUser, loading, error,
 
-        requests,
+        userRequests,
         isAuthenticated
     }
 }

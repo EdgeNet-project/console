@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserRequestResource;
 use App\Model\SubNamespace;
 use App\Model\Tenant;
 use App\Model\UserRequest;
@@ -102,10 +103,13 @@ class UserRequestController extends Controller
     public function list(Request $request)
     {
 
-        $joinTeamRequests = UserRequest::whereHasMorph('object',
+        $userRequests = UserRequest::whereHasMorph('object',
             [Tenant::class], function($q1) {
                 $q1->whereHas('users', function($q2) {
-                    $q2->where('user_id', auth()->user()->id);
+                    $q2->where([
+                        ['user_id', auth()->user()->id],
+                        ['role', 'owner']
+                    ]);
                 });
                 return $q1;
             })
@@ -117,7 +121,7 @@ class UserRequestController extends Controller
             ->get();
 
         //$joinTeamRequests = UserRequest::whereHasMorph('object', [Tenant::class])->get();
-        return response()->json($joinTeamRequests);
+        return response()->json(UserRequestResource::collection($userRequests));
 
     }
 

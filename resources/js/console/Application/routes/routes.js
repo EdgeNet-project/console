@@ -5,7 +5,7 @@ import RegistrationForm from "../../Authentication/Registration/RegistrationForm
 import UserProfile from "../../Profile/UserProfile";
 import Application from "../index";
 import Tokens from "../../Tokens";
-import RequestsView from "../../Requests/View";
+import RequestsView from "../../Requests";
 import TenantUsers from "../../Views/TenantUsers";
 import Dashboard from "../../Dashboard";
 import TeamView from "../../Teams/TeamView";

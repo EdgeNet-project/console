@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Authentication;
 
+use App\Http\Resources\UserResource;
 use App\Services\EdgenetAdmin;
-use App\Services\Edgenet;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\User;
@@ -16,7 +16,7 @@ class AuthenticationController extends Controller
     {
         $user = auth()->user();
 
-        return response()->json($user);
+        return response()->json(new UserResource($user));
     }
 
     /**
