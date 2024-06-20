@@ -47,4 +47,9 @@ class Tenant extends Model
     {
         return $this->users()->wherePivot('role','owner')->get();
     }
+
+    public function getAdminsAttribute()
+    {
+        return $this->users()->wherePivot('role','admin')->get();
+    }
 }

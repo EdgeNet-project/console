@@ -2,21 +2,30 @@
 
 namespace App\Observers;
 
-use App\Model\SubNamespace;
+use App\Events\SubNamespaceCreated;
+use App\Facades\EdgenetAdmin;
 use Illuminate\Support\Facades\Log;
+use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
+
+use App\Model\SubNamespace;
+use App\CRDs\SubNamespace as SubNamespaceCRD;
 
 class SubNamespaceObserver
 {
     /**
      * Handle the SubNamespace "created" event.
      *
-     * @param  \App\SubNamespace  $subNamespace
+     * @param  \App\Model\SubNamespace  $subNamespace
      * @return void
      */
     public function created(SubNamespace $subNamespace)
     {
         //
         Log::info('Created subnamespace '. $subNamespace->name);
+
+        SubNamespaceCreated::dispatch($subNamespace);
+
+
     }
 
     public function creating(SubNamespace $subNamespace)

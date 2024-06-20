@@ -2,9 +2,14 @@
 
 namespace App\Observers;
 
+use App\Model\SubNamespace;
 use App\Model\UserRequest;
 use App\Model\UserRequestStatus;
 use App\Model\UserRequestType;
+use App\Notifications\UserRequestApproved;
+use App\Notifications\UserRequestCreated;
+use App\Notifications\UserRequestDenied;
+use App\Notifications\UserRequestError;
 use Illuminate\Support\Facades\Log;
 
 class UserRequestObserver
@@ -17,7 +22,7 @@ class UserRequestObserver
      */
     public function creating(UserRequest $userRequest)
     {
-        Log::info('Creating Request '. $userRequest->type->name);
+        Log::info('Creating new Request '. $userRequest->type->name);
 
         $userRequest->status = UserRequestStatus::Pending;
     }
@@ -30,7 +35,25 @@ class UserRequestObserver
      */
     public function created(UserRequest $userRequest)
     {
-        Log::info('Created Team request '. $userRequest->type->name . ' (' . $userRequest->id . ')');
+        Log::info('Created Team request '. $userRequest->type->name . ' [' . $userRequest->id . ']');
+
+        /**
+         * Notify the user that createtd the request
+         */
+        $userRequest->user->notify(new UserRequestCreated($userRequest));
+
+        /**
+         * Notify the Team admins or EdgeNet Admins
+         */
+        if ($userRequest->object) {
+            foreach ($userRequest->object->owners as $owner) {
+                $owner->notify(new UserRequestCreated($userRequest, true));
+            }
+        } else {
+
+        }
+
+
     }
 
     /**
@@ -41,20 +64,51 @@ class UserRequestObserver
      */
     public function updating(UserRequest $userRequest)
     {
-        Log::info('Updated Team request '. $userRequest->id);
+        // execute external calls if the request has been approved
+        if ($userRequest->status != UserRequestStatus::Approved) {
+            return;
+        }
+
         switch($userRequest->type) {
             case UserRequestType::CreateTeam:
-                if ($userRequest->status == UserRequestStatus::Approved) {
 
-                }
                 break;
             case UserRequestType::JoinTeam:
                 break;
             case UserRequestType::CreateWorkspace:
+                $this->createWorkspace($userRequest);
                 break;
             case UserRequestType::JoinWorkspace:
                 break;
         }
+    }
+
+    private function createWorkspace(UserRequest $userRequest)
+    {
+        $subnamespace = SubNamespace::create([
+            'label' => $userRequest->data['label'],
+            'name' => $userRequest->data['name'],
+            'namespace' => $userRequest->object->name,
+            'tenant_id' => $userRequest->object->id,
+            'parent_id' => null // TODO
+//            'resourceallocation' => [
+//                'cpu' => "4000m",
+//                'memory' => "4Gi",
+//            ],
+//            'inheritance' => [
+//                'rbac' => true,
+//                'networkpolicy' => false,
+//                'limitrange' => true,
+//                'configmap' => true,
+//                'sync' => false,
+//                //                    'sliceclaim' => 'lab-exercises',
+//                'expiry' => "2023-09-01T09:00:00Z"
+//            ],
+        ]);
+
+        $subnamespace->users()->attach(
+            $userRequest->user->id, ['role' => 'owner']
+        );
     }
 
     /**
@@ -65,7 +119,30 @@ class UserRequestObserver
      */
     public function updated(UserRequest $userRequest)
     {
-        Log::info('Updated Team request '. $userRequest->id);
+        if ($userRequest->status == UserRequestStatus::Denied) {
+            Log::info('User Request '. $userRequest->type . ' ['. $userRequest->id . '] denied');
+
+            /**
+             * Notify the user that createtd the request
+             */
+            $userRequest->user->notify(new UserRequestDenied($userRequest));
+        }
+
+        if ($userRequest->status == UserRequestStatus::Error) {
+            Log::info('User Request '. $userRequest->type . ' ['. $userRequest->id . '] an error occurred');
+
+            /**
+             * Notify the user that createtd the request
+             */
+            $userRequest->user->notify(new UserRequestError($userRequest));
+        }
+
+        if ($userRequest->status == UserRequestStatus::Approved) {
+            /**
+             * Notify the user that createtd the request
+             */
+            $userRequest->user->notify(new UserRequestApproved($userRequest));
+        }
     }
 
     /**

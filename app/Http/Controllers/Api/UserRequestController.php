@@ -71,10 +71,10 @@ class UserRequestController extends Controller
         $userRequest = UserRequest::create([
             'data' => $validatedData,
             'type' => UserRequestType::CreateWorkspace,
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'object_id' => $tenant->id,
+            'object_type' => Tenant::class
         ]);
-
-        $tenant->requests()->save($userRequest);
 
         return response()->json($userRequest);
     }

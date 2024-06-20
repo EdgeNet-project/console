@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Model\UserRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -16,9 +17,10 @@ class UserRequestDenied extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserRequest $userRequest, $is_admin = false)
     {
-        //
+        $this->userRequest = $userRequest;
+        $this->is_admin = $is_admin;
     }
 
     /**
@@ -40,10 +42,17 @@ class UserRequestDenied extends Notification
      */
     public function toMail($notifiable)
     {
+
+        if ($this->is_admin) {
+            return (new MailMessage)
+                ->greeting('Dear ' . $notifiable->firstname . ' ' . $notifiable->lastname)
+                ->line('A the request from ' . $this->userRequest->user->firstname . ' ' . $this->userRequest->user->lastname)
+                ->line('for '.$this->userRequest->type->name .' has been denied.');
+        }
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->greeting('Dear ' . $notifiable->firstname . ' ' . $notifiable->lastname)
+            ->line('Your request for '.$this->userRequest->type->name .' has been denied.');
     }
 
     /**

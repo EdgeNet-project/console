@@ -8,7 +8,7 @@ const UserRequestType = ({request}) => {
             </Text>;
         case 'CreateWorkspace':
             return <Text size="sm">
-                {request.user.firstname} is asking to create a new workspace in {request.object.name}
+                {request.user.firstname} is asking to create a new workspace in {request.object?.name}
             </Text>;
         case 'JoinTeam':
             return <Text size="sm">
