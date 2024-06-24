@@ -22,7 +22,7 @@ class Tenant extends K8sResource implements InteractsWithK8sCluster
      *
      * @var string
      */
-    protected static $defaultVersion = 'core.edgenet.io/v1alpha1';
+    protected static $defaultVersion = 'core.edgenet.io/v1';
 
     /**
      * Wether the resource has a namespace.
@@ -31,32 +31,14 @@ class Tenant extends K8sResource implements InteractsWithK8sCluster
      */
     protected static $namespaceable = false;
 
-    public function getAddress()
-    {
-        return $this->getAttribute('spec.address');
-    }
-
-    public function getFulladdress()
-    {
-        return $this->getAttribute('spec.address.street') . "\n" .
-            $this->getAttribute('spec.address.zip') . ' ' . $this->getAttribute('spec.address.city') . "\n" .
-            ($this->hasAttribute('spec.address.region') ? $this->getAttribute('spec.address.region') . '. ' : '' ) .
-            $this->getAttribute('spec.address.country');
-    }
-
-    public function getContact()
-    {
-        return $this->getAttribute('spec.contact');
-    }
-
     public function getFullname()
     {
         return $this->getAttribute('spec.fullname');
     }
 
-    public function getShortname()
+    public function getDescription()
     {
-        return $this->getAttribute('spec.shortname');
+        return $this->getAttribute('spec.description');
     }
 
     public function getUrl()

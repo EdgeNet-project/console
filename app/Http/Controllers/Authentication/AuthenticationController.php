@@ -19,30 +19,6 @@ class AuthenticationController extends Controller
         return response()->json(new UserResource($user));
     }
 
-    /**
-     * @param EdgenetAdmin $edgenet
-     * @return \Illuminate\Http\JsonResponse
-     *
-     * TODO: Requests filtering by user should be done by the edgenet access controller
-     * TODO: Requests should be filtered if user is NOT admin only own requests are returned
-     */
-    public function requests(EdgenetAdmin $edgenet)
-    {
-
-        $tenantRequests = $edgenet->getCluster()
-            ->tenantRequest()->get();
-
-        $roleRequests = $edgenet->getCluster()
-            ->roleRequest()->get();
-
-        return response()->json([
-            'tenants' => $tenantRequests->filter(function($r) {
-                return $r->getEmail() != auth()->user()->email;
-            }),
-            'roles' => $roleRequests
-        ]);
-    }
-
     public function updateUser(Request $request)
     {
         $data = $request->validate([

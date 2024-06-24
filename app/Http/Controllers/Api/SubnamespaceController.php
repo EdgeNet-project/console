@@ -120,19 +120,19 @@ class SubnamespaceController extends Controller
     {
         if ($namespace && $name) {
             return response()->json(
-                SubNamespaceModel::where([
+                SubNamespace::where([
                     ['namespace', $namespace], ['name', $name]
                 ])->first());
         }
 
         if ($namespace) {
             return response()->json(
-                SubNamespaceModel::where([
+                SubNamespace::where([
                     ['namespace', $namespace]
                 ])->get());
         }
 
-        return response()->json(SubNamespaceModel::all());
+        return response()->json(SubNamespace::all());
     }
 
     public function get(SubNamespace $sub_namespace)
@@ -140,100 +140,101 @@ class SubnamespaceController extends Controller
         return response()->json(new SubNamespaceResource($sub_namespace));
     }
 
-    public function create(Request $request, Edgenet $edgenet, TenantModel $tenant)
-    {
-        $data = $request->validate([
-            'label' => ['required', 'string', 'max:255'],
-            'name' => ['required', 'string', 'max:255'],
-//            'namespace' => ['required', 'string', 'max:255'],
-
-            'parent' => ['required', Rule::in(['tenant', 'subnamespace'])],
-        ]);
-
-        $parent = null;
-        if ($data['parent'] === 'subnamespace') {
-            $parent = SubNamespaceModel::where('name', $data['namespace'])->first();
-        }
-
-        $namespace = !!$parent ? $parent->name : $tenant->name;
-
-        $subnamespace = SubNamespaceModel::create([
-            'label' => $data['label'],
-            'name' => $data['name'],
-            'namespace' => $namespace,
-            'tenant_id' => $tenant->id,
-            'parent_id' => !!$parent ? $parent->id : null
-//            'resourceallocation' => [
-//                'cpu' => "4000m",
-//                'memory' => "4Gi",
+    // uses UserRequest to create workspace
+//    public function create(Request $request, Edgenet $edgenet, TenantModel $tenant)
+//    {
+//        $data = $request->validate([
+//            'label' => ['required', 'string', 'max:255'],
+//            'name' => ['required', 'string', 'max:255'],
+////            'namespace' => ['required', 'string', 'max:255'],
+//
+//            'parent' => ['required', Rule::in(['tenant', 'subnamespace'])],
+//        ]);
+//
+//        $parent = null;
+//        if ($data['parent'] === 'subnamespace') {
+//            $parent = SubNamespace::where('name', $data['namespace'])->first();
+//        }
+//
+//        $namespace = !!$parent ? $parent->name : $tenant->name;
+//
+//        $subnamespace = SubNamespace::create([
+//            'label' => $data['label'],
+//            'name' => $data['name'],
+//            'namespace' => $namespace,
+//            'tenant_id' => $tenant->id,
+//            'parent_id' => !!$parent ? $parent->id : null
+////            'resourceallocation' => [
+////                'cpu' => "4000m",
+////                'memory' => "4Gi",
+////            ],
+////            'inheritance' => [
+////                'rbac' => true,
+////                'networkpolicy' => false,
+////                'limitrange' => true,
+////                'configmap' => true,
+////                'sync' => false,
+////                //                    'sliceclaim' => 'lab-exercises',
+////                'expiry' => "2023-09-01T09:00:00Z"
+////            ],
+//        ]);
+//
+//        //Log::info($subnamespace->toArray());
+//
+//
+//
+//        $subnamespace = new SubNamespace($edgenet->getCluster(), [
+//            'metadata' => [
+//                'name' => $data['name'],
+//                'namespace' => $namespace,
 //            ],
-//            'inheritance' => [
-//                'rbac' => true,
-//                'networkpolicy' => false,
-//                'limitrange' => true,
-//                'configmap' => true,
-//                'sync' => false,
-//                //                    'sliceclaim' => 'lab-exercises',
-//                'expiry' => "2023-09-01T09:00:00Z"
-//            ],
-        ]);
-
-        //Log::info($subnamespace->toArray());
-
-
-
-        $subnamespace = new SubNamespace($edgenet->getCluster(), [
-            'metadata' => [
-                'name' => $data['name'],
-                'namespace' => $namespace,
-            ],
-            'spec' => [
-                'workspace' => [
-                    'resourceallocation' => [
-                        'cpu' => "4000m",
-                        'memory' => "4Gi",
-                    ],
-                    'inheritance' => [
-                        'rbac' => true,
-                        'networkpolicy' => false,
-                        'limitrange' => true,
-                        'configmap' => true,
-                        'sync' => false,
-    //                    'sliceclaim' => 'lab-exercises',
-                        'expiry' => "2023-09-01T09:00:00Z"
-                    ],
-                ],
-            ]
-        ]);
-
-        Log::info($subnamespace->toArray());
-
-        try {
-            $subnamespace
-                ->create();
-        } catch (PhpK8sException $e) {
-
-            Log::error($e->getMessage());
-            Log::info($e->getPayload());
-
-            return response()->json([
-                'errors' => [
-                    'name' => 'Name already exists or not authorized',
-                    'message' => $e->getMessage()
-                ]
-            ], 400);
-        }
-
-        $tenant = Tenant::where('name', $data['namespace'])->first();
-
-        $subnamespace_model = SubNamespaceModel::create([
-            'namespace' => $data['name'],
-            'name' => $data['namespace'],
-            'tenant_id' => $tenant->id
-        ]);
-
-        return response()->json($subnamespace_model);
-    }
+//            'spec' => [
+//                'workspace' => [
+//                    'resourceallocation' => [
+//                        'cpu' => "4000m",
+//                        'memory' => "4Gi",
+//                    ],
+//                    'inheritance' => [
+//                        'rbac' => true,
+//                        'networkpolicy' => false,
+//                        'limitrange' => true,
+//                        'configmap' => true,
+//                        'sync' => false,
+//    //                    'sliceclaim' => 'lab-exercises',
+//                        'expiry' => "2023-09-01T09:00:00Z"
+//                    ],
+//                ],
+//            ]
+//        ]);
+//
+//        Log::info($subnamespace->toArray());
+//
+//        try {
+//            $subnamespace
+//                ->create();
+//        } catch (PhpK8sException $e) {
+//
+//            Log::error($e->getMessage());
+//            Log::info($e->getPayload());
+//
+//            return response()->json([
+//                'errors' => [
+//                    'name' => 'Name already exists or not authorized',
+//                    'message' => $e->getMessage()
+//                ]
+//            ], 400);
+//        }
+//
+//        $tenant = Tenant::where('name', $data['namespace'])->first();
+//
+//        $subnamespace_model = SubNamespaceModel::create([
+//            'namespace' => $data['name'],
+//            'name' => $data['namespace'],
+//            'tenant_id' => $tenant->id
+//        ]);
+//
+//        return response()->json($subnamespace_model);
+//    }
 
     public function join(Request $request, Edgenet $edgenet)
     {
