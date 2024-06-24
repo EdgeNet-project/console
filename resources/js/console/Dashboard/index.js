@@ -11,44 +11,6 @@ import UserNodes from "./UserNodes";
 import {useAuthentication} from "../Authentication";
 import {Link} from "react-router-dom";
 
-const categories = [
-    {
-        icon: <IconUser />,
-        title: "Users",
-        metric: "4",
-        text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-        status: "Performing as usual",
-        color: "emerald",
-    },
-    {
-        icon: <IconUsers />,
-        title: "Teams",
-        metric: "3",
-        text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-        status: "Performing as usual",
-    },
-    {
-        icon: <IconBox />,
-        title: "Deployments",
-        metric: "1",
-        text: "Deployment yyy is not starting up correctly",
-        status: "Critical performance",
-    },
-    {
-        icon: <IconServer />,
-        title: "Nodes",
-        metric: "2",
-        text: "Node xxx needs your attention!",
-        status: "Immediate action required",
-    },
-];
-
-const statusMapping = {
-    "Performing as usual": {icon: <IconCheck size="1rem" />, color: 'teal'},
-    "Immediate action required": {icon: <IconAlertTriangle size="1rem" />, color: 'orange'},
-    "Critical performance": {icon: <IconAlertCircle size="1rem" />, color: 'red'}
-};
-
 const RequestsAlert = () => {
     const {user, userRequests} = useAuthentication();
 
@@ -69,7 +31,6 @@ const RequestsAlert = () => {
 }
 
 export default () => {
-
 
     return (
         <>

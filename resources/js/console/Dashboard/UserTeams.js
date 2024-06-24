@@ -2,6 +2,7 @@ import {Link} from "react-router-dom";
 import {Alert, Anchor, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
 import {IconInfoCircle, IconUsers} from "@tabler/icons";
 import {useAuthentication} from "../Authentication";
+import CreateTeam from "../Teams/CreateTeam";
 
 const AlertUserTeam = () => {
     return (
@@ -72,7 +73,7 @@ export default () => {
                 <Stack>
                     <Divider />
                     <Group justify="flex-end">
-                        <Button size="xs" onClick={() => navigate('/team/create')}>Create a new Team</Button>
+                        <CreateTeam />
                         <Button size="xs" onClick={() => navigate('/team/join')}>Join an existing Team</Button>
                     </Group>
                 </Stack>

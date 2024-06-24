@@ -2,7 +2,7 @@ import {Anchor, Group, Paper, Stack, Text} from "@mantine/core";
 import React from "react";
 import JoinWorkspaceDialog from "./JoinWorkspaceDialog";
 import InviteUsersDialog from "../User/InviteUsersDialog";
-import createWorkspace from "../Teams/CreateWorkspace";
+import createWorkspace from "./CreateWorkspace";
 
 export default ({workspace}) => {
 

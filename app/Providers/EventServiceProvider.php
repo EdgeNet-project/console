@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Events\SubNamespaceCreated;
-use App\Listeners\EdgeNet\CreateWorkspace;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -25,12 +23,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $observers = [
-        SubNamespace::class => [
-            SubNamespaceObserver::class
-        ],
         UserRequest::class => [
             UserRequestObserver::class,
         ],
+
+        SubNamespace::class => [
+            SubNamespaceObserver::class
+        ],
+
         Node::class => [
             NodeObserver::class
         ]
@@ -45,10 +45,6 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-
-        SubNamespaceCreated::class => [
-            CreateWorkspace::class
-        ]
     ];
 
     /**

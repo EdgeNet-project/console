@@ -2,7 +2,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {Alert, Anchor, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
 import {IconBoxPadding, IconInfoCircle} from "@tabler/icons";
 import Panel from "../Components/Panel";
-import CreateWorkspace from "./CreateWorkspace";
+import CreateWorkspace from "../Workspaces/CreateWorkspace";
 
 const AlertTeamWorkspaces = () => {
     return (

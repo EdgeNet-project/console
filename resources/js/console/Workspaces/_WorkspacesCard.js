@@ -1,6 +1,6 @@
 import {Badge, Text, Card, Group, Table, ScrollArea, Divider, ActionIcon, Modal, Button, Stack} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import createWorkspace from "../Teams/CreateWorkspace";
+import createWorkspace from "./CreateWorkspace";
 import {IconBoxPadding as IconWorkspace, IconEdit, IconTrash} from "@tabler/icons";
 import React, {useEffect, useState} from "react";
 import {useAuthentication} from "../Authentication";

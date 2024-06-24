@@ -10,6 +10,7 @@ use App\Notifications\UserRequestApproved;
 use App\Notifications\UserRequestCreated;
 use App\Notifications\UserRequestDenied;
 use App\Notifications\UserRequestError;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 
 class UserRequestObserver
@@ -22,8 +23,11 @@ class UserRequestObserver
      */
     public function creating(UserRequest $userRequest)
     {
-        Log::info('Creating new Request '. $userRequest->type->name);
+        Log::info('Creating new request: '. $userRequest->type->name);
 
+        /**
+         * New requests have a PENDING status
+         */
         $userRequest->status = UserRequestStatus::Pending;
     }
 
@@ -35,7 +39,7 @@ class UserRequestObserver
      */
     public function created(UserRequest $userRequest)
     {
-        Log::info('Created Team request '. $userRequest->type->name . ' [' . $userRequest->id . ']');
+        Log::info('New request created: '. $userRequest->type->name . ' ID: ' . $userRequest->id);
 
         /**
          * Notify the user that createtd the request
@@ -46,10 +50,12 @@ class UserRequestObserver
          * Notify the Team admins or EdgeNet Admins
          */
         if ($userRequest->object) {
+            // Team owners/admins
             foreach ($userRequest->object->owners as $owner) {
                 $owner->notify(new UserRequestCreated($userRequest, true));
             }
         } else {
+            // EdgeNet admins
 
         }
 
@@ -85,12 +91,14 @@ class UserRequestObserver
 
     private function createWorkspace(UserRequest $userRequest)
     {
-        $subnamespace = SubNamespace::create([
-            'label' => $userRequest->data['label'],
-            'name' => $userRequest->data['name'],
-            'namespace' => $userRequest->object->name,
-            'tenant_id' => $userRequest->object->id,
-            'parent_id' => null // TODO
+
+        try {
+            $subnamespace = SubNamespace::create([
+                'label' => $userRequest->data['label'],
+                'name' => $userRequest->data['name'],
+                'namespace' => $userRequest->object->name,
+                'tenant_id' => $userRequest->object->id,
+                'parent_id' => null // TODO
 //            'resourceallocation' => [
 //                'cpu' => "4000m",
 //                'memory' => "4Gi",
@@ -104,11 +112,15 @@ class UserRequestObserver
 //                //                    'sliceclaim' => 'lab-exercises',
 //                'expiry' => "2023-09-01T09:00:00Z"
 //            ],
-        ]);
+            ]);
 
-        $subnamespace->users()->attach(
-            $userRequest->user->id, ['role' => 'owner']
-        );
+            $subnamespace->users()->attach(
+                $userRequest->user->id, ['role' => 'owner']
+            );
+
+        } catch (QueryException) {
+            $userRequest->status = UserRequestStatus::Error;
+        }
     }
 
     /**
@@ -120,7 +132,7 @@ class UserRequestObserver
     public function updated(UserRequest $userRequest)
     {
         if ($userRequest->status == UserRequestStatus::Denied) {
-            Log::info('User Request '. $userRequest->type . ' ['. $userRequest->id . '] denied');
+            Log::info('Request denied: '. $userRequest->type->name . ' ID: '. $userRequest->id);
 
             /**
              * Notify the user that createtd the request
@@ -129,7 +141,7 @@ class UserRequestObserver
         }
 
         if ($userRequest->status == UserRequestStatus::Error) {
-            Log::info('User Request '. $userRequest->type . ' ['. $userRequest->id . '] an error occurred');
+            Log::error('Request error: '. $userRequest->type->name . ' ID: '. $userRequest->id);
 
             /**
              * Notify the user that createtd the request
@@ -138,6 +150,8 @@ class UserRequestObserver
         }
 
         if ($userRequest->status == UserRequestStatus::Approved) {
+            Log::info('Request approved: '. $userRequest->type->name . ' ID: '. $userRequest->id);
+
             /**
              * Notify the user that createtd the request
              */

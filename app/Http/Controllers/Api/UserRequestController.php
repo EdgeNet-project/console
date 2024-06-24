@@ -15,18 +15,18 @@ class UserRequestController extends Controller
 {
     public function createTeam(Request $request)
     {
-//        $validatedData = $request->validate([
-//            'fullname' => ['required', 'string', 'max:255'],
-//            'shortname' => ['required', 'string', 'max:255'],
-//            'country' => ['required', 'string', 'max:255'],
-//            'affiliation' => ['required', 'string', 'max:255'],
-//            'url' => ['required', 'string', 'max:255'],
-//            'joining_reason' => ['required'],
-//            'joining_category' => ['required', 'string', 'max:255'],
-//        ]);
+        $validatedData = $request->validate([
+            'fullname' => ['required', 'string', 'max:255'],
+            'shortname' => ['required', 'string', 'max:255'],
+            'country' => ['required', 'string', 'max:255'],
+            'affiliation' => ['required', 'string', 'max:255'],
+            'url' => ['required', 'string', 'max:255'],
+            'joining_reason' => ['required'],
+            'joining_category' => ['required', 'string', 'max:255'],
+        ]);
 
         $userRequest = UserRequest::create([
-            'data' => ['test'],
+            'data' => $validatedData,
             'type' => UserRequestType::CreateTeam,
             'user_id' => auth()->user()->id
         ]);
