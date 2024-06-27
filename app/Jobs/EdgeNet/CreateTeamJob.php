@@ -14,7 +14,7 @@ use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
 use App\CRDs\Tenant as TenantCRD;
 use App\Model\Tenant;
 
-class CreateTeam implements ShouldQueue
+class CreateTeamJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -47,15 +47,18 @@ class CreateTeam implements ShouldQueue
 
         $crd = new TenantCRD(K8s::getCluster(), [
             'metadata' => [
-                'name' => $this->tenant->name,
+                'name' => $this->team->name,
             ],
             'spec' => [
-                'name' => $this->tenant->name,
-                'fullname' => $this->tenant->fullname,
-                'shortname' => $this->tenant->shortname,
-                'url' => $this->tenant->url,
+                'name' => $this->team->name,
+                'fullname' => $this->team->fullname,
+                'shortname' => $this->team->shortname,
+                'url' => $this->team->url,
 //                'address' => $this->tenant->address,
-//                'contact' => $this->tenant->contact,
+                'contact' => [
+                    'email' => 'ciro@cslash.com'
+                ],
+                'enabled' => true
             ]
         ]);
 
@@ -66,7 +69,7 @@ class CreateTeam implements ShouldQueue
             Log::error('[EdgeNet] ', ['payload' => $e->getPayload()]);
 
             activity('tenants')
-                ->performedOn($this->tenant)
+                ->performedOn($this->team)
                 //->causedBy($user)
                 ->withProperties(['severity' => 'error', 'message' => $e->getMessage()])
                 ->log('Error syncing tenant with EdgeNet API');

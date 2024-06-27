@@ -23,7 +23,7 @@ class UserRequestObserver
      */
     public function creating(UserRequest $userRequest)
     {
-        Log::info('Creating new request: '. $userRequest->type->name);
+        Log::info('[Console] Creating new request: '. $userRequest->type->name);
 
         /**
          * New requests have a PENDING status
@@ -39,7 +39,7 @@ class UserRequestObserver
      */
     public function created(UserRequest $userRequest)
     {
-        Log::info('New request created: '. $userRequest->type->name . ' ID: ' . $userRequest->id);
+        Log::info('[Console] New request created: '. $userRequest->type->name . ' ID: ' . $userRequest->id);
 
         /**
          * Notify the user that createtd the request
@@ -132,7 +132,7 @@ class UserRequestObserver
     public function updated(UserRequest $userRequest)
     {
         if ($userRequest->status == UserRequestStatus::Denied) {
-            Log::info('Request denied: '. $userRequest->type->name . ' ID: '. $userRequest->id);
+            Log::info('[Console] Request denied: '. $userRequest->type->name . ' ID: '. $userRequest->id);
 
             /**
              * Notify the user that createtd the request
@@ -141,7 +141,7 @@ class UserRequestObserver
         }
 
         if ($userRequest->status == UserRequestStatus::Error) {
-            Log::error('Request error: '. $userRequest->type->name . ' ID: '. $userRequest->id);
+            Log::error('[Console] Request error: '. $userRequest->type->name . ' ID: '. $userRequest->id);
 
             /**
              * Notify the user that createtd the request
@@ -150,7 +150,7 @@ class UserRequestObserver
         }
 
         if ($userRequest->status == UserRequestStatus::Approved) {
-            Log::info('Request approved: '. $userRequest->type->name . ' ID: '. $userRequest->id);
+            Log::info('[Console] Request approved: '. $userRequest->type->name . ' ID: '. $userRequest->id);
 
             /**
              * Notify the user that createtd the request

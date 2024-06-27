@@ -40,6 +40,12 @@ class CreateWorkspace implements ShouldQueue
     {
         Log::info('[EdgeNet] Creating workspace '. $this->workspace->name);
 
+        activity('workspaces')
+            ->performedOn($this->workspace)
+            //->causedBy($user)
+            ->withProperties(['severity' => 'info'])
+            ->log('syncing workspace with EdgeNet API');
+
         $crd = new SubNamespaceCRD(K8s::getCluster(), [
             'metadata' => [
                 'name' => $this->workspace->name,
@@ -68,7 +74,13 @@ class CreateWorkspace implements ShouldQueue
             $crd->create();
         } catch (PhpK8sException $e) {
             Log::error('[EdgeNet] ' . $e->getMessage());
-            Log::error('[EdgeNet] ' . $e->getPayload());
+            Log::error('[EdgeNet] ', ['payload' => $e->getPayload()]);
+
+            activity('workspaces')
+                ->performedOn($this->workspace)
+                //->causedBy($user)
+                ->withProperties(['severity' => 'error', 'message' => $e->getMessage()])
+                ->log('Error syncing workspace with EdgeNet API');
         }
     }
 }
