@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\OLD;
 
 use App\Services\EdgenetAdmin;
 use Illuminate\Console\Command;

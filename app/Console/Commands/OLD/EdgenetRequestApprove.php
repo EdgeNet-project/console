@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\OLD;
 
 use Illuminate\Console\Command;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;

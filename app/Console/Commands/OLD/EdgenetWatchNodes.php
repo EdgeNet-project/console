@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\OLD;
 
 use App\Model\Node;
 use App\Model\NodeStatus;
 use App\Services\EdgenetAdmin;
 use Illuminate\Console\Command;
-use RenokiCo\PhpK8s\K8s;
 use Illuminate\Support\Facades\Log;
 
 class EdgenetWatchNodes extends Command

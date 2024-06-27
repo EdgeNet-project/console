@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\OLD;
 
 use App\Model\SubNamespace;
 use App\Model\SubNamespaceUser;
 use App\Model\Tenant;
-use App\Model\TenantUser;
 use App\Model\User;
 use App\Services\EdgenetAdmin;
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
-use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 use RenokiCo\PhpK8s\Exceptions\KubernetesAPIException;
 
 class EdgenetSubnamespaceSync extends Command

@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\OLD;
 
+use App\Console\Commands\GuzzleHttp;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 use Ovh\Api;
-use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 
 class test extends Command
 {
