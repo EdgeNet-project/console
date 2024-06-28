@@ -7,7 +7,28 @@ import {
 } from "@tabler/icons";
 import WorkspaceUsers from "./WorkspaceUsers";
 import WorkspaceKubeConfig from "./WorkspaceKubeConfig";
+import {Link} from "react-router-dom";
+import {useAuthentication} from "../Authentication";
 
+
+const RequestsAlert = () => {
+    const {user, userRequests} = useAuthentication();
+
+    if (user.requests.length <= 0 && userRequests <= 0) {
+        return null;
+    }
+
+    return (
+        <Alert icon={<IconAlertTriangle size="1.5rem"/>} title="Pending requests" color="orange" variant="light">
+            {user.requests.length > 0 && <Text size="sm">
+                You have <Anchor component={Link} to="/requests">{user.requests.length} {user.requests.length > 1 ? 'requests' : 'request'}</Anchor> pending for review.
+            </Text>}
+            {userRequests.length > 0 && <Text size="sm">
+                You are managing one or more Teams and you have <Anchor component={Link} to="/requests">{userRequests.length} pending {userRequests.length > 1 ? 'requests' : 'request'}</Anchor> to review.
+            </Text>}
+        </Alert>
+    )
+}
 
 export default () => {
     const { id } = useParams()
@@ -24,6 +45,7 @@ export default () => {
         return null;
     }
 
+
     return (
         <Stack>
 
@@ -38,15 +60,12 @@ export default () => {
                     {workspace.team.city}, {workspace.team.country} <br />
                     <Anchor target="_blank" href={workspace.team.url}>{workspace.team.url}</Anchor>
                 </Text>
-                <Text>
-
+                <Text size="sm">
+                    A workspace is a logical unit to organize your projects and DevOps projects and
+                    manage app templates and app repositories. It is the place for you to control
+                    resource access and share resources within your team in a secure way.
                 </Text>
             </Stack>
-
-
-            {/*<TeamCard team={teamResource} />*/}
-            {/*<WorkspaceCard workspace={workspaceResource} />*/}
-
 
             <SimpleGrid cols={2}>
                 <WorkspaceUsers workspace={workspace} />

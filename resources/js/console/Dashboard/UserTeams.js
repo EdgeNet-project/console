@@ -1,8 +1,10 @@
 import {Link} from "react-router-dom";
-import {Alert, Anchor, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
-import {IconInfoCircle, IconUsers} from "@tabler/icons";
+import {Alert, Anchor, Badge, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
+import {IconBoxPadding, IconInfoCircle, IconUsers} from "@tabler/icons";
 import {useAuthentication} from "../Authentication";
 import CreateTeam from "../Teams/CreateTeam";
+import Panel from "../Components/Panel";
+import JoinTeam from "../Teams/JoinTeam";
 
 const AlertUserTeam = () => {
     return (
@@ -29,55 +31,39 @@ const AlertUserTeam = () => {
     )
 }
 
-const UserTeam = () => {
+export default () => {
     const { user } = useAuthentication();
 
-    if (user.tenants.length <= 0) {
-        return <AlertUserTeam />
-    }
-
     return (
+        <Panel title="Your Teams"
+               icon={<IconUsers/>}
+               buttons={[
+                   <CreateTeam />,
+                   <JoinTeam />
+               ]}>
+            {(user.teams?.length <= 0) && <AlertUserTeam />}
         <Table>
             <Table.Tbody>
-                {user.tenants.map(tenant =>
-                    <Table.Tr key={"userteam_tenant_"+tenant.id}>
+                {user.teams.map(team =>
+                    <Table.Tr key={"userteam_tenant_"+team.name}>
                         <Table.Td>
                             <Text fz="xs" tt="uppercase" c="dimmed">
-                                {tenant.name}
+                                {team.name}
                             </Text>
                             <Text fz="md">
-                                {tenant.fullname}
+                                {team.fullname}
                             </Text>
+                        </Table.Td>
+                        <Table.Td>
+                            <Badge size="xs" color="pink" variant="light">
+                                {team.role}
+                            </Badge>
                         </Table.Td>
                     </Table.Tr>
                 )}
             </Table.Tbody>
         </Table>
+        </Panel>
     )
 
-
-
-}
-export default () => {
-
-    return (
-        <Paper p="md">
-            <Stack justify="space-between">
-                <Stack>
-                    <Group justify="flex-start">
-                        <IconUsers />
-                        <Title order={2} size="h4">Your Teams</Title>
-                    </Group>
-                    <UserTeam />
-                </Stack>
-                <Stack>
-                    <Divider />
-                    <Group justify="flex-end">
-                        <CreateTeam />
-                        <Button size="xs" onClick={() => navigate('/team/join')}>Join an existing Team</Button>
-                    </Group>
-                </Stack>
-            </Stack>
-        </Paper>
-    )
 }

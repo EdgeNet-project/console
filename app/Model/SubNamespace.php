@@ -2,13 +2,11 @@
 
 namespace App\Model;
 
-use App\Services\Edgenet;
 use App\Services\EdgenetAdmin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use RenokiCo\PhpK8s\Exceptions\KubernetesAPIException;
-use RenokiCo\PhpK8s\Kinds\K8sRoleBinding;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -39,11 +37,11 @@ class SubNamespace extends Model
     }
 
     /**
-     * Requests about Subnamespaces (create, join...)
+     * Requests about Tenants (create, join...)
      */
-    public function requests(): MorphOne
+    public function requests(): MorphMany
     {
-        return $this->morphOne(UserRequest::class, 'object');
+        return $this->morphMany(UserRequest::class, 'object');
     }
 
     public function addUser(EdgenetAdmin $edgenetAdmin)

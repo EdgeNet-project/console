@@ -1,8 +1,8 @@
-import {Link, useNavigate} from "react-router-dom";
-import {Alert, Anchor, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
+import {Link} from "react-router-dom";
+import {Alert, Anchor, Stack, Table, Text} from "@mantine/core";
 import {IconBoxPadding, IconInfoCircle} from "@tabler/icons";
 import Panel from "../Components/Panel";
-import CreateWorkspace from "../Workspaces/CreateWorkspace";
+import {CreateWorkspaceButton} from "../Workspaces/CreateWorkspace";
 
 const AlertTeamWorkspaces = () => {
     return (
@@ -49,14 +49,12 @@ const TeamWorkspaces = ({team}) => {
 }
 
 export default ({team}) => {
-    const navigate = useNavigate();
 
     return (
         <Panel title={team.shortname + " workspaces"}
                icon={<IconBoxPadding />}
                buttons={[
-                   <CreateWorkspace team={team} />
-                   // <Button size="xs" onClick={() => navigate('/workspace/create')}>Create a new Workspace</Button>
+                   <CreateWorkspaceButton team={team} />
                ]}>
             <TeamWorkspaces team={team} />
         </Panel>

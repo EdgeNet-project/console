@@ -56,6 +56,14 @@ class User extends Authenticatable implements MustVerifyEmail
             ->withTimestamps();
     }
 
+    public function subnamespaces()
+    {
+        return $this->belongsToMany(SubNamespace::class)
+            ->using(SubNamespaceUser::class)
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
     public function requests()
     {
         return $this->hasMany(UserRequest::class);

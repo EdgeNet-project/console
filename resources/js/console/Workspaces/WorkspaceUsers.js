@@ -1,41 +1,19 @@
-import {Link, useNavigate} from "react-router-dom";
-import {Alert, Anchor, Badge, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
+import {Alert, Badge, Stack, Table} from "@mantine/core";
 import {IconInfoCircle, IconUsers} from "@tabler/icons";
 import {useAuthentication} from "../Authentication";
 import {UserInfo} from "../User/UserAvatar";
 import Panel from "../Components/Panel";
+import {JoinWorkspaceButton} from "./JoinWorkspace";
 
-const AlertWorkspaceUsers = () => {
+const AlertWorkspaceUsers = ({pending}) => {
     return (
-        <Alert icon={<IconInfoCircle size="1rem"/>} title="You don't have a team yet!" color="blue">
-            <Stack>
-                <Text size="sm">
-                    If you are a professor or researcher and manage a team you can create one here.
-                    An EdgeNet admin will review your application as soon as possible.
-                    <br />
-                </Text>
-                <Anchor component={Link} to="/team/registration">
-                    Register a new Team
-                </Anchor>
-
-                <Text size="sm">
-                    If instead you want to joi a team you can do so by selecting th institution you are part of.
-                    <br />
-                    <Anchor component={Link} to="/team/join">
-                        Join an existing Team
-                    </Anchor>
-                </Text>
-            </Stack>
-        </Alert>
+        <Alert icon={<IconInfoCircle size="1rem"/>}
+               title={pending ? "You have a pending request on this workspace" : "You are not part of this workspace!"}
+               color={pending ? "orange" : "blue"} />
     )
 }
 
 const WorkspaceUsers = ({workspace}) => {
-
-    if (workspace.users.length <= 0) {
-        return <AlertWorkspaceUsers />
-    }
-
     return (
         <Table>
             <Table.Tbody>
@@ -60,21 +38,23 @@ const WorkspaceUsers = ({workspace}) => {
             </Table.Tbody>
         </Table>
     )
-
-
-
 }
 
 export default ({workspace}) => {
-    const navigate = useNavigate();
+    const {user} = useAuthentication();
+
+    const joined = user.workspaces.find(w => w.name === workspace.name);
+
+    // if true this user has pending request on this workspace
+    const pending = workspace.requests.find(r => r.user_id === user.id)
 
     return (
         <Panel title={workspace.name + " users"}
                icon={<IconUsers />}
                buttons={[
-                   // <Button size="xs" onClick={() => navigate('/team/create')}>Create a new Team</Button>,
-                   // <Button size="xs" onClick={() => navigate('/team/join')}>Join an existing Team</Button>
+                   (!joined && !pending) && <JoinWorkspaceButton workspace={workspace} />
                ]}>
+            {!joined && <AlertWorkspaceUsers pending={pending} />}
             <WorkspaceUsers workspace={workspace} />
         </Panel>
     )

@@ -6,15 +6,14 @@ import {
     Stack,
     Text,
     TextInput,
-    Alert,
+    Alert, Anchor,
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import {IconBoxPadding as IconWorkspace, IconAlertCircle, IconInfoCircle} from "@tabler/icons";
+import {IconAlertCircle, IconInfoCircle} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
 
-export default ({team}) => {
-    const [opened, { open, close }] = useDisclosure(false);
+const CreateWorkspaceModal = ({team, onClose}) => {
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(null)
 
@@ -75,52 +74,76 @@ export default ({team}) => {
     }
 
     if (!team) {
-        return;
+       return;
     }
 
     return (
+        <Modal opened onClose={onClose} title="Create a new Workspace">
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+                <Stack spacing="md">
+                    <Text>
+                         Please specify a label and a name for the new workspace.
+                    </Text>
+                    <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
+                        A request will be sent to the admins of {team.shortname} for evaluation.
+                        Once approved the workspace will be created under {team.fullname}.<br/>
+                        <br />
+                        If you are an admin or owner of {team.shortname} the workspace will be created
+                        automatically.
+                    </Alert>
+                    <TextInput label="Label" placeholder="My workspace name" withAsterisk
+                               {...form.getInputProps('label')}
+                               onChange={onLabelChange}
+                    />
+
+                    <TextInput label="Name" placeholder="my-workspace-name" withAsterisk
+                               {...form.getInputProps('name')} />
+
+                    {error && <Alert icon={<IconAlertCircle size="1rem" />} color="red">
+                        {error}
+                    </Alert>}
+
+                    <Group position="apart">
+                        <Button disabled={loading} type="submit">
+                            Submit
+                        </Button>
+                        <Button color="gray" onClick={onClose} variant="light">
+                            Cancel
+                        </Button>
+                    </Group>
+
+                </Stack>
+            </form>
+        </Modal>
+    )
+}
+
+const CreateWorkspaceButton = ({team}) => {
+    const [opened, { open, close }] = useDisclosure(false);
+
+    return (
         <>
-            <Modal opened={opened} onClose={close} title="Create a new Workspace">
-                <form onSubmit={form.onSubmit(handleSubmit)}>
-                    <Stack spacing="md">
-                        <Text>
-                             Please specify a label and a name for the new workspace.
-                        </Text>
-                        <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
-                            A request will be sent to the admins of {team.shortname} for evaluation.
-                            Once approved the workspace will be created under {team.fullname}.<br/>
-                            <br />
-                            If you are an admin or owner of {team.shortname} the workspace will be created
-                            automatically.
-                        </Alert>
-                        <TextInput label="Label" placeholder="My workspace name" withAsterisk
-                                   {...form.getInputProps('label')}
-                                   onChange={onLabelChange}
-                        />
-
-                        <TextInput label="Name" placeholder="my-workspace-name" withAsterisk
-                                   {...form.getInputProps('name')} />
-
-                        {error && <Alert icon={<IconAlertCircle size="1rem" />} color="red">
-                            {error}
-                        </Alert>}
-
-                        <Group position="apart">
-                            <Button disabled={loading} type="submit">
-                                Submit
-                            </Button>
-                            <Button color="gray" onClick={close} variant="light">
-                                Cancel
-                            </Button>
-                        </Group>
-
-                    </Stack>
-                </form>
-            </Modal>
+            {opened && <CreateWorkspaceModal team={team} onClose={close} />}
             <Button size="xs" onClick={open}>
                 Create a new Workspace
             </Button>
         </>
-
     )
+}
+
+const CreateWorkspaceAnchor = ({team}) => {
+    const [opened, { open, close }] = useDisclosure(false);
+
+    return (
+        <>
+            {opened && <CreateWorkspaceModal team={team} onClose={close} />}
+            <Anchor onClick={open}>
+                Create a new Workspace
+            </Anchor>
+        </>
+    )
+}
+
+export {
+    CreateWorkspaceButton, CreateWorkspaceAnchor
 }

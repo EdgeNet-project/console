@@ -17,7 +17,8 @@ class SubNamespaceResource extends JsonResource
         return [
             ...parent::toArray($request),
             'team' => $this->tenant,
-            'users' => $this->users
+            'users' => $this->users,
+            'requests' => $this->requests
         ];
     }
 }

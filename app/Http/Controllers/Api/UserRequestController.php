@@ -79,17 +79,30 @@ class UserRequestController extends Controller
         return response()->json($userRequest);
     }
 
-    public function joinWorkspace(Request $request, SubNamespace $subnamespace)
+    public function joinWorkspace(Request $request, SubNamespace $sub_namespace)
     {
 
-        $validatedData = $request->validate([
+        if (!$sub_namespace) {
+            return response()->json(['message' => 'Workspace not found'], 404);
+        }
 
-        ]);
+        // check if a request is already pending
+        $userRequest = UserRequest::where([
+            'type' => UserRequestType::JoinWorkspace,
+            'object_id' => $sub_namespace->id,
+            'object_type' => SubNamespace::class,
+            'user_id' => auth()->user()->id
+        ])->first();
+
+        if ($userRequest) {
+            return response()->json(['message' => 'A join request is already pending on ' . $sub_namespace->name], 409);
+        }
 
         $userRequest = UserRequest::create([
-            'data' => $validatedData,
+            'data' => '',
             'type' => UserRequestType::JoinWorkspace,
-            'object' => $subnamespace,
+            'object_id' => $sub_namespace->id,
+            'object_type' => SubNamespace::class,
             'user_id' => auth()->user()->id
         ]);
 
@@ -107,7 +120,7 @@ class UserRequestController extends Controller
     {
 
         $userRequests = UserRequest::whereHasMorph('object',
-            [Tenant::class], function($q1) {
+            [Tenant::class, SubNamespace::class], function($q1) {
                 $q1->whereHas('users', function($q2) {
                     $q2->where([
                         ['user_id', auth()->user()->id],

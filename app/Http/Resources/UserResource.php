@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\User\TeamResource;
+use App\Http\Resources\User\WorkspaceResource;
 
 class UserResource extends JsonResource
 {
@@ -16,8 +18,12 @@ class UserResource extends JsonResource
     {
         return [
             ...parent::toArray($request),
-            'tenants' => $this->tenants,
+            'workspaces' => WorkspaceResource::collection($this->subnamespaces),
+            'teams' => TeamResource::collection($this->tenants),
             'requests' => $this->requests,
+
+            'tenants' => $this->tenants,
+
         ];
     }
 }

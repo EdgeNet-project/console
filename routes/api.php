@@ -68,7 +68,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
         Route::group(['prefix' => 'teams'], function () {
             Route::post('/', [UserRequestController::class, 'createTeam']);
-            Route::post('/{tenant}', [UserRequestController::class, 'joinTeam']);
+            Route::post('/{tenant:name}', [UserRequestController::class, 'joinTeam']);
             Route::post('/{tenant}/workspace', [UserRequestController::class, 'createTeamWorkspace']);
         });
 

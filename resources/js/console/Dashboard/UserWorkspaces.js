@@ -1,73 +1,54 @@
-import {Link, useNavigate} from "react-router-dom";
-import {Alert, Anchor, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
+import {Alert, Badge,  Stack, Table, Text} from "@mantine/core";
 import {IconBoxPadding, IconInfoCircle} from "@tabler/icons";
 import {useAuthentication} from "../Authentication";
+import Panel from "../Components/Panel";
+import {JoinWorkspaceButton} from "../Workspaces/JoinWorkspace";
 
-const AlertUserWorkspaces = () => {
+const AlertUserWorkspaces = ({create}) => {
     return (
         <Alert icon={<IconInfoCircle size="1rem"/>} title="You don't have any workspaces yet!" color="blue">
             <Stack>
                 <Text size="sm">
-                    You can create a new workspace here: <br />
-                    <Anchor component={Link} to="/workspace/create">
-                        Create a new Workspace
-                    </Anchor>
-                </Text>
-                <Text size="sm">
-                    You can join an existing workspace here: <br />
-                    <Anchor component={Link} to="/workspace/join">
-                        Join an existing Workspace
-                    </Anchor>
+                    To create a new workspace select a team or workspace first, otherwise you can join
+                    an existing workspace.
                 </Text>
             </Stack>
         </Alert>
     )
 }
 
-const UserWorkspaces = () => {
-    const { user } = useAuthentication();
-
-    if (!user.subnamespaces || user.subnamespaces?.length <= 0) {
-        return <AlertUserWorkspaces />
-    }
-
-    return (
-        <Table>
-            <Table.Tbody>
-                {user.subnamespaces.map(subnamespace =>
-                    <Table.Tr key={"userworkspaces_"+subnamespace.id}>
-                        <Table.Td>
-                            <Text fz="xs" tt="uppercase" c="dimmed">
-                                {subnamespace.tenant}
-                            </Text>
-                            <Text fz="md">
-                                {subnamespace.name}
-                            </Text>
-                        </Table.Td>
-                    </Table.Tr>
-                )}
-            </Table.Tbody>
-        </Table>
-    )
-}
-
 export default () => {
-    const navigate = useNavigate();
+    const {user} = useAuthentication();
 
     return (
-        <Paper p="md">
-            <Stack>
-                <Group justify="flex-start">
-                    <IconBoxPadding />
-                    <Title order={2} size="h4">Your Workspaces</Title>
-                </Group>
-                <UserWorkspaces />
-                <Divider />
-                <Group justify="flex-end">
-                    <Button size="xs" onClick={() => navigate('/workspace/create')}>Create a new Workspace</Button>
-                    <Button size="xs" onClick={() => navigate('/workspace/join')}>Join an existing Workspace</Button>
-                </Group>
-            </Stack>
-        </Paper>
+        <Panel title="Your Workspaces"
+               icon={<IconBoxPadding/>}
+               buttons={[
+                   <JoinWorkspaceButton />
+               ]}>
+            {(!user.workspaces || user.workspaces?.length <= 0) &&
+                <AlertUserWorkspaces create={user.workspaces?.length > 0} />}
+            <Table>
+                <Table.Tbody>
+                    {user.workspaces.map(workspace =>
+                        <Table.Tr key={"userworkspaces_" + workspace.name}>
+                            <Table.Td>
+                                <Text fz="xs" tt="uppercase" c="dimmed">
+                                    {workspace.team?.name}
+                                </Text>
+                                <Text fz="md">
+                                    {workspace.name}
+                                </Text>
+                            </Table.Td>
+                            <Table.Td>
+                                <Badge size="xs" color="pink" variant="light">
+                                    {workspace.role}
+                                </Badge>
+                            </Table.Td>
+                        </Table.Tr>
+                    )}
+                </Table.Tbody>
+            </Table>
+        </Panel>
     )
 }
