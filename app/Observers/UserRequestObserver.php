@@ -123,6 +123,23 @@ class UserRequestObserver
         }
     }
 
+    private function joinWorkspace(UserRequest $userRequest)
+    {
+        $workspace = $userRequest->object;
+        if (!$workspace) {
+            $userRequest->status = UserRequestStatus::Error;
+            return false;
+        }
+
+        try {
+            $workspace->users()->attach(
+                $userRequest->user->id, ['role' => 'collaborator']
+            );
+        } catch (QueryException) {
+            $userRequest->status = UserRequestStatus::Error;
+        }
+    }
+
     /**
      * Handle the userRequest "updated" event.
      *
