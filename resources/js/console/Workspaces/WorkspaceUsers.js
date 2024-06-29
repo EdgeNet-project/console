@@ -8,7 +8,7 @@ import {JoinWorkspaceButton} from "./JoinWorkspace";
 const AlertWorkspaceUsers = ({pending}) => {
     return (
         <Alert icon={<IconInfoCircle size="1rem"/>}
-               title={pending ? "You have a pending request on this workspace" : "You are not part of this workspace!"}
+               title={pending ? "You have a pending request on this workspace" : "You are not part of this workspace"}
                color={pending ? "orange" : "blue"} />
     )
 }
