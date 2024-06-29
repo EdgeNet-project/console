@@ -85,6 +85,7 @@ class UserRequestObserver
                 $this->createWorkspace($userRequest);
                 break;
             case UserRequestType::JoinWorkspace:
+                $this->joinWorkspace($userRequest);
                 break;
         }
     }
