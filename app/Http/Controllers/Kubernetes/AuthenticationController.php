@@ -70,7 +70,11 @@ class AuthenticationController extends Controller
 
         // TODO: manage groups
         $groups = [
-            'edgenet:user'
+            'edgenet:user',
+            ...$user->tenants->map(function ($tenant) { return $tenant->name; }),
+            ...$user->sub_namespaces->map(function ($supnamespace) {
+                return $supnamespace->tenant->name . ':' . $supnamespace->name;
+            }),
         ];
 
         $response = [
