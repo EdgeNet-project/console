@@ -104,7 +104,7 @@ class AuthenticationController extends Controller
             ->debug(print_r($response, true));
 
         Log::channel('auth-webhook')
-            ->info('User ' . $user->email . ' authenticated');
+            ->info('User ' . $user->email . ' authenticated - groups: ' . join(', ', $groups));
 
         return response()->json($response);
     }
