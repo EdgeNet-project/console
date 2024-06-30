@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Console\Commands\OLD;
+namespace App\Console\Commands;
 
-use App\Console\Commands\GuzzleHttp;
+use App\Services\EdgenetAdmin;
 use Illuminate\Console\Command;
 use Ovh\Api;
+use RenokiCo\PhpK8s\K8s;
+use RenokiCo\PhpK8s\Kinds\K8sPod;
 
 class test extends Command
 {
@@ -27,8 +29,39 @@ class test extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(EdgenetAdmin $edgenetAdmin)
     {
+
+        $cluster = $cluster = $edgenetAdmin->getCluster();
+
+        $rule = K8s::rule()
+            ->core()
+            ->addResources([K8sPod::class, 'configmaps'])
+            //->addResourceNames(['pod-name', 'configmap-name'])
+            ->addVerbs(['get', 'list', 'watch']);
+
+        $role = $cluster
+            ->role()
+            ->setName('collaborator')
+            ->setNamespace('edgenet')
+            ->addRules([$rule])
+//            ->setLabels(['tier' => 'backend'])
+            ->createOrUpdate();
+
+        $role = $cluster
+            ->role()
+            ->setName('collaborator')
+            ->setNamespace('edgenet')
+            //->addRules([$rule])
+//            ->setLabels(['tier' => 'backend'])
+            ->get();
+
+
+        dd($role);
+        /*
+         *
+         * OVH TEST
+
 
         try {
             $ovh = new Api(
@@ -61,29 +94,7 @@ class test extends Command
             //$this->error("OVH API ERROR", ['message' => $e->getMessage()]);
         }
 
-
-//        foreach (K8s::getAllConfigMaps() as $cm) {
-//            $cm->getName();
-//        }
-//
-//        $cluster = K8s::getCluster();
-//
-//        $nodes = $cluster->node()->all();
-//
-//        foreach ($nodes as $node) {
-//            dd([
-//                $node->getInfo(),
-//                $node->getImages(),
-//            $node->getCapacity(),
-//            $node->getAllocatableInfo(),
-//            ]);
-//
-//        }
-
-        // Create a new instance of KubernetesCluster.
-//        $cluster = KubernetesCluster::fromUrl(
-//            config('edgenet.cluster.api.url')
-//        );
+        */
 
         return Command::SUCCESS;
     }

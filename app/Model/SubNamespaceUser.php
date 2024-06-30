@@ -2,9 +2,9 @@
 
 namespace App\Model;
 
-use App\Events\WorkspaceUserCreate;
-use App\Events\WorkspaceUserDelete;
-use App\Events\WorkspaceUserUpdate;
+use App\Events\UserJoinsWorkspace;
+use App\Events\UserLeavesWorkspace;
+use App\Events\UserUpdateWorkspace;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -13,9 +13,9 @@ class SubNamespaceUser extends Pivot
     use HasFactory;
 
     protected $dispatchesEvents = [
-        'created' => WorkspaceUserCreate::class,
-        'updated' => WorkspaceUserUpdate::class,
-        'deleted' => WorkspaceUserDelete::class
+        'created' => UserJoinsWorkspace::class,
+        'updated' => UserUpdateWorkspace::class,
+        'deleted' => UserLeavesWorkspace::class
     ];
 
     protected $casts = [

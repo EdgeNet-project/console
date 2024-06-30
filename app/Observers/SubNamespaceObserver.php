@@ -2,9 +2,11 @@
 
 namespace App\Observers;
 
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
 use App\Model\SubNamespace;
 use App\Jobs\EdgeNet\CreateWorkspace;
+use App\Jobs\EdgeNet\UpdateWorkspaceRoles;
 
 class SubNamespaceObserver
 {
@@ -20,7 +22,10 @@ class SubNamespaceObserver
         Log::info('[Console] workspace '. $workspace->name . ' created');
 
         // dispatch edgenet API job to create the remote workspace
-        CreateWorkspace::dispatch($workspace);
+        Bus::chain([
+            new CreateWorkspace($workspace),
+            new UpdateWorkspaceRoles($workspace),
+        ])->dispatch();
 
     }
 

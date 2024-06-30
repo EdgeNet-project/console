@@ -78,7 +78,7 @@ class UserRequestPolicy
         }
 
         if ($userRequest->type == UserRequestType::JoinWorkspace &&
-            $user->isOwnerOf($userRequest->object)) {
+            $user->isWorkspaceOwnerOf($userRequest->object)) {
             return true;
         }
 

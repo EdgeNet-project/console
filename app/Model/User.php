@@ -84,6 +84,13 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
+    public function isWorkspaceOwnerOf($workspace)
+    {
+        return $this->subnamespaces->contains(function ($value) use ($workspace) {
+            return $value->id == $workspace->id && $value->pivot->role == 'owner';
+        });
+    }
+
 //    protected function getRoleAttribute() {
 //        if ($this->pivot) {
 //            return $this->pivot->role;
