@@ -12,6 +12,7 @@ import {useAuthentication} from "../Authentication";
 import {IconInfoCircle} from "@tabler/icons";
 import {useDisclosure} from "@mantine/hooks";
 import WorkspaceInfo from "./WorkspaceInfo";
+import {notifications} from "@mantine/notifications";
 
 const JoinWorkspaceModal = ({workspace, title, onClose}) => {
     const [ workspaces, setWorkspaces ] = useState([])
@@ -38,6 +39,7 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
 
     const handleSubmit = (values) => {
         setLoading(true)
+        setError(null)
 
         const selectedWorkspace =
             workspace ? workspace : workspaces.find(w => w.name === values.name)
@@ -46,10 +48,9 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
         })
             .then((res) => {
                 console.log(res)
-                // loadUser()
+                loadUser()
                 //navigate.to('/')
             })
-            .then(loadUser)
             .catch(({message, response}) => {
                 console.log('1==>', message);
                 console.log('2==>', response.data)
@@ -60,6 +61,11 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
                 setLoading(false)
 
                 if (!error) {
+                    notifications.show({
+                        title: 'Join a workspace',
+                        message: 'A request has been sent to the admins',
+                    })
+
                     onClose()
                 }
             })

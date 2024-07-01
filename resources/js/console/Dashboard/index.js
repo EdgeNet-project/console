@@ -36,13 +36,8 @@ export default () => {
         <>
             <Stack my="lg">
                 <Title order={1}>
-                    Welcome to EdgeNet!
+                    EdgeNet Console
                 </Title>
-                <Text>
-                    To use EdgeNet you have to join a Workspace. Alternatively you can create a new Team.
-                    <br />
-                    If you want you can also contribute a node to the cluster.
-                </Text>
                 <RequestsAlert />
             </Stack>
             <SimpleGrid cols={2}>

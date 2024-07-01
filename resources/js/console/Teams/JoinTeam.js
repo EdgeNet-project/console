@@ -7,7 +7,7 @@ import {
     LoadingOverlay,
     Button,
     Alert,
-    Container, Title, Modal, Text, Stack, Select
+    Container, Title, Modal, Text, Stack, Select, Anchor
 } from '@mantine/core';
 import axios from "axios";
 import React, {useEffect, useState} from "react";
@@ -17,9 +17,9 @@ import {IconBoxPadding as IconWorkspace, IconInfoCircle, IconUsers} from "@table
 import {useNavigate} from "react-router-dom";
 import {useDisclosure} from "@mantine/hooks";
 import TeamInfo from "./TeamInfo";
+import {notifications} from "@mantine/notifications";
 
-export default () => {
-    const [opened, { open, close }] = useDisclosure(false);
+const JoinTeamModal = ({team, title, onClose}) => {
     const [ teams, setTeams ] = useState([])
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(null)
@@ -46,12 +46,16 @@ export default () => {
 
     const handleSubmit = (values) => {
         setLoading(true)
+        setError(null)
 
-        axios.post('/api/requests/teams/' + values.name, {
+        const selectedTeam =
+            team ? team : teams.find(w => w.name === values.name)
+
+        axios.post('/api/requests/teams/' + team.id, {
         })
             .then((res) => {
                 console.log(res)
-                // loadUser()
+                loadUser()
                 //navigate.to('/')
             })
             .catch(({message, response}) => {
@@ -62,61 +66,99 @@ export default () => {
             })
             .finally(() => {
                 setLoading(false)
+
+                if (!error) {
+                    notifications.show({
+                        title: 'Join a team',
+                        message: 'A request has been sent to the admins',
+                    })
+
+                    onClose()
+                }
             })
     }
 
     const options = teams.map(d => { return {label: d.fullname, value: d.name} })
 
     return (
+        <Modal opened onClose={onClose} title="Join a Team">
+            <LoadingOverlay visible={loading} overlayBlur={2} />
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+                <Stack spacing="md">
+                    <Text>
+                        Please specify the team you want to join.
+                    </Text>
+                    <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
+                        A request will be sent to the admins of the team for evaluation.
+                        Once approved you will have access to the new team.<br/>
+                    </Alert>
+
+                    {error &&
+                        <Alert variant="light" color="red" title="Registration error" icon={<IconInfoCircle />}>
+                            {error}
+                        </Alert>}
+
+                    <Select
+                        data={options}
+                        // inputContainer={(children) => {
+                        //     console.log(children)
+                        //     return <div>{children}</div>
+                        // }}
+                        // itemComponent={SelectItem}
+                        placeholder="EdgeNet Teams"
+                        searchable
+                        clearable
+                        {...form.getInputProps('name')}
+                        // onChange={handleSelect}
+                    />
+                    {
+                        form.values.name && <TeamInfo team={teams.find(t => t.name === form.values.name)} />
+                    }
+
+                    <Group position="apart" mt="sm">
+                        <Button disabled={loading} type="submit">
+                            Submit
+                        </Button>
+                        <Button color="gray" onClick={onClose} variant="light">
+                            Cancel
+                        </Button>
+                    </Group>
+                </Stack>
+            </form>
+        </Modal>
+    );
+}
+
+const JoinTeamButton = ({team}) => {
+    const [opened, { open, close }] = useDisclosure(false);
+
+    const title = team ? "Join " + team.name + " team" : "Join a team";
+
+    return (
         <>
-            <Modal opened={opened} onClose={close} title="Join a Team">
-                <LoadingOverlay visible={loading} overlayBlur={2} />
-                <form onSubmit={form.onSubmit(handleSubmit)}>
-                    <Stack spacing="md">
-                        <Text>
-                            Please specify the team you want to join.
-                        </Text>
-                        <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
-                            A request will be sent to the admins of the team for evaluation.
-                            Once approved you will have access to the new team.<br/>
-                        </Alert>
-
-                        {error &&
-                            <Alert variant="light" color="red" title="Registration error" icon={<IconInfoCircle />}>
-                                {error}
-                            </Alert>}
-
-                        <Select
-                            data={options}
-                            // inputContainer={(children) => {
-                            //     console.log(children)
-                            //     return <div>{children}</div>
-                            // }}
-                            // itemComponent={SelectItem}
-                            placeholder="EdgeNet Teams"
-                            searchable
-                            clearable
-                            {...form.getInputProps('name')}
-                            // onChange={handleSelect}
-                        />
-                        {
-                            form.values.name && <TeamInfo team={teams.find(t => t.name === form.values.name)} />
-                        }
-
-                        <Group position="apart" mt="sm">
-                            <Button disabled={loading} type="submit">
-                                Submit
-                            </Button>
-                            <Button color="gray" onClick={close} variant="light">
-                                Cancel
-                            </Button>
-                        </Group>
-                    </Stack>
-                </form>
-            </Modal>
+            {opened && <JoinTeamModal team={team} title={title} onClose={close} />}
             <Button size="xs" onClick={open}>
-                Join a Team
+                {title}
             </Button>
         </>
-    );
+    )
+}
+
+const JoinTeamAnchor = ({team}) => {
+    const [opened, { open, close }] = useDisclosure(false);
+
+    const title = team ? "Join " + team.name + " team" : "Join a team";
+
+    return (
+        <>
+            {opened && <JoinTeamModal team={team} title={title} onClose={close} />}
+            <Anchor onClick={open}>
+                {title}
+            </Anchor>
+        </>
+    )
+}
+
+export {
+    JoinTeamButton, JoinTeamAnchor
 }

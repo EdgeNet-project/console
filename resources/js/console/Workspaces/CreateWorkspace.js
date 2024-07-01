@@ -9,6 +9,7 @@ import {
     Alert, Anchor,
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
+import { notifications } from '@mantine/notifications';
 import {IconAlertCircle, IconInfoCircle} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
@@ -56,6 +57,7 @@ const CreateWorkspaceModal = ({team, onClose}) => {
 
     const handleSubmit = (values) => {
         setLoading(true)
+        setError(null)
 
         axios.post('/api/requests/teams/' + team.id + '/workspace', values)
             .then((res) => {
@@ -70,6 +72,15 @@ const CreateWorkspaceModal = ({team, onClose}) => {
             })
             .finally(() => {
                 setLoading(false)
+
+                if (!error) {
+                    notifications.show({
+                        title: 'Create new workspace',
+                        message: 'A request has been sent to the admins',
+                    })
+
+                    onClose()
+                }
             })
     }
 
@@ -125,7 +136,7 @@ const CreateWorkspaceButton = ({team}) => {
         <>
             {opened && <CreateWorkspaceModal team={team} onClose={close} />}
             <Button size="xs" onClick={open}>
-                Create a new Workspace
+                Create a new workspace
             </Button>
         </>
     )
@@ -138,7 +149,7 @@ const CreateWorkspaceAnchor = ({team}) => {
         <>
             {opened && <CreateWorkspaceModal team={team} onClose={close} />}
             <Anchor onClick={open}>
-                Create a new Workspace
+                Create a new workspace
             </Anchor>
         </>
     )
