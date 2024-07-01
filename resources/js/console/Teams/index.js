@@ -10,6 +10,7 @@ import {
 import React, {useEffect, useState} from "react";
 import TeamWorkspaces from "./TeamWorkspaces";
 import TeamUsers from "./TeamUsers";
+import TeamInfo from "./TeamInfo";
 
 
 export default () => {
@@ -60,17 +61,10 @@ export default () => {
             {/*</SimpleGrid>*/}
             <Stack my="lg">
                 <Group justify="space-between">
-                    <Title order={1}>Team → {team.shortname}</Title>
+                    <Title order={1}>Team → {team.fullname}</Title>
                     {/*<Button onClick={() => navigate('/nodes/create')}>Add a Node</Button>*/}
                 </Group>
-                <Text size="sm">
-                    {team.fullname} <br />
-                    {team.city}, {team.country} <br />
-                    <Anchor target="_blank" href={team.url}>{team.url}</Anchor>
-                </Text>
-                <Text>
-
-                </Text>
+                <TeamInfo team={team} />
             </Stack>
 
             <SimpleGrid cols={2}>

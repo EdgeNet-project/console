@@ -1,8 +1,9 @@
-import {Alert, Badge,  Stack, Table, Text} from "@mantine/core";
+import {Alert, Anchor, Badge, Stack, Table, Text} from "@mantine/core";
 import {IconBoxPadding, IconInfoCircle} from "@tabler/icons";
 import {useAuthentication} from "../Authentication";
 import Panel from "../Components/Panel";
 import {JoinWorkspaceButton} from "../Workspaces/JoinWorkspace";
+import {Link} from "react-router-dom";
 
 const AlertUserWorkspaces = ({create}) => {
     return (
@@ -37,7 +38,7 @@ export default () => {
                                     {workspace.team?.name}
                                 </Text>
                                 <Text fz="md">
-                                    {workspace.name}
+                                    <Anchor component={Link} to={"/workspaces/" + workspace.id}>{workspace.name}</Anchor>
                                 </Text>
                             </Table.Td>
                             <Table.Td>

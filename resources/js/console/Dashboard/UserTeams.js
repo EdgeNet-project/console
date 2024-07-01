@@ -48,10 +48,10 @@ export default () => {
                     <Table.Tr key={"userteam_tenant_"+team.name}>
                         <Table.Td>
                             <Text fz="xs" tt="uppercase" c="dimmed">
-                                {team.name}
+                                {team.shortname}
                             </Text>
                             <Text fz="md">
-                                {team.fullname}
+                                <Anchor component={Link} to={"/team/" + team.name}>{team.fullname}</Anchor>
                             </Text>
                         </Table.Td>
                         <Table.Td>
