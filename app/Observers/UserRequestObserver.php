@@ -82,6 +82,7 @@ class UserRequestObserver
                 $this->createTeam($userRequest);
                 break;
             case UserRequestType::JoinTeam:
+                $this->joinTeam($userRequest);
                 break;
             case UserRequestType::CreateWorkspace:
                 $this->createWorkspace($userRequest);
@@ -113,6 +114,23 @@ class UserRequestObserver
                 $userRequest->user->id, ['role' => 'owner']
             );
 
+        } catch (QueryException) {
+            $userRequest->status = UserRequestStatus::Error;
+        }
+    }
+
+    private function joinTeam(UserRequest $userRequest)
+    {
+        $team = $userRequest->object;
+        if (!$team) {
+            $userRequest->status = UserRequestStatus::Error;
+            return false;
+        }
+
+        try {
+            $team->users()->attach(
+                $userRequest->user->id, ['role' => 'collaborator']
+            );
         } catch (QueryException) {
             $userRequest->status = UserRequestStatus::Error;
         }

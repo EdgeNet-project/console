@@ -38,10 +38,6 @@ const CreateTeamDialog = ({title, onClose}) => {
         },
     });
 
-    const createName = (text) => {
-
-    }
-
     const handleSubmit = (values) => {
         setLoading(true)
         setError(null)
@@ -129,12 +125,12 @@ const CreateTeamDialog = ({title, onClose}) => {
                                 </Group>
                             </Radio.Group>
 
-                    <Group position="apart" mt="sm">
-                        <Button disabled={loading} type="submit">
-                            Submit
-                        </Button>
+                    <Group justify="flex-end" mt="sm">
                         <Button color="gray" onClick={onClose} variant="light">
                             Cancel
+                        </Button>
+                        <Button disabled={loading} type="submit">
+                            Submit
                         </Button>
                     </Group>
                 </Stack>

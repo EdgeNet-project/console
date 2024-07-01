@@ -52,7 +52,7 @@ export default createBrowserRouter([
                 ],
             },
             {
-                path: "*",
+                path: "/*?",
                 element: <Login />,
             },
         ],

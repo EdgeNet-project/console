@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Model\TenantUser;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,14 +15,16 @@ class UserJoinsTeam
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $tenantUser;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(TenantUser $tenantUser)
     {
-        //
+        $this->tenantUser = $tenantUser;
     }
 
     /**

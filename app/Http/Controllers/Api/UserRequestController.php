@@ -144,10 +144,12 @@ class UserRequestController extends Controller
             ])
             ->get();
 
-        $adminUserRequests = UserRequest::whereIn('type', [
+        $adminUserRequests = [];
+        if (auth()->user()->admin) {
+            $adminUserRequests = UserRequest::whereIn('type', [
                 UserRequestType::CreateTeam
-            ])
-            ->get();
+            ])->get();
+        }
 
         //$joinTeamRequests = UserRequest::whereHasMorph('object', [Tenant::class])->get();
         return response()->json(

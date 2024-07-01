@@ -63,9 +63,12 @@ class CreateWorkspaceJob implements ShouldQueue
                         'limitrange' => true,
                         'configmap' => true,
                         'sync' => false,
-                        // 'sliceclaim' => 'lab-exercises',
-                        // 'expiry' => "2023-09-01T09:00:00Z"
                     ],
+                    'sync' => false,
+                    'owner' => [
+                        'email' => 'ciro@cslash.com',
+
+                    ]
                 ],
             ]
         ]);

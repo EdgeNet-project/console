@@ -51,7 +51,7 @@ const JoinTeamModal = ({team, title, onClose}) => {
         const selectedTeam =
             team ? team : teams.find(w => w.name === values.name)
 
-        axios.post('/api/requests/teams/' + team.id, {
+        axios.post('/api/requests/teams/' + selectedTeam.id, {
         })
             .then((res) => {
                 console.log(res)
@@ -115,12 +115,12 @@ const JoinTeamModal = ({team, title, onClose}) => {
                         form.values.name && <TeamInfo team={teams.find(t => t.name === form.values.name)} />
                     }
 
-                    <Group position="apart" mt="sm">
-                        <Button disabled={loading} type="submit">
-                            Submit
-                        </Button>
+                    <Group justify="flex-end" mt="sm">
                         <Button color="gray" onClick={onClose} variant="light">
                             Cancel
+                        </Button>
+                        <Button disabled={loading} type="submit">
+                            Submit
                         </Button>
                     </Group>
                 </Stack>
