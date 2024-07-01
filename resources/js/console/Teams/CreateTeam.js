@@ -3,26 +3,23 @@ import {
     Radio,
     TextInput,
     Textarea,
-    Grid,
     LoadingOverlay,
     Button,
     Alert,
-    Container, Title, Modal, Text, Stack
+    Modal, Text, Stack, Anchor
 } from '@mantine/core';
 import axios from "axios";
 import React, {useState} from "react";
 import {useForm} from "@mantine/form";
 import {useAuthentication} from "../Authentication";
-import {IconBoxPadding as IconWorkspace, IconInfoCircle, IconUsers} from "@tabler/icons";
-import {useNavigate} from "react-router-dom";
+import {IconInfoCircle} from "@tabler/icons";
 import {useDisclosure} from "@mantine/hooks";
+import {notifications} from "@mantine/notifications";
 
-export default () => {
-    const [opened, { open, close }] = useDisclosure(false);
+const CreateTeamDialog = ({title, onClose}) => {
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(null)
     const { loadUser } = useAuthentication()
-    const navigate = useNavigate()
     // const [ registered, setLoading ] = useState(false)
 
     const form = useForm({
@@ -47,6 +44,7 @@ export default () => {
 
     const handleSubmit = (values) => {
         setLoading(true)
+        setError(null)
 
         const name = form.values['shortname'].toLowerCase()
             .replace(/ /g,'')
@@ -57,8 +55,8 @@ export default () => {
         })
             .then((res) => {
                 console.log(res)
-                // loadUser()
-                navigate.to('/')
+                loadUser()
+                //navigate.to('/')
             })
             .catch(({message, response}) => {
                 console.log('1==>', message);
@@ -68,12 +66,20 @@ export default () => {
             })
             .finally(() => {
                 setLoading(false)
+
+                if (!error) {
+                    notifications.show({
+                        title: 'Create a new team',
+                        message: 'A request has been sent to the admins',
+                    })
+
+                    onClose()
+                }
             })
     }
 
     return (
-        <>
-            <Modal opened={opened} onClose={close} title="Create a new Team">
+            <Modal opened onClose={onClose} title={title}>
                 <LoadingOverlay visible={loading} overlayBlur={2} />
                 <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack spacing="md">
@@ -127,16 +133,47 @@ export default () => {
                         <Button disabled={loading} type="submit">
                             Submit
                         </Button>
-                        <Button color="gray" onClick={close} variant="light">
+                        <Button color="gray" onClick={onClose} variant="light">
                             Cancel
                         </Button>
                     </Group>
                 </Stack>
                 </form>
             </Modal>
+    );
+}
+
+
+const CreateTeamButton = () => {
+    const [opened, { open, close }] = useDisclosure(false);
+
+    const title = "Create a new team";
+
+    return (
+        <>
+            {opened && <CreateTeamDialog title={title} onClose={close} />}
             <Button size="xs" onClick={open}>
-                Create a new Team
+                {title}
             </Button>
         </>
-    );
+    )
+}
+
+const CreateTeamAnchor = ({workspace}) => {
+    const [opened, { open, close }] = useDisclosure(false);
+
+    const title = "Create a new team";
+
+    return (
+        <>
+            {opened && <CreateTeamDialog title={title} onClose={close} />}
+            <Anchor onClick={open}>
+                {title}
+            </Anchor>
+        </>
+    )
+}
+
+export {
+    CreateTeamButton, CreateTeamAnchor
 }

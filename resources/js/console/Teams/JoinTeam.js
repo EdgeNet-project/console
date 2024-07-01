@@ -81,7 +81,7 @@ const JoinTeamModal = ({team, title, onClose}) => {
     const options = teams.map(d => { return {label: d.fullname, value: d.name} })
 
     return (
-        <Modal opened onClose={onClose} title="Join a Team">
+        <Modal opened onClose={onClose} title={title}>
             <LoadingOverlay visible={loading} overlayBlur={2} />
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack spacing="md">

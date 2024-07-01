@@ -1,10 +1,10 @@
 import {Link} from "react-router-dom";
 import {Alert, Anchor, Badge, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
-import {IconBoxPadding, IconInfoCircle, IconUsers} from "@tabler/icons";
+import {IconInfoCircle, IconUsers} from "@tabler/icons";
 import {useAuthentication} from "../Authentication";
-import CreateTeam from "../Teams/CreateTeam";
+import {CreateTeamButton} from "../Teams/CreateTeam";
+import {JoinTeamButton} from "../Teams/JoinTeam";
 import Panel from "../Components/Panel";
-import JoinTeam from "../Teams/JoinTeam";
 
 const AlertUserTeam = () => {
     return (
@@ -38,8 +38,8 @@ export default () => {
         <Panel title="Your Teams"
                icon={<IconUsers/>}
                buttons={[
-                   <CreateTeam />,
-                   <JoinTeam />
+                   <CreateTeamButton />,
+                   <JoinTeamButton />
                ]}>
             {(user.teams?.length <= 0) && <AlertUserTeam />}
         <Table>
