@@ -1,18 +1,17 @@
-import {Anchor, Text} from "@mantine/core";
+import {Text} from "@mantine/core";
+import TeamInfo from "../Teams/TeamInfo";
 
 export default ({workspace}) => {
 
     return (
         <div>
-            <Text>
+            <Text c="dimmed" fz="xs">
+                {workspace.namespace}
+            </Text>
+            <Text mb="sm">
                 {workspace.name}
             </Text>
-            {workspace.team && <><Text fz="xs" c="dimmed">
-                {workspace.team.name} ({workspace.team.shortname}) <br />
-                {workspace.team.fullname} <br />
-                {workspace.team.city} {workspace.team.country}
-            </Text>
-            <Anchor target="_blank" href={workspace.team.url}>{workspace.team.url}</Anchor></>}
+            {workspace.team && <TeamInfo team={workspace.team} />}
         </div>
     )
 }

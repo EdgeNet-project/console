@@ -9,6 +9,7 @@ import WorkspaceUsers from "./WorkspaceUsers";
 import WorkspaceKubeConfig from "./WorkspaceKubeConfig";
 import {Link} from "react-router-dom";
 import {useAuthentication} from "../Authentication";
+import WorkspaceInfo from "./WorkspaceInfo";
 
 
 const RequestsAlert = () => {
@@ -55,11 +56,7 @@ export default () => {
                     <WorkspaceKubeConfig workspace={workspace} />
                     {/*<Button onClick={() => navigate('/nodes/create')}>Add a Node</Button>*/}
                 </Group>
-                <Text size="sm">
-                    {workspace.team.fullname} <br />
-                    {workspace.team.city}, {workspace.team.country} <br />
-                    <Anchor target="_blank" href={workspace.team.url}>{workspace.team.url}</Anchor>
-                </Text>
+                <WorkspaceInfo workspace={workspace} />
                 <Text size="sm">
                     A workspace is a logical unit to organize your projects and DevOps projects and
                     manage app templates and app repositories. It is the place for you to control
