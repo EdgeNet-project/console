@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Model\SubNamespace;
+use App\Model\Tenant;
 use App\Model\UserRequest;
 use App\Model\UserRequestStatus;
 use App\Model\UserRequestType;
@@ -78,7 +79,7 @@ class UserRequestObserver
 
         switch($userRequest->type) {
             case UserRequestType::CreateTeam:
-
+                $this->createTeam($userRequest);
                 break;
             case UserRequestType::JoinTeam:
                 break;
@@ -88,6 +89,32 @@ class UserRequestObserver
             case UserRequestType::JoinWorkspace:
                 $this->joinWorkspace($userRequest);
                 break;
+        }
+    }
+
+    private function createTeam(UserRequest $userRequest)
+    {
+        try {
+            $team = Tenant::create([
+                'url' => $userRequest->data['url'],
+                'country' => $userRequest->data['country'],
+                'name' => Str::lower($userRequest->data['shortname']),
+                'fullname' => $userRequest->data['fullname'],
+                'shortname' => $userRequest->data['shortname'],
+                'affiliation' => $userRequest->data['affiliation'],
+                'joining_reason' => $userRequest->data['joining_reason'],
+                'joining_category' => $userRequest->data['joining_category'],
+
+                'contact_name' => $userRequest->user->name,
+                'contact_email' => $userRequest->user->email
+            ]);
+
+            $team->users()->attach(
+                $userRequest->user->id, ['role' => 'owner']
+            );
+
+        } catch (QueryException) {
+            $userRequest->status = UserRequestStatus::Error;
         }
     }
 
@@ -172,7 +199,7 @@ class UserRequestObserver
             Log::info('[Console] Request approved: '. $userRequest->type->name . ' ID: '. $userRequest->id);
 
             /**
-             * Notify the user that createtd the request
+             * Notify the user that created the request
              */
             $userRequest->user->notify(new UserRequestApproved($userRequest));
         }

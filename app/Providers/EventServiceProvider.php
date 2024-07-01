@@ -2,19 +2,20 @@
 
 namespace App\Providers;
 
-use App\Model\SubNamespaceUser;
-use App\Observers\SubNamespaceUserObserver;
+
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
-use App\Model\Node;
-use App\Model\SubNamespace;
 use App\Model\UserRequest;
-use App\Observers\NodeObserver;
-use App\Observers\SubNamespaceObserver;
+use App\Model\Tenant;
+use App\Model\SubNamespace;
+use App\Model\Node;
+
 use App\Observers\UserRequestObserver;
+use App\Observers\TenantObserver;
+use App\Observers\SubNamespaceObserver;
+use App\Observers\NodeObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,10 @@ class EventServiceProvider extends ServiceProvider
     protected $observers = [
         UserRequest::class => [
             UserRequestObserver::class,
+        ],
+
+        Tenant::class => [
+            TenantObserver::class
         ],
 
         SubNamespace::class => [

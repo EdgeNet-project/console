@@ -38,11 +38,12 @@ const UserRequestManage = ({request, onClose}) => {
                 <Stack>
                     <UserInfo user={request.user} />
                     <UserRequestType request={request} />
-
-                    <Group>
-                        <Button color="green" onClick={approveRequest}>Approve</Button>
-                        <Button color="red" onClick={denyRequest}>Deny</Button>
+                    {request.message && <Text size="sm">{request.message}</Text>}
+                    {request.data && <Code block>{JSON.stringify(request.data, null, 4)}</Code>}
+                    <Group justify="flex-end">
                         <Button color="gray" variant="subtle" onClick={onClose}>Cancel</Button>
+                        <Button color="red" onClick={denyRequest}>Deny</Button>
+                        <Button color="green" onClick={approveRequest}>Approve</Button>
                     </Group>
                 </Stack>
             </Box>

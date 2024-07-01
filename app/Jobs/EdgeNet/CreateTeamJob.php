@@ -56,7 +56,7 @@ class CreateTeamJob implements ShouldQueue
                 'url' => $this->team->url,
 //                'address' => $this->tenant->address,
                 'contact' => [
-//                    'email' => 'ciro@cslash.com'
+                    'email' => $this->team->contact_email
                 ],
                 'enabled' => true
             ]

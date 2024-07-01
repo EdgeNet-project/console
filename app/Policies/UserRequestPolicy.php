@@ -66,6 +66,10 @@ class UserRequestPolicy
      */
     public function update(User $user, UserRequest $userRequest)
     {
+        if ($userRequest->type == UserRequestType::CreateTeam &&
+            $user->admin) {
+            return true;
+        }
 
         if ($userRequest->type == UserRequestType::JoinTeam &&
             $user->isOwnerOf($userRequest->object)) {

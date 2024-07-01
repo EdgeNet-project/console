@@ -2,8 +2,10 @@
 
 namespace App\Observers;
 
-use App\Notifications\UserRequestApproved;
+use App\Jobs\EdgeNet\CreateTeamJob;
 use App\Model\Tenant;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
 
 class TenantObserver
 {
@@ -15,6 +17,14 @@ class TenantObserver
      */
     public function created(Tenant $tenant)
     {
+
+        Log::info('[Console] team '. $tenant->name . ' created');
+
+        // dispatch edgenet API job to create the remote workspace
+        Bus::chain([
+            new CreateTeamJob($tenant),
+//            new UpdateWorkspaceRoles($workspace),
+        ])->dispatch();
 
 //        if (!in_array($userRequest->type, [
 //            UserRequest::TENANT, UserRequest::ROLE, UserRequest::NODE,

@@ -10,6 +10,7 @@ use App\Model\UserRequest;
 use App\Model\UserRequestStatus;
 use App\Model\UserRequestType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UserRequestController extends Controller
 {
@@ -24,6 +25,13 @@ class UserRequestController extends Controller
             'joining_reason' => ['required'],
             'joining_category' => ['required', 'string', 'max:255'],
         ]);
+
+        $name = Str::lower($validatedData['shortname']);
+
+        $tenant = Tenant::where('name', $name)->first();
+        if ($tenant) {
+            return response()->json(['message' => 'Team already exists or shortname is already in use'], 400);
+        }
 
         $userRequest = UserRequest::create([
             'data' => $validatedData,
