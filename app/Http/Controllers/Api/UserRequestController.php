@@ -136,8 +136,18 @@ class UserRequestController extends Controller
             ])
             ->get();
 
+        $adminUserRequests = UserRequest::whereIn('type', [
+                UserRequestType::CreateTeam
+            ])
+            ->get();
+
         //$joinTeamRequests = UserRequest::whereHasMorph('object', [Tenant::class])->get();
-        return response()->json(UserRequestResource::collection($userRequests));
+        return response()->json(
+            UserRequestResource::collection([
+                ...$adminUserRequests,
+                ...$userRequests
+            ])
+        );
 
     }
 
