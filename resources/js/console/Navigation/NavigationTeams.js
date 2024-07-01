@@ -63,14 +63,14 @@ const TreeIcon = ({
 
     // TODO: icon color represents access type (read only or admin)
     if (node.parentId === null) {
-        return <IconWorkspace />;
+        return <IconTeam size={18} />;
     }
 
     if (node.items && node.items.length > 0) {
         return <IconUsersPlus color="blue" />
     }
 
-    return <IconWorkspace color="blue" />
+    return <IconWorkspace size={18} />
 
 }
 
