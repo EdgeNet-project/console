@@ -18,7 +18,7 @@ use RenokiCo\PhpK8s\Kinds\K8sConfigMap;
 use RenokiCo\PhpK8s\Kinds\K8sDeployment;
 use RenokiCo\PhpK8s\Kinds\K8sPod;
 
-class UpdateWorkspaceRoles implements ShouldQueue
+class UpdateWorkspaceRolesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

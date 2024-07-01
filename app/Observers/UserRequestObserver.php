@@ -12,6 +12,7 @@ use App\Notifications\UserRequestDenied;
 use App\Notifications\UserRequestError;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class UserRequestObserver
 {
@@ -97,7 +98,7 @@ class UserRequestObserver
             $subnamespace = SubNamespace::create([
                 'label' => $userRequest->data['label'],
                 'name' => $userRequest->data['name'],
-                'namespace' => $userRequest->object->name,
+                'namespace' => $userRequest->data['name'] . Str::random(5),
                 'tenant_id' => $userRequest->object->id,
                 'parent_id' => null // TODO
 //            'resourceallocation' => [

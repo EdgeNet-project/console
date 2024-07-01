@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
 
-class CreateWorkspace implements ShouldQueue
+class CreateWorkspaceJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -49,7 +49,7 @@ class CreateWorkspace implements ShouldQueue
         $crd = new SubNamespaceCRD(K8s::getCluster(), [
             'metadata' => [
                 'name' => $this->workspace->name,
-                'namespace' => $this->workspace->namespace,
+                'namespace' => $this->workspace->tenant->name,
             ],
             'spec' => [
                 'workspace' => [
