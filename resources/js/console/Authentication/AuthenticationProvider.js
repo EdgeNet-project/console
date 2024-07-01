@@ -24,7 +24,7 @@ const getXsrfToken = () => {
 }
 
 const AuthenticationProvider = ({children}) => {
-    const [ token, setToken ] = useState(sessionStorage.getItem(AUTH_TOKEN));
+    const [ token, setToken ] = useState(localStorage.getItem(AUTH_TOKEN));
     const [ user, setUser ] = useState(null);
     const [ requests, setRequests ] = useState([]);
     // const [ error, setError ] = useState(null);
@@ -108,7 +108,7 @@ const AuthenticationProvider = ({children}) => {
                 setUser(data)
             })
             .then(() => {
-                sessionStorage.setItem(AUTH_TOKEN, token);
+                localStorage.setItem(AUTH_TOKEN, token);
             })
             .catch(() => {
                 axios.defaults.headers.common = {
@@ -116,7 +116,7 @@ const AuthenticationProvider = ({children}) => {
                     Accept: "application/json"
                 };
                 setToken(null);
-                sessionStorage.removeItem(AUTH_TOKEN);
+                localStorage.removeItem(AUTH_TOKEN);
             })
             .finally(() => {
                 setLoading(false)
@@ -159,7 +159,7 @@ const AuthenticationProvider = ({children}) => {
     }
 
     const logout = () => {
-        sessionStorage.removeItem(AUTH_TOKEN)
+        localStorage.removeItem(AUTH_TOKEN)
         setToken(null)
         setUser(null)
     }

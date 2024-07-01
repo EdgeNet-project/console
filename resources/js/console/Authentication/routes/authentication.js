@@ -17,10 +17,6 @@ export default createBrowserRouter([
         action: null, // login
         children: [
             {
-                path: "/",
-                element: <Login />,
-            },
-            {
                 path: "/registration",
                 element: <RegistrationForm />,
                 loader: null,
@@ -54,6 +50,10 @@ export default createBrowserRouter([
                     //     loader: null,
                     // },
                 ],
+            },
+            {
+                path: "*",
+                element: <Login />,
             },
         ],
     },
