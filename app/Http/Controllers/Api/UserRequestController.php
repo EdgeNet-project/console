@@ -55,14 +55,29 @@ class UserRequestController extends Controller
 //            'joining_reason' => ['required'],
 //            'joining_category' => ['required', 'string', 'max:255'],
 //        ]);
+        if (!$tenant) {
+            return response()->json(['message' => 'Team not found'], 404);
+        }
+
+        // check if a request is already pending
+        $userRequest = UserRequest::where([
+            'type' => UserRequestType::JoinTeam,
+            'object_id' => $tenant->id,
+            'object_type' => Tenant::class,
+            'user_id' => auth()->user()->id
+        ])->first();
+
+        if ($userRequest) {
+            return response()->json(['message' => 'A join request is already pending on ' . $tenant->name], 409);
+        }
 
         $userRequest = UserRequest::create([
             'data' => '',
             'type' => UserRequestType::JoinTeam,
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'object_id' => $tenant->id,
+            'object_type' => Tenant::class
         ]);
-
-        $tenant->requests()->save($userRequest);
 
         return response()->json($userRequest);
     }

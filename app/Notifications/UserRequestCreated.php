@@ -17,10 +17,9 @@ class UserRequestCreated extends Notification
      *
      * @return void
      */
-    public function __construct(UserRequest $userRequest, $is_admin = false)
+    public function __construct(UserRequest $userRequest)
     {
         $this->userRequest = $userRequest;
-        $this->is_admin = $is_admin;
     }
 
     /**
@@ -42,16 +41,6 @@ class UserRequestCreated extends Notification
      */
     public function toMail($notifiable)
     {
-
-        if ($this->is_admin) {
-            return (new MailMessage)
-                ->greeting('Dear ' . $notifiable->firstname . ' ' . $notifiable->lastname)
-                ->line('A new request has been created by ' . $this->userRequest->user->firstname . ' ' . $this->userRequest->user->lastname)
-                ->line('for '.$this->userRequest->type->name .' has been created.')
-                ->line('You can approve or deny this request on the EdgeNet Console.')
-                ->action('Manage requests', url('/requests'))
-                ->line('Thank you !');
-        }
 
         return (new MailMessage)
                     ->greeting('Dear ' . $notifiable->firstname . ' ' . $notifiable->lastname)

@@ -24,7 +24,7 @@ class SubNamespaceObserver
         // dispatch edgenet API job to create the remote workspace
         Bus::chain([
             new CreateWorkspaceJob($workspace),
-//            new UpdateWorkspaceRoles($workspace),
+            new UpdateWorkspaceRolesJob($workspace),
         ])->dispatch();
 
     }

@@ -32,7 +32,7 @@ class test extends Command
     public function handle(EdgenetAdmin $edgenetAdmin)
     {
 
-        $cluster = $cluster = $edgenetAdmin->getCluster();
+        $cluster = $edgenetAdmin->getCluster();
 
         $rule = K8s::rule()
             ->core()

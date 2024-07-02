@@ -3,8 +3,6 @@
 namespace App\Jobs\EdgeNet;
 
 use App\Model\SubNamespace;
-use App\Model\SubNamespaceUser;
-use App\Model\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,14 +15,13 @@ use RenokiCo\PhpK8s\K8s;
 use RenokiCo\PhpK8s\Kinds\K8sConfigMap;
 use RenokiCo\PhpK8s\Kinds\K8sDeployment;
 use RenokiCo\PhpK8s\Kinds\K8sPod;
+use App\Services\EdgenetAdmin;
 
 class UpdateWorkspaceRolesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $workspace;
-
-    protected $cluster;
 
     /**
      * Create a new job instance.
@@ -34,7 +31,6 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
     public function __construct(SubNamespace $workspace)
     {
         $this->workspace = $workspace;
-        $this->cluster = K8s::getCluster();
     }
 
     /**
@@ -42,7 +38,7 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(EdgenetAdmin $edgenetAdmin)
     {
 
 //        try {
@@ -57,12 +53,14 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
 //            Log::error($e->getMessage());
 //        }
 
-        Log::info('[EdgeNet] Updating workspace roles - '. $this->workspace->name);
+        Log::info('[EdgeNet] updating workspace roles: '. $this->workspace->tenant->name . ' - ' . $this->workspace->name);
 
         activity('workspaces')
             ->performedOn($this->workspace)
             ->withProperties(['severity' => 'info'])
             ->log('Updating workspace roles');
+
+        $cluster = $edgenetAdmin->getCluster();
 
         $rule = K8s::rule()
             ->core()
@@ -71,20 +69,36 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
                 K8sConfigMap::class,
                 K8sDeployment::class
             ])
-            //->addResourceNames(['pod-name', 'configmap-name'])
+            ->addResourceNames(['pod-name', 'configmap-name'])
             ->addVerbs(['get', 'list', 'watch', 'create', 'update', 'delete']);
 
-        // A collaborator can work within the namespace of the workspace
-        $role = $this->cluster
-            ->role()
-            ->setName($this->workspace->tenant->name . ':' . $this->workspace->name . ':collaborator')
-            ->setNamespace($this->workspace->name)
-            ->addRules([$rule])
-            ->setLabels([
-                'team' => $this->workspace->tenant->name,
-                'workspace' => $this->workspace->name
-            ])
-            ->create();
+        try {
+            // A collaborator can work within the namespace of the workspace
+            $role = $cluster
+                ->role()
+                ->setName($this->workspace->tenant->name . ':' . $this->workspace->name . ':collaborator')
+                ->setNamespace($this->workspace->namespace)
+                ->addRules([$rule])
+                ->setLabels([
+                    'team' => $this->workspace->tenant->name,
+                    'workspace' => $this->workspace->name
+                ])
+                ->createOrUpdate();
+        } catch (PhpK8sException $e) {
+            $payload = $e->getPayload();
+            Log::error('[EdgeNet] ' . $e->getMessage());
+            Log::error('[EdgeNet] ' . $payload['message']);
+            Log::error('[EdgeNet] ', ['payload' => $payload]);
+
+            activity('workspaces')
+                ->performedOn($this->workspace)
+                ->withProperties([
+                    'severity' => 'error',
+                    'message' => $e->getMessage(),
+                    'payload' => $e->getPayload(),
+                ])
+                ->log('updating workspace roles - error syncing tenant with EdgeNet API');
+        }
 
 //        $subject = K8s::subject()
 //            ->setApiGroup('rbac.authorization.k8s.io')
@@ -98,13 +112,13 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
 
         try {
 
-            $rb = $this->cluster
+            $rb = $cluster
                 ->roleBinding()
                 ->setName($this->workspace->tenant->name . ':' . $this->workspace->name . ':collaborator')
-                ->setNamespace($this->workspace->name)
+                ->setNamespace($this->workspace->namespace)
                 ->setRole($role, 'rbac.authorization.k8s.io')
                 ->setSubjects([$subject])
-                ->create();
+                ->createOrUpdate();
 
 //            $crb = $this->cluster
 //                ->clusterRoleBinding()
@@ -114,13 +128,19 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
 //                ->create();
 
         } catch (PhpK8sException $e) {
-            Log::error('[EdgeNet] Updating workspace roles - ' . $e->getMessage());
-            Log::error('[EdgeNet] Updating workspace roles - ', ['payload' => $e->getPayload()]);
+            $payload = $e->getPayload();
+            Log::error('[EdgeNet] ' . $e->getMessage());
+            Log::error('[EdgeNet] ' . $payload['message']);
+            Log::error('[EdgeNet] ', ['payload' => $payload]);
 
             activity('workspaces')
                 ->performedOn($this->workspace)
-                ->withProperties(['severity' => 'error', 'message' => $e->getMessage()])
-                ->log('Updating workspace roles - Error syncing tenant with EdgeNet API');
+                ->withProperties([
+                    'severity' => 'error',
+                    'message' => $e->getMessage(),
+                    'payload' => $e->getPayload(),
+                ])
+                ->log('updating workspace role bindings - error syncing tenant with EdgeNet API');
         }
     }
 }

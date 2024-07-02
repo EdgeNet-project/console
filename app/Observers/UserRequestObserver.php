@@ -4,11 +4,13 @@ namespace App\Observers;
 
 use App\Model\SubNamespace;
 use App\Model\Tenant;
+use App\Model\User;
 use App\Model\UserRequest;
 use App\Model\UserRequestStatus;
 use App\Model\UserRequestType;
 use App\Notifications\UserRequestApproved;
 use App\Notifications\UserRequestCreated;
+use App\Notifications\UserRequestCreatedAdmin;
 use App\Notifications\UserRequestDenied;
 use App\Notifications\UserRequestError;
 use Illuminate\Database\QueryException;
@@ -51,13 +53,20 @@ class UserRequestObserver
         /**
          * Notify the Team admins or EdgeNet Admins
          */
-        if ($userRequest->object) {
+        $object = $userRequest->object;
+        if ($object) {
             // Team owners/admins
-            foreach ($userRequest->object->owners as $owner) {
-                $owner->notify(new UserRequestCreated($userRequest, true));
+            Log::info('[Console] New request created - notifying owners');
+            foreach ($object->owners as $owner) {
+                $owner->notify(new UserRequestCreatedAdmin($userRequest));
             }
         } else {
             // EdgeNet admins
+            Log::info('[Console] New request created - notifying cluster admins');
+            $admins = User::where('admin', true)->all();
+            foreach ($admins as $admin) {
+                $admin->notify(new UserRequestCreatedAdmin($userRequest));
+            }
 
         }
 
@@ -139,11 +148,22 @@ class UserRequestObserver
     private function createWorkspace(UserRequest $userRequest)
     {
 
+        $subnamespace = SubNamespace::where([
+            ['name', $userRequest->data['name']],
+            ['tenant_id' => $userRequest->object->id]
+        ])->first();
+
+        if ($subnamespace) {
+            $userRequest->status = UserRequestStatus::Error;
+            $userRequest->message = 'Already exists';
+            return;
+        }
+
         try {
             $subnamespace = SubNamespace::create([
                 'label' => $userRequest->data['label'],
                 'name' => $userRequest->data['name'],
-                'namespace' => $userRequest->data['name'] . Str::random(5),
+                'namespace' => '<generating>',
                 'tenant_id' => $userRequest->object->id,
                 'parent_id' => null // TODO
 //            'resourceallocation' => [

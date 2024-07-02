@@ -74,16 +74,28 @@ class CreateWorkspaceJob implements ShouldQueue
         ]);
 
         try {
-            $crd->create();
+            $crd->createOrUpdate();
         } catch (PhpK8sException $e) {
+            $payload = $e->getPayload();
             Log::error('[EdgeNet] ' . $e->getMessage());
-            Log::error('[EdgeNet] ', ['payload' => $e->getPayload()]);
+            Log::error('[EdgeNet] ' . $payload['message']);
+            Log::error('[EdgeNet] ', ['payload' => $payload]);
 
             activity('workspaces')
                 ->performedOn($this->workspace)
                 //->causedBy($user)
-                ->withProperties(['severity' => 'error', 'message' => $e->getMessage()])
+                ->withProperties([
+                    'severity' => 'error',
+                    'message' => $e->getMessage(),
+                    'payload' => $e->getPayload(),
+                ])
                 ->log('Error syncing workspace with EdgeNet API');
         }
+
+        // update the namespace on the workspace model
+        $this->workspace->namespace = $this->workspace->name . '-' . $crd->getResourceUid();
+        $this->workspace->save();
+
+        Log::info('[EdgeNet] updating workspace namespace to '. $this->workspace->namespace);
     }
 }

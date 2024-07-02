@@ -34,7 +34,7 @@ const TeamWorkspaces = ({team}) => {
                 {team.subnamespaces.map(subnamespace =>
                     <Table.Tr key={"userworkspaces_"+subnamespace.id}>
                         <Table.Td>
-                            <Text fz="xs" tt="uppercase" c="dimmed">
+                            <Text fz="xs" c="dimmed">
                                 {subnamespace.namespace}
                             </Text>
                             <Text fz="md">
