@@ -43,36 +43,55 @@ class CreateTeamJob implements ShouldQueue
             ->performedOn($this->team)
             //->causedBy($user)
             ->withProperties(['severity' => 'info'])
-            ->log('syncing team with EdgeNet API');
+            ->log('Syncing team with EdgeNet API');
 
         $crd = new TenantCRD(K8s::getCluster(), [
             'metadata' => [
                 'name' => $this->team->name,
             ],
             'spec' => [
-                'name' => $this->team->name,
-                'fullname' => $this->team->fullname,
-                'shortname' => $this->team->shortname,
+                // Full name of the tenant.
+                'fullName' => $this->team->fullname,
+
+                // Website of the tenant
                 'url' => $this->team->url,
-//                'address' => $this->tenant->address,
-                'contact' => [
-                    'email' => $this->team->contact_email
-                ],
-                'enabled' => true
+
+                // This is the admin username for the tenant.
+                // A role binding will be created for user with this username.
+                'admin' =>  $this->team->contact_email,
+
+                // Description provides additional information about the tenant
+                'description' => '',
+
+                // Whether cluster-level network policies will be applied
+                // to tenant namespaces for security purposes.
+                'clusterNetworkPolicy' => false,
+
+                // This represents the initial resource allocation for the tenant.
+                // If not specified, the tenant resource quota will not be created.
+                'initialRequest' => [
+
+                ]
             ]
         ]);
 
         try {
-            $crd->create();
+            $crd->createOrUpdate();
         } catch (PhpK8sException $e) {
+            $payload = $e->getPayload();
             Log::error('[EdgeNet] ' . $e->getMessage());
-            Log::error('[EdgeNet] ', ['payload' => $e->getPayload()]);
+            Log::error('[EdgeNet] ' . $payload['message']);
+            Log::error('[EdgeNet] ', ['payload' => $payload]);
 
-            activity('tenants')
+            activity('teams')
                 ->performedOn($this->team)
                 //->causedBy($user)
-                ->withProperties(['severity' => 'error', 'message' => $e->getMessage()])
-                ->log('Error syncing tenant with EdgeNet API');
+                ->withProperties([
+                    'severity' => 'error',
+                    'message' => $e->getMessage(),
+                    'payload' => $e->getPayload(),
+                ])
+                ->log('Error syncing team with EdgeNet API');
         }
     }
 }
