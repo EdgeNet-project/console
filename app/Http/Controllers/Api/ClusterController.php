@@ -17,7 +17,7 @@ class ClusterController extends Controller
                 'verify_peer' => false
             ]
         ]);
-        $res = stream_socket_client(str_replace('https://','ssl://', config('edgenet.cluster.url')),
+        $res = stream_socket_client(str_replace('https://','ssl://', config('edgenet.cluster.host')),
             $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $contextCreate);
         $response = stream_context_get_params($res);
 
@@ -27,7 +27,7 @@ class ClusterController extends Controller
         }
 
         return response()->json([
-            'server' => config('kubernetes.api.server'),
+            'server' => config('edgenet.cluster.api'),
             'ca' => base64_encode($certString),
             'info' => $certInfo
         ]);

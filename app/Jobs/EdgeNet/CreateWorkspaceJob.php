@@ -98,7 +98,7 @@ class CreateWorkspaceJob implements ShouldQueue
             ->setName('this-is-a-wp')
             ->setNamespace('ttn')
             ->get();
-        
+
         // update the namespace on the workspace model
         $this->workspace->namespace = $this->workspace->name . '-' . $subnamespace->getResourceUid();
         $this->workspace->save();

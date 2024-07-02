@@ -9,6 +9,7 @@ return [
     'cluster' => [
         'domain' => 'edge-net.io',
         'host' => env('EDGENET_CLUSTER_HOST', 'https://hades.edge-net.io:6443'),
+        'api' => env('EDGENET_CLUSTER_API', 'https://hades.edge-net.io:6443'),
     ],
 
 ];
