@@ -1,23 +1,14 @@
 import {
-    IconAlertCircle,
-    IconDatabase,
-    IconGitPullRequest,
     IconQuestionCircle,
-    IconFileSettings,
     IconServer,
-    IconKey, IconUser, IconDashboard, IconChevronRight, IconSwitchHorizontal, IconLogout
+    IconKey, IconUser, IconDashboard, IconChevronRight,
 } from "@tabler/icons";
 import {
     Group,
-    ThemeIcon,
     UnstyledButton,
-    Text,
-    useMantineTheme,
     Divider,
-    Code,
-    Anchor,
     NavLink,
-    Burger, Image, Badge
+    Badge
 } from "@mantine/core";
 import {NavLink as RouterNavLink, matchPath, useMatch, useMatches} from "react-router-dom";
 import {useAuthentication} from "../Authentication";

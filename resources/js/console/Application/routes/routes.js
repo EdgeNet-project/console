@@ -7,13 +7,8 @@ import Application from "../index";
 import TenantUsers from "../../Views/TenantUsers";
 
 import Dashboard from "../../Dashboard";
-
 import TeamsView from "../../Teams";
-
 import WorkspaceView from "../../Workspaces";
-
-// import TeamRegistration from "../../Teams/TeamRegistration";
-// import WorkspaceRegistration from "../../Workspaces/WorkspaceRegistration";
 
 import NodeList from "../../Nodes/NodeList";
 import NodeView from "../../Nodes";
@@ -67,24 +62,10 @@ const router = createBrowserRouter([
                 path: "/nodes/:id",
                 element: <NodeView />,
             },
-            // {
-            //     path: "/team/registration",
-            //     element: <TeamRegistration />,
-            // },
             {
-                path: "/team/join",
-                element: null,
-            },
-            {
-                path: "/team/:id",
+                path: "/teams/:id",
                 element: <TeamsView />,
             },
-
-            // {
-            //     path: "/workspace/registration",
-            //     element: <WorkspaceRegistration />,
-            // },
-
             {
                 path: "/workspaces/:id",
                 element: <WorkspaceView />,

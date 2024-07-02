@@ -51,7 +51,7 @@ export default () => {
                                 {team.shortname}
                             </Text>
                             <Text fz="md">
-                                <Anchor component={Link} to={"/team/" + team.name}>{team.fullname}</Anchor>
+                                <Anchor component={Link} to={"/teams/" + team.name}>{team.fullname}</Anchor>
                             </Text>
                         </Table.Td>
                         <Table.Td>

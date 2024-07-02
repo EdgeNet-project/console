@@ -103,7 +103,7 @@ const NavigationTeams = () => {
                 parentId: null,
                 label: tenant.fullname,
                 namespace: tenant.name,
-                path: '/team/' + tenant.name
+                path: '/teams/' + tenant.name
             } )
 
             if (tenant.subnamespaces.length > 0) {
@@ -129,7 +129,6 @@ const NavigationTeams = () => {
         treeApi.current.toggleAllNodesOpenState(open ? 'close' : 'open')
     }
 
-    console.log(workspaces)
     return (
         <>
             <Divider label="Workspaces" mt="sm" />
