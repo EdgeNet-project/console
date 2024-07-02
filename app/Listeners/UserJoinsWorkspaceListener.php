@@ -3,6 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\UserJoinsWorkspace;
+use App\Model\User;
+use App\Model\SubNamespace;
+
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
@@ -27,8 +30,11 @@ class UserJoinsWorkspaceListener
      */
     public function handle(UserJoinsWorkspace $event)
     {
-//        Log::info('', ['o' => $event->subNamespaceUser]);
-        Log::info('[Console] user '.$event->subNamespaceUser->user_id.' joined workspace '.$event->subNamespaceUser->sub_namespace_id.' with role '.$event->subNamespaceUser->role);
+        $user = User::find($event->subNamespaceUser->user_id);
+        $workspace = SubNamespace::find($event->subNamespaceUser->sub_namespace_id);
+        $role = $event->subNamespaceUser->role;
+
+        Log::info('[Console] user '.$user->id.' joined workspace '.$workspace->name.' ('.$workspace->id.') with role '.$role);
 
         // job to edgenetapi
 

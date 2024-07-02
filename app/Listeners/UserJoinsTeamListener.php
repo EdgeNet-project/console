@@ -35,7 +35,6 @@ class UserJoinsTeamListener
         $team = Tenant::find($event->tenantUser->tenant_id);
         $role = $event->tenantUser->role;
 
-//        Log::info('', ['o' => $event->subNamespaceUser]);
         Log::info('[Console] user '.$user->id.' joined team '.$team->name.' ('.$team->id.') with role '.$role);
 
         // job to edgenetapi
