@@ -48,5 +48,5 @@ class SubNamespace extends Model
     {
         return $this->users()->wherePivot('role','owner')->get();
     }
-    
+
 }

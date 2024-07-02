@@ -132,7 +132,7 @@ class SubnamespaceController extends Controller
                 ])->get());
         }
 
-        return response()->json(SubNamespace::all());
+        return response()->json(SubNamespace::orderBy('name')->get());
     }
 
     public function get(SubNamespace $sub_namespace)

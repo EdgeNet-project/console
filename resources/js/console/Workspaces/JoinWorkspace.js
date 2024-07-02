@@ -22,7 +22,7 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
 
     const form = useForm({
         initialValues: {
-            name: workspace ? workspace.name : '',
+            id: workspace ? ""+workspace.id : "",
         },
 
         validate: {
@@ -41,11 +41,11 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
         setLoading(true)
         setError(null)
 
+        console.log(values)
         const selectedWorkspace =
-            workspace ? workspace : workspaces.find(w => w.name === values.name)
+            workspace ? workspace : workspaces.find(w => w.id == values.id)
 
-        axios.post('/api/requests/workspaces/' + selectedWorkspace.id, {
-        })
+        axios.post('/api/requests/workspaces/' + selectedWorkspace.id)
             .then((res) => {
                 console.log(res)
                 loadUser()
@@ -71,7 +71,7 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
             })
     }
 
-    const options = workspaces.map(d => { return {label: d.name, value: d.name} })
+    const options = workspaces.map(d => { return {label: d.name, value: ""+d.id} })
 
     return (
             <Modal opened onClose={onClose} title={title}>
@@ -106,11 +106,11 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
                                     placeholder="EdgeNet Workspaces"
                                     searchable
                                     clearable
-                                    {...form.getInputProps('name')}
+                                    {...form.getInputProps('id')}
                                     // onChange={handleSelect}
                                 />
                                 {
-                                    form.values.name && <WorkspaceInfo workspace={workspaces.find(t => t.name === form.values.name)} />
+                                    form.values.id && <WorkspaceInfo workspace={workspaces.find(w => w.id == form.values.id)} />
                                 }
                             </>
                         }

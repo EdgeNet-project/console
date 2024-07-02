@@ -62,17 +62,17 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
 
         $cluster = $edgenetAdmin->getCluster();
 
-        $rule = K8s::rule()
-            ->core()
-            ->addResources([
-                K8sPod::class,
-                K8sConfigMap::class,
-                K8sDeployment::class
-            ])
-            ->addResourceNames(['pod-name', 'configmap-name'])
-            ->addVerbs(['get', 'list', 'watch', 'create', 'update', 'delete']);
-
         try {
+            $rule = K8s::rule()
+                ->core()
+                ->addResources([
+                    K8sPod::class,
+                    K8sConfigMap::class,
+                    K8sDeployment::class
+                ])
+                ->addResourceNames(['pod-name', 'configmap-name'])
+                ->addVerbs(['get', 'list', 'watch', 'create', 'update', 'delete']);
+
             // A collaborator can work within the namespace of the workspace
             $role = $cluster
                 ->role()
@@ -84,33 +84,19 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
                     'workspace' => $this->workspace->name
                 ])
                 ->createOrUpdate();
-        } catch (PhpK8sException $e) {
-            $payload = $e->getPayload();
-            Log::error('[EdgeNet] ' . $e->getMessage());
-            Log::error('[EdgeNet] ' . $payload['message']);
-            Log::error('[EdgeNet] ', ['payload' => $payload]);
 
-            activity('workspaces')
-                ->performedOn($this->workspace)
-                ->withProperties([
-                    'severity' => 'error',
-                    'message' => $e->getMessage(),
-                    'payload' => $e->getPayload(),
-                ])
-                ->log('updating workspace roles - error syncing tenant with EdgeNet API');
-        }
 
 //        $subject = K8s::subject()
 //            ->setApiGroup('rbac.authorization.k8s.io')
 //            ->setKind('User')
 //            ->setName($user->email);
 
-        $subject = K8s::subject()
-            ->setApiGroup('rbac.authorization.k8s.io')
-            ->setKind('Group')
-            ->setName($this->workspace->tenant->name . ':' . $this->workspace->name);
+            $subject = K8s::subject()
+                ->setApiGroup('rbac.authorization.k8s.io')
+                ->setKind('Group')
+                ->setName($this->workspace->tenant->name . ':' . $this->workspace->name);
 
-        try {
+
 
             $rb = $cluster
                 ->roleBinding()

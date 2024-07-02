@@ -150,7 +150,7 @@ class UserRequestObserver
 
         $subnamespace = SubNamespace::where([
             ['name', $userRequest->data['name']],
-            ['tenant_id' => $userRequest->object->id]
+            ['tenant_id', $userRequest->object->id]
         ])->first();
 
         if ($subnamespace) {
