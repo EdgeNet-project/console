@@ -16,6 +16,7 @@ import {IconInfoCircle} from "@tabler/icons";
 import {useDisclosure} from "@mantine/hooks";
 import {notifications} from "@mantine/notifications";
 
+const url_expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
 const CreateTeamDialog = ({title, onClose}) => {
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(null)
@@ -35,6 +36,7 @@ const CreateTeamDialog = ({title, onClose}) => {
 
         validate: {
             // email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+            url: (value) => (url_expression.test(value) ? null : 'Invalid URL')
         },
     });
 

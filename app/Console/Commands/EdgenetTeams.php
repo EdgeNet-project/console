@@ -70,8 +70,8 @@ class EdgenetTeams extends Command
         $edgenetSync = $this->option('sync');
         if ($edgenetSync) {
             foreach ($localTeams as $lteam) {
+                $this->info('creating  ' . $lteam->name);
                 CreateTeamJob::dispatch($lteam);
-                break;
             }
 
             return Command::SUCCESS;
@@ -86,15 +86,15 @@ class EdgenetTeams extends Command
 
         $output = [];
         foreach ($tenants as $t) {
-            $contact = $t->getContact();
 
             $output[] = [
                 $t->getName(),
                 Str::substr($t->getFullname(), 0, 50),
-                $contact['firstname'] . ' ' . $contact['lastname'] . "\n" . $contact['email'] . "\n" . $contact['phone'],
-                'Enabled: ' . ($t->isApproved() ? 'Yes' : 'No') . "\n" .
-                'State: ' . $t->getState() . "\n" .
-                'Message: ' . $t->getMessage() . "\n"
+                $t->getUrl(),
+                $t->getAdmin(),
+//                'Enabled: ' . ($t->isApproved() ? 'Yes' : 'No') . "\n" .
+//                'State: ' . $t->getState() . "\n" .
+//                'Message: ' . $t->getMessage() . "\n"
 
             ];
 
@@ -103,7 +103,7 @@ class EdgenetTeams extends Command
         }
 
         $this->table(
-            ['Name', 'Info', 'Contact', 'Status'],
+            ['Name', 'Fullname', 'URL', 'Admin'],
             $output
         );
 

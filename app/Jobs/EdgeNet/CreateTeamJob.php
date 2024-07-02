@@ -54,7 +54,7 @@ class CreateTeamJob implements ShouldQueue
                 'fullName' => $this->team->fullname,
 
                 // Website of the tenant
-                'url' => $this->team->url,
+                'url' => $this->team->url ?? null,
 
                 // This is the admin username for the tenant.
                 // A role binding will be created for user with this username.

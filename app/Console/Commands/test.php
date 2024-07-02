@@ -34,30 +34,13 @@ class test extends Command
 
         $cluster = $edgenetAdmin->getCluster();
 
-        $rule = K8s::rule()
-            ->core()
-            ->addResources([K8sPod::class, 'configmaps'])
-            //->addResourceNames(['pod-name', 'configmap-name'])
-            ->addVerbs(['get', 'list', 'watch']);
-
-        $role = $cluster
-            ->role()
-            ->setName('collaborator')
-            ->setNamespace('edgenet')
-            ->addRules([$rule])
-//            ->setLabels(['tier' => 'backend'])
-            ->createOrUpdate();
-
-        $role = $cluster
-            ->role()
-            ->setName('collaborator')
-            ->setNamespace('edgenet')
-            //->addRules([$rule])
-//            ->setLabels(['tier' => 'backend'])
+        $s = $cluster->subNamespace()
+            ->setName('this-is-a-wp')
+            ->setNamespace('ttn')
             ->get();
 
 
-        dd($role);
+        dd($s->getResourceUid());
         /*
          *
          * OVH TEST

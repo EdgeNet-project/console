@@ -33,7 +33,7 @@ class Tenant extends K8sResource implements InteractsWithK8sCluster
 
     public function getFullname()
     {
-        return $this->getAttribute('spec.fullname');
+        return $this->getAttribute('spec.fullName');
     }
 
     public function getDescription()
@@ -45,8 +45,9 @@ class Tenant extends K8sResource implements InteractsWithK8sCluster
     {
         return $this->getAttribute('spec.url');
     }
-    public function isEnabled()
+
+    public function getAdmin()
     {
-        return $this->getAttribute('spec.enabled');
+        return $this->getAttribute('spec.admin');
     }
 }

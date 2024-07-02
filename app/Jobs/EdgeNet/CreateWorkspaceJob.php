@@ -5,6 +5,7 @@ namespace App\Jobs\EdgeNet;
 use App\Model\SubNamespace;
 use App\CRDs\SubNamespace as SubNamespaceCRD;
 
+use App\Services\EdgenetAdmin;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -36,7 +37,7 @@ class CreateWorkspaceJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(EdgenetAdmin $edgenetAdmin)
     {
         Log::info('[EdgeNet] Creating workspace '. $this->workspace->name);
 
@@ -46,35 +47,35 @@ class CreateWorkspaceJob implements ShouldQueue
             ->withProperties(['severity' => 'info'])
             ->log('Syncing workspace with EdgeNet API');
 
-        $crd = new SubNamespaceCRD(K8s::getCluster(), [
+        $crd = new SubNamespaceCRD($edgenetAdmin->getCluster(), [
             'metadata' => [
                 'name' => $this->workspace->name,
                 'namespace' => $this->workspace->tenant->name,
             ],
             'spec' => [
-                'workspace' => [
-                    'resourceallocation' => [
-                        'cpu' => "4000m",
-                        'memory' => "4Gi",
-                    ],
-                    'inheritance' => [
-                        'rbac' => true,
-                        'networkpolicy' => false,
-                        'limitrange' => true,
-                        'configmap' => true,
-                        'sync' => false,
-                    ],
-                    'sync' => false,
-                    'owner' => [
-                        'email' => 'ciro@cslash.com',
-
-                    ]
-                ],
+//                'workspace' => [
+//                    'resourceallocation' => [
+//                        'cpu' => "4000m",
+//                        'memory' => "4Gi",
+//                    ],
+//                    'inheritance' => [
+//                        'rbac' => true,
+//                        'networkpolicy' => false,
+//                        'limitrange' => true,
+//                        'configmap' => true,
+//                        'sync' => false,
+//                    ],
+//                    'sync' => false,
+//                    'owner' => [
+//                        'email' => 'ciro@cslash.com',
+//
+//                    ]
+//                ],
             ]
         ]);
 
         try {
-            $crd->createOrUpdate();
+            $subnamespace = $crd->createOrUpdate();
         } catch (PhpK8sException $e) {
             $payload = $e->getPayload();
             Log::error('[EdgeNet] ' . $e->getMessage());
@@ -92,8 +93,14 @@ class CreateWorkspaceJob implements ShouldQueue
                 ->log('Error syncing workspace with EdgeNet API');
         }
 
+        $subnamespace = $edgenetAdmin->getCluster()
+            ->subNamespace()
+            ->setName('this-is-a-wp')
+            ->setNamespace('ttn')
+            ->get();
+        
         // update the namespace on the workspace model
-        $this->workspace->namespace = $this->workspace->name . '-' . $crd->getResourceUid();
+        $this->workspace->namespace = $this->workspace->name . '-' . $subnamespace->getResourceUid();
         $this->workspace->save();
 
         Log::info('[EdgeNet] updating workspace namespace to '. $this->workspace->namespace);

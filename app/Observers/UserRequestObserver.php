@@ -63,7 +63,7 @@ class UserRequestObserver
         } else {
             // EdgeNet admins
             Log::info('[Console] New request created - notifying cluster admins');
-            $admins = User::where('admin', true)->all();
+            $admins = User::where('admin', true)->get();
             foreach ($admins as $admin) {
                 $admin->notify(new UserRequestCreatedAdmin($userRequest));
             }
