@@ -44,7 +44,7 @@ class CreateWorkspaceJob implements ShouldQueue
             ->performedOn($this->workspace)
             //->causedBy($user)
             ->withProperties(['severity' => 'info'])
-            ->log('syncing workspace with EdgeNet API');
+            ->log('Syncing workspace with EdgeNet API');
 
         $crd = new SubNamespaceCRD(K8s::getCluster(), [
             'metadata' => [
