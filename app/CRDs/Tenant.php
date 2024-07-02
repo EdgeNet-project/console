@@ -22,7 +22,7 @@ class Tenant extends K8sResource implements InteractsWithK8sCluster
      *
      * @var string
      */
-    protected static $defaultVersion = 'core.edgenet.io/v1alpha1';
+    protected static $defaultVersion = 'multitenancy.edge-net.io/v1';
 
     /**
      * Wether the resource has a namespace.
