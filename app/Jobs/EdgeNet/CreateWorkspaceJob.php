@@ -95,8 +95,8 @@ class CreateWorkspaceJob implements ShouldQueue
 
         $subnamespace = $edgenetAdmin->getCluster()
             ->subNamespace()
-            ->setName('this-is-a-wp')
-            ->setNamespace('ttn')
+            ->setName($this->workspace->name)
+            ->setNamespace($this->workspace->tenant->name)
             ->get();
 
         // update the namespace on the workspace model
