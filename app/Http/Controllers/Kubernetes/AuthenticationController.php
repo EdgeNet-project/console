@@ -68,13 +68,22 @@ class AuthenticationController extends Controller
 
         // TODO: check user is active and user permissions
 
-        // TODO: manage groups
+        // Teams
+        $teams = [];
+        if ($user->tenants) {
+            $teams = $user->tenants->map(function ($team) { return $team->name; });
+        }
+        //
+        $workspaces = [];
+        if ($user->sub_namespaces) {
+            $workspaces = $user->sub_namespaces->map(function ($workspace) {
+                return $workspace->tenant->name . ':' . $workspace->name;
+            });
+        }
         $groups = [
             'edgenet:user',
-            ...$user->tenants->map(function ($tenant) { return $tenant->name; }),
-            ...$user->sub_namespaces->map(function ($supnamespace) {
-                return $supnamespace->tenant->name . ':' . $supnamespace->name;
-            }),
+            ...$teams,
+            ...$workspaces,
         ];
 
         $response = [

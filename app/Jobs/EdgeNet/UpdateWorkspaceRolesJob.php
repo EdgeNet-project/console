@@ -70,7 +70,6 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
                     K8sConfigMap::class,
                     K8sDeployment::class
                 ])
-                ->addResourceNames(['pod-name', 'configmap-name'])
                 ->addVerbs(['get', 'list', 'watch', 'create', 'update', 'delete']);
 
             // A collaborator can work within the namespace of the workspace

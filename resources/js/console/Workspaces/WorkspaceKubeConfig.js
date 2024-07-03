@@ -36,7 +36,7 @@ contexts:
 - name: edgenet
   context:
     cluster: edgenet-cluster
-    namespace: ` + workspace.name + `
+    namespace: ` + workspace.namespace + `
     user: ` + user.email + `
 current-context: edgenet
 users:

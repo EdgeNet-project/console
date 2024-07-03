@@ -48,6 +48,10 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
     ];
 
+    public function getTeamsAttribute()
+    {
+        return $this->tenants();
+    }
     public function tenants()
     {
         return $this->belongsToMany(Tenant::class)
@@ -56,6 +60,14 @@ class User extends Authenticatable implements MustVerifyEmail
             ->withTimestamps();
     }
 
+    public function getWorkspacesAttribute()
+    {
+        return $this->subnamespaces();
+    }
+    public function sub_namespaces()
+    {
+        return $this->subnamespaces();
+    }
     public function subnamespaces()
     {
         return $this->belongsToMany(SubNamespace::class)
