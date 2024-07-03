@@ -9,20 +9,27 @@ use App\Model\Tenant;
 use App\Model\UserRequest;
 use App\Model\UserRequestStatus;
 use App\Model\UserRequestType;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class UserRequestController extends Controller
 {
+    /**
+     * Create new Team - a request to the cluster admins is always created
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createTeam(Request $request)
     {
         $validatedData = $request->validate([
             'fullname' => ['required', 'string', 'max:255'],
-            'shortname' => ['required', 'string', 'max:255'],
+            'shortname' => ['required', 'alpha_dash', 'max:32', 'unique:tenants,shortname'],
             'country' => ['required', 'string', 'max:255'],
             'affiliation' => ['required', 'string', 'max:255'],
-            'url' => ['required', 'string', 'max:255'],
-            'joining_reason' => ['required'],
+            'url' => ['required', 'url', 'max:255'],
+            'joining_reason' => ['required', 'string'],
             'joining_category' => ['required', 'string', 'max:255'],
         ]);
 
@@ -43,6 +50,12 @@ class UserRequestController extends Controller
 
     }
 
+    /**
+     *
+     * @param Request $request
+     * @param Tenant $tenant
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function joinTeam(Request $request, Tenant $tenant)
     {
 
@@ -82,19 +95,61 @@ class UserRequestController extends Controller
         return response()->json($userRequest);
     }
 
+    /**
+     * If user is owner of the Team or parent workspace allow direct creation
+     *
+     * @param Request $request
+     * @param Tenant $tenant
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createTeamWorkspace(Request $request, Tenant $tenant)
     {
 
         $validatedData = $request->validate([
             'label' => ['required', 'string', 'max:255'],
-            'name' => ['required', 'string', 'max:255']
-
+            'name' => ['required', 'alpha_dash', 'max:32', 'unique:sub_namespaces,name'],
         ]);
+
+        $user = $request->user();
+
+        if ($tenant->isOwner($user)) {
+            try {
+                $sub_namespace = SubNamespace::create([
+                    'label' => $validatedData['label'],
+                    'name' => $validatedData['name'],
+                    'namespace' => '<generating>',
+                    'tenant_id' => $tenant->id,
+                    'parent_id' => null // TODO
+//            'resourceallocation' => [
+//                'cpu' => "4000m",
+//                'memory' => "4Gi",
+//            ],
+//            'inheritance' => [
+//                'rbac' => true,
+//                'networkpolicy' => false,
+//                'limitrange' => true,
+//                'configmap' => true,
+//                'sync' => false,
+//                //                    'sliceclaim' => 'lab-exercises',
+//                'expiry' => "2023-09-01T09:00:00Z"
+//            ],
+                ]);
+
+                $sub_namespace->users()->attach(
+                    $user->id, ['role' => 'owner']
+                );
+
+            } catch (QueryException) {
+                return response()->json(['message' => 'Error creating the workspace'], 401);
+            }
+
+            return response()->json(['message' => 'You have created the workspace'], 201);
+        }
 
         $userRequest = UserRequest::create([
             'data' => $validatedData,
             'type' => UserRequestType::CreateWorkspace,
-            'user_id' => auth()->user()->id,
+            'user_id' => $user->id,
             'object_id' => $tenant->id,
             'object_type' => Tenant::class
         ]);
@@ -107,6 +162,17 @@ class UserRequestController extends Controller
 
         if (!$sub_namespace) {
             return response()->json(['message' => 'Workspace not found'], 404);
+        }
+
+        $user = $request->user();
+
+        // Tenant owners can join directly
+        if ($sub_namespace->tenant->isOwner($user)) {
+            $sub_namespace->users()->attach(
+                $user->id, ['role' => 'owner']
+            );
+
+            return response()->json(['message' => 'You have joined a workspace'], 201);
         }
 
         // check if a request is already pending

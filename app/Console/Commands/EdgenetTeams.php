@@ -46,7 +46,6 @@ class EdgenetTeams extends Command
             ]);
         }
 
-//        dd($tenants);
         $localTeams = TenantModel::all();
 
         $checkSync = $this->option('check');

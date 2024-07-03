@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\OLD;
+namespace App\Console\Commands;
 
 use App\Model\Node;
 use App\Model\NodeStatus;

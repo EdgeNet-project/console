@@ -57,8 +57,18 @@ class Tenant extends Model
         return $this->users()->wherePivot('role','owner')->get();
     }
 
+    public function isOwner(User $user): bool
+    {
+        return $this->owners->contains($user);
+    }
+
     public function getAdminsAttribute()
     {
         return $this->users()->wherePivot('role','admin')->get();
+    }
+
+    public function isAdmin(User $user): bool
+    {
+        return $this->admins->contains($user);
     }
 }
