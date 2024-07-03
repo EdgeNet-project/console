@@ -34,13 +34,15 @@ class test extends Command
 
         $cluster = $edgenetAdmin->getCluster();
 
-        $s = $cluster->subNamespace()
-            ->setName('this-is-a-wp')
-            ->setNamespace('ttn')
-            ->get();
-
-
-        dd($s->getResourceUid());
+        $nodes = $cluster->getAllNodes();
+        dd($nodes);
+//        $s = $cluster->subNamespace()
+//            ->setName('this-is-a-wp')
+//            ->setNamespace('ttn')
+//            ->get();
+//
+//
+//        dd($s->getResourceUid());
         /*
          *
          * OVH TEST
