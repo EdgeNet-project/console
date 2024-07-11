@@ -10,24 +10,25 @@ import {
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import { notifications } from '@mantine/notifications';
-import {IconAlertCircle, IconInfoCircle} from "@tabler/icons";
+import {IconInfoCircle} from "@tabler/icons";
 import {useForm} from "@mantine/form";
 import axios from "axios";
+import {useAuthentication} from "../Authentication";
 
 const CreateWorkspaceModal = ({team, onClose}) => {
     const [ loading, setLoading ] = useState(false)
-    const [ error, setError ] = useState(null)
-
+    const [ error, setError ] = useState(false)
+    const { loadUser } = useAuthentication()
 
     const form = useForm({
         initialValues: {
             label: '',
             name: '',
-            namespace: !!parent ? parent.namespace : team.namespace,
+            team_id: team.id,
         },
 
         validate: {
-            // email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+            name: (value) => (/^[a-z0-9][a-z0-9-]*[a-z0-9]$/.test(value) ? null : 'Invalid name'),
         },
     });
 
@@ -57,26 +58,27 @@ const CreateWorkspaceModal = ({team, onClose}) => {
 
     const handleSubmit = (values) => {
         setLoading(true)
-        setError(null)
+        setError(false)
+        form.clearErrors()
 
-        axios.post('/api/requests/teams/' + team.id + '/workspace', values)
+        axios.post('/api/requests/workspaces', values)
             .then((res) => {
-                console.log(res)
-                //setRegistered(true)
+                loadUser()
             })
-            .catch(({message, response: {data: {errors}}}) => {
-                // console.log(message)
-                // setErrors(errors)
-                form.setErrors(errors);
-                setError('Error creating a new Workspace')
+            .catch(({message, response}) => {
+                setError(true)
+                console.log('1==>', message);
+                console.log('2==>', response.data)
+                //setError(response.data.message ?? "Error joining workspace")
+                form.setErrors({name: response.data.message ?? "Error creating workspace"});
             })
             .finally(() => {
                 setLoading(false)
 
                 if (!error) {
                     notifications.show({
-                        title: 'Create new workspace',
-                        message: 'A request has been sent to the admins',
+                        title: 'Creating a new workspace',
+                        message: 'A request has been sent',
                     })
 
                     onClose()
@@ -92,28 +94,32 @@ const CreateWorkspaceModal = ({team, onClose}) => {
         <Modal opened onClose={onClose} title="Create a new Workspace">
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack spacing="md">
-                    <Text>
-                         Please specify a label and a name for the new workspace you wish to create.
+                    <Text size="sm">
+                        Please provide a label and a name for the new workspace you wish to create. <br />
+                        The name will be automatically generated using the value in the label field,
+                        you will also be able to modify it directly. <br />
+                        A workspace name should be unique within the same team.
                     </Text>
                     <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
-                        A request will be sent to the managers of {team.shortname} for evaluation.<br />
-                        Once approved the workspace will be created under {team.fullname}.<br/>
-                        <br />
-                        If you are a manager of {team.shortname} the workspace will be created
-                        automatically.
+                        <Text size="sm">
+                            A request will be sent to the managers of {team.shortname} for evaluation.<br />
+                            Once approved the workspace will be created under {team.fullname}.<br/>
+                            <br />
+                            If you are a manager of {team.shortname} the workspace will be created
+                            automatically.
+                        </Text>
                     </Alert>
-                    <TextInput label="Label" placeholder="My workspace name" withAsterisk
+
+                    <TextInput label="Label"
+                               placeholder="My workspace name"
                                {...form.getInputProps('label')}
                                onChange={onLabelChange}
                     />
 
-                    <TextInput label="Name" placeholder="my-workspace-name" withAsterisk
+                    <TextInput label="Name"
+                               description="You can use lowercase letters, numbers and the dash caracter"
+                               placeholder="my-workspace-name"
                                {...form.getInputProps('name')} />
-
-                    {error && <Alert icon={<IconAlertCircle size="1rem" />} color="red">
-                        {error}
-                    </Alert>}
-
                     <Group position="apart">
                         <Button disabled={loading} type="submit">
                             Submit

@@ -54,7 +54,7 @@ export default ({team}) => {
         <Panel title={team.shortname + " workspaces"}
                icon={<IconBoxPadding />}
                buttons={[
-                   <CreateWorkspaceButton team={team} />
+                   <CreateWorkspaceButton team={team} key="create_workspace_button" />
                ]}>
             <TeamWorkspaces team={team} />
         </Panel>

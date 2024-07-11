@@ -66,7 +66,6 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
                         message: 'A request has been sent',
                     })
 
-                    setError(false)
                     onClose()
                 }
             })
@@ -80,23 +79,27 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
 
                         {workspace ?
                             <>
-                                <Text>
+                                <Text size="sm">
                                     Please submit if you wish to join the workspace {workspace.name}.
                                 </Text>
                                 <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
-                                    A request will be sent to the managers of the workspace {workspace.name} for evaluation.
-                                    Once approved you will have access to the workspace.<br/>
+                                    <Text size="sm">
+                                        A request will be sent to the managers of the workspace {workspace.name}
+                                        for evaluation. Once approved you will have access to the workspace.
+                                    </Text>
                                 </Alert>
                                 {/*<WorkspaceInfo workspace={workspace} />*/}
                             </> :
                             <>
-                                <Text>
+                                <Text size="sm">
                                     Please provide the team and name of the workspace you wish to join.
                                 </Text>
                                 <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
-                                    Ask your team manager for the name of the workspace that you want to join. <br />
-                                    A request will be sent for evaluation.<br />
-                                    Once approved you will have access to the workspaces.
+                                    <Text size="sm">
+                                        Ask your team manager for the name of the workspace that you want to join. <br />
+                                        A request will be sent for evaluation.<br />
+                                        Once approved you will have access to the workspaces.
+                                    </Text>
                                 </Alert>
 
                                 <Select
@@ -132,11 +135,6 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
                                 {/*    form.values.id && <WorkspaceInfo workspace={workspaces.find(w => w.id === form.values.id)} />*/}
                                 {/*}*/}
                             </>
-                        }
-                        {error &&
-                            <Alert variant="light" color="red" icon={<IconInfoCircle />}>
-                                {error}
-                            </Alert>
                         }
 
                         <Group justify="flex-end" mt="sm">
