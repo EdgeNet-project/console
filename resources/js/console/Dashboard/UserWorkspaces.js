@@ -10,6 +10,8 @@ const AlertUserWorkspaces = ({create}) => {
         <Alert icon={<IconInfoCircle size="1rem"/>} title="You don't have any workspaces yet!" color="blue">
             <Stack>
                 <Text size="sm">
+                    you need a workspace in order to deploy workload on EdgeNet
+
                     To create a new workspace select a team or workspace first, otherwise you can join
                     an existing workspace.
                 </Text>

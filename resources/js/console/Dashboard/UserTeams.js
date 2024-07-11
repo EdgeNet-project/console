@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import {Alert, Anchor, Badge, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
-import {IconInfoCircle, IconUsers} from "@tabler/icons";
+import {IconAdjustments, IconInfoCircle, IconUsers} from "@tabler/icons";
 import {useAuthentication} from "../Authentication";
 import {CreateTeamButton} from "../Teams/CreateTeam";
 import {JoinTeamButton} from "../Teams/JoinTeam";
@@ -11,11 +11,11 @@ const AlertUserTeam = () => {
         <Alert icon={<IconInfoCircle size="1rem"/>} title="You haven't yet joined a team!" color="blue">
             <Stack>
                 <Text size="sm">
-                    If you want to join a team you can do so by selecting
-                    the institution you are part of.
+                    Joining a team provides access to that team's workspaces.
+                    To join, simply select the team you are affiliated with.
                 </Text>
                 <Text size="sm">
-                    If you are a professor or researcher and manage a team you can create one here.
+                    You can register a new team if you manage a group of people who will be using Edgenet.
                     An EdgeNet admin will review your application as soon as possible.
                 </Text>
             </Stack>
@@ -29,6 +29,7 @@ export default () => {
     return (
         <Panel title="Your Teams"
                icon={<IconUsers/>}
+               help={<AlertUserTeam />}
                buttons={[
                    <CreateTeamButton key="create_team_button" />,
                    <JoinTeamButton key="join_team_button" />
