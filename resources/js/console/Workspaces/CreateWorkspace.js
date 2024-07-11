@@ -93,13 +93,13 @@ const CreateWorkspaceModal = ({team, onClose}) => {
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack spacing="md">
                     <Text>
-                         Please specify a label and a name for the new workspace.
+                         Please specify a label and a name for the new workspace you wish to create.
                     </Text>
                     <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
-                        A request will be sent to the admins of {team.shortname} for evaluation.
+                        A request will be sent to the managers of {team.shortname} for evaluation.<br />
                         Once approved the workspace will be created under {team.fullname}.<br/>
                         <br />
-                        If you are an admin or owner of {team.shortname} the workspace will be created
+                        If you are a manager of {team.shortname} the workspace will be created
                         automatically.
                     </Alert>
                     <TextInput label="Label" placeholder="My workspace name" withAsterisk

@@ -25,7 +25,7 @@ export default () => {
         <Panel title="Your Workspaces"
                icon={<IconBoxPadding/>}
                buttons={[
-                   <JoinWorkspaceButton />
+                   <JoinWorkspaceButton key="join_workspace_button" />
                ]}>
             {(!user.workspaces || user.workspaces?.length <= 0) &&
                 <AlertUserWorkspaces create={user.workspaces?.length > 0} />}

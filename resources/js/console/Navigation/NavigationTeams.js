@@ -54,11 +54,11 @@ const TreeIcon = ({
     context
 }) => {
 
-    console.log('TreeIcon', node,
-        type,
-        selected,
-        open,
-        context)
+    // console.log('TreeIcon', node,
+    //     type,
+    //     selected,
+    //     open,
+    //     context)
 
 
     // TODO: icon color represents access type (read only or admin)

@@ -11,6 +11,9 @@ use App\Http\Controllers\Api\NodeController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserRequestController;
+use App\Http\Controllers\Api\UserRequest\UserRequestTeamController;
+use App\Http\Controllers\Api\UserRequest\UserRequestWorkspaceController;
+
 
 Route::get('/tenants', [ TenantController::class, 'list' ]);
 
@@ -56,26 +59,25 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::group(['prefix' => 'requests'], function () {
 
-//        Route::get('/roles/{namespace?}', [ RoleRequestController::class, 'list' ]);
-//        Route::post('/roles', [ RoleRequestController::class, 'create' ]);
-//        Route::patch('/roles/{namespace}/{name}', [ RoleRequestController::class, 'update' ]);
-//
-//        Route::get('/tenants/{namespace?}', [ TenantRequestController::class, 'list' ]);
-//        Route::post('/tenants', [ TenantRequestController::class, 'create' ]);
+        Route::group([
+            'prefix' => 'teams',
+            'controller' => UserRequestTeamController::class
+        ], function () {
+            Route::post('/','create');
+            Route::patch('/','join');
+
+        });
+
+        Route::group([
+            'prefix' => 'workspaces',
+            'controller' => UserRequestWorkspaceController::class
+        ], function () {
+            Route::post('/','create');
+            Route::patch('/','join');
+        });
 
         Route::get('/', [ UserRequestController::class, 'list' ]);
         Route::patch('/{userRequest}', [ UserRequestController::class, 'update' ]);
-
-        Route::group(['prefix' => 'teams'], function () {
-            Route::post('/', [UserRequestController::class, 'createTeam']);
-            Route::post('/{tenant}', [UserRequestController::class, 'joinTeam']);
-            Route::post('/{tenant}/workspace', [UserRequestController::class, 'createTeamWorkspace']);
-        });
-
-        Route::group(['prefix' => 'workspaces'], function () {
-//            Route::post('/', [UserRequestController::class, 'createWorkspace']);
-            Route::post('/{sub_namespace}', [UserRequestController::class, 'joinWorkspace']);
-        });
     });
 
     Route::group(['prefix' => 'invitations'], function () {

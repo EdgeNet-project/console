@@ -46,7 +46,7 @@ class AuthenticationController extends Controller
             /*
              * We don't have this token, return 401, Kubernetes will then
              * try other authentication methods.
-             * Note: logging is ind ebug only mode to avoid polluting the logs.
+             * Note: logging is in debug only mode to avoid polluting the logs.
              */
             Log::channel('auth-webhook')
                 ->debug('Invalid token, User not authenticated');
@@ -80,6 +80,7 @@ class AuthenticationController extends Controller
                 return $workspace->tenant->name . ':' . $workspace->name;
             });
         }
+
         $groups = [
             'edgenet:user',
             ...$teams,

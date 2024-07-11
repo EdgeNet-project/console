@@ -49,6 +49,11 @@ class SubNamespace extends Model
         return $this->users()->wherePivot('role','owner')->get();
     }
 
+    public function isUser(User $user): bool
+    {
+        return $this->users->contains($user);
+    }
+
     public function isOwner(User $user): bool
     {
         return $this->owners->contains($user);

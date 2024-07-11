@@ -8,23 +8,15 @@ import Panel from "../Components/Panel";
 
 const AlertUserTeam = () => {
     return (
-        <Alert icon={<IconInfoCircle size="1rem"/>} title="You don't have a team yet!" color="blue">
+        <Alert icon={<IconInfoCircle size="1rem"/>} title="You haven't yet joined a team!" color="blue">
             <Stack>
+                <Text size="sm">
+                    If you want to join a team you can do so by selecting
+                    the institution you are part of.
+                </Text>
                 <Text size="sm">
                     If you are a professor or researcher and manage a team you can create one here.
                     An EdgeNet admin will review your application as soon as possible.
-                    <br />
-                </Text>
-                <Anchor component={Link} to="/team/registration">
-                    Register a new Team
-                </Anchor>
-
-                <Text size="sm">
-                    If instead you want to joi a team you can do so by selecting th institution you are part of.
-                    <br />
-                    <Anchor component={Link} to="/team/join">
-                        Join an existing Team
-                    </Anchor>
                 </Text>
             </Stack>
         </Alert>
@@ -38,8 +30,8 @@ export default () => {
         <Panel title="Your Teams"
                icon={<IconUsers/>}
                buttons={[
-                   <CreateTeamButton />,
-                   <JoinTeamButton />
+                   <CreateTeamButton key="create_team_button" />,
+                   <JoinTeamButton key="join_team_button" />
                ]}>
             {(user.teams?.length <= 0) && <AlertUserTeam />}
         <Table>

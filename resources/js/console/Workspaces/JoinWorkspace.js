@@ -3,7 +3,7 @@ import {
     LoadingOverlay,
     Button,
     Alert,
-    Modal, Text, Stack, Select, Anchor
+    Modal, Text, Stack, Select, Anchor, TextInput
 } from '@mantine/core';
 import axios from "axios";
 import React, {useEffect, useState} from "react";
@@ -11,51 +11,51 @@ import {useForm} from "@mantine/form";
 import {useAuthentication} from "../Authentication";
 import {IconInfoCircle} from "@tabler/icons";
 import {useDisclosure} from "@mantine/hooks";
-import WorkspaceInfo from "./WorkspaceInfo";
 import {notifications} from "@mantine/notifications";
 
 const JoinWorkspaceModal = ({workspace, title, onClose}) => {
-    const [ workspaces, setWorkspaces ] = useState([])
+    const [ teams, setTeams ] = useState([])
     const [ loading, setLoading ] = useState(false)
-    const [ error, setError ] = useState(null)
+    const [ error, setError ] = useState(false)
     const { loadUser } = useAuthentication()
 
     const form = useForm({
         initialValues: {
-            id: workspace ? ""+workspace.id : "",
+            team_id: "",
+            name: workspace ? workspace.name : "",
         },
 
         validate: {
-            // email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+            name: (value) => (/^[a-z0-9][a-z0-9-]*[a-z0-9]$/.test(value) ? null : 'Invalid name'),
         },
     });
 
     useEffect(() => {
-        axios.get('/api/subnamespaces')
+        axios.get('/api/tenants')
             .then(({data}) => {
-                setWorkspaces(data)
+                setTeams(data.map(d => { return {label: d.fullname, value: ""+d.id} }))
             });
     }, []);
 
     const handleSubmit = (values) => {
         setLoading(true)
-        setError(null)
+        setError(false)
+        form.clearErrors()
 
-        console.log(values)
-        const selectedWorkspace =
-            workspace ? workspace : workspaces.find(w => w.id == values.id)
+        //console.log(values)
+        // const selectedWorkspace =
+        //     workspace ? workspace : workspaces.find(w => w.id == values.id)
 
-        axios.post('/api/requests/workspaces/' + selectedWorkspace.id)
+        axios.patch('/api/requests/workspaces/', values)
             .then((res) => {
-                console.log(res)
                 loadUser()
-                //navigate.to('/')
             })
             .catch(({message, response}) => {
+                setError(true)
                 console.log('1==>', message);
                 console.log('2==>', response.data)
-                setError(response.data.message ?? 'Error: Join workspace')
-                //form.setErrors(errors);
+                //setError(response.data.message ?? "Error joining workspace")
+                form.setErrors({name: response.data.message ?? "Error joining workspace"});
             })
             .finally(() => {
                 setLoading(false)
@@ -63,15 +63,14 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
                 if (!error) {
                     notifications.show({
                         title: 'Join a workspace',
-                        message: 'A request has been sent to the admins',
+                        message: 'A request has been sent',
                     })
 
+                    setError(false)
                     onClose()
                 }
             })
     }
-
-    const options = workspaces.map(d => { return {label: d.name, value: ""+d.id} })
 
     return (
             <Modal opened onClose={onClose} title={title}>
@@ -81,37 +80,57 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
 
                         {workspace ?
                             <>
+                                <Text>
+                                    Please submit if you wish to join the workspace {workspace.name}.
+                                </Text>
                                 <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
-                                    A request will be sent to the admins of the workspace {workspace.name} for evaluation.
-                                    Once approved you will have access to the workspaces.<br/>
+                                    A request will be sent to the managers of the workspace {workspace.name} for evaluation.
+                                    Once approved you will have access to the workspace.<br/>
                                 </Alert>
-                                <WorkspaceInfo workspace={workspace} />
+                                {/*<WorkspaceInfo workspace={workspace} />*/}
                             </> :
                             <>
                                 <Text>
-                                    Please specify the workspace you want to join.
+                                    Please provide the team and name of the workspace you wish to join.
                                 </Text>
                                 <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
-                                    A request will be sent to the admins of the workspace for evaluation.
-                                    Once approved you will have access to the workspaces.<br/>
+                                    Ask your team manager for the name of the workspace that you want to join. <br />
+                                    A request will be sent for evaluation.<br />
+                                    Once approved you will have access to the workspaces.
                                 </Alert>
 
                                 <Select
-                                    data={options}
-                                    // inputContainer={(children) => {
-                                    //     console.log(children)
-                                    //     return <div>{children}</div>
-                                    // }}
-                                    // itemComponent={SelectItem}
-                                    placeholder="EdgeNet Workspaces"
+                                    label="Team"
+                                    description="The workspace is part of this team"
+                                    data={teams}
+                                    placeholder="My Team Name"
                                     searchable
                                     clearable
-                                    {...form.getInputProps('id')}
-                                    // onChange={handleSelect}
+                                    {...form.getInputProps('team_id')}
                                 />
-                                {
-                                    form.values.id && <WorkspaceInfo workspace={workspaces.find(w => w.id == form.values.id)} />
-                                }
+
+                                <TextInput
+                                    label="Workspace name"
+                                    description="This is a name that identifies the workspace you want to join"
+                                    placeholder="example-workspace"
+                                    {...form.getInputProps('name')}
+                                />
+                                {/*<Select*/}
+                                {/*    data={options}*/}
+                                {/*    // inputContainer={(children) => {*/}
+                                {/*    //     console.log(children)*/}
+                                {/*    //     return <div>{children}</div>*/}
+                                {/*    // }}*/}
+                                {/*    // itemComponent={SelectItem}*/}
+                                {/*    placeholder="EdgeNet Workspaces"*/}
+                                {/*    searchable*/}
+                                {/*    clearable*/}
+                                {/*    {...form.getInputProps('id')}*/}
+                                {/*    // onChange={handleSelect}*/}
+                                {/*/>*/}
+                                {/*{*/}
+                                {/*    form.values.id && <WorkspaceInfo workspace={workspaces.find(w => w.id === form.values.id)} />*/}
+                                {/*}*/}
                             </>
                         }
                         {error &&
