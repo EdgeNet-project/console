@@ -61,7 +61,6 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
                 setError(true)
                 console.log('1==>', message);
                 console.log('2==>', response.data)
-                //setError(response.data.message ?? "Error joining workspace")
                 form.setErrors({name: response.data.message ?? "Error joining workspace"});
             })
             .finally(() => {

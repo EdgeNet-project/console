@@ -46,7 +46,7 @@ class UserRequestCreated extends Notification
 
         switch($this->userRequest->type->name) {
             case 'CreateTeam':
-                $text = 'Thank you for your interest in creating the team '.$this->userRequest->object->fullname.'. We have received your request and will notify you shortly regarding the next steps.';
+                $text = 'Thank you for your interest in creating a new team. We have received your request and will notify you shortly regarding the next steps.';
                 break;
             case 'JoinTeam':
                 $text = 'Thank you for your interest in joining the team '.$this->userRequest->object->fullname.'. We have received your request and will notify you shortly regarding the next steps.';

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\UserRequest;
 use App\Http\Controllers\Controller;
 use App\Model\Tenant;
 use App\Model\UserRequest;
+use App\Model\UserRequestStatus;
 use App\Model\UserRequestType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -33,7 +34,23 @@ class UserRequestTeamController extends Controller
 
         $tenant = Tenant::where('name', $name)->first();
         if ($tenant) {
-            return response()->json(['message' => 'Team already exists or shortname is already in use'], 400);
+            return response()->json([
+                'message' => 'Team already exists or shortname is already in use'
+            ], 400);
+        }
+
+        // check if a request is already pending
+        $userRequest = UserRequest::where([
+            'type' => UserRequestType::CreateTeam,
+            'object_id' => null,
+            'object_type' => null,
+            'status' => UserRequestStatus::Pending
+        ])->whereJsonContains('data->shortname', $validatedData['shortname'])->first();
+
+        if ($userRequest) {
+            return response()->json([
+                'message' => 'A request is already pending for ' . $validatedData['shortname']
+            ], 409);
         }
 
         $userRequest = UserRequest::create([
@@ -69,7 +86,8 @@ class UserRequestTeamController extends Controller
             'type' => UserRequestType::JoinTeam,
             'object_id' => $team->id,
             'object_type' => Tenant::class,
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'status' => UserRequestStatus::Pending,
         ])->first();
 
         if ($userRequest) {
