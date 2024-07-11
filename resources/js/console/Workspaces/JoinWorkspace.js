@@ -49,6 +49,13 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
         axios.patch('/api/requests/workspaces/', values)
             .then((res) => {
                 loadUser()
+
+                notifications.show({
+                    title: 'Join a workspace',
+                    message: 'A request has been sent.',
+                })
+
+                onClose()
             })
             .catch(({message, response}) => {
                 setError(true)
@@ -59,15 +66,6 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
             })
             .finally(() => {
                 setLoading(false)
-
-                if (!error) {
-                    notifications.show({
-                        title: 'Join a workspace',
-                        message: 'A request has been sent',
-                    })
-
-                    onClose()
-                }
             })
     }
 

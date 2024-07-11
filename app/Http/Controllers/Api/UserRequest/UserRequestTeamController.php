@@ -17,7 +17,7 @@ class UserRequestTeamController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createTeam(Request $request)
+    public function create(Request $request)
     {
         $validatedData = $request->validate([
             'fullname' => ['required', 'string', 'max:255'],
@@ -52,39 +52,35 @@ class UserRequestTeamController extends Controller
      * @param Tenant $tenant
      * @return \Illuminate\Http\JsonResponse
      */
-    public function joinTeam(Request $request, Tenant $tenant)
+    public function join(Request $request)
     {
 
-//        $validatedData = $request->validate([
-//            'fullname' => ['required', 'string', 'max:255'],
-//            'shortname' => ['required', 'string', 'max:255'],
-//            'country' => ['required', 'string', 'max:255'],
-//            'affiliation' => ['required', 'string', 'max:255'],
-//            'url' => ['required', 'string', 'max:255'],
-//            'joining_reason' => ['required'],
-//            'joining_category' => ['required', 'string', 'max:255'],
-//        ]);
-        if (!$tenant) {
+        $validatedData = $request->validate([
+            'team_id' => ['required'],
+        ]);
+
+        $team = Tenant::find($request->input('team_id'));
+        if (!$team) {
             return response()->json(['message' => 'Team not found'], 404);
         }
 
         // check if a request is already pending
         $userRequest = UserRequest::where([
             'type' => UserRequestType::JoinTeam,
-            'object_id' => $tenant->id,
+            'object_id' => $team->id,
             'object_type' => Tenant::class,
             'user_id' => auth()->user()->id
         ])->first();
 
         if ($userRequest) {
-            return response()->json(['message' => 'A join request is already pending on ' . $tenant->name], 409);
+            return response()->json(['message' => 'A join request is already pending on ' . $team->name], 409);
         }
 
         $userRequest = UserRequest::create([
             'data' => '',
             'type' => UserRequestType::JoinTeam,
             'user_id' => auth()->user()->id,
-            'object_id' => $tenant->id,
+            'object_id' => $team->id,
             'object_type' => Tenant::class
         ]);
 

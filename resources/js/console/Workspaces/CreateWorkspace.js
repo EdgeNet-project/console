@@ -64,6 +64,13 @@ const CreateWorkspaceModal = ({team, onClose}) => {
         axios.post('/api/requests/workspaces', values)
             .then((res) => {
                 loadUser()
+
+                notifications.show({
+                    title: 'Creating a new workspace',
+                    message: 'A request has been sent',
+                })
+
+                onClose()
             })
             .catch(({message, response}) => {
                 setError(true)
@@ -74,15 +81,6 @@ const CreateWorkspaceModal = ({team, onClose}) => {
             })
             .finally(() => {
                 setLoading(false)
-
-                if (!error) {
-                    notifications.show({
-                        title: 'Creating a new workspace',
-                        message: 'A request has been sent',
-                    })
-
-                    onClose()
-                }
             })
     }
 

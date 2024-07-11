@@ -42,12 +42,29 @@ class UserRequestCreated extends Notification
     public function toMail($notifiable)
     {
 
+        $text = 'Your request for '.$this->userRequest->type->name .' has been created.';
+
+        switch($this->userRequest->type->name) {
+            case 'CreateTeam':
+                $text = 'Thank you for your interest in creating the team '.$this->userRequest->object->fullname.'. We have received your request and will notify you shortly regarding the next steps.';
+                break;
+            case 'JoinTeam':
+                $text = 'Thank you for your interest in joining the team '.$this->userRequest->object->fullname.'. We have received your request and will notify you shortly regarding the next steps.';
+                break;
+            case 'CreateWorkspace':
+                $text = 'Thank you for your interest in creating the workspace '.$this->userRequest->object->name.'. We have received your request and will notify you shortly regarding the next steps.';
+                break;
+            case 'JoinWorkspace':
+                $text = 'Thank you for your interest in joining the workspace '.$this->userRequest->object->name.'. We have received your request and will notify you shortly regarding the next steps.';
+                break;
+
+        }
         return (new MailMessage)
                     ->greeting('Dear ' . $notifiable->firstname . ' ' . $notifiable->lastname)
-                    ->line('Your request for '.$this->userRequest->type->name .' has been created.')
-                    ->line('We notified the person responsible')
+                    ->line($text);
+                    //->line('We notified the person responsible')
                     //->action('Notification Action', url('/'))
-                    ->line('Thank you !');
+                    //->line('Thank you !');
     }
 
     /**

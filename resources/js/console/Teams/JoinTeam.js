@@ -19,17 +19,14 @@ import {useDisclosure} from "@mantine/hooks";
 import TeamInfo from "./TeamInfo";
 import {notifications} from "@mantine/notifications";
 
-const JoinTeamModal = ({team, title, onClose}) => {
+const JoinTeamModal = ({title, onClose}) => {
     const [ teams, setTeams ] = useState([])
     const [ loading, setLoading ] = useState(false)
-    const [ error, setError ] = useState(null)
     const { loadUser } = useAuthentication()
-    const navigate = useNavigate()
-    // const [ registered, setLoading ] = useState(false)
 
     const form = useForm({
         initialValues: {
-            name: '',
+            team_id: "",
         },
 
         validate: {
@@ -40,76 +37,61 @@ const JoinTeamModal = ({team, title, onClose}) => {
     useEffect(() => {
         axios.get('/api/tenants')
             .then(({data}) => {
-                setTeams(data)
+                setTeams(data.map(d => { return {label: d.fullname + " (" + d.name + ")", value: ""+d.id} }))
             });
     }, []);
 
     const handleSubmit = (values) => {
         setLoading(true)
-        setError(null)
+        form.clearErrors()
 
-        const selectedTeam =
-            team ? team : teams.find(w => w.name === values.name)
-
-        axios.post('/api/requests/teams/' + selectedTeam.id, {
-        })
+        axios.patch('/api/requests/teams', values)
             .then((res) => {
                 console.log(res)
                 loadUser()
-                //navigate.to('/')
+
+                notifications.show({
+                    title: 'Join a team',
+                    message: 'A request has been sent.',
+                })
+
+                onClose()
+
             })
             .catch(({message, response}) => {
                 console.log('1==>', message);
                 console.log('2==>', response.data)
-                setError(response.data.message ?? 'Error: Team creation')
-                //form.setErrors(errors);
+                form.setErrors({team_id: response.data.message ?? "Error joining a team"});
             })
             .finally(() => {
                 setLoading(false)
-
-                if (!error) {
-                    notifications.show({
-                        title: 'Join a team',
-                        message: 'A request has been sent to the admins',
-                    })
-
-                    onClose()
-                }
             })
-    }
 
-    const options = teams.map(d => { return {label: d.fullname, value: d.name} })
+    }
 
     return (
         <Modal opened onClose={onClose} title={title}>
             <LoadingOverlay visible={loading} overlayBlur={2} />
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack spacing="md">
-                    <Text>
+                    <Text size="sm">
                         Please specify the team you want to join.
                     </Text>
                     <Alert icon={<IconInfoCircle size="1rem"/>} size="sm">
-                        A request will be sent to the admins of the team for evaluation.
-                        Once approved you will have access to the new team.<br/>
+                        <Text size="sm">
+                            A request will be sent to the admins of the team for evaluation.
+                            Once approved you will have access to the new team.
+                        </Text>
                     </Alert>
 
-                    {error &&
-                        <Alert variant="light" color="red" title="Registration error" icon={<IconInfoCircle />}>
-                            {error}
-                        </Alert>}
-
                     <Select
-                        data={options}
-                        // inputContainer={(children) => {
-                        //     console.log(children)
-                        //     return <div>{children}</div>
-                        // }}
-                        // itemComponent={SelectItem}
+                        label="Team"
+                        description="Select the team you want to be part of"
+                        data={teams}
                         placeholder="EdgeNet Teams"
                         searchable
                         clearable
-                        {...form.getInputProps('name')}
-                        // onChange={handleSelect}
+                        {...form.getInputProps('team_id')}
                     />
                     {
                         form.values.name && <TeamInfo team={teams.find(t => t.name === form.values.name)} />
