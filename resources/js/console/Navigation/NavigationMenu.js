@@ -37,7 +37,7 @@ const nav = {
     main: {
         label: '',
         links: [
-            {to: '', label: 'Dashboard', icon: IconDashboard},
+            {to: '', label: 'Console Home', icon: IconDashboard},
         ]
     },
     // {
@@ -116,20 +116,21 @@ export default function NavigationMenu() {
                 {/*    <Code fw={700}>v3.1.2</Code>*/}
                 {/*</Group>*/}
 
-                <NavMenu to="" label="Dashboard" icon={<IconDashboard size="1rem" stroke={1.5} />}/>
+                <NavMenu to="" label="Console Home" icon={<IconDashboard size="1rem" stroke={1.5} />}/>
                 <NavigationTeams />
 
                 <Divider label="Nodes" mt="sm" />
                 <NavMenu to="nodes" label="Nodes" icon={<IconServer size="1rem" stroke={1.5} />}/>
 
+
+            </div>
+
+            <div className={classes.footer}>
                 <Divider label="Account" mt="sm"/>
                 <NavMenu to="tokens" label="Tokens" icon={<IconKey size="1rem" stroke={1.5} />}/>
                 <NavMenu to="requests" label="Requests"
                          rightSection={countRequests > 0 && <Badge size="xs" circle>{countRequests}</Badge>}
                          icon={<IconQuestionCircle size="1rem" stroke={1.5} />}/>
-            </div>
-
-            <div className={classes.footer}>
                 <NavMenu to="profile" label={<UserInfo user={user} />}
                          rightSection={<IconChevronRight size={18} />}/>
             </div>

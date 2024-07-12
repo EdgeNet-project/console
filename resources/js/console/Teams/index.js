@@ -68,8 +68,8 @@ export default () => {
             </Stack>
 
             <SimpleGrid cols={2}>
-                <TeamUsers team={team} />
                 <TeamWorkspaces team={team} />
+                <TeamUsers team={team} />
             </SimpleGrid>
         </Stack>
     )

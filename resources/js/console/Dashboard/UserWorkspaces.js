@@ -24,7 +24,7 @@ export default () => {
     const {user} = useAuthentication();
 
     return (
-        <Panel title="Your Workspaces"
+        <Panel title="Your workspaces"
                icon={<IconBoxPadding/>}
                buttons={[
                    <JoinWorkspaceButton key="join_workspace_button" />

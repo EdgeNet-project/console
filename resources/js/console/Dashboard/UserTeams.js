@@ -27,9 +27,9 @@ export default () => {
     const { user } = useAuthentication();
 
     return (
-        <Panel title="Your Teams"
+        <Panel title="Your teams"
                icon={<IconUsers/>}
-               help={<AlertUserTeam />}
+               help=""
                buttons={[
                    <CreateTeamButton key="create_team_button" />,
                    <JoinTeamButton key="join_team_button" />

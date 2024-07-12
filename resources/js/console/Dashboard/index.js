@@ -41,9 +41,9 @@ export default () => {
                 <RequestsAlert />
             </Stack>
             <SimpleGrid cols={2}>
-                <UserTeams />
                 <UserWorkspaces />
                 <UserNodes />
+                <UserTeams />
             </SimpleGrid>
         </>
     );

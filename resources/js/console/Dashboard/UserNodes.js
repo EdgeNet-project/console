@@ -78,7 +78,7 @@ export default () => {
             <Stack>
                 <Group justify="flex-start">
                     <IconServer />
-                    <Title order={2} size="h4">Your Nodes</Title>
+                    <Title order={2} size="h4">Your nodes</Title>
                 </Group>
                 <UserNodes />
                 <Divider />

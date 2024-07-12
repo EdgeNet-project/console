@@ -3,7 +3,7 @@ import {ReactTree, useReactTreeApi} from '@naisutech/react-tree';
 import {Divider, Text, ThemeIcon, UnstyledButton, Group, Box, Anchor} from "@mantine/core";
 import {
     IconArrowRight,
-    IconBuilding, IconUsers as IconTeam, IconBoxPadding as IconWorkspace
+    IconBuilding, IconSitemap as IconTeam, IconBoxPadding as IconWorkspace
 } from "@tabler/icons";
 import {IconPlus, IconMinus, IconUsersPlus} from "@tabler/icons-react";
 import {Link} from "react-router-dom";

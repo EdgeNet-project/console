@@ -68,7 +68,7 @@ export default ({team}) => {
     const navigate = useNavigate();
 
     return (
-        <Panel title={team.shortname + ' Team'}
+        <Panel title={team.shortname + ' users'}
                icon={<IconUsers />}
                buttons={[
                    // <Button size="xs" onClick={() => navigate('/team/create')}>Create a new Team</Button>,

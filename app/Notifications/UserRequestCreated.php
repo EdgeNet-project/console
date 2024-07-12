@@ -52,7 +52,7 @@ class UserRequestCreated extends Notification
                 $text = 'Thank you for your interest in joining the team '.$this->userRequest->object->fullname.'. We have received your request and will notify you shortly regarding the next steps.';
                 break;
             case 'CreateWorkspace':
-                $text = 'Thank you for your interest in creating the workspace '.$this->userRequest->object->name.'. We have received your request and will notify you shortly regarding the next steps.';
+                $text = 'Thank you for your interest in creating a new workspace. We have received your request and will notify you shortly regarding the next steps.';
                 break;
             case 'JoinWorkspace':
                 $text = 'Thank you for your interest in joining the workspace '.$this->userRequest->object->name.'. We have received your request and will notify you shortly regarding the next steps.';

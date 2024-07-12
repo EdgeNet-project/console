@@ -31,15 +31,14 @@ const Application = () => {
                 <AppShell.Header>
                     <Group h="100%" px="md" justify="space-between">
                         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-                        <Group padding="sm" position="start">
-                            <Image src="/images/edgenet-logo.png" alt="EdgeNet" height={28} fit="contain" />
-                            <Text fw={500} fz="lg">EdgeNet</Text>
-                        </Group>
+                        <Anchor target="_blank" underline="never" href="https://edge-net.org">
+                            <Group padding="sm" position="start">
+                                <Image src="/images/edgenet-logo.png" alt="EdgeNet" height={28} fit="contain" />
+                                <Text fw={500} fz="lg" color="black">EdgeNet</Text>
+                            </Group>
+                        </Anchor>
                         <Group ml="xl" gap="lg" visibleFrom="sm">
-                            <Anchor target="_blank" href="">Home</Anchor>
-                            <Anchor target="_blank" href="">Blog</Anchor>
-                            <Anchor target="_blank" href="">Contacts</Anchor>
-                            <Anchor target="_blank" href="">Support</Anchor>
+                            <Anchor target="_blank" href="mailto:support@edge-net.org?subject=EdgeNet Console Support">Support</Anchor>
                         </Group>
                     </Group>
                 </AppShell.Header>

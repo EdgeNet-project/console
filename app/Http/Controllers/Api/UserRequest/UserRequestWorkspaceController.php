@@ -20,23 +20,29 @@ class UserRequestWorkspaceController extends Controller
      * @param Tenant $tenant
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(Request $request, Tenant $tenant)
+    public function create(Request $request)
     {
 
         $validatedData = $request->validate([
             'label' => ['required', 'string', 'max:255'],
             'name' => ['required', 'alpha_dash', 'max:32', 'unique:sub_namespaces,name'],
+            'team_id' => ['required', 'integer'],
         ]);
 
         $user = $request->user();
 
-        if ($tenant->isOwner($user)) {
+        $team = Tenant::find($request->input('team_id'));
+        if (!$team) {
+            return response()->json([], 404);
+        }
+
+        if ($team->isOwner($user)) {
             try {
                 $sub_namespace = SubNamespace::create([
                     'label' => $validatedData['label'],
                     'name' => $validatedData['name'],
                     'namespace' => '<generating>',
-                    'tenant_id' => $tenant->id,
+                    'tenant_id' => $team->id,
                     'parent_id' => null // TODO
 //            'resourceallocation' => [
 //                'cpu' => "4000m",
@@ -68,7 +74,7 @@ class UserRequestWorkspaceController extends Controller
             'data' => $validatedData,
             'type' => UserRequestType::CreateWorkspace,
             'user_id' => $user->id,
-            'object_id' => $tenant->id,
+            'object_id' => $team->id,
             'object_type' => Tenant::class
         ]);
 

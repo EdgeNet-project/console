@@ -51,7 +51,7 @@ export default function UserProfile() {
                 </Text>
             </Stack>
 
-            <UserTeams />
+            {/*<UserTeams />*/}
             {/*<Paper shadow="xs" p="md">*/}
             {/*    <Text>My Teams</Text>*/}
             {/*    <Divider />*/}
