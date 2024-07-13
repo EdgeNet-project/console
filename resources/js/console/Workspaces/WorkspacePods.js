@@ -26,7 +26,7 @@ export default ({workspace}) => {
                 setPods(data)
             })
 
-    }, [])
+    }, [workspace])
 
     return (
         <Panel title="Pods"
