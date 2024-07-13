@@ -68,7 +68,7 @@ export default () => {
 
             <SimpleGrid cols={2}>
                 <WorkspaceUsers workspace={workspace} />
-                {user.admin && <WorkspacePods workspace={workspace} />}
+                <WorkspacePods workspace={workspace} />
             </SimpleGrid>
         </Stack>
     )

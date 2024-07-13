@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import {Alert, Text, Badge, Stack, Table} from "@mantine/core";
 import {IconContainer, IconInfoCircle} from "@tabler/icons";
 import Panel from "../Components/Panel";
+import {useAuthentication} from "../Authentication";
 
 
 const AlertWorkspaceUsers = ({pending}) => {
@@ -14,7 +15,7 @@ const AlertWorkspaceUsers = ({pending}) => {
     )
 }
 
-export default ({workspace}) => {
+const WorkspacePods = ({workspace}) => {
     const [pods, setPods] = useState([]);
 
     useEffect(() => {
@@ -29,9 +30,6 @@ export default ({workspace}) => {
     }, [workspace])
 
     return (
-        <Panel title="Pods"
-               icon={<IconContainer />}
-               buttons={[]}>
             <Table>
                 <Table.Tbody>
                     {pods.map(pod =>
@@ -65,6 +63,21 @@ export default ({workspace}) => {
                     )}
                 </Table.Tbody>
             </Table>
-        </Panel>
     )
+}
+
+export default ({workspace}) => {
+    const { user } = useAuthentication();
+
+    if (!user.workspaces.find(w => w.name === workspace.name)) {
+        return null;
+    }
+
+    return (
+        <Panel title="Pods"
+               icon={<IconContainer />}
+               buttons={[]}>
+            <WorkspacePods workspace={workspace} />
+        </Panel>
+    );
 }
