@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserRequestController;
 use App\Http\Controllers\Api\UserRequest\UserRequestTeamController;
 use App\Http\Controllers\Api\UserRequest\UserRequestWorkspaceController;
-
+use App\Http\Controllers\Api\PodController;
 
 Route::get('/tenants', [ TenantController::class, 'list' ]);
 
@@ -92,5 +92,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/{node:id}', [ NodeController::class, 'get' ]);
         Route::get('/{node:id}/activity', [ NodeController::class, 'activity' ]);
         Route::post('/', [ NodeController::class, 'create' ]);
+    });
+
+    Route::group([
+        'prefix' => 'pods',
+        'controller' => PodController::class
+    ], function () {
+        Route::get('/', 'list');
     });
 });

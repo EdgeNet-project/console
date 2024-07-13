@@ -12,11 +12,9 @@ class Edgenet {
     public function __construct(Container $container = null)
     {
 
-        $this->cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.url'));
-
-        $this->cluster->withoutSslChecks();
-
-        $this->cluster->withToken(request()->bearerToken());
+        $this->cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.api'))
+            ->withCaCertificate(config('edgenet.cluster.ca'))
+            ->withToken(request()->bearerToken());
     }
 
     public function getCluster()

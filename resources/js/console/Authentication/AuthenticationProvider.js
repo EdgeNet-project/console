@@ -26,6 +26,7 @@ const getXsrfToken = () => {
 const AuthenticationProvider = ({children}) => {
     const [ token, setToken ] = useState(localStorage.getItem(AUTH_TOKEN));
     const [ user, setUser ] = useState(null);
+    const [ cluster, setCluster ] = useState(null);
     const [ requests, setRequests ] = useState([]);
     // const [ error, setError ] = useState(null);
     const [ loading, setLoading ] = useState(true);
@@ -41,6 +42,14 @@ const AuthenticationProvider = ({children}) => {
         }
 
     }, [])
+
+    useEffect(() => {
+        if (user && user.id) {
+            axios.get('/api/cluster')
+                .then(({data}) => setCluster(data))
+        }
+
+    }, [user])
 
     useEffect(() => {
 
@@ -287,6 +296,8 @@ const AuthenticationProvider = ({children}) => {
             updateRequest: updateRequest,
             // error: error
 
+            cluster: cluster,
+
             isAuthenticated: isAuthenticated
         }}>
             {children}
@@ -296,11 +307,13 @@ const AuthenticationProvider = ({children}) => {
 
 const useAuthentication = () => {
     const { user, token, login, logout, loadUser, loading, error, isAuthenticated,
-        userRequests, updateRequest
+        userRequests, updateRequest, cluster,
     } = useContext(AuthenticationContext)
 
     return {
         user, token, login, logout, loadUser, loading, error,
+
+        cluster,
 
         userRequests, updateRequest,
         isAuthenticated

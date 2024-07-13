@@ -10,6 +10,7 @@ import WorkspaceKubeConfig from "./WorkspaceKubeConfig";
 import {Link} from "react-router-dom";
 import {useAuthentication} from "../Authentication";
 import WorkspaceInfo from "./WorkspaceInfo";
+import WorkspacePods from "./WorkspacePods";
 
 
 const RequestsAlert = () => {
@@ -32,6 +33,7 @@ const RequestsAlert = () => {
 }
 
 export default () => {
+    const {user} = useAuthentication()
     const { id } = useParams()
     const [ workspace, setWorkspace ] = useState(null)
 
@@ -66,8 +68,7 @@ export default () => {
 
             <SimpleGrid cols={2}>
                 <WorkspaceUsers workspace={workspace} />
-                {/*<UsersCard title={'Users under ' + workspace?.name} users={users} />*/}
-                {/*<WorkspacesCard team={workspace} workspaces={subnamespaces} />*/}
+                {user.admin && <WorkspacePods workspace={workspace} />}
             </SimpleGrid>
         </Stack>
     )
