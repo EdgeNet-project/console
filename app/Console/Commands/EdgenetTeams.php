@@ -38,7 +38,7 @@ class EdgenetTeams extends Command
         $cluster = $edgenetAdmin->getCluster();
 
         try {
-            $tenants = $cluster->tenant()->all();
+            $remoteTeams = $cluster->tenant()->all();
         } catch (KubernetesAPIException $e) {
             dd([
                 $e->getMessage(),
@@ -51,10 +51,17 @@ class EdgenetTeams extends Command
         $checkSync = $this->option('check');
 
         if ($checkSync) {
+
+            $remoteTeamsNames = collect(
+                $remoteTeams->map(function($item, $key) {
+                    return $item->getName();
+                })
+            );
+
             foreach ($localTeams as $lteam) {
                 $output[] = [
                     $lteam->name,
-                    $tenants->where('name', $lteam->name)->first() ?? '<absent>'
+                    $remoteTeamsNames->contains($lteam->name) ? 'PRESENT' : ''
                 ];
             }
 
@@ -68,15 +75,25 @@ class EdgenetTeams extends Command
 
         $edgenetSync = $this->option('sync');
         if ($edgenetSync) {
+            $bar = $this->output->createProgressBar(count($localTeams));
+
+            $this->newLine();
+            $this->info('Synchronizing teams on ' . config('edgenet.cluster.host'));
+
+            $bar->start();
+
             foreach ($localTeams as $lteam) {
-                $this->info('creating  ' . $lteam->name);
                 CreateTeamJob::dispatch($lteam);
+                $bar->advance();
             }
+
+            $this->newLine(2);
+            $bar->finish();
 
             return Command::SUCCESS;
         }
 
-        if ($tenants->count() == 0) {
+        if ($remoteTeams->count() == 0) {
             $this->newLine();
             $this->info('No teams found');
             $this->newLine();
@@ -84,7 +101,7 @@ class EdgenetTeams extends Command
         }
 
         $output = [];
-        foreach ($tenants as $t) {
+        foreach ($remoteTeams as $t) {
 
             $output[] = [
                 $t->getName(),
