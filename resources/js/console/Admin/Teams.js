@@ -7,7 +7,7 @@ import {
 import {useEffect, useState} from "react";
 import axios from "axios";
 import TeamInfo from "../Teams/components/TeamInfo";
-import {UserInfo} from "../User/UserAvatar";
+import {UserInfo} from "../User/components/UserAvatar";
 import WorkspaceInfo from "../Workspaces/components/WorkspaceInfo";
 import UserRole from "../User/components/UserRole";
 
@@ -29,26 +29,21 @@ export default function TeamList() {
     }, [])
 
     const rows = teams.map((item) => (
-        <Table.Tr key={'node-' + item.name}>
-            <Table.Td>
+        <Table.Tr key={'team-' + item.id}>
+            <Table.Td style={{verticalAlign:"top"}}>
                 <TeamInfo team={item} />
             </Table.Td>
-            <Table.Td>
+            <Table.Td style={{verticalAlign:"top"}}>
                 <Stack>
-                    {item.users.map(user => <div>
-                        <UserInfo user={user} role={user.pivot?.role} />
-                    </div>)}
+                    {item.users.map(user => <UserInfo user={user} role={user.pivot?.role} />)}
                 </Stack>
             </Table.Td>
-            <Table.Td>
+            <Table.Td style={{verticalAlign:"top"}}>
                 <Stack>
-                    {item.sub_namespaces.map(workspace => <div>
-                        <WorkspaceInfo workspace={workspace} />
-                        <UserRole role={workspace.pivot?.role} />
-                    </div>)}
+                    {item.sub_namespaces.map(workspace => <WorkspaceInfo workspace={workspace} />)}
                 </Stack>
             </Table.Td>
-            <Table.Td>
+            <Table.Td style={{verticalAlign:"top"}}>
                 {/*<Group gap="xs">*/}
                 {/*    <NodeStatus status={item.status}/>*/}
                 {/*</Group>*/}
@@ -70,7 +65,7 @@ export default function TeamList() {
                             <Table.Tr>
                                 <Table.Th>Name</Table.Th>
                                 <Table.Th>Users</Table.Th>
-                                <Table.Th></Table.Th>
+                                <Table.Th>Workspaces</Table.Th>
                                 <Table.Th></Table.Th>
                             </Table.Tr>
                         </Table.Thead>

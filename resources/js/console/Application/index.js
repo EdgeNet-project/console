@@ -49,7 +49,7 @@ const Application = () => {
                 </AppShell.Navbar>
 
                 <AppShell.Main style={{backgroundColor:"#e4ecfb"}}>
-                    <Container>
+                    <Container size="lg">
                         <Outlet />
                     </Container>
                 </AppShell.Main>

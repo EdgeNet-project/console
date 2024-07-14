@@ -95,29 +95,27 @@ const NavigationTeams = () => {
 
     useEffect(() => {
         let workspacesData = [];
-        user.tenants.forEach(tenant => {
+        user.teams.forEach(team => {
 
             workspacesData.push( {
-                id: 'tenant-' + tenant.name,
+                id: 'team-' + team.name,
                 parentId: null,
-                label: tenant.fullname,
-                namespace: tenant.name,
-                path: '/teams/' + tenant.name
+                label: team.fullname,
+                namespace: team.name,
+                path: '/teams/' + team.name
             } )
 
-            if (tenant.sub_namespaces && tenant.sub_namespaces.length > 0) {
-                tenant.sub_namespaces.forEach(sub_namespaces => {
-                    workspacesData.push( {
-                        id: sub_namespaces.name + '-' + sub_namespaces.id,
-                        parentId: 'tenant-' + tenant.name,
-                        value: sub_namespaces.name + '-' + sub_namespaces.id,
-                        label: sub_namespaces.name,
-                        namespace: tenant.fullname,
-                        path: '/workspaces/' + sub_namespaces.id
-                    } )
-                })
+        })
 
-            }
+        user.workspaces.forEach(workspace => {
+            workspacesData.push( {
+                id: workspace.name + '-' + workspace.id,
+                parentId: 'team-' + workspace.team.name,
+                value: workspace.name + '-' + workspace.id,
+                label: workspace.name,
+                namespace: workspace.team.fullname,
+                path: '/workspaces/' + workspace.id
+            } )
         })
 
         setWorkspaces(workspacesData)

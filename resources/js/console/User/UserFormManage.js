@@ -1,4 +1,4 @@
-import {UserInfo} from "./UserAvatar";
+import {UserInfo} from "./components/UserAvatar";
 import {Button, Text, Group, Radio, Stack, Switch} from "@mantine/core";
 import React from "react";
 import {useForm} from "@mantine/form";

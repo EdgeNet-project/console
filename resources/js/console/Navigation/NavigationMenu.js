@@ -9,14 +9,14 @@ import {
     UnstyledButton,
     Divider,
     NavLink,
-    Badge
+    Badge, ScrollArea
 } from "@mantine/core";
 import {NavLink as RouterNavLink, matchPath, useMatch, useMatches} from "react-router-dom";
 import {useAuthentication} from "../Authentication";
 import NavigationTeams from "./NavigationTeams";
 
 import classes from "./navigation.module.css";
-import {UserInfo} from "../User/UserAvatar";
+import {UserInfo} from "../User/components/UserAvatar";
 
 
 const NavigationUser = () => {
@@ -124,7 +124,7 @@ export default function NavigationMenu() {
     const countRequests = user.requests.length + userRequests.length;
 
     return (
-        <>
+        <ScrollArea>
             <div className={classes.navbarMain}>
                 {/*<Group className={classes.header} justify="space-between">*/}
                 {/*    <Code fw={700}>v3.1.2</Code>*/}
@@ -148,6 +148,6 @@ export default function NavigationMenu() {
                 <NavMenu to="profile" label={<UserInfo user={user} />}
                          rightSection={<IconChevronRight size={18} />}/>
             </div>
-        </>
+        </ScrollArea>
     );
 }

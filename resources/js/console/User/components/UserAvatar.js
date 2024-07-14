@@ -1,6 +1,6 @@
 import {Avatar, Group, Text} from "@mantine/core";
 import React from "react";
-import UserRole from "./components/UserRole";
+import UserRole from "./UserRole";
 
 //  Formatted version of a popular md5 implementation
 //  Original copyright (c) Paul Johnston & Greg Holt.

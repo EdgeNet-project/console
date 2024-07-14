@@ -42,7 +42,7 @@ export default function NodeList() {
 
     const rows = nodes.map((item) => (
         <Table.Tr key={'node-' + item.name}>
-            <Table.Td>
+            <Table.Td style={{verticalAlign:"top"}}>
                 <Group gap="sm">
                     <NodeType type={item.type} />
                     <div>
@@ -56,12 +56,12 @@ export default function NodeList() {
                 </Group>
             </Table.Td>
 
-            <Table.Td>
+            <Table.Td style={{verticalAlign:"top"}}>
                 <Text size="sm">
                     <NodeCapacity capacity={item.status?.capacity} />
                 </Text>
             </Table.Td>
-            <Table.Td>
+            <Table.Td style={{verticalAlign:"top"}}>
                 <NodeInfo nodeInfo={item.status?.nodeInfo} />
             </Table.Td>
             <Table.Td>

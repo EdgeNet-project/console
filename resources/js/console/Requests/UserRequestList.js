@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Box, Button, Code, Group, LoadingOverlay, Modal, Paper, Stack, Table, Text} from "@mantine/core";
 import dayjs from "dayjs";
-import {UserInfo} from "../User/UserAvatar";
+import {UserInfo} from "../User/components/UserAvatar";
 import axios from "axios";
 import {useDisclosure} from "@mantine/hooks";
 import UserRequestType from "./UserRequestType";

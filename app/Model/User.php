@@ -41,9 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'enabled' => 'boolean'
     ];
 
-    protected $with = [
-        'tenants'
-    ];
+    protected $with = [];
 
     protected $appends = [
     ];

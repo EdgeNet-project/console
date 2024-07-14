@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {ActionIcon, Badge, Modal, ScrollArea, Stack, Table} from "@mantine/core";
-import {UserInfo} from "./UserAvatar";
+import {UserInfo} from "./components/UserAvatar";
 import {IconEdit} from "@tabler/icons";
 import UserFormManage from "./UserFormManage";
 import {useDisclosure} from "@mantine/hooks";

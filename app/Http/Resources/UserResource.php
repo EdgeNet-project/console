@@ -21,8 +21,6 @@ class UserResource extends JsonResource
             'workspaces' => WorkspaceResource::collection($this->subnamespaces),
             'teams' => TeamResource::collection($this->tenants),
             'requests' => $this->requests,
-            'tenants' => $this->tenants,
-
         ];
     }
 }

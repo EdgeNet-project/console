@@ -1,7 +1,7 @@
 import {Alert, Badge, Stack, Table} from "@mantine/core";
 import {IconInfoCircle, IconUsers} from "@tabler/icons";
 import {useAuthentication} from "../Authentication";
-import {UserInfo} from "../User/UserAvatar";
+import {UserInfo} from "../User/components/UserAvatar";
 import Panel from "../Components/Panel";
 import {JoinWorkspaceButton} from "./JoinWorkspace";
 import UserEnabled from "../User/components/UserEnabled";

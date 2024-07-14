@@ -11,7 +11,7 @@ class WorkspaceController extends Controller
     public function list(Request $request)
     {
         return response()->json(
-            SubNamespace::with('tenant')
+            SubNamespace::with('tenant', 'users')
                 ->orderByDesc('created_at')->get()
         );
     }

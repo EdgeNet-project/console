@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {IconBuilding} from "@tabler/icons";
 import UserProfileOrganizations from "../Views/UserProfileOrganizations";
-import {UserInfo} from "../User/UserAvatar";
+import {UserInfo} from "../User/components/UserAvatar";
 import UserTeams from "./UserTeams";
 import UserProfileEdit from "./UserProfileEdit";
 

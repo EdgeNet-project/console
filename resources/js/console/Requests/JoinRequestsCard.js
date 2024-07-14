@@ -3,7 +3,7 @@ import {useAuthentication} from "../Authentication";
 import {Button, Group, Paper, ScrollArea, Stack, Table, Text, Title} from "@mantine/core";
 import axios from "axios";
 import {IconBoxPadding as IconWorkspace, IconBuilding, IconUser} from "@tabler/icons";
-import {UserInfo} from "../User/UserAvatar";
+import {UserInfo} from "../User/components/UserAvatar";
 
 const RoleRequest = ({item, handleRequest}) => {
 

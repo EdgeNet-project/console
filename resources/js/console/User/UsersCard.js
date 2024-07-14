@@ -15,7 +15,7 @@ import {
 import {IconEdit, IconUser, IconUsers} from "@tabler/icons";
 import React, {useEffect, useState} from "react";
 import InviteUsersDialog from "./InviteUsersDialog";
-import {UserInfo} from "./UserAvatar";
+import {UserInfo} from "./components/UserAvatar";
 import {useDisclosure} from "@mantine/hooks";
 import {useForm} from "@mantine/form";
 import {IconUserShield, IconUserUp} from "@tabler/icons-react";

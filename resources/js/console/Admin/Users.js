@@ -7,7 +7,7 @@ import {
 } from '@mantine/core';
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {UserInfo} from "../User/UserAvatar";
+import {UserInfo} from "../User/components/UserAvatar";
 import TeamInfo from "../Teams/components/TeamInfo";
 import UserAdmin from "../User/components/UserAdmin";
 import UserEnabled from "../User/components/UserEnabled";
@@ -32,8 +32,8 @@ export default () => {
     }, [])
 
     const rows = users.map((item) => (
-        <Table.Tr key={'node-' + item.name}>
-            <Table.Td>
+        <Table.Tr key={'user-' + item.id}>
+            <Table.Td style={{verticalAlign:"top"}}>
                 <Group gap="sm">
                     <div>
                         <Text size="sm" fw={500}>
@@ -43,15 +43,15 @@ export default () => {
                 </Group>
             </Table.Td>
 
-            <Table.Td>
+            <Table.Td style={{verticalAlign:"top"}}>
                 <Stack>
                     {item.tenants.map(team => <div>
-                        <TeamInfo team={team} /><br />
+                        <TeamInfo team={team} />
                         <UserRole role={team.pivot?.role} />
                     </div>)}
                 </Stack>
             </Table.Td>
-            <Table.Td>
+            <Table.Td style={{verticalAlign:"top"}}>
                 <Stack>
                     {item.sub_namespaces.map(workspace => <div>
                         <WorkspaceInfo workspace={workspace} />
@@ -59,7 +59,7 @@ export default () => {
                     </div>)}
                 </Stack>
             </Table.Td>
-            <Table.Td>
+            <Table.Td style={{verticalAlign:"top"}}>
                 <UserAdmin admin={item.admin} />
                 <UserEnabled enabled={item.enabled} />
             </Table.Td>
