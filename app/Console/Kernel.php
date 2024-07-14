@@ -24,7 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        Schedule::command('edgenet:requests:clean --delete')
+            ->everyMinute();
     }
 
     /**

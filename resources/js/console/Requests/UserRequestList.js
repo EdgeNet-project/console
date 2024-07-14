@@ -96,7 +96,7 @@ export default () => {
                                 <UserRequestStatus status={r.status} />
                             </Table.Td>
                             <Table.Td>
-                                <Button size="xs" variant="subtle" onClick={() => setModerateRequest(r)}>Manage</Button>
+                                {r.status === 'Pending' && <Button size="xs" variant="subtle" onClick={() => setModerateRequest(r)}>Manage</Button>}
                             </Table.Td>
                         </Table.Tr>
                     )}
