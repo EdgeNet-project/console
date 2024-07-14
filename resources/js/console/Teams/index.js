@@ -10,7 +10,7 @@ import {
 import React, {useEffect, useState} from "react";
 import TeamWorkspaces from "./TeamWorkspaces";
 import TeamUsers from "./TeamUsers";
-import TeamInfo from "./TeamInfo";
+import TeamInfo from "./components/TeamInfo";
 
 
 export default () => {

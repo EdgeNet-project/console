@@ -15,6 +15,11 @@ use App\Http\Controllers\Api\UserRequest\UserRequestTeamController;
 use App\Http\Controllers\Api\UserRequest\UserRequestWorkspaceController;
 use App\Http\Controllers\Api\PodController;
 
+use App\Http\Controllers\Api\Admin\TeamController as AdminTeamController;
+use App\Http\Controllers\Api\Admin\WorkspaceController as AdminWorkspaceController;
+use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Api\Admin\NodeController as AdminNodeController;
+
 Route::get('/tenants', [ TenantController::class, 'list' ]);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -99,5 +104,39 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         'controller' => PodController::class
     ], function () {
         Route::get('/', 'list');
+    });
+
+    /**
+     * Admin access
+     */
+    Route::group(['prefix' => 'admin',], function () {
+
+        Route::group([
+            'prefix' => 'teams',
+            'controller' => AdminTeamController::class
+        ], function () {
+            Route::get('/', 'list');
+        });
+
+        Route::group([
+            'prefix' => 'workspaces',
+            'controller' => AdminWorkspaceController::class
+        ], function () {
+            Route::get('/', 'list');
+        });
+
+        Route::group([
+            'prefix' => 'users',
+            'controller' => AdminUserController::class
+        ], function () {
+            Route::get('/', 'list');
+        });
+
+        Route::group([
+            'prefix' => 'nodes',
+            'controller' => AdminNodeController::class
+        ], function () {
+            Route::get('/', 'list');
+        });
     });
 });

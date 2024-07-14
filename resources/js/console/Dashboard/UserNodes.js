@@ -3,7 +3,7 @@ import {Alert, Anchor, Button, Divider, Group, Paper, Stack, Table, Text, Title}
 import {IconAlertTriangle, IconInfoCircle, IconServer} from "@tabler/icons";
 import axios from "axios";
 import {useEffect, useState} from "react";
-import NodeStatus from "../Nodes/NodeStatus";
+import NodeStatus from "../Nodes/components/NodeStatus";
 
 const UserNodesAlert = () => {
 

@@ -18,6 +18,11 @@ import RequestsView from "../../Requests";
 
 import Tokens from "../../Tokens";
 
+import AdminTeams from "../../Admin/Teams";
+import AdminWorkspaces from "../../Admin/Workspaces";
+import AdminUsers from "../../Admin/Users";
+import AdminNodes from "../../Admin/Nodes";
+
 
 const router = createBrowserRouter([
     {
@@ -28,6 +33,27 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Dashboard />,
+            },
+            {
+                path: "/admin",
+                children: [
+                    {
+                        path: "teams",
+                        element: <AdminTeams />,
+                    },
+                    {
+                        path: "workspaces",
+                        element: <AdminWorkspaces />,
+                    },
+                    {
+                        path: "users",
+                        element: <AdminUsers />,
+                    },
+                    {
+                        path: "nodes",
+                        element: <AdminNodes />,
+                    },
+                ]
             },
             {
                 path: "/profile",

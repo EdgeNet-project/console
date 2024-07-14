@@ -20,9 +20,7 @@ class Tenant extends Model
         'enabled' => 'boolean'
     ];
 
-    protected $with = [
-        'subnamespaces',
-    ];
+    protected $with = [];
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -39,7 +37,7 @@ class Tenant extends Model
             ->withTimestamps();
     }
 
-    public function subnamespaces()
+    public function sub_namespaces()
     {
         return $this->hasMany(SubNamespace::class);
     }

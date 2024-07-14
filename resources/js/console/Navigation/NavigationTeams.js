@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {ReactTree, useReactTreeApi} from '@naisutech/react-tree';
-import {Divider, Text, ThemeIcon, UnstyledButton, Group, Box, Anchor} from "@mantine/core";
+import {Divider, Text, UnstyledButton, Group, Anchor} from "@mantine/core";
 import {
-    IconArrowRight,
-    IconBuilding, IconSitemap as IconTeam, IconBoxPadding as IconWorkspace
+    IconSitemap as IconTeam, IconBoxPadding as IconWorkspace
 } from "@tabler/icons";
 import {IconPlus, IconMinus, IconUsersPlus} from "@tabler/icons-react";
 import {Link} from "react-router-dom";
@@ -106,15 +105,15 @@ const NavigationTeams = () => {
                 path: '/teams/' + tenant.name
             } )
 
-            if (tenant.subnamespaces.length > 0) {
-                tenant.subnamespaces.forEach(subnamespace => {
+            if (tenant.sub_namespaces && tenant.sub_namespaces.length > 0) {
+                tenant.sub_namespaces.forEach(sub_namespaces => {
                     workspacesData.push( {
-                        id: subnamespace.name + '-' + subnamespace.id,
+                        id: sub_namespaces.name + '-' + sub_namespaces.id,
                         parentId: 'tenant-' + tenant.name,
-                        value: subnamespace.name + '-' + subnamespace.id,
-                        label: subnamespace.name,
+                        value: sub_namespaces.name + '-' + sub_namespaces.id,
+                        label: sub_namespaces.name,
                         namespace: tenant.fullname,
-                        path: '/workspaces/' + subnamespace.id
+                        path: '/workspaces/' + sub_namespaces.id
                     } )
                 })
 

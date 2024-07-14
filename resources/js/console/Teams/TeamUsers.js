@@ -1,8 +1,9 @@
 import {Link, useNavigate} from "react-router-dom";
-import {Alert, Anchor, Badge, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
-import {IconBoxPadding, IconInfoCircle, IconUsers} from "@tabler/icons";
+import {Alert, Anchor, Badge, Stack, Table, Text} from "@mantine/core";
+import {IconInfoCircle, IconUsers} from "@tabler/icons";
 import {UserInfo} from "../User/UserAvatar";
 import Panel from "../Components/Panel";
+import UserRole from "../User/components/UserRole";
 
 const AlertWorkspaceUsers = () => {
     return (
@@ -49,9 +50,7 @@ const TeamUsers = ({team}) => {
                                     <Badge size="xs">Enabled</Badge> :
                                     <Badge size="xs" color="gray">Disabled</Badge>
                                 }
-                                <Badge size="xs" color="pink" variant="light">
-                                    {user.pivot.role}
-                                </Badge>
+                                <UserRole role={user.pivot.role} />
                             </Stack>
                         </Table.Td>
                     </Table.Tr>

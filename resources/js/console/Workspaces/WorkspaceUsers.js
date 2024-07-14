@@ -4,6 +4,8 @@ import {useAuthentication} from "../Authentication";
 import {UserInfo} from "../User/UserAvatar";
 import Panel from "../Components/Panel";
 import {JoinWorkspaceButton} from "./JoinWorkspace";
+import UserEnabled from "../User/components/UserEnabled";
+import UserRole from "../User/components/UserRole";
 
 const AlertWorkspaceUsers = ({pending}) => {
     return (
@@ -24,13 +26,8 @@ const WorkspaceUsers = ({workspace}) => {
                         </Table.Td>
                         <Table.Td>
                             <Stack align="flex-start" justify="center" gap="xs">
-                                {user.enabled ?
-                                    <Badge size="xs">Enabled</Badge> :
-                                    <Badge size="xs" color="gray">Disabled</Badge>
-                                }
-                                <Badge size="xs" color="pink" variant="light">
-                                    {user.pivot.role}
-                                </Badge>
+                                <UserEnabled enabled={user.enabled} />
+                                <UserRole role={user.pivot.role} />
                             </Stack>
                         </Table.Td>
                     </Table.Tr>

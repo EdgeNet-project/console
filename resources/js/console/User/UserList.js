@@ -5,6 +5,8 @@ import {IconEdit} from "@tabler/icons";
 import UserFormManage from "./UserFormManage";
 import {useDisclosure} from "@mantine/hooks";
 import {useAuthentication} from "../Authentication";
+import UserEnabled from "./components/UserEnabled";
+import UserAdmin from "./components/UserAdmin";
 
 
 export default ({users}) => {
@@ -36,10 +38,8 @@ export default ({users}) => {
                             </td>
                             <td>
                                 <Stack align="flex-start" justify="flex-start" spacing="xs">
-                                    {userItem.enabled ?
-                                        <Badge size="xs">Enabled</Badge> :
-                                        <Badge size="xs" color="gray">Disabled</Badge>
-                                    }
+                                    <UserAdmin admin={userItem.admin} />
+                                    <UserEnabled enabled={userItem.enabled} />
                                     <Badge size="xs" color="pink" variant="light">
                                         {userItem.role}
                                     </Badge>

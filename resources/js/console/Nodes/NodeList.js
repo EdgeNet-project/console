@@ -13,25 +13,9 @@ import {
 } from '@mantine/core';
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {IconInfoCircle, IconServer} from "@tabler/icons";
 import {Link, useNavigate} from "react-router-dom";
-import NodeStatus from "./NodeStatus";
-import NodeType from "./NodeType";
-
-const NodeAddresses = ({addresses}) => addresses.map((address, i) => <div key={'n-address-'+i}>
-        <i>{address.type}</i> {address.address}</div>)
-
-const NodeCapacity = ({capacity}) => <>
-    <i>CPUs</i> {capacity.cpu}, <i>RAM</i> {capacity.memory}<br />
-    <i>Storage</i> {capacity['ephemeral-storage']}<br />
-    <i>PODs</i> {capacity.pods}
-</>
-
-const NodeInfo = ({nodeInfo}) => <>
-    <i>Architecture</i> {nodeInfo.architecture}<br />
-    <i>OS</i> {nodeInfo.operatingSystem}&nbsp;{nodeInfo.osImage}<br />
-    <i>Version</i> {nodeInfo.kubeletVersion}
-</>
+import NodeStatus from "./components/NodeStatus";
+import NodeType from "./components/NodeType";
 
 export default function NodeList() {
     const [ nodes, setNodes ] = useState([]);

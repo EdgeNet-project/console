@@ -1,7 +1,8 @@
 import {
     IconQuestionCircle,
     IconServer,
-    IconKey, IconUser, IconDashboard, IconChevronRight,
+    IconKey, IconDashboard, IconChevronRight, IconUsers,
+    IconSitemap as IconTeam, IconBoxPadding as IconWorkspace
 } from "@tabler/icons";
 import {
     Group,
@@ -104,6 +105,19 @@ const NavMenu = ({to, label, icon, rightSection}) => {
     )
 }
 
+const NavAdmin = () => {
+
+    return (
+        <>
+            <Divider label="Admin" mt="sm" />
+            <NavMenu to="admin/teams" label="Teams" icon={<IconTeam size="1rem" stroke={1.5} />}/>
+            <NavMenu to="admin/workspaces" label="Workspaces" icon={<IconWorkspace size="1rem" stroke={1.5} />}/>
+            <NavMenu to="admin/users" label="Users" icon={<IconUsers size="1rem" stroke={1.5} />}/>
+            <NavMenu to="admin/nodes" label="Nodes" icon={<IconServer size="1rem" stroke={1.5} />}/>
+        </>
+    )
+}
+
 export default function NavigationMenu() {
     const {user, userRequests} = useAuthentication();
 
@@ -122,7 +136,7 @@ export default function NavigationMenu() {
                 <Divider label="Nodes" mt="sm" />
                 <NavMenu to="nodes" label="Nodes" icon={<IconServer size="1rem" stroke={1.5} />}/>
 
-
+                {user.admin && <NavAdmin />}
             </div>
 
             <div className={classes.footer}>

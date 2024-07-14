@@ -1,5 +1,6 @@
 import {Avatar, Group, Text} from "@mantine/core";
 import React from "react";
+import UserRole from "./components/UserRole";
 
 //  Formatted version of a popular md5 implementation
 //  Original copyright (c) Paul Johnston & Greg Holt.
@@ -68,7 +69,7 @@ const UserAvatar = ({email = '', fullname = ''}) => {
     )
 }
 
-const UserInfo = ({user, size = 30}) => {
+const UserInfo = ({user, role, size = 30}) => {
 
     return (
         <Group>
@@ -80,6 +81,7 @@ const UserInfo = ({user, size = 30}) => {
                 <Text size="xs" color="dimmed">
                     {user.email}
                 </Text>
+                {role && <UserRole role={role} />}
             </div>
         </Group>
     )

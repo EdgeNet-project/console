@@ -9,7 +9,7 @@ import WorkspaceUsers from "./WorkspaceUsers";
 import WorkspaceKubeConfig from "./WorkspaceKubeConfig";
 import {Link} from "react-router-dom";
 import {useAuthentication} from "../Authentication";
-import WorkspaceInfo from "./WorkspaceInfo";
+import WorkspaceInfo from "./components/WorkspaceInfo";
 import WorkspacePods from "./WorkspacePods";
 
 

@@ -16,7 +16,7 @@ import {useAuthentication} from "../Authentication";
 import {IconBoxPadding as IconWorkspace, IconInfoCircle, IconUsers} from "@tabler/icons";
 import {useNavigate} from "react-router-dom";
 import {useDisclosure} from "@mantine/hooks";
-import TeamInfo from "./TeamInfo";
+import TeamInfo from "./components/TeamInfo";
 import {notifications} from "@mantine/notifications";
 
 const JoinTeamModal = ({title, onClose}) => {
