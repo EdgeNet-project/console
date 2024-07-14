@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        Schedule::command('edgenet:requests:clean --delete')
+        $schedule->command('edgenet:requests:clean --delete')
             ->everyMinute();
     }
 
