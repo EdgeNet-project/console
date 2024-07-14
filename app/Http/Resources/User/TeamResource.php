@@ -26,6 +26,8 @@ class TeamResource extends JsonResource
 
             'role' => $this->pivot->role,
 
+            'workspaces' => WorkspaceResource::collection($this->sub_namespaces)
+
         ];
     }
 }

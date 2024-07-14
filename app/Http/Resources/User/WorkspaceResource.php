@@ -21,13 +21,14 @@ class WorkspaceResource extends JsonResource
             'label' => $this->label,
             'name' => $this->name,
             'namespace' => $this->namespace,
-            'role' => $this->pivot->role,
+            'role' => $this->pivot->role ?? null,
 
             'team' => [
                 'fullname' => $this->tenant->fullname,
                 'name' => $this->tenant->name,
                 'shortname' => $this->tenant->shortname,
             ],
+
             'parent' => null,
         ];
     }

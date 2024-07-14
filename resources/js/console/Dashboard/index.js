@@ -1,10 +1,8 @@
 
 import {
-    IconAlertCircle, IconAlertTriangle, IconArrowRight, IconCheck,
-    IconServer, IconBox, IconUsers, IconUser
-
+    IconAlertTriangle
 } from "@tabler/icons";
-import {Title, Text, Alert, Paper, SimpleGrid, Divider, Group, Anchor, Progress, Stack, Container} from "@mantine/core";
+import {Title, Text, Alert, SimpleGrid, Anchor, Stack} from "@mantine/core";
 import UserTeams from "./UserTeams";
 import UserWorkspaces from "./UserWorkspaces";
 import UserNodes from "./UserNodes";
@@ -24,7 +22,7 @@ const RequestsAlert = () => {
                 You have <Anchor component={Link} to="/requests">{user.requests.length} {user.requests.length > 1 ? 'requests' : 'request'}</Anchor> pending for review.
             </Text>}
             {userRequests.length > 0 && <Text size="sm">
-                You are managing one or more Teams and you have <Anchor component={Link} to="/requests">{userRequests.length} pending {userRequests.length > 1 ? 'requests' : 'request'}</Anchor> to review.
+                You are managing one or more teams or workspaces and you have <Anchor component={Link} to="/requests">{userRequests.length} pending {userRequests.length > 1 ? 'requests' : 'request'}</Anchor> to review.
             </Text>}
         </Alert>
     )

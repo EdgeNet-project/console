@@ -59,7 +59,6 @@ const TreeIcon = ({
     //     open,
     //     context)
 
-
     // TODO: icon color represents access type (read only or admin)
     if (node.parentId === null) {
         return <IconTeam size={18} />;
@@ -69,7 +68,7 @@ const TreeIcon = ({
         return <IconUsersPlus color="blue" />
     }
 
-    return <IconWorkspace size={18} />
+    return <IconWorkspace size={18} color={node.member ? 'black' : 'gray'} />
 
 }
 
@@ -82,8 +81,9 @@ const TreeNode = ({
                   }) => {
 
     return (
-            <Anchor component={Link}
-                to={node.path}><Text size="sm" ml="md">{node.label}</Text></Anchor>
+            <Anchor component={Link} to={node.path}>
+                <Text size="sm" ml="md" color={node.member ? 'black' : 'gray'}>{node.label}</Text>
+            </Anchor>
     )
 }
 
@@ -102,21 +102,27 @@ const NavigationTeams = () => {
                 parentId: null,
                 label: team.fullname,
                 namespace: team.name,
-                path: '/teams/' + team.name
+                path: '/teams/' + team.name,
+
+                member: true
             } )
+
+            team.workspaces.forEach(workspace => {
+                workspacesData.push( {
+                    id: workspace.name + '-' + workspace.id,
+                    parentId: 'team-' + team.name,
+                    value: workspace.name + '-' + workspace.id,
+                    label: workspace.name,
+                    namespace: team.fullname,
+                    path: '/workspaces/' + workspace.id,
+
+                    member: user.workspaces.some(userWorkspace => userWorkspace.name === workspace.name)
+                } )
+            })
 
         })
 
-        user.workspaces.forEach(workspace => {
-            workspacesData.push( {
-                id: workspace.name + '-' + workspace.id,
-                parentId: 'team-' + workspace.team.name,
-                value: workspace.name + '-' + workspace.id,
-                label: workspace.name,
-                namespace: workspace.team.fullname,
-                path: '/workspaces/' + workspace.id
-            } )
-        })
+
 
         setWorkspaces(workspacesData)
     }, [])
