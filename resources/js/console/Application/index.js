@@ -1,10 +1,11 @@
 import React from "react";
 
-import {Anchor, AppShell, Burger, Container, Group, Image, Text, UnstyledButton} from "@mantine/core";
+import {Anchor, AppShell, Burger, Container, Group, Image, Text, ScrollArea} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 
 import NavigationMenu from "../Navigation/NavigationMenu";
 import {Outlet} from "react-router-dom";
+import NavigationAccount from "../Navigation/NavigationAccount";
 
 const ApplicationHeader = () => {
 
@@ -25,10 +26,9 @@ const Application = () => {
             <AppShell
                 header={{ height: 60 }}
                 navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
-                // padding="md"
             >
 
-                <AppShell.Header>
+                <AppShell.Header withBorder={false}>
                     <Group h="100%" px="md" justify="space-between">
                         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
                         <Anchor target="_blank" underline="never" href="https://edge-net.org">
@@ -44,11 +44,16 @@ const Application = () => {
                 </AppShell.Header>
 
 
-                <AppShell.Navbar>
-                    <NavigationMenu />
+                <AppShell.Navbar withBorder={false}>
+                    <AppShell.Section grow p="sm" component={ScrollArea}>
+                        <NavigationMenu />
+                    </AppShell.Section>
+                    <AppShell.Section pb="sm" px="sm">
+                        <NavigationAccount />
+                    </AppShell.Section>
                 </AppShell.Navbar>
 
-                <AppShell.Main style={{backgroundColor:"#e4ecfb"}}>
+                <AppShell.Main style={{backgroundColor:"#e4ecfb"}} withBorder={false}>
                     <Container size="lg">
                         <Outlet />
                     </Container>

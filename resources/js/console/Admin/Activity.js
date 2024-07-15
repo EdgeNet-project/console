@@ -66,9 +66,9 @@ export default () => {
                     <Table verticalSpacing="sm">
                         <Table.Thead>
                             <Table.Tr>
-                                <Table.Th>Name</Table.Th>
-                                <Table.Th>Teams</Table.Th>
-                                <Table.Th>Workspaces</Table.Th>
+                                <Table.Th>User</Table.Th>
+                                <Table.Th>Description</Table.Th>
+                                <Table.Th>Subject</Table.Th>
                                 <Table.Th>Status</Table.Th>
                             </Table.Tr>
                         </Table.Thead>
