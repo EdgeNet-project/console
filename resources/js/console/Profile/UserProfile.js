@@ -7,6 +7,7 @@ import UserProfileEdit from "./UserProfileEdit";
 import Panel from "../Components/Panel";
 import UserRequests from "./UserRequests";
 import PanelGrid from "../Components/PanelGrid";
+import Tokens from "../Tokens";
 
 export default function UserProfile() {
     const { user, logout } = useAuthentication();
@@ -24,16 +25,17 @@ export default function UserProfile() {
             </Group>
 
             <PanelGrid>
-                    <Panel title={user.firstname + ' ' + user.lastname}
-                           icon={<UserAvatar name={user.firstname + ' ' + user.lastname} email={user.email} />}
-                           help=""
-                           buttons={[
-                               <UserProfileEdit key="user_profile_edit" />,
-                               <Button size="xs" onClick={handleLogout} key="user_logout">Logout</Button>
-                           ]}>
-                    </Panel>
+                <Panel title={user.firstname + ' ' + user.lastname}
+                       icon={<UserAvatar name={user.firstname + ' ' + user.lastname} email={user.email} />}
+                       help=""
+                       buttons={[
+                           <UserProfileEdit key="user_profile_edit" />,
+                           <Button size="xs" onClick={handleLogout} key="user_logout">Logout</Button>
+                       ]}>
+                </Panel>
 
-                    <UserRequests />
+                <UserRequests />
+                <Tokens />
             </PanelGrid>
         </Stack>
     );
