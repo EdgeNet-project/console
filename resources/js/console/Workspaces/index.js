@@ -3,8 +3,8 @@ import {useParams} from "react-router";
 import axios from "axios";
 import {Alert, Anchor, Breadcrumbs, Button, Divider, Group, Paper, SimpleGrid, Stack, Text, Title} from "@mantine/core";
 import {
-    IconAlertCircle, IconAlertTriangle, IconArrowRight, IconCheck,
-} from "@tabler/icons";
+    IconAlertTriangle
+} from "@tabler/icons-react";
 import WorkspaceUsers from "./WorkspaceUsers";
 import WorkspaceKubeConfig from "./WorkspaceKubeConfig";
 import {Link} from "react-router-dom";

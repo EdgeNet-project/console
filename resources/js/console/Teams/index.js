@@ -1,11 +1,6 @@
 import {useParams} from "react-router";
 import axios from "axios";
-import {Alert, Anchor, Breadcrumbs, Button, Divider, Group, Paper, SimpleGrid, Stack, Text, Title} from "@mantine/core";
-import {
-    IconAlertCircle, IconAlertTriangle, IconArrowRight, IconCheck,
-    IconServer, IconBox, IconUsers, IconUser, IconBoxPadding as IconWorkspace
-
-} from "@tabler/icons";
+import {Group, SimpleGrid, Stack, Title} from "@mantine/core";
 
 import React, {useEffect, useState} from "react";
 import TeamWorkspaces from "./TeamWorkspaces";

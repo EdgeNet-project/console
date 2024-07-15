@@ -6,7 +6,7 @@ import {
 } from '@mantine/core';
 import {useForm} from "@mantine/form";
 import { Panel, TextInput } from "../../UI";
-import {IconArrowBack} from "@tabler/icons";
+import {IconArrowBack} from "@tabler/icons-react";
 
 const PasswordResetLinkSuccess = () => {
     return (

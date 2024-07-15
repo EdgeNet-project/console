@@ -12,7 +12,7 @@ import {
     UnstyledButton,
     useMantineTheme, Paper
 } from "@mantine/core";
-import {IconAlertTriangle, IconInfoCircle, IconServer, IconSquarePlus, IconTerminal2, IconUsers} from "@tabler/icons";
+import {IconAlertTriangle, IconInfoCircle, IconServer, IconSquarePlus, IconTerminal2, IconUsers} from "@tabler/icons-react";
 import {useForm} from "@mantine/form";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";

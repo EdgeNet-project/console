@@ -1,13 +1,14 @@
-
+import {Link} from "react-router-dom";
+import {Title, Text, Alert, SimpleGrid, Anchor, Stack} from "@mantine/core";
 import {
     IconAlertTriangle
-} from "@tabler/icons";
-import {Title, Text, Alert, SimpleGrid, Anchor, Stack} from "@mantine/core";
+} from "@tabler/icons-react";
+
 import UserTeams from "./UserTeams";
 import UserWorkspaces from "./UserWorkspaces";
 import UserNodes from "./UserNodes";
 import {useAuthentication} from "../Authentication";
-import {Link} from "react-router-dom";
+
 
 const RequestsAlert = () => {
     const {user, userRequests} = useAuthentication();

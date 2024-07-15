@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import {Alert, Anchor, Stack, Table, Text} from "@mantine/core";
-import {IconBoxPadding, IconInfoCircle} from "@tabler/icons";
+import {IconBoxPadding, IconInfoCircle} from "@tabler/icons-react";
 import Panel from "../Components/Panel";
 import {CreateWorkspaceButton} from "../Workspaces/CreateWorkspace";
 

@@ -1,28 +1,9 @@
-import {Badge, Table} from "@mantine/core";
+import {Table} from "@mantine/core";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import ActivitySeverity from "../Activity/components/ActivitySeverity";
 
-const ActivitySeverity = ({severity}) => {
-    let color = '';
-
-    switch(severity) {
-        case "error":
-            color = "red";
-            break;
-        case "warning":
-            color = "orange";
-            break;
-        case "info":
-            color = "blue";
-            break;
-    }
-    return (
-        <Badge color={color} variant="light">
-            {severity}
-        </Badge>
-    )
-}
 export default ({node}) => {
     const [ activity, setActivity ] = useState();
 

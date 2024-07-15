@@ -1,5 +1,5 @@
 import {Alert, Anchor, Badge, Stack, Table, Text} from "@mantine/core";
-import {IconBoxPadding, IconInfoCircle} from "@tabler/icons";
+import {IconBoxPadding, IconInfoCircle} from "@tabler/icons-react";
 import {useAuthentication} from "../Authentication";
 import Panel from "../Components/Panel";
 import {JoinWorkspaceButton} from "../Workspaces/JoinWorkspace";

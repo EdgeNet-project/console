@@ -4,7 +4,7 @@ import {
     Anchor,
     Button, Divider, LoadingOverlay, Stack, Text,
 } from '@mantine/core';
-import { IconArrowBack } from '@tabler/icons';
+import { IconArrowBack } from '@tabler/icons-react';
 import {useForm} from "@mantine/form";
 import { TextInput, PasswordInput } from "../../UI";
 import {useDisclosure} from "@mantine/hooks";

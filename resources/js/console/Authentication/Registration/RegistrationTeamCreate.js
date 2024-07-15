@@ -3,7 +3,7 @@ import axios from "axios";
 import React, {useState} from "react";
 import {useForm} from "@mantine/form";
 import {useAuthentication} from "../AuthenticationProvider";
-import {IconInfoCircle} from "@tabler/icons";
+import {IconInfoCircle} from "@tabler/icons-react";
 
 export default function RegistrationTeamCreate() {
     const [ loading, setLoading ] = useState(false)

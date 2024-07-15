@@ -12,7 +12,7 @@ import axios from "axios";
 import React, {useState} from "react";
 import {useForm} from "@mantine/form";
 import {useAuthentication} from "../Authentication";
-import {IconInfoCircle} from "@tabler/icons";
+import {IconInfoCircle} from "@tabler/icons-react";
 import {useDisclosure} from "@mantine/hooks";
 import {notifications} from "@mantine/notifications";
 

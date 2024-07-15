@@ -1,6 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import {Alert, Anchor, Badge, Stack, Table, Text} from "@mantine/core";
-import {IconInfoCircle, IconUsers} from "@tabler/icons";
+import {IconInfoCircle, IconUsers} from "@tabler/icons-react";
 import {UserInfo} from "../User/components/UserAvatar";
 import Panel from "../Components/Panel";
 import UserRole from "../User/components/UserRole";

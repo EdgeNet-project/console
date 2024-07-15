@@ -58,29 +58,30 @@ function md5(inputString) {
  * @param rating Maximum rating (inclusive) [ g | pg | r | x ]
  * @return String containing either just a URL or a complete image tag
  */
-function gravatarUrl(email, size = 200, imageset = 'mp', rating = 'pg') {
-    return "https://secure.gravatar.com/avatar/" + md5(email.toLowerCase().trim()) + "?s=" + size + "&d=" + encodeURIComponent(imageset) + "&r=" + rating
+function gravatarUrl(email, size = 200, rating = 'g') {
+    return "https://secure.gravatar.com/avatar/" + md5(email.toLowerCase().trim()) + "?s=" + size + "&d=404&r=" + rating
 }
 
-const UserAvatar = ({email = '', fullname = ''}) => {
+const UserAvatar = ({email = '', size = 200, name = ''}) => {
 
     return (
-        <Avatar src={gravatarUrl(email)} alt="" radius="xl" />
+        <Avatar src={gravatarUrl(email, size)} name={name} alt={name} radius="xl"
+                color="initials" />
     )
 }
 
-const UserInfo = ({user, role, size = 30}) => {
+const UserInfo = ({user, role, email = true, size = 200}) => {
 
     return (
-        <Group>
-            <UserAvatar size={size} rating="pg" email={user.email} />
+        <Group align="flex-start">
+            <UserAvatar size={size} rating="pg" name={user.firstname + ' ' + user.lastname} email={user.email} />
             <div>
-                <Text>
+                <Text size="sm">
                     {user.firstname} {user.lastname}
                 </Text>
-                <Text size="xs" color="dimmed">
+                {email && <Text size="xs" c="dimmed">
                     {user.email}
-                </Text>
+                </Text>}
                 {role && <UserRole role={role} />}
             </div>
         </Group>

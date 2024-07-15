@@ -3,23 +3,9 @@ import {
     Text,
     Card,
     Group,
-    Table,
-    ScrollArea,
-    Divider,
-    Stack,
-    Switch,
-    Modal,
-    ActionIcon,
-    Center, Box, SegmentedControl, Button, Radio, Checkbox
 } from "@mantine/core";
-import {IconEdit, IconUser, IconUsers} from "@tabler/icons";
+import {IconEdit, IconUser, IconUsers} from "@tabler/icons-react";
 import React, {useEffect, useState} from "react";
-import InviteUsersDialog from "./InviteUsersDialog";
-import {UserInfo} from "./components/UserAvatar";
-import {useDisclosure} from "@mantine/hooks";
-import {useForm} from "@mantine/form";
-import {IconUserShield, IconUserUp} from "@tabler/icons-react";
-import UserFormManage from "./UserFormManage";
 import {useAuthentication} from "../Authentication";
 import UserList from "./UserList";
 

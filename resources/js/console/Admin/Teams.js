@@ -9,7 +9,6 @@ import axios from "axios";
 import TeamInfo from "../Teams/components/TeamInfo";
 import {UserInfo} from "../User/components/UserAvatar";
 import WorkspaceInfo from "../Workspaces/components/WorkspaceInfo";
-import UserRole from "../User/components/UserRole";
 
 export default function TeamList() {
     const [ teams, setTeams ] = useState([]);

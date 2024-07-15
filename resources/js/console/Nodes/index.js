@@ -1,9 +1,8 @@
 import {Alert, Anchor, Badge, Breadcrumbs, Code, Container, Group, Select, Text, Title} from "@mantine/core";
-import {Link, useParams} from "react-router";
+import {useParams} from "react-router";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import NodeStatus from "./components/NodeStatus";
-import {IconInfoCircle} from "@tabler/icons";
 import NodeRawInfo from "./NodeRawInfo";
 import NodeInstall from "./NodeInstall";
 import NodeActivity from "./NodeActivity";

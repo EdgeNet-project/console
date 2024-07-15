@@ -1,20 +1,15 @@
 import {
     Group,
-    Radio,
-    TextInput,
-    Textarea,
-    Grid,
     LoadingOverlay,
     Button,
     Alert,
-    Container, Title, Modal, Text, Stack, Select, Anchor
+    Modal, Text, Stack, Select, Anchor
 } from '@mantine/core';
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {useForm} from "@mantine/form";
 import {useAuthentication} from "../Authentication";
-import {IconBoxPadding as IconWorkspace, IconInfoCircle, IconUsers} from "@tabler/icons";
-import {useNavigate} from "react-router-dom";
+import {IconInfoCircle} from "@tabler/icons-react";
 import {useDisclosure} from "@mantine/hooks";
 import TeamInfo from "./components/TeamInfo";
 import {notifications} from "@mantine/notifications";

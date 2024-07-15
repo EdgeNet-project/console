@@ -1,6 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import {Alert, Anchor, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
-import {IconAlertTriangle, IconInfoCircle, IconServer} from "@tabler/icons";
+import {IconInfoCircle, IconServer} from "@tabler/icons-react";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import NodeStatus from "../Nodes/components/NodeStatus";

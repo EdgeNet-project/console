@@ -1,6 +1,6 @@
 import React, {useState, useEffect, forwardRef} from "react";
 import axios from "axios";
-import {Select, Anchor, Text, Space, Card, Button, Paper, Center, Group, Stack} from "@mantine/core";
+import {Select, Text, Group, Stack} from "@mantine/core";
 
 const SelectItem = forwardRef(
     ({ image = null, label, namespace, details = null, ...others }, ref) => (

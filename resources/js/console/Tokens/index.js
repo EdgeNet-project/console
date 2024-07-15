@@ -17,7 +17,7 @@ import { useDisclosure } from "@mantine/hooks";
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {IconBuilding, IconDownload, IconKey, IconTrash} from "@tabler/icons";
+import {IconBuilding, IconDownload, IconKey, IconTrash} from "@tabler/icons-react";
 import {useForm} from "@mantine/form";
 
 const CreateToken = ({onClose}) => {

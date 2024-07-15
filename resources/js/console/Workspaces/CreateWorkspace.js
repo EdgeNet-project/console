@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import { notifications } from '@mantine/notifications';
-import {IconInfoCircle} from "@tabler/icons";
+import {IconInfoCircle} from "@tabler/icons-react";
 import {useForm} from "@mantine/form";
 import axios from "axios";
 import {useAuthentication} from "../Authentication";

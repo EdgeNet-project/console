@@ -1,22 +1,14 @@
 import {
     Table,
-    Progress,
     Anchor,
     Text,
     Group,
-    ScrollArea,
-    Badge,
-    Container,
-    Button,
-    Title,
-    ActionIcon, Paper, Stack
+    Title, Paper, Stack
 } from '@mantine/core';
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {IconInfoCircle, IconServer} from "@tabler/icons";
 import {Link, useNavigate} from "react-router-dom";
 
-import NodeStatus from "../Nodes/components/NodeStatus";
 import NodeType from "../Nodes/components/NodeType";
 import NodeAddresses from "../Nodes/components/NodeAddresses";
 import NodeCapacity from "../Nodes/components/NodeCapacity";

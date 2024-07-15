@@ -7,15 +7,11 @@ import {
     Stack,
     Text,
     TextInput,
-    ThemeIcon,
-    UnstyledButton,
-    useMantineTheme
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import {IconEdit, IconSquarePlus} from "@tabler/icons";
+import {IconEdit} from "@tabler/icons-react";
 import {useForm} from "@mantine/form";
 import axios from "axios";
-import {useParams} from "react-router";
 import {useAuthentication} from "../Authentication";
 
 export default () => {

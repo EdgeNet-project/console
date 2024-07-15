@@ -1,8 +1,7 @@
 import {UserInfo} from "./components/UserAvatar";
-import {Button, Text, Group, Radio, Stack, Switch} from "@mantine/core";
+import {Button, Group, Radio, Stack, Switch} from "@mantine/core";
 import React from "react";
 import {useForm} from "@mantine/form";
-import axios from "axios";
 
 export default ({user, close}) => {
     const form = useForm({

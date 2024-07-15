@@ -4,7 +4,7 @@ import {
     Text,
     SimpleGrid, Radio, Divider
 } from '@mantine/core';
-import {IconUsers, IconSquarePlus} from "@tabler/icons";
+import {IconUsers, IconSquarePlus} from "@tabler/icons-react";
 
 import RegistrationTeamJoin from "./RegistrationTeamJoin";
 import RegistrationTeamCreate from "./RegistrationTeamCreate";

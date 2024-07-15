@@ -8,7 +8,7 @@ import {useForm} from "@mantine/form";
 import {Panel, PasswordInput, TextInput} from "../../UI";
 import {useParams} from "react-router";
 import {useDisclosure} from "@mantine/hooks";
-import {IconArrowBack} from "@tabler/icons";
+import {IconArrowBack} from "@tabler/icons-react";
 
 const PasswordResetFormSuccess = () => {
     return (

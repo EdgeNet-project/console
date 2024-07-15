@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import dayjs from "dayjs";
 import {Alert, Text, Badge, Stack, Table} from "@mantine/core";
-import {IconContainer, IconInfoCircle} from "@tabler/icons";
+import {IconContainer, IconInfoCircle} from "@tabler/icons-react";
 import Panel from "../Components/Panel";
 import {useAuthentication} from "../Authentication";
 

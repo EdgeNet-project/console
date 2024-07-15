@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useAuthentication} from "../Authentication";
 import {Button, Group, Paper, ScrollArea, Stack, Table, Text, Title} from "@mantine/core";
 import axios from "axios";
-import {IconBoxPadding as IconWorkspace, IconBuilding, IconUser} from "@tabler/icons";
+import {IconBoxPadding as IconWorkspace, IconBuilding, IconUser} from "@tabler/icons-react";
 import {UserInfo} from "../User/components/UserAvatar";
 
 const RoleRequest = ({item, handleRequest}) => {

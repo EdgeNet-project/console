@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useAuthentication} from "../Authentication";
 import axios from "axios";
 import {Button, Group, Stack, Text, Modal, Alert} from "@mantine/core";
-import {IconFileSettings as IconKubeConfig, IconInfoCircle} from "@tabler/icons";
+import {IconFileSettings as IconKubeConfig, IconInfoCircle} from "@tabler/icons-react";
 import {useDisclosure} from "@mantine/hooks";
 
 const DownloadKubeConfigDialog = ({onClose, workspace, user}) => {

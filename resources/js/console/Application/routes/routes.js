@@ -4,7 +4,6 @@ import {
 import RegistrationForm from "../../Authentication/Registration/RegistrationForm";
 import UserProfile from "../../Profile/UserProfile";
 import Application from "../index";
-import TenantUsers from "../../Views/TenantUsers";
 
 import Dashboard from "../../Dashboard";
 import TeamsView from "../../Teams";
@@ -22,6 +21,7 @@ import AdminTeams from "../../Admin/Teams";
 import AdminWorkspaces from "../../Admin/Workspaces";
 import AdminUsers from "../../Admin/Users";
 import AdminNodes from "../../Admin/Nodes";
+import AdminActivity from "../../Admin/Activity";
 
 
 const router = createBrowserRouter([
@@ -53,6 +53,10 @@ const router = createBrowserRouter([
                         path: "nodes",
                         element: <AdminNodes />,
                     },
+                    {
+                        path: "activity",
+                        element: <AdminActivity />,
+                    },
                 ]
             },
             {
@@ -72,10 +76,10 @@ const router = createBrowserRouter([
                 path: "/requests",
                 element: <RequestsView />,
             },
-            {
-                path: "/users",
-                element: <TenantUsers />,
-            },
+            // {
+            //     path: "/users",
+            //     element: <TenantUsers />,
+            // },
             {
                 path: "/nodes",
                 element: <NodeList />,

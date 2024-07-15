@@ -1,4 +1,4 @@
-import {IconDownload, IconInfoCircle, IconTerminal2} from "@tabler/icons";
+import {IconDownload, IconInfoCircle, IconTerminal2} from "@tabler/icons-react";
 import {Alert, Button, Code, Container, Divider, Group, Paper, Select, Stack, Text, Title} from "@mantine/core";
 import { CopyButton, ActionIcon, Tooltip, rem } from '@mantine/core';
 import {IconCopy, IconCheck, IconDeviceUsb} from '@tabler/icons-react';

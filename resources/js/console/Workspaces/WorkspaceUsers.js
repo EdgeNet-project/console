@@ -1,5 +1,5 @@
-import {Alert, Badge, Stack, Table} from "@mantine/core";
-import {IconInfoCircle, IconUsers} from "@tabler/icons";
+import {Alert, Stack, Table} from "@mantine/core";
+import {IconInfoCircle, IconUsers} from "@tabler/icons-react";
 import {useAuthentication} from "../Authentication";
 import {UserInfo} from "../User/components/UserAvatar";
 import Panel from "../Components/Panel";

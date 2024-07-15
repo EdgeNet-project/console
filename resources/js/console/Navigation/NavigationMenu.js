@@ -1,9 +1,8 @@
 import {
-    IconQuestionCircle,
     IconServer,
     IconKey, IconDashboard, IconChevronRight, IconUsers,
-    IconSitemap as IconTeam, IconBoxPadding as IconWorkspace
-} from "@tabler/icons";
+    IconSitemap as IconTeam, IconBoxPadding as IconWorkspace, IconActivity, IconGitPullRequest
+} from "@tabler/icons-react";
 import {
     Group,
     UnstyledButton,
@@ -58,7 +57,7 @@ const nav = {
         label: '',
         links: [
             {to: 'tokens', label: 'Tokens', icon: IconKey},
-            {to: 'requests', label: 'Requests', icon: IconQuestionCircle},
+            {to: 'requests', label: 'Requests', icon: IconGitPullRequest},
         ]
     },
 };
@@ -114,6 +113,7 @@ const NavAdmin = () => {
             <NavMenu to="admin/workspaces" label="Workspaces" icon={<IconWorkspace size="1rem" stroke={1.5} />}/>
             <NavMenu to="admin/users" label="Users" icon={<IconUsers size="1rem" stroke={1.5} />}/>
             <NavMenu to="admin/nodes" label="Nodes" icon={<IconServer size="1rem" stroke={1.5} />}/>
+            <NavMenu to="admin/activity" label="Activity" icon={<IconActivity size="1rem" stroke={1.5} />}/>
         </>
     )
 }
@@ -144,7 +144,7 @@ export default function NavigationMenu() {
                 <NavMenu to="tokens" label="Tokens" icon={<IconKey size="1rem" stroke={1.5} />}/>
                 <NavMenu to="requests" label="Requests"
                          rightSection={countRequests > 0 && <Badge size="xs" circle>{countRequests}</Badge>}
-                         icon={<IconQuestionCircle size="1rem" stroke={1.5} />}/>
+                         icon={<IconGitPullRequest size="1rem" stroke={1.5} />}/>
                 <NavMenu to="profile" label={<UserInfo user={user} />}
                          rightSection={<IconChevronRight size={18} />}/>
             </div>

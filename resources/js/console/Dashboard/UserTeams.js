@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
-import {Alert, Anchor, Badge, Button, Divider, Group, Paper, Stack, Table, Text, Title} from "@mantine/core";
-import {IconAdjustments, IconInfoCircle, IconUsers} from "@tabler/icons";
+import {Alert, Anchor, Badge, Stack, Table, Text} from "@mantine/core";
+import {IconInfoCircle, IconUsers} from "@tabler/icons-react";
 import {useAuthentication} from "../Authentication";
 import {CreateTeamButton} from "../Teams/CreateTeam";
 import {JoinTeamButton} from "../Teams/JoinTeam";

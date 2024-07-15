@@ -2,16 +2,12 @@ import {useState} from "react";
 import {
     Button,
     Group,
-    Modal, rem,
+    Modal,
     Stack,
     Text, Textarea,
-    TextInput,
-    ThemeIcon,
-    UnstyledButton,
-    useMantineTheme
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import { IconUsers} from "@tabler/icons";
+import { IconUsers} from "@tabler/icons-react";
 import {useForm} from "@mantine/form";
 import axios from "axios";
 

@@ -1,5 +1,5 @@
 import {ActionIcon, Divider, Group, Stack, Title} from "@mantine/core";
-import {IconHelp} from "@tabler/icons";
+import {IconHelp} from "@tabler/icons-react";
 import {useState} from "react";
 
 export default ({children, title, icon, buttons, help}) => {

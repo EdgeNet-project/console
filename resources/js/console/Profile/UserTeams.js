@@ -1,7 +1,6 @@
 import {useState, useEffect} from "react";
 import {Button, Card, Divider, Group, ScrollArea, Table, Text} from "@mantine/core";
-import {IconBoxPadding as IconWorkspace} from "@tabler/icons";
-import axios from "axios";
+import {IconBoxPadding as IconWorkspace} from "@tabler/icons-react";
 import {useAuthentication} from "../Authentication";
 
 export default () => {

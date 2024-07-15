@@ -1,4 +1,4 @@
-import {IconServer} from "@tabler/icons";
+import {IconServer} from "@tabler/icons-react";
 
 const NodeType = ({type}) => {
     switch(type) {
