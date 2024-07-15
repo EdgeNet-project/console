@@ -74,7 +74,7 @@ const CreateTeamDialog = ({title, onClose}) => {
 
     return (
             <Modal opened onClose={onClose} title={title}>
-                <LoadingOverlay visible={loading} overlayBlur={2} />
+                <LoadingOverlay visible={loading} />
                 <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack spacing="md">
                     <Text size="sm">

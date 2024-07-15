@@ -1,8 +1,8 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {
     ActionIcon,
     Button,
-    Group,
+    Group, LoadingOverlay,
     Modal,
     Stack,
     Text,
@@ -14,8 +14,7 @@ import {useForm} from "@mantine/form";
 import axios from "axios";
 import {useAuthentication} from "../Authentication";
 
-export default () => {
-    const [opened, { open, close }] = useDisclosure(false);
+const UserEditModal = ({title, onClose}) => {
     const [ loading, setLoading ] = useState(false)
     const { user, loadUser } = useAuthentication()
 
@@ -40,7 +39,7 @@ export default () => {
                 console.log(res)
                 //setRegistered(true)
                 loadUser()
-                close()
+                onClose()
             })
             .catch(({message, response: {data: {errors}}}) => {
                 // console.log(message)
@@ -51,41 +50,47 @@ export default () => {
                 setLoading(false)
             })
     }
-    //
-    // if (!team) {
-    //     return;
-    // }
+
+    return (
+        <Modal opened onClose={onClose} title={title}>
+            <LoadingOverlay visible={loading} />
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+                <Stack spacing="md">
+                    <Text>
+                        Modify your user profile
+                    </Text>
+                    <TextInput label="Firstname" placeholder="John"  withAsterisk
+                               {...form.getInputProps('firstname')}
+                    />
+                    <TextInput label="Lastname" placeholder="Smith"  withAsterisk
+                               {...form.getInputProps('lastname')} />
+
+                    <Group justify="flex-end" mt="sm">
+                        <Button color="gray" onClick={onClose} variant="light">
+                            Cancel
+                        </Button>
+                        <Button disabled={loading} type="submit">
+                            Submit
+                        </Button>
+                    </Group>
+
+                </Stack>
+            </form>
+        </Modal>
+
+    )
+}
+
+export default () => {
+    const [opened, { open, close }] = useDisclosure(false);
+
+    const title = "Edit";
     return (
         <>
-            <Modal opened={opened} onClose={close} title="">
-                <form onSubmit={form.onSubmit(handleSubmit)}>
-                    <Stack spacing="md">
-                        <Text>
-
-                        </Text>
-                        <TextInput label="Firstname" placeholder="John"  withAsterisk
-                                   {...form.getInputProps('firstname')}
-                        />
-                        <TextInput label="Lastname" placeholder="Smith"  withAsterisk
-                                   {...form.getInputProps('lastname')} />
-
-                        <Group position="apart">
-                            <Button color="gray" onClick={close}>
-                                Cancel
-                            </Button>
-
-                            <Button disabled={loading} type="submit">
-                                Submit
-                            </Button>
-                        </Group>
-
-                    </Stack>
-                </form>
-            </Modal>
-            <ActionIcon variant="filled" onClick={open}>
-                <IconEdit size="1rem" />
-            </ActionIcon>
+            {opened && <UserEditModal title={title} onClose={close} />}
+            <Button size="xs" onClick={open}>
+                {title}
+            </Button>
         </>
-
     )
 }
