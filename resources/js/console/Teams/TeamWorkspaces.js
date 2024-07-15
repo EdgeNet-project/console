@@ -11,11 +11,7 @@ const AlertTeamWorkspaces = () => {
                 <Text size="sm">
                     A workspace is a logical unit to organize your projects and DevOps projects and
                     manage app templates and app repositories. It is the place for you to control
-                    resource access and share resources within your team in a secure way. <br />
-                    You can create a new workspace here: <br />
-                    <Anchor component={Link} to="/workspace/create">
-                        Create a new Workspace
-                    </Anchor>
+                    resource access and share resources within your team in a secure way.
                 </Text>
             </Stack>
         </Alert>

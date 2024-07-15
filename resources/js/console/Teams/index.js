@@ -6,6 +6,7 @@ import React, {useEffect, useState} from "react";
 import TeamWorkspaces from "./TeamWorkspaces";
 import TeamUsers from "./TeamUsers";
 import TeamInfo from "./components/TeamInfo";
+import PanelGrid from "../Components/PanelGrid";
 
 
 export default () => {
@@ -62,10 +63,10 @@ export default () => {
                 <TeamInfo team={team} />
             </Stack>
 
-            <SimpleGrid cols={2}>
+            <PanelGrid>
                 <TeamWorkspaces team={team} />
                 <TeamUsers team={team} />
-            </SimpleGrid>
+            </PanelGrid>
         </Stack>
     )
 }

@@ -1,36 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import axios from "axios";
-import {Alert, Anchor, Breadcrumbs, Button, Divider, Group, Paper, SimpleGrid, Stack, Text, Title} from "@mantine/core";
-import {
-    IconAlertTriangle
-} from "@tabler/icons-react";
+import {Group, SimpleGrid, Stack, Text, Title} from "@mantine/core";
 import WorkspaceUsers from "./WorkspaceUsers";
 import WorkspaceKubeConfig from "./WorkspaceKubeConfig";
-import {Link} from "react-router-dom";
 import {useAuthentication} from "../Authentication";
 import WorkspaceInfo from "./components/WorkspaceInfo";
 import WorkspacePods from "./WorkspacePods";
+import PanelGrid from "../Components/PanelGrid";
 
-
-const RequestsAlert = () => {
-    const {user, userRequests} = useAuthentication();
-
-    if (user.requests.length <= 0 && userRequests <= 0) {
-        return null;
-    }
-
-    return (
-        <Alert icon={<IconAlertTriangle size="1.5rem"/>} title="Pending requests" color="orange" variant="light">
-            {user.requests.length > 0 && <Text size="sm">
-                You have <Anchor component={Link} to="/requests">{user.requests.length} {user.requests.length > 1 ? 'requests' : 'request'}</Anchor> pending for review.
-            </Text>}
-            {userRequests.length > 0 && <Text size="sm">
-                You are managing one or more Teams and you have <Anchor component={Link} to="/requests">{userRequests.length} pending {userRequests.length > 1 ? 'requests' : 'request'}</Anchor> to review.
-            </Text>}
-        </Alert>
-    )
-}
 
 export default () => {
     const {user} = useAuthentication()
@@ -66,10 +44,10 @@ export default () => {
                 </Text>
             </Stack>
 
-            <SimpleGrid cols={2}>
+            <PanelGrid>
                 <WorkspaceUsers workspace={workspace} />
                 <WorkspacePods workspace={workspace} />
-            </SimpleGrid>
+            </PanelGrid>
         </Stack>
     )
 }

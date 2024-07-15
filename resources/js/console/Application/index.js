@@ -1,7 +1,7 @@
 import React from "react";
 
 import {Anchor, AppShell, Burger, Container, Group, Image, Text, ScrollArea} from "@mantine/core";
-import {useDisclosure} from "@mantine/hooks";
+import {useDisclosure, useMediaQuery} from "@mantine/hooks";
 
 import NavigationMenu from "../Navigation/NavigationMenu";
 import {Outlet} from "react-router-dom";
@@ -21,11 +21,13 @@ const ApplicationHeader = () => {
 
 const Application = () => {
     const [opened, { toggle }] = useDisclosure();
+    const medium = useMediaQuery('(min-width: 801px)');
+    const large = useMediaQuery('(min-width: 1600px)');
 
     return (
             <AppShell
                 header={{ height: 60 }}
-                navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+                navbar={{ width: 300, breakpoint: 'md', collapsed: { mobile: !opened } }}
             >
 
                 <AppShell.Header withBorder={false}>
@@ -54,7 +56,7 @@ const Application = () => {
                 </AppShell.Navbar>
 
                 <AppShell.Main style={{backgroundColor:"#e4ecfb"}}>
-                    <Container size="lg">
+                    <Container size={medium ? large ? "xxl" : "lg" : ''}>
                         <Outlet />
                     </Container>
                 </AppShell.Main>
