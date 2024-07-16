@@ -2,7 +2,7 @@ import {NavLink as RouterNavLink, useMatch} from "react-router-dom";
 import {NavLink} from "@mantine/core";
 import classes from "./navigation.module.css";
 
-export default ({to, label, icon, rightSection}) => {
+export default ({to, label, icon, rightSection, color, children}) => {
     const match = useMatch(to)
 
     return (
@@ -14,6 +14,6 @@ export default ({to, label, icon, rightSection}) => {
             active={match}
             leftSection={icon}
             rightSection={rightSection}
-        />
+            color={color}>{children}</NavLink>
     )
 }
