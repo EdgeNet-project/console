@@ -4,7 +4,7 @@
 set -e
 
 if [ ! -f /etc/os-release ]; then
-  echo "OS not supported, /etc/os-release not found"
+echo "OS not supported, /etc/os-release not found"
 fi
 
 . /etc/os-release
@@ -13,7 +13,7 @@ fi
 
 @include('boot.common.log')
 
-@include('boot.setup.packages')
+@include('boot.setup.packages.packages')
 
 mkdir -p /etc/edgenet
 
@@ -21,28 +21,28 @@ mkdir -p /etc/edgenet
 # Setup node hostname
 #
 if [ ! -f "/etc/edgenet/node-info" ]; then
-  curl -s ip-api.com/json | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' > /etc/edgenet/node-info
+curl -s ip-api.com/json | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' > /etc/edgenet/node-info
 
-  . /etc/edgenet/node-info
+. /etc/edgenet/node-info
 
-  if [ $status != "success" ]; then
-    echo "Error: IP API failed"
-    exit 1
-  fi
+if [ $status != "success" ]; then
+echo "Error: IP API failed"
+exit 1
+fi
 
-  rand=$(mktemp -u XXXX)
+rand=$(mktemp -u XXXX)
 
-  hostname=$(echo "${countryCode}-${region}-${city}-${rand}.edge-net.io" | tr '[:upper:]' '[:lower:]' )
-  if [ $? -ne 0 ]; then
-    echo "Error generating the node hostname"
-    exit 1
-  fi
+hostname=$(echo "${countryCode}-${region}-${city}-${rand}.edge-net.io" | tr '[:upper:]' '[:lower:]' )
+if [ $? -ne 0 ]; then
+echo "Error generating the node hostname"
+exit 1
+fi
 
-  hostnamectl set-hostname ${hostname}
-  if [ $? -ne 0 ]; then
-    echo "Error generating the node hostname"
-    exit 1
-  fi
+hostnamectl set-hostname ${hostname}
+if [ $? -ne 0 ]; then
+echo "Error generating the node hostname"
+exit 1
+fi
 
 fi
 
@@ -68,37 +68,38 @@ gateway=$(ip r | grep default | awk '{print $3}')
 # GET IP information
 ip_info_json=$(curl -sL ip.guide/${ip_address})
 
-info_json=$(cat <<EOF
+info_json=$(cat <
+<EOF
+        {
+"name" : "${hostname_name}",
+"ip" : ${ip_info_json},
+"host" :
 {
-  "name" : "${hostname_name}",
-  "ip" : ${ip_info_json},
-  "host" :
-  {
-    "os" :
-    {
-      "id" : "${ID}",
-      "version" : "${VERSION_ID}",
-      "name" : "${PRETTY_NAME}"
-    },
-    "kernel" :
-    {
-      "name" : "${kernel_name}",
-      "release" : "${kernel_release}",
-      "version" : "${kernel_version}"
-    },
-    "platform" :
-    {
-      "name" : "${platform_name}",
-      "architecture" : "${platform_architecture}"
-    },
-    "network" :
-    {
-      "name" : "${hostname_name}",
-      "domain" : "${hostname_domain}",
-      "ip" : "${ip_address}",
-      "gateway" : "${gateway}"
-    }
-  }
+"os" :
+{
+"id" : "${ID}",
+"version" : "${VERSION_ID}",
+"name" : "${PRETTY_NAME}"
+},
+"kernel" :
+{
+"name" : "${kernel_name}",
+"release" : "${kernel_release}",
+"version" : "${kernel_version}"
+},
+"platform" :
+{
+"name" : "${platform_name}",
+"architecture" : "${platform_architecture}"
+},
+"network" :
+{
+"name" : "${hostname_name}",
+"domain" : "${hostname_domain}",
+"ip" : "${ip_address}",
+"gateway" : "${gateway}"
+}
+}
 }
 EOF
 )
@@ -126,10 +127,10 @@ kubeadm_cmd=$(remote_post "nodes/register" "$info_json")
 log_info "Node installation finishing, joining the cluster"
 
 until host ${hostname};
-  do
-    echo "Waiting for the hostname DNS configuration..."
-    sleep 10;
-  done
+do
+echo "Waiting for the hostname DNS configuration..."
+sleep 10;
+done
 
 ##
 # executes kubeadm and join the cluster

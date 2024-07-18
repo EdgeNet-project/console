@@ -3,11 +3,20 @@
 
 set -e
 
+@include('boot.functions')
+
+ARCH=$(uname -m)
+
+if [ "${ARCH}" != "x86_64" ]; then
+  fatal "Architecture ${ARCH} not yet supported"
+fi
+
 if [ ! -f /etc/os-release ]; then
-  echo "OS not supported, /etc/os-release not found"
+  fatal "OS not supported, /etc/os-release not found"
 fi
 
 . /etc/os-release
+
 
 ##
 # KVM if it is a VM
@@ -75,8 +84,20 @@ echo $info_json | curl \
  --data @- \
  https://boot.edge-net.io/nodes > /tmp/bootstrap-kubelet.conf
 
-@include('boot.setup.packages')
+case $ID in
+  ubuntu)
+    @include('boot.setup.os.ubuntu')
+    ;;
+  rocky)
+    @include('boot.setup.os.rocky')
+    ;;
+  *)
+    fatal "OS ${VERSION_ID} not supported."
+    ;;
+esac
+
 @include('boot.setup.modules')
+
 @include('boot.setup.swap')
 
 @include('boot.setup.selinux')

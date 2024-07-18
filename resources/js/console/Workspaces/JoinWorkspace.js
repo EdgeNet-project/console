@@ -21,7 +21,7 @@ const JoinWorkspaceModal = ({workspace, title, onClose}) => {
 
     const form = useForm({
         initialValues: {
-            team_id: "",
+            team_id: workspace ? workspace.team?.id : "",
             name: workspace ? workspace.name : "",
         },
 
