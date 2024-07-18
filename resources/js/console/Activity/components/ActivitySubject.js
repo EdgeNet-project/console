@@ -12,7 +12,7 @@ export default ({type, subject}) => {
     switch(type) {
         case "App\\Model\\SubNamespace":
             return (
-                    <WorkspaceInfo workspace={subject} icon />
+                <WorkspaceInfo workspace={subject} icon />
             )
         case "App\\Model\\Tenant":
             return (
@@ -20,7 +20,7 @@ export default ({type, subject}) => {
             )
         case "App\\Model\\Node":
             return (
-                <Text size="sm">{subject.name}</Text>
+                <Text size="sm">{subject.name ?? "Node"}</Text>
             )
         default:
             return (

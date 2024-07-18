@@ -15,9 +15,10 @@ export default ({severity}) => {
             color = "blue";
             break;
     }
+
     return (
         <Badge color={color} variant="light">
-            {severity}
+            {severity ?? 'info'}
         </Badge>
     )
 }

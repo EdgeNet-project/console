@@ -60,6 +60,6 @@ class Node extends Model
 
     public function getInstallationUrlAttribute()
     {
-        return route('boot.script', ['node' => $this->auth]);
+        return route('node.bootstrap', ['node' => $this->auth]);
     }
 }

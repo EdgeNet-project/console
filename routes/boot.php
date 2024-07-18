@@ -22,9 +22,6 @@ Route::group([
     Route::get('/{node:auth}', 'bootstrap')
         ->name('node.bootstrap');
 
-    Route::get('/{node:auth}', 'bootstrap')
-        ->name('node.script');
-
     Route::group([
         'middleware' => \App\Http\Middleware\AuthenticateNode::class
     ], function() {
