@@ -19,8 +19,11 @@ Route::group([
     'controller' => NodeController::class,
     'prefix' => 'nodes'
 ], function () {
-    Route::get('/{node:auth}', 'script')
-        ->name('boot.script');
+    Route::get('/{node:auth}', 'bootstrap')
+        ->name('node.bootstrap');
+
+    Route::get('/{node:auth}', 'bootstrap')
+        ->name('node.script');
 
     Route::group([
         'middleware' => \App\Http\Middleware\AuthenticateNode::class

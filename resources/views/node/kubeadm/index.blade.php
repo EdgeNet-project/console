@@ -26,8 +26,8 @@ curl -s ip-api.com/json | jq -r '. | to_entries | .[] | .key + "=" + (.value | @
 . /etc/edgenet/node-info
 
 if [ $status != "success" ]; then
-echo "Error: IP API failed"
-exit 1
+"Error: IP API failed"
+    exit 1
 fi
 
 rand=$(mktemp -u XXXX)

@@ -54,7 +54,7 @@ class NodeController extends Controller
      *
      * Renders the shell script used to boot/setup the node
      */
-    public function script(Node $node)
+    public function bootstrap(Node $node)
     {
         if ($node->status && $node->status == NodeStatus::OK) {
             return response()->view('boot.message', [
@@ -62,7 +62,7 @@ class NodeController extends Controller
             ])->header('Content-Type', 'text/plain');
         }
 
-        return response()->view('boot.kubeadm.index', [
+        return response()->view('node.bootstrap', [
             'node' => $node
         ])->header('Content-Type', 'text/plain');
     }
