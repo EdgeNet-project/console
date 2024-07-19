@@ -36,7 +36,7 @@ export default () => {
                     <WorkspaceKubeConfig workspace={workspace} />
                     {/*<Button onClick={() => navigate('/nodes/create')}>Add a Node</Button>*/}
                 </Group>
-                <WorkspaceInfo workspace={workspace} />
+                <WorkspaceInfo workspace={workspace} namespace />
                 <Text size="sm">
                     A workspace is a logical unit to organize your projects and DevOps projects and
                     manage app templates and app repositories. It is the place for you to control
