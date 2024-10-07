@@ -67,8 +67,11 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
                 ->core()
                 ->addResources([
                     K8sPod::class,
+                    K8sPod::class . '/log',
+                    K8sPod::class . '/exec',
                     K8sConfigMap::class,
-                    K8sDeployment::class
+                    K8sDeployment::class,
+
                 ])
                 ->addVerbs(['get', 'list', 'watch', 'create', 'update', 'delete']);
 
