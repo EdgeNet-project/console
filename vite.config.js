@@ -7,7 +7,7 @@ export default defineConfig({
     plugins: [
         laravel([
             // 'resources/css/app.css',
-            'resources/js/console.js',
+            'resources/js/console.jsx',
         ]),
         react(),
         // vue({

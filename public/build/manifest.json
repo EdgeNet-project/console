@@ -1,0 +1,11 @@
+{
+  "resources/js/console.jsx": {
+    "file": "assets/console-CEiXvRnN.js",
+    "name": "console",
+    "src": "resources/js/console.jsx",
+    "isEntry": true,
+    "css": [
+      "assets/console-elnqsulh.css"
+    ]
+  }
+}
