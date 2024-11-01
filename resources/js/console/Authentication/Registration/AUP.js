@@ -1,5 +1,5 @@
 import React from 'react';
-import {Checkbox, ScrollArea} from "@mantine/core";
+import {Checkbox, ScrollArea, Stack, Title, Text} from "@mantine/core";
 
 import {useState} from "react";
 import axios from "axios";
@@ -33,27 +33,32 @@ export default function AUP() {
 
 
     return (
-        <>
-            <h1>EdgeNet Acceptable Use Policy
-            </h1>
+        <Stack>
+            <Title>EdgeNet Acceptable Use Policy</Title>
+            <Text c="dimmed">
+                Please review the EdgeNet Acceptable Use Policy before starting to use
+                the EdgeNet testbed.
+            </Text>
+
             <AUPText />
 
-            <Group position="right" my="lg">
-                <Checkbox value={agree} onClick={() => setAgree(!agree)} label="I agree to the EdgeNet Acceptable Use Policy" />
+            <Group justify="space-between">
+                <Checkbox value={agree}
+                          onClick={() => setAgree(!agree)}
+                          label="I agree to the EdgeNet Acceptable Use Policy" />
                 <Button disabled={!agree || loading} onClick={setAUPAccepted}>
                     Submit
                 </Button>
             </Group>
             {loading && <LoadingOverlay visible={loading} overlayBlur={2} />}
 
-
-        </>
+        </Stack>
     );
 
 
 }
 
-const AUPText = () => <ScrollArea h={250}>
+const AUPText = () => <ScrollArea h={window.innerHeight / 2} type="always" offsetScrollbars scrollbarSize={20}>
         <h3>The Nature of the EdgeNet Testbed</h3>
         <p>
             EdgeNet consists of computational resources hosted by organizations
@@ -139,7 +144,7 @@ const AUPText = () => <ScrollArea h={250}>
             misbehaving services, it is our policy to put the complainant in direct contact with the researcher
             who is responsible for the service.</p>
         <p>
-            To report a suspected violation contact: <a href="mailto:support@planet-lab.eu">EdgeNet Support</a>.
+            To report a suspected violation contact: <a href="mailto:support@edge-net.org">EdgeNet Support</a>.
         </p>
         <h3>No Guarantees</h3>
         <ul>
@@ -244,7 +249,7 @@ const AUPText = () => <ScrollArea h={250}>
             </li>
         </ul>
         <p>
-            To report a suspected violation of this policy, contact: <a href="mailto:support@planet-lab.eu">support@planet-lab.eu</a>.
+            To report a suspected violation of this policy, contact: <a href="mailto:support@edge-net.org">support@edge-net.org</a>.
         </p>
         <p>
             In case of any breach with this Acceptable Use Policy, Sorbonne Université, on behalf of the PlanetLab
