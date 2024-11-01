@@ -8,7 +8,6 @@ import { IconArrowBack } from '@tabler/icons-react';
 import {useForm} from "@mantine/form";
 import { TextInput, PasswordInput } from "../../UI";
 import {useDisclosure} from "@mantine/hooks";
-import {Link} from "react-router-dom";
 
 const UserRegistrationSuccess = () => {
     return (

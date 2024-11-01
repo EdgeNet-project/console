@@ -1,11 +1,11 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import axios from "axios";
 import {
     Anchor,
     Button, Divider, LoadingOverlay, Stack, Text,
 } from '@mantine/core';
 import {useForm} from "@mantine/form";
-import {Panel, PasswordInput, TextInput} from "../../UI";
+import {PasswordInput} from "../../UI";
 import {useParams} from "react-router";
 import {useDisclosure} from "@mantine/hooks";
 import {IconArrowBack} from "@tabler/icons-react";

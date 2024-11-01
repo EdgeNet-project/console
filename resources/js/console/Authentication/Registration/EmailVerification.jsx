@@ -3,7 +3,6 @@ import axios from "axios";
 import {
     LoadingOverlay
 } from '@mantine/core';
-import { Panel } from "../../UI";
 import {useParams} from "react-router-dom";
 
 export default function EmailVerification() {

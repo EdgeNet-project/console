@@ -1,10 +1,11 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import dayjs from "dayjs";
-import {Alert, Text, Badge, Stack, Table} from "@mantine/core";
+import {Alert, Text, Badge, Stack, Table, Group} from "@mantine/core";
 import {IconContainer, IconInfoCircle} from "@tabler/icons-react";
 import Panel from "../Components/Panel";
 import {useAuthentication} from "../Authentication";
+import PodLog from "../Pods/PodLog";
 
 
 const AlertWorkspaceUsers = ({pending}) => {
@@ -56,6 +57,9 @@ const WorkspacePods = ({workspace}) => {
                                     <Text size="sm" c="dimmed">
                                     {dayjs(pod.status.startTime).format('DD/MM/YYYY HH:mm')}
                                     </Text>
+                                    <Group>
+                                        <PodLog pod={pod} />
+                                    </Group>
                                 </Stack>
                             }
                             </Table.Td>

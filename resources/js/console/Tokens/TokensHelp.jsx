@@ -38,7 +38,7 @@ export default () => {
             </Text>
             <Code>
                 KUBECONFIG=$HOME/.kube/config:$HOME/.kube/edgenet-{user.authority}-{user.name}.yml \ <br />
-                &nbsp;&nbsp;&nbsp;&nbsp; kubectl config view --merge --flatten > ~/.kube/config
+                &nbsp;&nbsp;&nbsp;&nbsp; kubectl config view --merge --flatten &gt; ~/.kube/config
             </Code>
             <Text>
                 When use kubectl you can now easily switch contexts to select the cluster you want to work on:
