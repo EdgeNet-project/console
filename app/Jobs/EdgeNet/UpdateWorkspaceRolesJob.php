@@ -17,6 +17,7 @@ use RenokiCo\PhpK8s\Kinds\K8sConfigMap;
 use RenokiCo\PhpK8s\Kinds\K8sDeployment;
 use RenokiCo\PhpK8s\Kinds\K8sPod;
 use RenokiCo\PhpK8s\Kinds\K8sSecret;
+use RenokiCo\PhpK8s\Kinds\K8sService;
 use RenokiCo\PhpK8s\Kinds\K8sStatefulSet;
 
 class UpdateWorkspaceRolesJob implements ShouldQueue
@@ -74,6 +75,7 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
                     K8sPod::class,
                     K8sPod::class . '/log',
                     K8sPod::class . '/exec',
+                    K8sService::class,
                     K8sConfigMap::class,
                     K8sSecret::class,
                 ])
@@ -87,7 +89,7 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
                     K8sStatefulSet::class
                 ])
                 ->addVerbs(['get', 'list', 'watch', 'create', 'update', 'delete']);
-            
+
             // A collaborator can work within the namespace of the workspace
             $role = $cluster
                 ->role()
