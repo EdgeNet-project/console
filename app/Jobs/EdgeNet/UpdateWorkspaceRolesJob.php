@@ -10,12 +10,14 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use App\Services\EdgenetAdmin;
 use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
 use RenokiCo\PhpK8s\K8s;
 use RenokiCo\PhpK8s\Kinds\K8sConfigMap;
 use RenokiCo\PhpK8s\Kinds\K8sDeployment;
 use RenokiCo\PhpK8s\Kinds\K8sPod;
-use App\Services\EdgenetAdmin;
+use RenokiCo\PhpK8s\Kinds\K8sSecret;
+use RenokiCo\PhpK8s\Kinds\K8sStatefulSet;
 
 class UpdateWorkspaceRolesJob implements ShouldQueue
 {
@@ -62,25 +64,36 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
 
         $cluster = $edgenetAdmin->getCluster();
 
+
         try {
-            $rule = K8s::rule()
+
+            // core api group
+            $ruleCore = K8s::rule()
                 ->core()
                 ->addResources([
                     K8sPod::class,
                     K8sPod::class . '/log',
                     K8sPod::class . '/exec',
                     K8sConfigMap::class,
-                    K8sDeployment::class,
-
+                    K8sSecret::class,
                 ])
                 ->addVerbs(['get', 'list', 'watch', 'create', 'update', 'delete']);
 
+            // app api group
+            $ruleApp = K8s::rule()
+                ->addApiGroup("app")
+                ->addResources([
+                    K8sDeployment::class,
+                    K8sStatefulSet::class
+                ])
+                ->addVerbs(['get', 'list', 'watch', 'create', 'update', 'delete']);
+            
             // A collaborator can work within the namespace of the workspace
             $role = $cluster
                 ->role()
                 ->setName($this->workspace->tenant->name . ':' . $this->workspace->name . ':collaborator')
                 ->setNamespace($this->workspace->namespace)
-                ->addRules([$rule])
+                ->addRules([$ruleCore, $ruleApp])
                 ->setLabels([
                     'team' => $this->workspace->tenant->name,
                     'workspace' => $this->workspace->name
@@ -130,5 +143,6 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
                 ])
                 ->log('updating workspace role bindings - error syncing tenant with EdgeNet API');
         }
+
     }
 }
