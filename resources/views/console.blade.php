@@ -18,8 +18,9 @@
             url: '{{url('/')}}',
             name: '{{env('CONSOLE_NAME', 'EdgeNet')}}',
             logo: {
-                login: '{{env('CONSOLE_LOGO', '/images/edgenet-logo.png')}}',
-                navigation: '{{env('CONSOLE_LOGO', '/images/edgenet-logo.png')}}',
+                login: '{{env('CONSOLE_LOGO_LOGIN', '/images/edgenet-logo.png')}}',
+                login_height: 180,
+                navigation: '{{env('CONSOLE_LOGO_NAVIGATION', '/images/edgenet-logo.png')}}',
                 navigation_height: 60
             },
             support: '{{env('CONSOLE_SUPPORT', 'support@edge-net.org')}}'

@@ -1,7 +1,8 @@
 import {
-    SimpleGrid, Image, Container, Text, Group, Title,
+    SimpleGrid, Image, Stack, Text, Group, Title,
 } from '@mantine/core';
 import {Outlet} from "react-router-dom";
+import React from "react";
 
 const style = {
     display: 'flex',
@@ -16,16 +17,18 @@ export function Authentication() {
     return (
         <SimpleGrid cols={2}>
             <div style={style}>
-                <Group sx={{ height: '100%' }} spacing="sm" pb="xl" position="start">
-                    <div><Image src="/images/edgenet-logo.png" alt="EdgeNet" height={60} fit="contain" /></div>
-                    <Title order={1} weight={400}>EdgeNet</Title>
-                </Group>
-                <div style={{width:'50%'}}>
-                    <Outlet />
+                <div style={{marginBottom:25}}>
+                    <Image src={console_app.logo.login ?? "/images/edgenet-logo.png"}
+                           alt={console_app.name ?? 'EdgeNet'}
+                           height={console_app.logo.login_height ?? 80}
+                           fit="contain" />
                 </div>
+                    <div style={{width:'50%'}}>
+                        <Outlet />
+                    </div>
             </div>
             <div style={style}>
-                <img style={{width:'90%'}} src="/images/platforms.png" alt="EdgeNet" />
+                <img style={{width:'90%', marginRight:'auto'}} src="/images/platforms.png" alt="EdgeNet" />
             </div>
         </SimpleGrid>
     );
