@@ -1,22 +1,52 @@
 #!/bin/bash
 # (C) Sorbonne. 2024
+#
 
 set -e
 
 @include('boot.functions')
 
 ARCH=$(uname -m)
-
 if [ "${ARCH}" != "x86_64" ]; then
   fatal "Architecture ${ARCH} not yet supported"
 fi
 
-if [ ! -f /etc/os-release ]; then
-  fatal "OS not supported, /etc/os-release not found"
+echo_info "Architecture ${ARCH}"
+
+if [ -f /etc/os-release ]; then
+    # freedesktop.org and systemd
+    . /etc/os-release
+    OS=$ID
+    VER=$VERSION_ID
+elif type lsb_release >/dev/null 2>&1; then
+    # linuxbase.org
+    OS=$(lsb_release -si)
+    VER=$(lsb_release -sr)
+elif [ -f /etc/lsb-release ]; then
+    # For some versions of Debian/Ubuntu without lsb_release command
+    . /etc/lsb-release
+    OS=$DISTRIB_ID
+    VER=$DISTRIB_RELEASE
+elif [ -f /etc/debian_version ]; then
+    # Older Debian/Ubuntu/etc.
+    OS=Debian
+    VER=$(cat /etc/debian_version)
+else
+    # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
+    OS=$(uname -s)
+    VER=$(uname -r)
 fi
 
-. /etc/os-release
+case $ID in
+  ubuntu)
+    ;;
+  rocky)
 
+    ;;
+  *)
+    fatal "OS ${VERSION_ID} not supported."
+    ;;
+esac
 
 ##
 # KVM if it is a VM
@@ -84,23 +114,13 @@ echo $info_json | curl \
  --data @- \
  https://boot.edge-net.io/nodes > /tmp/bootstrap-kubelet.conf
 
-case $ID in
-  ubuntu)
-    @include('boot.setup.os.ubuntu')
-    ;;
-  rocky)
-    @include('boot.setup.os.rocky')
-    ;;
-  *)
-    fatal "OS ${VERSION_ID} not supported."
-    ;;
-esac
 
-@include('boot.setup.modules')
 
-@include('boot.setup.swap')
+@include('node.setup.modules')
 
-@include('boot.setup.selinux')
+@include('node.setup.swap')
+
+@include('node.setup.selinux')
 
 @include('boot.setup.network')
 

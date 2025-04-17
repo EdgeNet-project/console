@@ -8,7 +8,7 @@
 
 set -e
 
-@include('node.common.functions')
+@include('node.functions')
 
 USER_ID=$(id -u)
 if [ ${USER_ID} -ne 0 ]; then
@@ -16,16 +16,29 @@ if [ ${USER_ID} -ne 0 ]; then
 fi
 
 ARCH=$(uname -m)
-
 if [ "${ARCH}" != "x86_64" ]; then
     echo_fatal "architecture ${ARCH} not yet supported"
 fi
 
-if [ ! -f /etc/os-release ]; then
-    echo_fatal "OS not supported, /etc/os-release not found"
+DISTRO=$(get_distro)
+if [ "${ARCH}" != "ubuntu" ] && [ "${ARCH}" != "Ubuntu" ] && [ "${ARCH}" != "ubuntu" ]; then
+    echo_fatal "architecture ${ARCH} not yet supported"
 fi
+case $(get_distro) in
+    case raspbian)
+        echo This is Raspbian
+        ;;
+    case fedora)
+        echo This is Fedora
+        ;;
+    case ubuntu)
+        echo This is Ubuntu
+        ;;
+    case Darwin)
+        echo This is macOS
+        ;;
+esac
 
-. /etc/os-release
 
 verbose=0
 force=0
@@ -59,10 +72,12 @@ mkdir -p /etc/edgenet
 # Setup node hostname
 #
 if [ ! -f "/etc/edgenet/node-info" ]; then
-  curl -s ip-api.com/json | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' > /etc/edgenet/node-info
+  ip_api=$(curl -s ip-api.com/json)
   if [ $? -ne 0 ]; then
     echo_fatal "IP API failed - ip-api.com/json"
   fi
+
+  echo $ip_api | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' > /etc/edgenet/node-info
 fi
 
 . /etc/edgenet/node-info
@@ -97,9 +112,17 @@ else
 fi
 
 ##
-# Prepare local scripts
-mkdir -p /etc/edgenet/scripts
+# Installation
+@include('boot.setup')
 
-cat << EOF | tee /etc/edgenet/scripts/functions.sh
-@include('node.common.functions')
-EOF
+case $ID in
+  ubuntu)
+    @include('boot.setup.ubuntu')
+    ;;
+  rocky)
+    @include('boot.setup.rocky')
+    ;;
+  *)
+    echo_fatal "OS ${VERSION_ID} not supported."
+    ;;
+esac

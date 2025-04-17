@@ -1,0 +1,3 @@
+
+
+ARCH=$(uname -m)
