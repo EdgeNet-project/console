@@ -66,7 +66,7 @@ export default function NodeList() {
 
     return (
         <>
-            <Stack my="lg">
+            <Stack py="lg">
                 <Group justify="space-between">
                     <Title order={1}>EdgeNet Nodes</Title>
                 </Group>

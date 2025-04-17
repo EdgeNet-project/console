@@ -50,7 +50,7 @@ export default () => {
 
     return (
         <>
-            <Stack my="lg">
+            <Stack py="lg">
                 <Group justify="space-between">
                     <Title order={1}>EdgeNet Workspaces</Title>
                 </Group>

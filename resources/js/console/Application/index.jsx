@@ -31,9 +31,7 @@ const Application = () => {
 
 
                 <AppShell.Navbar withBorder={false}>
-                    <AppShell.Section grow p="sm" component={ScrollArea}>
-                        <Stack>
-                            <div>
+                    <AppShell.Section pt="md">
                         <Anchor target="_blank" underline="never" href={console_app.url}>
                             <Image src={console_app.logo.navigation ?? "/images/edgenet-logo.png"}
                                    alt={console_app.name ?? 'EdgeNet'}
@@ -41,11 +39,11 @@ const Application = () => {
                                    height={console_app.logo.navigation_height ?? 28}
                                    fit="contain" />
                         </Anchor>
-                            </div>
-                        <NavigationMenu />
-                        </Stack>
                     </AppShell.Section>
-                    <AppShell.Section pb="sm" px="sm">
+                    <AppShell.Section grow py="sm" component={ScrollArea}>
+                        <NavigationMenu />
+                    </AppShell.Section>
+                    <AppShell.Section py="sm" >
                         <NavigationAccount />
                     </AppShell.Section>
                 </AppShell.Navbar>

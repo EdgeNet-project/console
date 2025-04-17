@@ -81,7 +81,7 @@ export default function NodeList() {
 
     return (
         <>
-            <Stack my="lg">
+            <Stack py="lg">
                 <Group justify="space-between">
                     <Title order={1}>Nodes</Title>
                     <Button onClick={() => navigate('/nodes/create')}>Add a Node</Button>

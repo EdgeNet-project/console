@@ -34,11 +34,8 @@ export default () => {
 
     return (
         <>
-            <Stack my="lg">
-                <Title order={1}>
-                    EdgeNet Console
-                </Title>
-                <RequestsAlert />
+            <Stack pt="xl">
+                <RequestsAlert  />
             </Stack>
             <PanelGrid>
                 <UserWorkspaces />

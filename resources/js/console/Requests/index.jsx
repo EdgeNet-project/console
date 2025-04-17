@@ -8,7 +8,7 @@ export default () => {
 
     return (
     <>
-        <Title order={1} my="lg">Requests</Title>
+        <Title order={1} py="lg">Requests</Title>
         <Stack>
             <UserRequestList />
         </Stack>

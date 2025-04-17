@@ -9,7 +9,8 @@ export default () => {
 
     return (
         <>
-            <NavigationLink to="profile" label={<UserInfo user={user} />}
+            <NavigationLink to="profile"
+                            label={<UserInfo user={user} />}
                             rightSection={<Group>
                                 {user.requests.length > 0 && <Badge size="xs" circle>{user.requests.length}</Badge>}
                                 <IconChevronRight size={18} />

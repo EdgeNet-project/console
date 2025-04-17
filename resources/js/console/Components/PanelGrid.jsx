@@ -7,7 +7,7 @@ export default ({children}) => {
     const large = useMediaQuery('(min-width: 1600px)');
 
     return (
-        <SimpleGrid cols={medium ? large ? 3 : 2 : 1}>
+        <SimpleGrid py="xl" cols={medium ? large ? 3 : 2 : 1}>
             <Stack>
                 {children.filter((((panel, i) => i % 2 === 0)))}
             </Stack>

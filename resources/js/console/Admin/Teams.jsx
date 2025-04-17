@@ -52,7 +52,7 @@ export default function TeamList() {
 
     return (
         <>
-            <Stack my="lg">
+            <Stack py="lg">
                 <Group justify="space-between">
                     <Title order={1}>EdgeNet Teams</Title>
                 </Group>

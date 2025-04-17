@@ -52,7 +52,7 @@ export default () => {
     return (
         <Stack>
 
-            <Stack my="lg">
+            <Stack py="lg">
                 <Group justify="space-between">
                     <Title order={1}></Title>
                     <WorkspaceKubeConfig workspace={workspace} />
