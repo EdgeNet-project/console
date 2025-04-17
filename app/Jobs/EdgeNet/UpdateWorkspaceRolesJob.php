@@ -79,16 +79,16 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
                     K8sConfigMap::class,
                     K8sSecret::class,
                 ])
-                ->addVerbs(['get', 'list', 'watch', 'create', 'update', 'delete']);
+                ->addVerbs(['get', 'list', 'watch', 'create', 'patch', 'update', 'delete']);
 
             // app api group
             $ruleApp = K8s::rule()
-                ->addApiGroup("app")
+                ->addApiGroup("apps")
                 ->addResources([
                     K8sDeployment::class,
                     K8sStatefulSet::class
                 ])
-                ->addVerbs(['get', 'list', 'watch', 'create', 'update', 'delete']);
+                ->addVerbs(['get', 'list', 'watch', 'create', 'patch', 'update', 'delete']);
 
             // A collaborator can work within the namespace of the workspace
             $role = $cluster
