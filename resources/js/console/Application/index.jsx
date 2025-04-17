@@ -16,7 +16,7 @@ const Application = () => {
     return (
             <AppShell
                 // header={{ height: 60 }}
-                navbar={{ width: 300, breakpoint: 'md', collapsed: { mobile: !opened } }}
+                navbar={{ width: 280, breakpoint: 'md', collapsed: { mobile: !opened } }}
             >
 
                 {/*<AppShell.Header withBorder={false}>*/}
@@ -35,7 +35,7 @@ const Application = () => {
                         <Anchor target="_blank" underline="never" href={console_app.url}>
                             <Image src={console_app.logo.navigation ?? "/images/edgenet-logo.png"}
                                    alt={console_app.name ?? 'EdgeNet'}
-                                   style={{marginLeft:-30}}
+                                   style={{marginLeft:-26}}
                                    height={console_app.logo.navigation_height ?? 28}
                                    fit="contain" />
                         </Anchor>
