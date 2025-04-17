@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Box, Button, Code, Group, LoadingOverlay, Modal, Paper, Stack, Table, Text} from "@mantine/core";
+import {Box, Button, Code, Group, LoadingOverlay, Modal, Paper, ScrollArea, Stack, Table, Text} from "@mantine/core";
 import dayjs from "dayjs";
 import {UserInfo} from "../User/components/UserAvatar";
 import axios from "axios";
@@ -39,7 +39,9 @@ const UserRequestManage = ({request, onClose}) => {
                     <UserInfo user={request.user} />
                     <UserRequestType request={request} />
                     {request.message && <Text size="sm">{request.message}</Text>}
-                    {request.data && <Code block>{JSON.stringify(request.data, null, 4)}</Code>}
+                    {request.data &&
+                            <Code block>{JSON.stringify(request.data, null, 4)}</Code>
+                    }
                     <Group justify="flex-end">
                         <Button color="gray" variant="subtle" onClick={onClose}>Cancel</Button>
                         <Button color="red" onClick={denyRequest}>Deny</Button>

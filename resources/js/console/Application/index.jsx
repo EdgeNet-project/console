@@ -1,23 +1,12 @@
 import React from "react";
 
-import {Anchor, AppShell, Burger, Container, Group, Image, Text, ScrollArea} from "@mantine/core";
+import {Anchor, AppShell, Burger, Container, Group, Image, Text, ScrollArea, Stack} from "@mantine/core";
 import {useDisclosure, useMediaQuery} from "@mantine/hooks";
 
 import NavigationMenu from "../Navigation/NavigationMenu";
 import {Outlet} from "react-router-dom";
 import NavigationAccount from "../Navigation/NavigationAccount";
 
-const ApplicationHeader = () => {
-
-    return (
-        <Group sx={{ height: '100%' }} spacing="sm" px={20} position="apart">
-            <Group padding="sm" position="start">
-                <div><Image src="/images/edgenet-logo.png" alt="EdgeNet" height={28} fit="contain" /></div>
-                <Text fw={500} fz="lg">EdgeNet</Text>
-            </Group>
-        </Group>
-    )
-}
 
 const Application = () => {
     const [opened, { toggle }] = useDisclosure();
@@ -26,29 +15,35 @@ const Application = () => {
 
     return (
             <AppShell
-                header={{ height: 60 }}
+                // header={{ height: 60 }}
                 navbar={{ width: 300, breakpoint: 'md', collapsed: { mobile: !opened } }}
             >
 
-                <AppShell.Header withBorder={false}>
-                    <Group h="100%" px="md" justify="space-between">
-                        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-                        <Anchor target="_blank" underline="never" href="https://edge-net.org">
-                            <Group padding="sm" position="start">
-                                <Image src="/images/edgenet-logo.png" alt="EdgeNet" height={28} fit="contain" />
-                                <Text fw={500} fz="lg" color="black">EdgeNet</Text>
-                            </Group>
-                        </Anchor>
-                        <Group ml="xl" gap="lg" visibleFrom="sm">
-                            <Anchor target="_blank" href="mailto:support@edge-net.org?subject=EdgeNet Console Support">Support</Anchor>
-                        </Group>
-                    </Group>
-                </AppShell.Header>
+                {/*<AppShell.Header withBorder={false}>*/}
+                {/*    <Group h="100%" px="md" justify="space-between">*/}
+                {/*        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />*/}
+                {/*        <div />*/}
+                {/*        <Group ml="xl" gap="lg" visibleFrom="sm">*/}
+                {/*            <Anchor target="_blank" href={"mailto:" + console_app.support + "?subject=" + console_app.name + " Console Support"}>Support</Anchor>*/}
+                {/*        </Group>*/}
+                {/*    </Group>*/}
+                {/*</AppShell.Header>*/}
 
 
                 <AppShell.Navbar withBorder={false}>
                     <AppShell.Section grow p="sm" component={ScrollArea}>
+                        <Stack>
+                            <div>
+                        <Anchor target="_blank" underline="never" href={console_app.url}>
+                            <Image src={console_app.logo.navigation ?? "/images/edgenet-logo.png"}
+                                   alt={console_app.name ?? 'EdgeNet'}
+                                   style={{marginLeft:-30}}
+                                   height={console_app.logo.navigation_height ?? 28}
+                                   fit="contain" />
+                        </Anchor>
+                            </div>
                         <NavigationMenu />
+                        </Stack>
                     </AppShell.Section>
                     <AppShell.Section pb="sm" px="sm">
                         <NavigationAccount />
