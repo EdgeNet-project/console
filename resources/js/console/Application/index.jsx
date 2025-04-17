@@ -31,16 +31,16 @@ const Application = () => {
 
 
                 <AppShell.Navbar withBorder={false}>
-                    <AppShell.Section pt="md">
+                    <AppShell.Section py="xl">
                         <Anchor target="_blank" underline="never" href={console_app.url}>
                             <Image src={console_app.logo.navigation ?? "/images/edgenet-logo.png"}
                                    alt={console_app.name ?? 'EdgeNet'}
-                                   style={{marginLeft:-26}}
+                                   style={{marginLeft:-20}}
                                    height={console_app.logo.navigation_height ?? 28}
                                    fit="contain" />
                         </Anchor>
                     </AppShell.Section>
-                    <AppShell.Section grow py="sm" component={ScrollArea}>
+                    <AppShell.Section grow component={ScrollArea}>
                         <NavigationMenu />
                     </AppShell.Section>
                     <AppShell.Section py="sm" >
