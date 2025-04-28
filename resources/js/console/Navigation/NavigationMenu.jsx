@@ -7,8 +7,6 @@ import {
 } from "@mantine/core";
 import NavigationLink from "./NavigationLink";
 import NavigationTeams from "./NavigationTeams";
-
-import classes from "./navigation.module.css";
 import NavigationAdmin from "./NavigationAdmin";
 import {useAuthentication} from "../Authentication";
 

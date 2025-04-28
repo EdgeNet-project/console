@@ -23,7 +23,7 @@
                 navigation: '{{env('CONSOLE_LOGO_NAVIGATION', '/images/edgenet-logo.png')}}',
                 navigation_height: 60
             },
-            support: '{{env('CONSOLE_SUPPORT', 'support@edge-net.org')}}'
+            //support: '{{env('CONSOLE_SUPPORT', 'support@edge-net.org')}}'
         }
 
     </script>
