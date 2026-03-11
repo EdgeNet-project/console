@@ -17,6 +17,7 @@
         "@mantine/form": "^7.8.1",
         "@mantine/hooks": "^7.8.1",
         "@mantine/notifications": "^7.11.0",
+        "@mantinex/dev-icons": "^2.0.0",
         "@tabler/icons": "^3.10.0",
         "@tabler/icons-react": "^3.10.0",
         "axios": "^1.7.7",
