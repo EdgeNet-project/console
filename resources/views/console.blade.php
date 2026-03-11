@@ -13,20 +13,20 @@
     <meta name="apple-mobile-web-app-title" content="{{env('APP_NAME', 'EdgeNet Console')}}" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <script>
-        var console_app = {
-            url: '{{url('/')}}',
-            name: '{{env('CONSOLE_NAME', 'EdgeNet')}}',
-            logo: {
-                login: '{{env('CONSOLE_LOGO_LOGIN', '/images/edgenet-logo.png')}}',
-                login_height: 180,
-                navigation: '{{env('CONSOLE_LOGO_NAVIGATION', '/images/edgenet-logo.png')}}',
-                navigation_height: 60
-            },
-            //support: '{{env('CONSOLE_SUPPORT', 'support@edge-net.org')}}'
-        }
+{{--    <script>--}}
+{{--        var console_app = {--}}
+{{--            url: '{{url('/')}}',--}}
+{{--            name: '{{env('CONSOLE_NAME', 'EdgeNet')}}',--}}
+{{--            logo: {--}}
+{{--                image: '{{env('CONSOLE_LOGO_IMAGE', '/images/edgenet-logo.png')}}',--}}
+{{--                height: '{{env('CONSOLE_LOGO_HEIGHT', 120)}}',--}}
+{{--                navigation: '{{env('CONSOLE_LOGO_NAVIGATION', '/images/edgenet-logo.png')}}',--}}
+{{--                navigation_height: 60--}}
+{{--            },--}}
+{{--            //support: '{{env('CONSOLE_SUPPORT', 'support@edge-net.org')}}'--}}
+{{--        }--}}
 
-    </script>
+{{--    </script>--}}
     @viteReactRefresh
     @vite(['resources/js/console.jsx'])
 </head>
