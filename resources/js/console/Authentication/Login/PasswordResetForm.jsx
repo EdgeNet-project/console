@@ -1,7 +1,7 @@
 import {useState} from "react";
 import axios from "axios";
 import {
-    Anchor,
+    Anchor, Box,
     Button, Divider, LoadingOverlay, Stack, Text,
 } from '@mantine/core';
 import {useForm} from "@mantine/form";
@@ -12,7 +12,7 @@ import {IconArrowBack} from "@tabler/icons-react";
 
 const PasswordResetFormSuccess = () => {
     return (
-        <>
+        <Box w={400}>
             <Text mt="md">
                 Your password has been successfully updated!
             </Text>
@@ -23,7 +23,7 @@ const PasswordResetFormSuccess = () => {
             <Anchor href="/">
                 <IconArrowBack size={14} /> Go back to the login page
             </Anchor>
-        </>
+        </Box>
     )
 }
 
@@ -67,6 +67,7 @@ export default function PasswordResetForm() {
     }
 
     return (
+        <Box w={400}>
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack style={{position:'relative'}}>
 
@@ -100,6 +101,7 @@ export default function PasswordResetForm() {
 
                 </Stack>
             </form>
+        </Box>
     );
 
 

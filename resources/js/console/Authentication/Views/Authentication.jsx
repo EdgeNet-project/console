@@ -1,35 +1,31 @@
 import {
-    SimpleGrid, Image, Stack, Text, Group, Title,
+    SimpleGrid, Image, Stack
 } from '@mantine/core';
 import {Outlet} from "react-router-dom";
 import React from "react";
 
-const style = {
-    display: 'flex',
-    flexDirection:'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height:'100vh'
-};
+import config from "../../../config";
 
 export function Authentication() {
 
     return (
-        <SimpleGrid cols={2}>
-            <div style={style}>
-                <div style={{marginBottom:25}}>
-                    <Image src={console_app.logo.login ?? "/images/edgenet-logo.png"}
-                           alt={console_app.name ?? 'EdgeNet'}
-                           height={console_app.logo.login_height ?? 80}
-                           fit="contain" />
-                </div>
-                    <div style={{width:'50%'}}>
-                        <Outlet />
+        <SimpleGrid cols={{ base: 1, sm: 2 }} h="100dvh">
+            <Stack align="center"
+                   justify="center"
+                   gap="sm">
+                    <div>
+                        <Image src={config.logo.image}
+                               alt={config.app.name}
+                               h={config.logo.height}
+                               w="auto"
+                               fit="contain" />
                     </div>
-            </div>
-            <div style={style}>
-                <img style={{width:'90%', marginRight:'auto'}} src="/images/platforms.png" alt="EdgeNet" />
-            </div>
+                    <Outlet />
+            </Stack>
+            <Stack align="center" justify="center" bg="#EEFFEE">
+                <Image src="/images/platforms.png"
+                       alt={config.app.name} w={500} />
+            </Stack>
         </SimpleGrid>
     );
 }

@@ -3,10 +3,14 @@ import {
     Button,
     Text,
     PasswordInput, TextInput,
-    Anchor, Stack, Divider, Grid, Image, Container, Center, Group
+    Anchor, Stack, Divider, Grid, Image, Container, Center, Group, Box
 } from '@mantine/core';
 import { useAuthentication } from "../AuthenticationProvider"
 import {useForm} from "@mantine/form";
+import OAuthLoginButton from "./OAuthLoginButton.jsx";
+import { GithubIcon } from '@mantinex/dev-icons';
+import classes from './LoginForm.module.css';
+import React from "react";
 
 
 const GoogleIcon = (props) => {
@@ -44,19 +48,12 @@ const GoogleLogin = (props) => {
     return <Button leftIcon={<GoogleIcon />} variant="default" color="gray" {...props} />;
 }
 
-const GithubLogin = (props) => {
+const GithubLogin = () => {
     return (
-        <Button
-            {...props}
-            leftIcon={null}
-            sx={(theme) => ({
-                backgroundColor: theme.colors.dark[theme.colorScheme === 'dark' ? 9 : 6],
-                color: '#fff',
-                '&:hover': {
-                    backgroundColor: theme.colors.dark[theme.colorScheme === 'dark' ? 9 : 6],
-                },
-            })}
-        />
+        <OAuthLoginButton provider="GitHub"
+                          icon={<GithubIcon size={16} />}
+                          authUrl="/auth/github/redirect" classes={classes}>
+        </OAuthLoginButton>
     );
 }
 
@@ -76,44 +73,49 @@ export function LoginForm() {
     });
 
     return (
-        <>
+            <Box w={400}>
+                <form onSubmit={form.onSubmit((values) => login(values))}>
+                    <Stack gap="xs">
+                        <Text component="label" htmlFor="email" size="sm" fw={500}>
+                            Email address
+                        </Text>
+                        <TextInput {...form.getInputProps('email')}
+                                   placeholder="hello@email.com" />
 
-            <form onSubmit={form.onSubmit((values) => login(values))}>
-                <Stack>
-                    <TextInput label="Email address" {...form.getInputProps('email')}
-                               placeholder="hello@email.com" />
-                    <PasswordInput label="Password" {...form.getInputProps('password')}
-                                   placeholder="Your password" />
+                        <Group justify="space-between">
+                            <Text component="label" htmlFor="password" size="sm" fw={500}>
+                                Password
+                            </Text>
+                            <Anchor href="/password" pt={2} fw={500} fz="xs">
+                                Forgot your password?
+                            </Anchor>
+                        </Group>
+                        <PasswordInput {...form.getInputProps('password')} placeholder="Your password" />
 
-                    <Group>
                         <Button disabled={loading} type="submit" >
                             Login
                         </Button>
-                        <Anchor href="/password" >
-                            forgot your password?
+                    </Stack>
+                </form>
+
+                <Divider my="md" />
+
+                <Stack gap="xs">
+                    <GithubLogin />
+
+                    {/*<Divider my="md" />*/}
+
+                    <Group gap="xs" justify="center" mt="md">
+                        <Text size="sm" fw={500}>
+                            Don&apos;t have an account?
+                        </Text>
+                        <Anchor size="sm" fw={500} href="/registration">
+                            Register
                         </Anchor>
                     </Group>
                 </Stack>
-            </form>
 
-            <Divider my="xl" />
-
-            Don&apos;t have an account?{' '}
-            <Anchor href="/registration">
-                Register
-            </Anchor>
-
-
-                    {/*<Stack position="center">*/}
-                    {/*    <GoogleLogin fullWidth mt="md" size="md">*/}
-                    {/*        Continue with Google*/}
-                    {/*    </GoogleLogin>*/}
-                    {/*    <GithubLogin fullWidth mt="md" size="md">*/}
-                    {/*        Login with GitHub*/}
-                    {/*    </GithubLogin>*/}
-                    {/*</Stack>*/}
-
-        </>
+            </Box>
     );
 }
 

@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {
+    Box,
     LoadingOverlay
 } from '@mantine/core';
 import {useParams} from "react-router-dom";
@@ -27,14 +28,14 @@ export default function EmailVerification() {
 
 
     return (
-        <>
+        <Box w={400}>
 
                     Email Verification
 
                     <LoadingOverlay visible={loading} overlayBlur={2} />
 
 
-        </>
+        </Box>
     );
 
 

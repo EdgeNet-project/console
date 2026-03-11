@@ -1,6 +1,7 @@
 import {useState} from "react";
 import axios from "axios";
 import {
+    Box,
     Button,
     LoadingOverlay
 } from '@mantine/core';
@@ -25,7 +26,7 @@ export default function EmailVerificationStep() {
 
 
     return (
-        <>
+        <Box w={400}>
             <p>
             Your Email has not been verified yet. Please use the button below if you
             haven't received a validation email (And please also check your SPAM folder).
@@ -38,7 +39,7 @@ export default function EmailVerificationStep() {
             {loading && <LoadingOverlay visible={loading} overlayBlur={2} />}
 
 
-        </>
+        </Box>
     );
 
 

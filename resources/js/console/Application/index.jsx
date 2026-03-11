@@ -7,6 +7,7 @@ import NavigationMenu from "../Navigation/NavigationMenu";
 import {Outlet} from "react-router-dom";
 import NavigationAccount from "../Navigation/NavigationAccount";
 
+import config from "../../config";
 
 const Application = () => {
     const [opened, { toggle }] = useDisclosure();
@@ -32,11 +33,11 @@ const Application = () => {
 
                 <AppShell.Navbar withBorder={false}>
                     <AppShell.Section py="xl">
-                        <Anchor target="_blank" underline="never" href={console_app.url}>
-                            <Image src={console_app.logo.navigation ?? "/images/edgenet-logo.png"}
-                                   alt={console_app.name ?? 'EdgeNet'}
+                        <Anchor target="_blank" underline="never" href={config.app.url}>
+                            <Image src={config.navigation.image}
+                                   alt={config.name}
                                    style={{marginLeft:-20}}
-                                   height={console_app.logo.navigation_height ?? 28}
+                                   height={config.navigation.height}
                                    fit="contain" />
                         </Anchor>
                     </AppShell.Section>
