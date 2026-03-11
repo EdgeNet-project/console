@@ -49,10 +49,23 @@ const GoogleLogin = (props) => {
 }
 
 const GithubLogin = () => {
+    const {setToken} = useAuthentication()
+
+    const handleSuccess = ({ token, user }) => {
+        setToken(token);
+    };
+
+    const handleError = (error) => {
+        console.error("OAuth error:", error);
+    };
+
     return (
         <OAuthLoginButton provider="GitHub"
                           icon={<GithubIcon size={16} />}
-                          authUrl="/auth/github/redirect" classes={classes}>
+                          authUrl="/auth/github" classes={classes}
+                          onSuccess={handleSuccess}
+                          onError={handleError}
+        >
         </OAuthLoginButton>
     );
 }

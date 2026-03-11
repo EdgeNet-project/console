@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\RegistrationController;
 use App\Model\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Authentication\GithubAuthenticationController;
 
 
 
@@ -42,6 +41,18 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id) {
     }
     return redirect('/');
 })->middleware(['signed'])->name('verification.verify');
+
+/*
+ * External authentication through OAuth2 and OICD
+ */
+Route::group(['prefix' => 'auth'], function () {
+
+    Route::get('/github', [GithubAuthenticationController::class, 'redirect'])
+        ->name('auth.github');
+
+    Route::get('/github/callback', [GithubAuthenticationController::class, 'callback'])
+        ->name('auth.github.callback');
+});
 
 
 Route::view('/{any?}', 'console')

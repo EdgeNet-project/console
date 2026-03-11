@@ -228,6 +228,7 @@ const AuthenticationProvider = ({children}) => {
             <AuthenticationContext.Provider value={{
                 user: user,
                 login: login,
+                setToken: setToken,
                 loading: loading,
                 // error: error
 
@@ -306,12 +307,12 @@ const AuthenticationProvider = ({children}) => {
 }
 
 const useAuthentication = () => {
-    const { user, token, login, logout, loadUser, loading, error, isAuthenticated,
+    const { user, token, login, logout, loadUser, loading, error, isAuthenticated, setToken,
         userRequests, updateRequest, cluster,
     } = useContext(AuthenticationContext)
 
     return {
-        user, token, login, logout, loadUser, loading, error,
+        user, token, login, logout, loadUser, loading, error, setToken,
 
         cluster,
 

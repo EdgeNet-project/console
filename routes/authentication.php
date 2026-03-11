@@ -3,7 +3,7 @@
 use App\Http\Controllers\Authentication\AuthenticationController;
 use App\Http\Controllers\Authentication\RegistrationController;
 use App\Http\Controllers\Authentication\ForgotPasswordController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Authentication\GithubAuthenticationController;
 
 //Route::get('/password/reset/{token?}', function () {
 //    return view('console');
