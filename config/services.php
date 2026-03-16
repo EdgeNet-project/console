@@ -37,11 +37,11 @@ return [
      * package:
      * https://github.com/Kovah/laravel-socialite-oidc
      */
-    'slices' => [
-        'base_url' => env('SLICES_OIDC_BASE_URL'),
+    'oidc' => [
+        'base_url' => env('SLICES_OIDC_BASE_URL','https://portal.slices-sc.eu'),
         'client_id' => env('SLICES_OIDC_CLIENT_ID'),
         'client_secret' => env('SLICES_OIDC_CLIENT_SECRET'),
-        'redirect' => env('SLICES_OIDC_REDIRECT_URI'),
+        'redirect' => env('SLICES_OIDC_REDIRECT_URI','https://console.planetlab.io/auth/slices/callback'),
 
         'scopes' => env('SLICES_OIDC_SCOPES', 'openid profile email'),
 

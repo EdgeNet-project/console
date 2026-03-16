@@ -19,6 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'firstname', 'lastname', 'email', 'password',
+        'slices_info',
         'github_id', 'avatar', 'location', 'bio', 'blog', 'company'
     ];
 
@@ -39,7 +40,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'aup_approved_at' => 'datetime',
-        'enabled' => 'boolean'
+        'enabled' => 'boolean',
+        'slices_info' => 'object',
     ];
 
     protected $with = [];

@@ -1,9 +1,9 @@
 import React from "react";
 import {Button} from "@mantine/core";
+import classes from './OAuthLoginButton.module.css';
 
 export default function OAuthLoginButton({
-                                             provider,
-    icon, classes,
+                                             provider, icon,
                                              authUrl,
                                              onSuccess,
                                              onError,
@@ -48,7 +48,7 @@ export default function OAuthLoginButton({
     return (
         <Button onClick={openPopup}
                 leftSection={icon}
-                className={classes.githubButton}>
+                className={classes[`${provider}Button`]}>
             Login with {provider}
         </Button>
     );

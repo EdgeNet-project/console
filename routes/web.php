@@ -5,6 +5,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Authentication\SlicesAuthenticationController;
 use App\Http\Controllers\Authentication\GithubAuthenticationController;
 
 
@@ -46,6 +47,12 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id) {
  * External authentication through OAuth2 and OICD
  */
 Route::group(['prefix' => 'auth'], function () {
+
+    Route::get('/slices', [SlicesAuthenticationController::class, 'redirect'])
+        ->name('auth.slices');
+
+    Route::get('/slices/callback', [SlicesAuthenticationController::class, 'callback'])
+        ->name('auth.slices.callback');
 
     Route::get('/github', [GithubAuthenticationController::class, 'redirect'])
         ->name('auth.github');

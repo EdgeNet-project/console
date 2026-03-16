@@ -32,7 +32,7 @@ const Application = () => {
 
 
                 <AppShell.Navbar withBorder={false}>
-                    <AppShell.Section py="xl">
+                    <AppShell.Section py="sm">
                         <Anchor target="_blank" underline="never" href={config.app.url}>
                             <Image src={config.navigation.image}
                                    alt={config.name}

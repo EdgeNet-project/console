@@ -66,6 +66,8 @@ class GithubAuthenticationController extends Controller
             ]);
         }
 
+        $user->markEmailAsVerified();
+
         $token = $user->createToken('console');
 
         activity('auth')

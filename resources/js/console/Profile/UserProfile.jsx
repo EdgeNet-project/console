@@ -2,12 +2,14 @@ import React from "react";
 import { useAuthentication } from "../Authentication";
 import {Button, Group, Text, Stack, Title, SimpleGrid} from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-import {UserAvatar, UserInfo} from "../User/components/UserAvatar";
+import {UserAvatar} from "../User/components/UserAvatar";
 import UserProfileEdit from "./UserProfileEdit";
 import Panel from "../Components/Panel";
 import UserRequests from "./UserRequests";
 import PanelGrid from "../Components/PanelGrid";
 import Tokens from "../Tokens";
+import UserOAuth from "./UserOAuth.jsx";
+
 
 export default function UserProfile() {
     const { user, logout } = useAuthentication();
@@ -32,6 +34,8 @@ export default function UserProfile() {
                            <UserProfileEdit key="user_profile_edit" />,
                            <Button size="xs" onClick={handleLogout} key="user_logout">Logout</Button>
                        ]}>
+                    <UserOAuth user={user} />
+
                 </Panel>
 
                 <UserRequests />

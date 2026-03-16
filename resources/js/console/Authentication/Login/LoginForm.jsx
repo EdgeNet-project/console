@@ -1,16 +1,14 @@
 import {
-    Checkbox,
     Button,
     Text,
     PasswordInput, TextInput,
-    Anchor, Stack, Divider, Grid, Image, Container, Center, Group, Box
+    Anchor, Stack, Divider, Group, Box
 } from '@mantine/core';
 import { useAuthentication } from "../AuthenticationProvider"
 import {useForm} from "@mantine/form";
-import OAuthLoginButton from "./OAuthLoginButton.jsx";
-import { GithubIcon } from '@mantinex/dev-icons';
-import classes from './LoginForm.module.css';
 import React from "react";
+import GithubLoginButton from "./GitHubLoginButton.jsx";
+import SlicesLoginButton from "./SlicesLoginButton.jsx";
 
 
 const GoogleIcon = (props) => {
@@ -48,27 +46,7 @@ const GoogleLogin = (props) => {
     return <Button leftIcon={<GoogleIcon />} variant="default" color="gray" {...props} />;
 }
 
-const GithubLogin = () => {
-    const {setToken} = useAuthentication()
 
-    const handleSuccess = ({ token, user }) => {
-        setToken(token);
-    };
-
-    const handleError = (error) => {
-        console.error("OAuth error:", error);
-    };
-
-    return (
-        <OAuthLoginButton provider="GitHub"
-                          icon={<GithubIcon size={16} />}
-                          authUrl="/auth/github" classes={classes}
-                          onSuccess={handleSuccess}
-                          onError={handleError}
-        >
-        </OAuthLoginButton>
-    );
-}
 
 export function LoginForm() {
     const { login, loading, error } = useAuthentication();
@@ -114,8 +92,9 @@ export function LoginForm() {
                 <Divider my="md" />
 
                 <Stack gap="xs">
-                    <GithubLogin />
 
+                    <SlicesLoginButton />
+                    <GithubLoginButton />
                     {/*<Divider my="md" />*/}
 
                     <Group gap="xs" justify="center" mt="md">
