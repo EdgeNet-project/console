@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Ovh\Api;
 use RenokiCo\PhpK8s\K8s;
 use RenokiCo\PhpK8s\Kinds\K8sPod;
+use RenokiCo\PhpK8s\KubernetesCluster;
 
 class test extends Command
 {
@@ -31,6 +32,15 @@ class test extends Command
      */
     public function handle(EdgenetAdmin $edgenetAdmin)
     {
+        $cluster = $edgenetAdmin->getCluster();
+        dd($cluster->node()->all());
+
+        $cluster = KubernetesCluster::fromUrl('https://hades.edge-net.io:6443')
+            ->withCertificate('/tmp/client.crt')
+            ->withPrivateKey('/tmp/client.key')
+            ->withCaCertificate('/tmp/ca.crt');
+        dd($cluster->node()->all());
+
 
         $cluster = $edgenetAdmin->getCluster();
 

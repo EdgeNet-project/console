@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Container\Container;
-use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
+use RenokiCo\PhpK8s\KubernetesCluster;
 
 class EdgenetAdmin {
 
@@ -11,8 +11,10 @@ class EdgenetAdmin {
 
     public function __construct(Container $container = null)
     {
-        $this->cluster = K8s::getCluster()
-            ->withCaCertificate(config('edgenet.cluster.ca'));
+        $this->cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.api'))
+            ->withCaCertificate(config('edgenet.cluster.ca'))
+            ->withPrivateKey(config('edgenet.cluster.client.key'))
+            ->withCertificate(config('edgenet.cluster.client.cert'));
     }
 
     public function getCluster()

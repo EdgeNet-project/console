@@ -11,9 +11,8 @@ class Edgenet {
 
     public function __construct(Container $container = null)
     {
-
         $this->cluster = KubernetesCluster::fromUrl(config('edgenet.cluster.api'))
-            ->withCaCertificate(config('edgenet.cluster.ca'))
+            ->withCaCertificate(base_path('.kube/ca.crt'))
             ->withToken(request()->bearerToken());
     }
 

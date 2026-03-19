@@ -1,0 +1,3 @@
+# KUBERNETES operations notes
+
+## Certificates

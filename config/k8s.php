@@ -29,8 +29,8 @@ return [
 
         'kubeconfig' => [
             'driver' => 'kubeconfig',
-            'path' => env('KUBECONFIG_PATH', '/Users/moray/.kube/edgenet_admin.cfg'),
-            'context' => env('KUBECONFIG_CONTEXT', 'kubernetes-admin@kubernetes'),
+            'path' => base_path( env('KUBECONFIG_PATH','.kube/super-admin.conf')),
+            'context' => env('KUBECONFIG_CONTEXT', 'kubernetes-super-admin@kubernetes'),
         ],
 
         /*
