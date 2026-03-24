@@ -15,7 +15,7 @@ const SlicesLoginButton = () => {
 
     return (
         <OAuthLoginButton provider="Slices"
-                          icon={<Image h={16} src="/images/slices/slices-ri-white-color.png" />}
+                          icon={<div><Image h={16} fit="contain" src="/images/slices/slices-ri-white-color.png" /></div>}
                           authUrl="/auth/slices"
                           onSuccess={handleSuccess}
                           onError={handleError}
