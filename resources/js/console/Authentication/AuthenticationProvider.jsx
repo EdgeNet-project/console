@@ -252,9 +252,11 @@ const AuthenticationProvider = ({children}) => {
             step = 1
         }
 
-        if (hasAcceptedAup()) {
+        if (hasEmailVerified() && hasAcceptedAup()) {
             step = 2
         }
+
+        console.log('step', step)
 
         // if (hasFinishedRegistration()) {
         //     step = 3

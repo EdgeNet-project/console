@@ -3,32 +3,35 @@ import {
     Title,
     Stepper,
     Group,
-    Container, Image, Stack, Text
+    Container, Image, Stack, Text, SimpleGrid, Grid
 } from '@mantine/core';
 
 import AUP from "../Registration/AUP";
 import EmailVerificationStep from "../Registration/EmailVerificationStep";
+import config from "../../../config.js";
 
 export default function Registration({step = 1}) {
 
     return (
-            <Container size="sm" my="md">
-                <Stack>
-                    <Group gap="sm" justify="flex-start">
-                        <div><Image src="/images/edgenet-logo.png" alt="EdgeNet" height={60} fit="contain" /></div>
-                        <Title order={1} weight={400}>EdgeNet</Title>
-                    </Group>
-                    <Text>
-                        Welcome to the EdgeNet platform, please complete your registration.
-                    </Text>
-
-                    <Stepper active={step} onStepClick={null} breakpoint="sm">
-                        <Stepper.Step label="Verification" description="Verify your email">
-                            <EmailVerificationStep />
-                        </Stepper.Step>
-                        <Stepper.Step label="Terms of service" description="Review our policies">
-                            <AUP />
-                        </Stepper.Step>
+        <>
+            <Stack align="center" justify="center" bg="#EBF2FC" py="sm">
+                <div>
+                    <Image src={config.logo.image}
+                           alt={config.app.name}
+                           h={config.logo.height}
+                           w="auto"
+                           fit="contain" />
+                </div>
+                <Text>
+                    Welcome to the PlanetLab platform, please complete your registration.
+                </Text>
+            </Stack>
+            <Grid>
+                <Grid.Col span="auto" align="center" py="lg"
+                          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Stepper active={step} onStepClick={null} breakpoint="sm" orientation="vertical">
+                        <Stepper.Step label="Verification" description="Verify your email" />
+                        <Stepper.Step label="Terms of service" description="Review our policies" />
                         {/*<Stepper.Step label="Your Team" description="Join or create a Team">*/}
                         {/*    <RegistrationTeam />*/}
                         {/*</Stepper.Step>*/}
@@ -42,7 +45,13 @@ export default function Registration({step = 1}) {
                         {/*    The EdgeNet Team*/}
                         {/*</Stepper.Completed>*/}
                     </Stepper>
-                </Stack>
-            </Container>
+                </Grid.Col>
+                <Grid.Col span={6} py="lg">
+                    {step === 0 && <EmailVerificationStep />}
+                    {step === 1 && <AUP />}
+                </Grid.Col>
+                <Grid.Col span="auto" py="lg"></Grid.Col>
+            </Grid>
+        </>
     );
 }

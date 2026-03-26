@@ -11,7 +11,7 @@ import {useDisclosure} from "@mantine/hooks";
 
 const UserRegistrationSuccess = () => {
     return (
-        <>
+        <Box w={400}>
             <Text mt="md">
                 Thank you for registering.
             </Text>
@@ -25,7 +25,7 @@ const UserRegistrationSuccess = () => {
                     Go back to the login page
                 </Anchor>
             </Text>
-        </>
+        </Box>
     )
 }
 

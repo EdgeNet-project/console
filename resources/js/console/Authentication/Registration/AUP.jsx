@@ -34,10 +34,10 @@ export default function AUP() {
 
     return (
         <Stack>
-            <Title>PlaneLab Acceptable Use Policy</Title>
+            <Title align="center">PlanetLab Acceptable Use Policy</Title>
             <Text c="dimmed">
-                Please review the PlaneLab Acceptable Use Policy before starting to use
-                the PlaneLab testbed.
+                Please review the PlanetLab Acceptable Use Policy before starting to use
+                the PlanetLab testbed.
             </Text>
 
             <AUPText />
@@ -45,7 +45,7 @@ export default function AUP() {
             <Group justify="space-between">
                 <Checkbox value={agree}
                           onClick={() => setAgree(!agree)}
-                          label="I agree to the PlaneLab Acceptable Use Policy" />
+                          label="I agree to the PlanetLab Acceptable Use Policy" />
                 <Button disabled={!agree || loading} onClick={setAUPAccepted}>
                     Submit
                 </Button>
@@ -58,10 +58,11 @@ export default function AUP() {
 
 }
 
-const AUPText = () => <ScrollArea h={window.innerHeight / 2} type="always" offsetScrollbars scrollbarSize={20}>
-        <h3>The Nature of the PlaneLab Testbed</h3>
+const AUPText = () =>
+    <ScrollArea h={window.innerHeight / 2} type="always" offsetScrollbars scrollbarSize={20}>
+        <h3>The Nature of the PlanetLab Testbed</h3>
         <p>
-            PlaneLab consists of computational resources hosted by organizations
+            PlanetLab consists of computational resources hosted by organizations
             (principally research organizations like universities) that donate their own time, rack space,
             and network connectivity for the good of the community. As an overlay, PlanetLab is not a
             "testbed" in the usual sense of a controlled environment for experiments.
@@ -144,7 +145,7 @@ const AUPText = () => <ScrollArea h={window.innerHeight / 2} type="always" offse
             misbehaving services, it is our policy to put the complainant in direct contact with the researcher
             who is responsible for the service.</p>
         <p>
-            To report a suspected violation contact: <a href="mailto:support@edge-net.org">PlanetLab Support</a>.
+            To report a suspected violation contact: <a href="mailto:support@planetlab.io">PlanetLab Support</a>.
         </p>
         <h3>No Guarantees</h3>
         <ul>
