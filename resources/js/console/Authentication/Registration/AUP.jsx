@@ -250,7 +250,7 @@ const AUPText = () =>
             </li>
         </ul>
         <p>
-            To report a suspected violation of this policy, contact: <a href="mailto:support@edge-net.org">support@edge-net.org</a>.
+            To report a suspected violation of this policy, contact: <a href="mailto:support@planetlab.io">support@planetlab.io</a>.
         </p>
         <p>
             In case of any breach with this Acceptable Use Policy, Sorbonne Université, on behalf of the PlanetLab
