@@ -11,7 +11,7 @@ import WorkspaceView from "../../Workspaces";
 
 import NodeList from "../../Nodes/NodeList";
 import NodeView from "../../Nodes";
-import CreateNode from "../../Nodes/CreateNode";
+import CreateNode from "../../Nodes/CreateNode.jsx";
 
 import RequestsView from "../../Requests";
 
