@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Kubernetes;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -57,6 +58,7 @@ class Kernel extends HttpKernel
 
         'kubernetes' => [
             'throttle:60,1',
+            \App\Http\Middleware\Kubernetes::class,
         ],
 
         'edgenet' => [

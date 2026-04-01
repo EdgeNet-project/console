@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
  *
  * This controller will be used by the kubernetes API server to verify user tokens
  */
-class AuthenticationController extends Controller
+class AuthnController extends Controller
 {
     public function webhook(Request $request)
     {
@@ -119,34 +119,4 @@ class AuthenticationController extends Controller
         return response()->json($response);
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
-     *
-     * TODO: kubernetes dashboard authentication
-     * https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/README.md#authorization-header
-     */
-    function dashboard(Request $request)
-    {
-        //$credentials = $request->only('email', 'password');
-
-        Log::channel('kubernetes')->info(var_export($request, true));
-
-        return response('', 200);
-
-        $this->middleware('auth:api');
-
-        if (!$request->user()) {
-            //Auth:attempt
-        }
-        Log::channel('kubernetes')->info(var_export($request->user(), true));
-//        if () {
-            // Authentication passed...
-            //return redirect()->intended('dashboard');
-//        }
-
-        //return view('auth.login');
-        // login
-
-    }
 }

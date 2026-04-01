@@ -75,6 +75,7 @@ class UpdateWorkspaceRolesJob implements ShouldQueue
                     K8sPod::class,
                     K8sPod::class . '/log',
                     K8sPod::class . '/exec',
+                    K8sPod::class . '/attach',
                     K8sService::class,
                     K8sConfigMap::class,
                     K8sSecret::class,
