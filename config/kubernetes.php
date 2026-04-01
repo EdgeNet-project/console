@@ -6,5 +6,7 @@ return [
         'prefix' => '/api/v1'
     ],
     'dashboard' => env('KUBERNETES_DASHBOARD_SERVER','https://dashboard.edge-net.org'),
-
+    'audit' => [
+        'token' => env('KUBERNETES_AUDIT_TOKEN'),
+    ],
 ];

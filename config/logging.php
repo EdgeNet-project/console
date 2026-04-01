@@ -47,6 +47,13 @@ return [
             'level' => 'info',
         ],
 
+        'audit-webhook' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/audit-webhook.log'),
+            'level' => 'info',
+            'replace_placeholders' => true,
+        ],
+
         'nodes' => [
             'driver' => 'single',
             'path' => storage_path('logs/nodes.log'),
