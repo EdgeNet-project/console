@@ -25,29 +25,47 @@ const DownloadKubeConfigDialog = ({onClose, workspace, user}) => {
             return
         }
 
-        const config = `apiVersion: v1
+        const configApiDirect = `apiVersion: v1
 kind: Config
 clusters:
-- name: edgenet-cluster
+- name: planetlab-cluster
   cluster:
     certificate-authority-data: ` + cluster.ca + `
     server: ` + cluster.server + `
 contexts:
-- name: edgenet
+- name: planetlab
   context:
-    cluster: edgenet-cluster
+    cluster: planetlab-cluster
     namespace: ` + workspace.namespace + `
     user: ` + user.email + `
-current-context: edgenet
+current-context: planetlab
+users:
+- name: ` + user.email + `
+  user:
+    token: ` + token.plainTextToken;
+
+        const configLB = `apiVersion: v1
+kind: Config
+clusters:
+- name: planetlab-cluster
+  cluster:
+    server: api.planetlab.io
+contexts:
+- name: planetlab
+  context:
+    cluster: planetlab-cluster
+    namespace: ` + workspace.namespace + `
+    user: ` + user.email + `
+current-context: planetlab
 users:
 - name: ` + user.email + `
   user:
     token: ` + token.plainTextToken;
 
         const element = document.createElement("a");
-        const file = new Blob([config], {type: 'text/yaml'});
+        const file = new Blob([configLB], {type: 'text/yaml'});
         element.href = URL.createObjectURL(file);
-        element.download = "edgenet-" + workspace.name + "-" + user.email + ".yaml";
+        element.download = "planetlab-" + workspace.name + ".yaml";
         document.body.appendChild(element); // Required for this to work in FireFox
         element.click();
     }
