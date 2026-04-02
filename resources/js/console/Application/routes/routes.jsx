@@ -22,7 +22,8 @@ import AdminWorkspaces from "../../Admin/Workspaces";
 import AdminUsers from "../../Admin/Users";
 import AdminNodes from "../../Admin/Nodes";
 import AdminActivity from "../../Admin/Activity";
-
+import AdminAudit from "../../Admin/Audit";
+import Admin from "../../Admin/Admin.jsx";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/admin",
+                element: <Admin />,
                 children: [
                     {
                         path: "teams",
@@ -56,6 +58,10 @@ const router = createBrowserRouter([
                     {
                         path: "activity",
                         element: <AdminActivity />,
+                    },
+                    {
+                        path: "audit",
+                        element: <AdminAudit />,
                     },
                 ]
             },

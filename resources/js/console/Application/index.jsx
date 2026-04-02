@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Anchor, AppShell, Burger, Container, Group, Image, Text, ScrollArea, Stack} from "@mantine/core";
+import {Anchor, AppShell, Burger, Container, Group, Image, Text, ScrollArea, Stack, Divider} from "@mantine/core";
 import {useDisclosure, useMediaQuery} from "@mantine/hooks";
 
 import NavigationMenu from "../Navigation/NavigationMenu";
@@ -8,6 +8,7 @@ import {Outlet} from "react-router-dom";
 import NavigationAccount from "../Navigation/NavigationAccount";
 
 import config from "../../config";
+import NavigationAdmin from "../Navigation/NavigationAdmin.jsx";
 
 const Application = () => {
     const [opened, { toggle }] = useDisclosure();
@@ -43,8 +44,12 @@ const Application = () => {
                     </AppShell.Section>
                     <AppShell.Section grow component={ScrollArea}>
                         <NavigationMenu />
+                        <Divider label="" my="sm" />
+                        <NavigationAdmin />
                     </AppShell.Section>
                     <AppShell.Section py="sm" >
+
+
                         <NavigationAccount />
                     </AppShell.Section>
                 </AppShell.Navbar>

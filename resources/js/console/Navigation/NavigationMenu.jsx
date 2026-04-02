@@ -7,7 +7,6 @@ import {
 } from "@mantine/core";
 import NavigationLink from "./NavigationLink";
 import NavigationTeams from "./NavigationTeams";
-import NavigationAdmin from "./NavigationAdmin";
 import {useAuthentication} from "../Authentication";
 
 
@@ -35,7 +34,6 @@ export default function NavigationMenu() {
             <Divider label="Nodes" mt="sm" />
             <NavigationLink to="nodes" label="Nodes" icon={<IconServer size="1rem" stroke={1.5} />}/>
 
-            <NavigationAdmin />
         </ScrollArea>
 
         </>

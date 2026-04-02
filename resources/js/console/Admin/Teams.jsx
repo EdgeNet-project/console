@@ -51,28 +51,20 @@ export default function TeamList() {
     ));
 
     return (
-        <>
-            <Stack py="lg">
-                <Group justify="space-between">
-                    <Title order={1}>EdgeNet Teams</Title>
-                </Group>
-            </Stack>
-            <Paper p="md">
-                <Table.ScrollContainer minWidth={800}>
-                    <Table verticalSpacing="sm">
-                        <Table.Thead>
-                            <Table.Tr>
-                                <Table.Th>Name</Table.Th>
-                                <Table.Th>Users</Table.Th>
-                                <Table.Th>Workspaces</Table.Th>
-                                <Table.Th></Table.Th>
-                            </Table.Tr>
-                        </Table.Thead>
-                        <Table.Tbody>{rows}</Table.Tbody>
-                    </Table>
-                </Table.ScrollContainer>
-            </Paper>
-        </>
+
+            <Table.ScrollContainer minWidth={800}>
+                <Table verticalSpacing="sm">
+                    <Table.Thead>
+                        <Table.Tr>
+                            <Table.Th>Name</Table.Th>
+                            <Table.Th>Users</Table.Th>
+                            <Table.Th>Workspaces</Table.Th>
+                            <Table.Th></Table.Th>
+                        </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>{rows}</Table.Tbody>
+                </Table>
+            </Table.ScrollContainer>
     );
 
 }

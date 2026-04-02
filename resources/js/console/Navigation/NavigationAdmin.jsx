@@ -1,21 +1,32 @@
-import {Divider} from "@mantine/core";
+import {Divider, NavLink} from "@mantine/core";
 import {
     IconActivity,
     IconBoxPadding as IconWorkspace,
     IconServer,
     IconSitemap as IconTeam,
-    IconUsers
+    IconUsers, IconUserShield
 } from "@tabler/icons-react";
 import NavigationLink from "./NavigationLink";
 import {useAuthentication} from "../Authentication";
+import {NavLink as RouterNavLink, useMatch} from "react-router-dom";
 
 export default () => {
     const {user} = useAuthentication()
+    const match = useMatch('/admin/*')
 
     if (!user.admin) {
         return null;
     }
 
+    return (
+    <NavLink
+        component={RouterNavLink}
+        to="/admin"
+        label="Admin"
+        active={match}
+        leftSection={<IconUserShield size="1rem" stroke={1.5} />}
+    />
+    )
     return (
         <>
             <Divider label="Admin" mt="sm" />

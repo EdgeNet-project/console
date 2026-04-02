@@ -55,13 +55,7 @@ export default () => {
     ));
 
     return (
-        <>
-            <Stack py="lg">
-                <Group justify="space-between">
-                    <Title order={1}>Activity</Title>
-                </Group>
-            </Stack>
-            <Paper p="md">
+
                 <Table.ScrollContainer minWidth={800}>
                     <Table verticalSpacing="sm">
                         <Table.Thead>
@@ -75,8 +69,7 @@ export default () => {
                         <Table.Tbody>{rows}</Table.Tbody>
                     </Table>
                 </Table.ScrollContainer>
-            </Paper>
-        </>
+
     );
 
 }

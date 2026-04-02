@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\Admin\WorkspaceController as AdminWorkspaceControll
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Admin\NodeController as AdminNodeController;
 use App\Http\Controllers\Api\Admin\ActivityController as AdminActivityController;
+use App\Http\Controllers\Api\Admin\AuditController as AdminAuditController;
 
 Route::get('/tenants', [ TenantController::class, 'list' ]);
 
@@ -143,6 +144,13 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::group([
             'prefix' => 'activity',
             'controller' => AdminActivityController::class
+        ], function () {
+            Route::get('/', 'list');
+        });
+
+        Route::group([
+            'prefix' => 'audit',
+            'controller' => AdminAuditController::class
         ], function () {
             Route::get('/', 'list');
         });
