@@ -5,6 +5,7 @@ import {useAuthentication} from "../Authentication";
 import {CreateTeamButton} from "../Teams/CreateTeam";
 import {JoinTeamButton} from "../Teams/JoinTeam";
 import Panel from "../Components/Panel";
+import UserRole from "../User/components/UserRole.jsx";
 
 const AlertUserTeam = () => {
     return (
@@ -48,9 +49,7 @@ export default () => {
                             </Text>
                         </Table.Td>
                         <Table.Td>
-                            <Badge size="xs" color="pink" variant="light">
-                                {team.role}
-                            </Badge>
+                            <UserRole role={team.role} />
                         </Table.Td>
                     </Table.Tr>
                 )}

@@ -4,6 +4,7 @@ import {useAuthentication} from "../Authentication";
 import Panel from "../Components/Panel";
 import {JoinWorkspaceButton} from "../Workspaces/JoinWorkspace";
 import {Link} from "react-router-dom";
+import UserRole from "../User/components/UserRole.jsx";
 
 const AlertUserWorkspaces = ({create}) => {
     return (
@@ -44,9 +45,7 @@ export default () => {
                                 </Text>
                             </Table.Td>
                             <Table.Td>
-                                <Badge size="xs" color="pink" variant="light">
-                                    {workspace.role}
-                                </Badge>
+                                <UserRole role={workspace.role} />
                             </Table.Td>
                         </Table.Tr>
                     )}

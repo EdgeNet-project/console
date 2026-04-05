@@ -4,6 +4,7 @@ import {IconInfoCircle, IconUsers} from "@tabler/icons-react";
 import {UserInfo} from "../User/components/UserAvatar";
 import Panel from "../Components/Panel";
 import UserRole from "../User/components/UserRole";
+import UserEnabled from "../User/components/UserEnabled.jsx";
 
 const AlertWorkspaceUsers = () => {
     return (
@@ -46,10 +47,7 @@ const TeamUsers = ({team}) => {
                         </Table.Td>
                         <Table.Td>
                             <Stack align="flex-start" justify="flex-start" spacing="xs">
-                                {user.enabled ?
-                                    <Badge size="xs">Enabled</Badge> :
-                                    <Badge size="xs" color="gray">Disabled</Badge>
-                                }
+                                <UserEnabled enabled={user.enabled} />
                                 <UserRole role={user.pivot.role} />
                             </Stack>
                         </Table.Td>
