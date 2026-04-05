@@ -39,9 +39,14 @@ const UserRequestManage = ({request, onClose}) => {
                     <UserInfo user={request.user} />
                     <UserRequestType request={request} />
                     {request.message && <Text size="sm">{request.message}</Text>}
-                    {request.data &&
-                            <Code block>{JSON.stringify(request.data, null, 4)}</Code>
-                    }
+                    <Table withTableBorder withColumnBorders>
+                        {request.data && Object.entries(request.data).map((v, i) =>
+                            <Table.Tr key={'user-request-data-' + i}>
+                                <Table.Td style={{backgroundColor: '#f5f5f5'}}>{v[0]}</Table.Td>
+                                <Table.Td>{v[1]}</Table.Td>
+                            </Table.Tr>)
+                        }
+                    </Table>
                     <Group justify="flex-end">
                         <Button color="gray" variant="subtle" onClick={onClose}>Cancel</Button>
                         <Button color="red" onClick={denyRequest}>Deny</Button>
@@ -70,7 +75,7 @@ export default () => {
                 pending requests from other users for your team.
             </Text>
             <Paper p="md">
-                <Table>
+                <Table stickyHeader>
                     <Table.Thead>
                     <Table.Tr>
                         <Table.Th>User</Table.Th>
@@ -92,7 +97,14 @@ export default () => {
                             </Table.Td>
                             <Table.Td>
                                 {r.message && <Text size="sm">{r.message}</Text>}
-                                {r.data && <Code block>{JSON.stringify(r.data, null, 4)}</Code>}
+                                <Table withTableBorder withColumnBorders>
+                                    {r.data && Object.entries(r.data).map((v, i) =>
+                                        <Table.Tr key={'user-request-data-' + i}>
+                                            <Table.Td style={{backgroundColor: '#f5f5f5'}}>{v[0]}</Table.Td>
+                                            <Table.Td>{v[1]}</Table.Td>
+                                        </Table.Tr>)
+                                    }
+                                </Table>
                             </Table.Td>
                             <Table.Td>
                                 <UserRequestStatus status={r.status} />

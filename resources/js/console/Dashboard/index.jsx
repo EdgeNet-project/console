@@ -34,7 +34,7 @@ export default () => {
 
     return (
         <>
-            <Stack pt="xl">
+            <Stack>
                 <RequestsAlert  />
             </Stack>
             <PanelGrid>

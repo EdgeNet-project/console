@@ -1,6 +1,7 @@
 import React from "react";
 import {Stack, Title} from "@mantine/core";
 import UserRequestList from "./UserRequestList";
+import PanelTitle from "../Components/PanelTitle.jsx";
 
 export default () => {
 
@@ -8,7 +9,7 @@ export default () => {
 
     return (
     <>
-        <Title order={1} py="lg">Requests</Title>
+        <PanelTitle title={["Requests"]} />
         <Stack>
             <UserRequestList />
         </Stack>

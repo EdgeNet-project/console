@@ -1,12 +1,13 @@
 import {useParams} from "react-router";
 import axios from "axios";
-import {Group, SimpleGrid, Stack, Title} from "@mantine/core";
+import { Stack } from "@mantine/core";
 
 import React, {useEffect, useState} from "react";
 import TeamWorkspaces from "./TeamWorkspaces";
 import TeamUsers from "./TeamUsers";
 import TeamInfo from "./components/TeamInfo";
 import PanelGrid from "../Components/PanelGrid";
+import PanelTitle from "../Components/PanelTitle.jsx";
 
 
 export default () => {
@@ -47,26 +48,15 @@ export default () => {
     }
 
     return (
-        <Stack>
-            {/*<SimpleGrid cols={2}>*/}
-            {/*    <Breadcrumbs separator="→" mt="xs">{workspace.shortname}</Breadcrumbs>*/}
-
-            {/*    <Group align="center" position="right">*/}
-            {/*        <JoinWorkspaceDialog />*/}
-            {/*    </Group>*/}
-            {/*</SimpleGrid>*/}
-            <Stack my="lg">
-                <Group justify="space-between">
-                    <Title order={1}>Team → {team.fullname}</Title>
-                    {/*<Button onClick={() => navigate('/nodes/create')}>Add a Node</Button>*/}
-                </Group>
+        <>
+            <PanelTitle title={["Team", team.fullname]}/>
+            <Stack py="md">
                 <TeamInfo team={team} />
             </Stack>
-
             <PanelGrid>
                 <TeamWorkspaces team={team} />
                 <TeamUsers team={team} />
             </PanelGrid>
-        </Stack>
+        </>
     )
 }

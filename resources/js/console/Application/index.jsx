@@ -47,14 +47,12 @@ const Application = () => {
                         <NavigationAdmin />
                     </AppShell.Section>
                     <AppShell.Section py="sm" >
-
-
                         <NavigationAccount />
                     </AppShell.Section>
                 </AppShell.Navbar>
 
                 <AppShell.Main style={{backgroundColor: 'var(--mantine-primary-color-light)'}}>
-                    <Container size={medium ? large ? "xxl" : "lg" : ''}>
+                    <Container size={medium ? large ? "xxl" : "lg" : ''} py="lg">
                         <Outlet />
                     </Container>
                 </AppShell.Main>

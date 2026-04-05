@@ -9,6 +9,7 @@ import UserRequests from "./UserRequests";
 import PanelGrid from "../Components/PanelGrid";
 import Tokens from "../Tokens";
 import UserOAuth from "./UserOAuth.jsx";
+import PanelTitle from "../Components/PanelTitle.jsx";
 
 
 export default function UserProfile() {
@@ -21,11 +22,8 @@ export default function UserProfile() {
     }
 
     return (
-        <Stack py="lg">
-            <Group justify="space-between">
-                <Title order={1}>Your user</Title>
-            </Group>
-
+        <>
+            <PanelTitle title={["Profile", user.firstname + ' ' + user.lastname]} />
             <PanelGrid>
                 <Panel title={user.firstname + ' ' + user.lastname}
                        icon={<UserAvatar name={user.firstname + ' ' + user.lastname} email={user.email} />}
@@ -41,6 +39,6 @@ export default function UserProfile() {
                 <UserRequests />
                 <Tokens />
             </PanelGrid>
-        </Stack>
+        </>
     );
 }

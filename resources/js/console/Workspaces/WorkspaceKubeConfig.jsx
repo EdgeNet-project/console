@@ -95,12 +95,12 @@ users:
             <Stack>
                 <Text size="sm">
                     You can download a Kubernetes configuration file to use to access
-                    your workspace <b>{workspace.name}</b> on the EdgeNet cluster via kubectl.
+                    your workspace <b>{workspace.name}</b> on the PlanetLab cluster via kubectl.
                 </Text>
                 <Alert icon={<IconInfoCircle size="1rem"/>} color="orange" size="sm">
                     By downloading this configuration file you will invalidate any previous configuration that
-                    had been downloaded. <br />
-                    A new authentication token will be created that will supersede the previous one.
+                    had been downloaded.
+                    A <b>new authentication token will be created</b> that will supersede the previous one.
                 </Alert>
                 <Text size="sm">
 

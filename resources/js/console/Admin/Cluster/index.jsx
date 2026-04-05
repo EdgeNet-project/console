@@ -1,11 +1,13 @@
 import {Outlet, useLocation, useNavigate, useParams} from 'react-router-dom';
-import {Breadcrumbs, Paper, Tabs, Title} from '@mantine/core';
+import {Breadcrumbs, Paper, Tabs, Text} from '@mantine/core';
 import {
     IconLogs, IconNetwork,
     IconServer,
 } from "@tabler/icons-react";
 
 import classes from '../Admin.module.css';
+import PanelTitle from "../../Components/PanelTitle.jsx";
+import React from "react";
 
 function Index() {
     const navigate = useNavigate();
@@ -16,10 +18,7 @@ function Index() {
 
     return (
         <>
-            <Breadcrumbs separator="→" separatorMargin="md" mt="xs">
-                <Title order={2}>Administration</Title>
-                <Title order={2}>Cluster</Title>
-            </Breadcrumbs>
+            <PanelTitle title={["Administration", "Cluster"]}/>
             <Tabs
                 variant="none"
                 value={activeTab}

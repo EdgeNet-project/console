@@ -1,5 +1,5 @@
 import {Outlet, useLocation, useNavigate, useParams} from 'react-router-dom';
-import {Breadcrumbs, Paper, Tabs, Title} from '@mantine/core';
+import {Breadcrumbs, Paper, Tabs, Text, Title} from '@mantine/core';
 import {
     IconActivity,
     IconBoxPadding as IconWorkspace,
@@ -8,6 +8,8 @@ import {
 } from "@tabler/icons-react";
 
 import classes from '../Admin.module.css';
+import PanelTitle from "../../Components/PanelTitle.jsx";
+import React from "react";
 
 function Index() {
     const navigate = useNavigate();
@@ -18,10 +20,7 @@ function Index() {
 
     return (
         <div>
-            <Breadcrumbs separator="→" separatorMargin="md" mt="xs">
-                <Title order={2}>Administration</Title>
-                <Title order={2}>Console</Title>
-            </Breadcrumbs>
+            <PanelTitle title={["Administration", "Console"]}/>
             <Tabs
                 variant="none"
                 value={activeTab}

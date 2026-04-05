@@ -1,10 +1,25 @@
 import {useEffect, useState} from "react";
 import {
     Table,
-    Text, Box
+    Text, Box, Group
 } from '@mantine/core';
 import dayjs from "dayjs";
 import axios from "axios";
+
+const ProtocolIdentifier = ({identifier}) => {
+    switch (identifier) {
+        case 1:
+            return <Text size="sm" c="red">ICMP</Text>
+        case 2:
+            return <Text size="sm" c="orange">IGMP</Text>
+        case 17:
+            return <Text size="sm" c="blue">UDP</Text>
+        case 6:
+            return <Text size="sm" c="green">TCP</Text>
+        default:
+            return <Text size="sm">{identifier}</Text>
+    }
+}
 
 export default () => {
     const [ flows, setFlows ] = useState([]);
@@ -82,7 +97,10 @@ export default () => {
                         <Text size="xs" c="dimmed">TP: {item.throughput.toFixed(2)} bps</Text>
                     )}
                     <Text size="xs" fw={700} mt="xs">Protocol:</Text>
-                    <Text size="sm">{item.protocolIdentifier} ({item.tcpState || 'N/A'})</Text>
+                    <Group gap="xs">
+                        <ProtocolIdentifier identifier={item.protocolIdentifier} />
+                        <Text size="sm">({item.tcpState || 'N/A'})</Text>
+                    </Group>
                 </Box>
             </Table.Td>
 

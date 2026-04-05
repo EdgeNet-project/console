@@ -9,13 +9,14 @@ import {
     Container,
     Button,
     Title,
-    ActionIcon, Paper, Stack
+    ActionIcon, Paper, Stack, Breadcrumbs
 } from '@mantine/core';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import NodeStatus from "./components/NodeStatus";
 import NodeType from "./components/NodeType";
+import PanelTitle from "../Components/PanelTitle.jsx";
 
 export default function NodeList() {
     const [ nodes, setNodes ] = useState([]);
@@ -81,14 +82,14 @@ export default function NodeList() {
 
     return (
         <>
-            <Stack py="lg">
+            <PanelTitle title={["Resources", "Nodes"]}/>
+            <Stack py="md">
                 <Group justify="space-between">
-                    <Title order={1}>Nodes</Title>
+                    <Text>
+                        The list of nodes you have contributed to EdgeNet.
+                    </Text>
                     <Button onClick={() => navigate('/nodes/create')}>Add a Node</Button>
                 </Group>
-                <Text>
-                    The list of nodes you have contributed to EdgeNet.
-                </Text>
             </Stack>
             <Paper p="md">
                 <Table.ScrollContainer minWidth={800}>
