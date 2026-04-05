@@ -18,7 +18,7 @@ class TenantController extends Controller
         $tenants = Tenant::where([
 //            ['enabled', true],
             //['name', 'lip6-lab']
-        ])->orderBy('name')->get();
+        ])->with('sub_namespaces')->orderBy('name')->get();
 
         return response()->json($tenants);
 

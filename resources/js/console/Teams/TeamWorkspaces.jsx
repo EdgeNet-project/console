@@ -20,21 +20,22 @@ const AlertTeamWorkspaces = () => {
 
 const TeamWorkspaces = ({team}) => {
 
-    if (!team.subnamespaces || team.subnamespaces?.length <= 0) {
+    console.log('TeamWorkspaces', team)
+    if (!team.workspaces || team.workspaces?.length <= 0) {
         return <AlertTeamWorkspaces />
     }
 
     return (
         <Table>
             <Table.Tbody>
-                {team.subnamespaces.map(subnamespace =>
-                    <Table.Tr key={"userworkspaces_"+subnamespace.id}>
+                {team.workspaces.map(workspace =>
+                    <Table.Tr key={"workspace"+workspace.id}>
                         <Table.Td>
                             <Text fz="xs" c="dimmed">
-                                {subnamespace.namespace}
+                                {workspace.namespace}
                             </Text>
                             <Text fz="md">
-                                <Anchor component={Link} to={"/workspaces/" + subnamespace.id}>{subnamespace.name}</Anchor>
+                                <Anchor component={Link} to={"/workspaces/" + workspace.id}>{workspace.name}</Anchor>
                             </Text>
                         </Table.Td>
                     </Table.Tr>

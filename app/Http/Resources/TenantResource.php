@@ -17,7 +17,7 @@ class TenantResource extends JsonResource
         return [
             ...parent::toArray($request),
             'users' => $this->users,
-            'workspaces' => $this->subnamespaces
+            'workspaces' => $this->sub_namespaces
         ];
     }
 }
