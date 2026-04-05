@@ -1,10 +1,7 @@
 import {useEffect, useState} from "react";
 import {
     Table,
-    Text,
-    Group,
-    Title,
-    Paper, Stack, Box
+    Text, Box
 } from '@mantine/core';
 import dayjs from "dayjs";
 import axios from "axios";

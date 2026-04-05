@@ -1,18 +1,16 @@
 import {
     Table,
     Text,
-    Group,
-    Title,
-    Paper, Stack
+    Group, Stack
 } from '@mantine/core';
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {UserInfo} from "../User/components/UserAvatar";
-import TeamInfo from "../Teams/components/TeamInfo";
-import UserAdmin from "../User/components/UserAdmin";
-import UserEnabled from "../User/components/UserEnabled";
-import WorkspaceInfo from "../Workspaces/components/WorkspaceInfo";
-import UserRole from "../User/components/UserRole";
+import {UserInfo} from "../../User/components/UserAvatar";
+import TeamInfo from "../../Teams/components/TeamInfo";
+import UserAdmin from "../../User/components/UserAdmin";
+import UserEnabled from "../../User/components/UserEnabled";
+import WorkspaceInfo from "../../Workspaces/components/WorkspaceInfo";
+import UserRole from "../../User/components/UserRole";
 
 export default () => {
     const [ users, setUsers ] = useState([]);

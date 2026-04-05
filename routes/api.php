@@ -154,5 +154,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         ], function () {
             Route::get('/', 'list');
         });
+
+        Route::group([
+            'prefix' => 'flow',
+            'controller' => \App\Http\Controllers\Api\Admin\FlowController::class
+        ], function () {
+            Route::get('/', 'list');
+        });
     });
 });

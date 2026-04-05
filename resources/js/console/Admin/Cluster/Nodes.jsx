@@ -1,19 +1,49 @@
 import {
     Table,
-    Anchor,
     Text,
     Group,
-    Title, Paper, Stack
 } from '@mantine/core';
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 
-import NodeType from "../Nodes/components/NodeType";
-import NodeAddresses from "../Nodes/components/NodeAddresses";
-import NodeCapacity from "../Nodes/components/NodeCapacity";
-import NodeInfo from "../Nodes/components/NodeInfo";
+import NodeType from "../../Nodes/components/NodeType";
+import NodeAddresses from "../../Nodes/components/NodeAddresses";
+import NodeCapacity from "../../Nodes/components/NodeCapacity";
+import NodeInfo from "../../Nodes/components/NodeInfo";
 
+const TempNodeInfo = ({node}) => {
+    switch (node) {
+        case 'be-west-01.nodes.planetlab.io':
+            return <Text size="sm" c="dimmed">
+                IMEC - SLICES<br />
+                Belgium
+
+            </Text>
+        case 'br-east-01.nodes.planetlab.io':
+            return <Text size="sm" c="dimmed">
+                Universidade Federal de Mato Grosso do Sul<br />
+                Brasil
+            </Text>
+        case 'de-ni-5793.edge-net.io':
+            return <Text size="sm" c="dimmed">
+                Universität Passau<br />
+                Germany
+            </Text>
+        case 'jp-west-01.nodes.planetlab.io':
+            return <Text size="sm" c="dimmed">
+                Kyoto University<br />
+                Japan
+            </Text>
+        case 'eurydice.edge-net.io':
+        case 'hades.edge-net.io':
+        case 'orpheus.edge-net.io':
+            return <Text size="sm" c="dimmed">
+                Sorbonne Université<br />
+                France
+            </Text>
+    }
+}
 export default function NodeList() {
     const [ nodes, setNodes ] = useState([]);
     const navigate = useNavigate();
@@ -39,11 +69,10 @@ export default function NodeList() {
                     <NodeType type={item.type} />
                     <div>
                         <Text size="sm" fw={500}>
-                            <Anchor component={Link} to={"/admin/nodes/" + item.name}>
                                 {item.name}
-                            </Anchor>
                         </Text>
                         <NodeAddresses addresses={item.status?.addesses} />
+                        <TempNodeInfo node={item.name} />
                     </div>
                 </Group>
             </Table.Td>
@@ -65,13 +94,6 @@ export default function NodeList() {
     ));
 
     return (
-        <>
-            <Stack py="lg">
-                <Group justify="space-between">
-                    <Title order={1}>EdgeNet Nodes</Title>
-                </Group>
-            </Stack>
-            <Paper p="md">
                 <Table.ScrollContainer minWidth={800}>
                     <Table verticalSpacing="sm">
                         <Table.Thead>
@@ -85,8 +107,6 @@ export default function NodeList() {
                         <Table.Tbody>{rows}</Table.Tbody>
                     </Table>
                 </Table.ScrollContainer>
-            </Paper>
-        </>
     );
 
 }

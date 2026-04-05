@@ -44,7 +44,6 @@ const Application = () => {
                     </AppShell.Section>
                     <AppShell.Section grow component={ScrollArea}>
                         <NavigationMenu />
-                        <Divider label="" my="sm" />
                         <NavigationAdmin />
                     </AppShell.Section>
                     <AppShell.Section py="sm" >

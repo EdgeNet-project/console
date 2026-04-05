@@ -17,13 +17,16 @@ import RequestsView from "../../Requests";
 
 import Tokens from "../../Tokens";
 
-import AdminTeams from "../../Admin/Teams";
-import AdminWorkspaces from "../../Admin/Workspaces";
-import AdminUsers from "../../Admin/Users";
-import AdminNodes from "../../Admin/Nodes";
-import AdminActivity from "../../Admin/Activity";
-import AdminAudit from "../../Admin/Audit";
-import Admin from "../../Admin/Admin.jsx";
+import AdminTeams from "../../Admin/Console/Teams";
+import AdminWorkspaces from "../../Admin/Console/Workspaces";
+import AdminUsers from "../../Admin/Console/Users";
+import AdminActivity from "../../Admin/Console/Activity";
+import AdminNodes from "../../Admin/Cluster/Nodes";
+import AdminAudit from "../../Admin/Cluster/Audit";
+import AdminFlow from "../../Admin/Cluster/Flow";
+
+import AdminConsole from "../../Admin/Console";
+import AdminCluster from "../../Admin/Cluster";
 
 const router = createBrowserRouter([
     {
@@ -36,8 +39,8 @@ const router = createBrowserRouter([
                 element: <Dashboard />,
             },
             {
-                path: "/admin",
-                element: <Admin />,
+                path: "/admin/console",
+                element: <AdminConsole />,
                 children: [
                     {
                         path: "teams",
@@ -52,16 +55,26 @@ const router = createBrowserRouter([
                         element: <AdminUsers />,
                     },
                     {
+                        path: "activity",
+                        element: <AdminActivity />,
+                    }
+                ]
+            },
+            {
+                path: "/admin/cluster",
+                element: <AdminCluster />,
+                children: [
+                    {
                         path: "nodes",
                         element: <AdminNodes />,
                     },
                     {
-                        path: "activity",
-                        element: <AdminActivity />,
-                    },
-                    {
                         path: "audit",
                         element: <AdminAudit />,
+                    },
+                    {
+                        path: "flow",
+                        element: <AdminFlow />,
                     },
                 ]
             },

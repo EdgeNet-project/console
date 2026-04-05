@@ -2,17 +2,15 @@ import {useEffect, useState} from "react";
 import {
     Table,
     Text,
-    Group,
-    Title,
-    Paper, Stack
+    Stack
 } from '@mantine/core';
 import dayjs from "dayjs";
 import axios from "axios";
 
-import {UserInfo} from "../User/components/UserAvatar";
+import {UserInfo} from "../../User/components/UserAvatar";
 
-import ActivitySeverity from "../Activity/components/ActivitySeverity";
-import ActivitySubject from "../Activity/components/ActivitySubject";
+import ActivitySeverity from "../../Activity/components/ActivitySeverity";
+import ActivitySubject from "../../Activity/components/ActivitySubject";
 
 export default () => {
     const [ activity, setActivity ] = useState([]);
