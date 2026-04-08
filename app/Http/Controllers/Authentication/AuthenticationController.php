@@ -50,7 +50,10 @@ class AuthenticationController extends Controller
             'password' => ['required']
         ])->validate();
 
-        $user = User::where('email', request('email'))->first();
+        $user = User::where([
+            [ 'email', request('email') ],
+            [ 'enabled', true ],
+        ])->first();
 
         if (!$user) {
 

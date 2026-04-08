@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Log;
 
 class SlicesAuthenticationController extends Controller
 {
@@ -20,6 +21,8 @@ class SlicesAuthenticationController extends Controller
     public function callback(Request $request)
     {
         $slicesUser = Socialite::driver('oidc')->user();
+
+        //Log::info("Slices login:", ['slicesUser' => $slicesUser]);
 
         $user = User::where('email', $slicesUser->getEmail())->first();
         if ($user) {
