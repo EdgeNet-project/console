@@ -49,7 +49,8 @@ kind: Config
 clusters:
 - name: planetlab-cluster
   cluster:
-    server: api.planetlab.io
+    certificate-authority-data: ` + cluster.ca + `
+    server: https://api.planetlab.io:443
 contexts:
 - name: planetlab
   context:
