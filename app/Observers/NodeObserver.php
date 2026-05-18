@@ -18,21 +18,6 @@ class NodeObserver
     public function creating(Node $node)
     {
 
-        $node->auth = Str::random(6);
-
-        $node->token_id = $this->generateRandomString(6);
-        $node->token_secret = $this->generateRandomString(16);
-    }
-
-    // [a-z0-9]{6}\.[a-z0-9]{16}
-    function generateRandomString($length = 6) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[random_int(0, $charactersLength - 1)];
-        }
-        return $randomString;
     }
 
     /**

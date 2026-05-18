@@ -56,7 +56,7 @@ class NodeController extends Controller
      */
     public function bootstrap(Node $node)
     {
-        if ($node->status && $node->status == NodeStatus::OK) {
+        if ($node->status && $node->status == NodeStatus::OK->value) {
             return response()->view('boot.message', [
                 'message' => 'Node is already installed'
             ])->header('Content-Type', 'text/plain');
@@ -132,7 +132,7 @@ class NodeController extends Controller
 
         $node = $request->get('node');
         $node->name = $data['name'];
-        $node->status = NodeStatus::INSTALLING;
+        $node->status = NodeStatus::INSTALLING->value;
         $node->info = [
             'host' => $data['host'],
             'ip' => $data['ip']

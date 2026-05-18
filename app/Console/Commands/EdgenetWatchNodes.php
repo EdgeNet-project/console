@@ -48,17 +48,17 @@ class EdgenetWatchNodes extends Command
                     case 'Ready':
 
                         if ($c['status'] == 'True') {
-                            $l_node->status = NodeStatus::OK;
+                            $l_node->status = NodeStatus::OK->value;
                         } else if ($c['status'] == 'Unknown') {
-                            $l_node->status = NodeStatus::UNKNOWN;
+                            $l_node->status = NodeStatus::UNKNOWN->value;
                         } else {
-                            $l_node->status = NodeStatus::ERROR;
+                            $l_node->status = NodeStatus::ERROR->value;
                         }
 
                         break;
                     default:
                         if ($c['status'] == 'True') {
-                            $l_node->status = NodeStatus::WARNING;
+                            $l_node->status = NodeStatus::WARNING->value;
                         }
                 }
 

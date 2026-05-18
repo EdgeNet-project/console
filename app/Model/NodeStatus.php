@@ -2,27 +2,33 @@
 
 namespace App\Model;
 
-class NodeStatus {
+enum NodeStatus: string
+{
+    /**
+     * Node has checked in and is waiting to be activated
+     */
+    case CHECKIN = 'checkin';
 
-    const TO_INSTALL = "to install";
-    const INSTALLING = "installing";
-    const OK = "ok";
-    const WARNING = "warning";
-    const ERROR = "error";
-    const DISABLED = "disabled";
-    const UNKNOWN = "unknown";
-    const DEBUG = "debug";
+    /**
+     * Node has been registered but not yet enabled
+     */
+    case REGISTERED = 'registered';
 
-    static function validateStatus($status)
+    /**
+     * Node has been enabled
+     */
+    case ENABLED = 'enabled';
+
+    case INSTALLING = 'installing';
+    case OK = 'ok';
+    case WARNING = 'warning';
+    case ERROR = 'error';
+    case DISABLED = 'disabled';
+    case UNKNOWN = 'unknown';
+    case DEBUG = 'debug';
+
+    public static function validateStatus(string $status): bool
     {
-        return in_array($status, [
-            NodeStatus::TO_INSTALL,
-            NodeStatus::INSTALLING,
-            NodeStatus::OK,
-            NodeStatus::WARNING,
-            NodeStatus::DISABLED,
-            NodeStatus::UNKNOWN,
-            NodeStatus::DEBUG,
-        ]);
+        return self::tryFrom($status) !== null;
     }
 }

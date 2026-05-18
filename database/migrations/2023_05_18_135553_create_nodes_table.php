@@ -17,52 +17,59 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('auth', 6)
+            $table->timestamp('installed_at')
+                ->nullable();
+            $table->timestamp('last_seen_at')
+                ->nullable();
+
+            $table->boolean('enabled')
+                ->default(false);
+
+            /**
+             * Node identity
+             */
+            $table->uuid('system_uuid')
+                ->unique();
+            $table->string('code', 6)
                 ->unique();
 
-            $table->string('token_id', 6)
+            /**
+             * Node information
+             */
+            $table->string('name')
                 ->unique();
-            $table->string('token_secret', 16)
-                ->unique();
+
+            $table->string('platform')
+                ->nullable(); // "kubernetes", "docker", "baremetal", etc.
+            $table->string('role')
+                ->nullable(); // "worker", "master"...
 
             $table->string('status')
-                ->nullable();
+                ->nullable(); // "online", "offline", "maintenance"...
 
-            $table->string('type')
-                ->nullable();
-
+            /**
+             * Network
+             */
             $table->ipAddress('ip_v4')
                 ->nullable();
-
+            $table->ipAddress('public_ip_v4')
+                ->nullable();
             $table->ipAddress('ip_v6')
                 ->nullable();
-
             $table->string('asn')
                 ->nullable();
 
-            $table->string('name')
+            /**
+             * Wiregard
+             */
+            $table->json('wiregard')
                 ->nullable();
 
-            $table->text('notes')
-                ->nullable();
-
-            $table->json('config')
-                ->nullable();
-
+            /**
+             * Location
+             */
             $table->json('location')
                 ->nullable();
-
-            $table->json('info')
-                ->nullable();
-
-            $table->bigInteger('user_id')
-                ->unsigned()
-                ->nullable();
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('set null');
-
 
         });
     }

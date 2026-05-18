@@ -51,7 +51,7 @@ class RouteServiceProvider extends ServiceProvider
 //        $this->mapEdgenetRoutes();
 
         $this->mapBootRoutes();
-
+        $this->mapNodeRoutes();
         $this->mapWebRoutes();
 
         //
@@ -147,5 +147,19 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('boot')
             ->namespace($this->namespace . '\Boot')
             ->group(base_path('routes/boot.php'));
+    }
+
+    /**
+     * Define the "node" routes for the application.
+     * Those are used by the NODES
+     *
+     * @return void
+     */
+    protected function mapNodeRoutes()
+    {
+        Route::prefix('api/node')
+            ->middleware('api')
+            ->namespace($this->namespace . '\Node')
+            ->group(base_path('routes/node.php'));
     }
 }
