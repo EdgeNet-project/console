@@ -9,13 +9,17 @@ return [
         'domain' => env('PLANETLAB_NODE_URL', 'n.planetlab.io'),
     ],
 
-    'wiregard' => [
-        'domain' => env('PLANETLAB_WIREGARD_URL', 'wg.planetlab.io'),
-        'port' => env('PLANETLAB_WIREGARD_PORT', 51820),
+    'wireguard' => [
+        'endpoint_ip' => env('PLANETLAB_WIREGUARD_ENDPOINT_IP', '132.227.123.79'),
+        'endpoint_address' => env('PLANETLAB_WIREGUARD_ENDPOINT_ADDRESS', 'w.planetlab.io'),
+        'endpoint_port' => env('PLANETLAB_WIREGUARD_ENDPOINT_PORT', 51820),
+        'endpoint_key' => env('PLANETLAB_WIREGUARD_ENDPOINT_KEY'),
 
-        'network' => env('PLANETLAB_WIREGARD_NETWORK', '10.80.0.0/16'),
-        'public_key' => env('PLANETLAB_WIREGARD_PUBLIC_KEY'),
-        'mtu' => env('PLANETLAB_WIREGARD_MTU', 1380),
+        'network' => env('PLANETLAB_WIREGUARD_NETWORK', '10.80.0.0/16'),
+        'allowed_ips' => env('PLANETLAB_WIREGUARD_ALLOWED_IPS', '10.80.0.1/32, 10.80.0.0/16, 10.0.40.0/24'),
+        'mtu' => env('PLANETLAB_WIREGUARD_MTU', 1380),
+        'persistent_keepalive' => env('PLANETLAB_WIREGUARD_PERSISTENT_KEEPALIVE', 25),
 
-    ]
+    ],
+
 ];
