@@ -16,9 +16,9 @@ class CheckinController extends Controller
 {
     /**
      * Handles node checkin.
-     * The node will be registered in the database and will be assigned a name.
-     * Subsequent checkins will update the node's name and public ip if needed.
-     * Will always return the node's name and public ip.
+     * - The node will be registered in the database and will be assigned a name.
+     * - Subsequent checkins will update the node's name and public ip if needed.
+     * - Will always return the node's name and public ip.
      *
      *
      * @param Request $request
@@ -26,8 +26,8 @@ class CheckinController extends Controller
      */
     public function checkin(Request $request)
     {
-        Log::channel('nodes')->info("Node first contact", [
-            'ip' => $request->ip(),
+        Log::channel('nodes')->info("[checkin]", [
+            'public ip' => $request->ip(),
             'request' => $request->all(),
         ]);
 
@@ -38,7 +38,8 @@ class CheckinController extends Controller
 
         if ($validator->fails()) {
 
-            Log::channel('nodes')->error("Node checkin error (validation): " . print_r($validator->errors(), true));
+            Log::channel('nodes')
+                ->error("[checkin] error (validation): " . print_r($validator->errors(), true));
 
             return response()->json([
                 'errors' => $validator->errors()
@@ -52,7 +53,7 @@ class CheckinController extends Controller
             // check if node already exists
             $node = Node::where('code', $request->input('code'))->first();
         } catch (\Exception $e) {
-            Log::channel('nodes')->error("Node checkin error (lookup): " . $e->getMessage());
+            Log::channel('nodes')->error("[checkin] error (lookup): " . $e->getMessage());
             return response()->json([
                 'error' => 'An error occurred during node lookup'
             ], 500);
@@ -65,7 +66,7 @@ class CheckinController extends Controller
             $node->status = \App\Model\NodeStatus::CHECKIN->value;
             $node->enabled = false;
 
-            Log::channel('nodes')->info("Node checkin: node is new, creating");
+            Log::channel('nodes')->info("[checkin] node is new, creating");
 
             // TODO: check if system_uuid is unique
         }
@@ -93,7 +94,7 @@ class CheckinController extends Controller
                 $context = new GeoContext(...$location);
                 $baseName = Str::lower(GeoName::fromContext($context));
             } catch (\Exception $e) {
-                Log::channel('nodes')->error("Node checkin error (location): " . $e->getMessage());
+                Log::channel('nodes')->error("[checkin] error (location): " . $e->getMessage());
                 return response()->json([
                     'error' => 'Failed to determine node location',
                 ], 400);
@@ -111,17 +112,18 @@ class CheckinController extends Controller
 
         $node->ip_v4 = $localIp;
         $node->public_ip_v4 = $publicIp;
+        $node->last_seen_at = now();
 
         try {
             $node->save();
         } catch (\Exception $e) {
-            Log::channel('nodes')->error("Node checkin error (save): " . $e->getMessage());
+            Log::channel('nodes')->error("[checkin] checkin error (save): " . $e->getMessage());
             return response()->json([
                 'error' => 'Failed to save node - contact admins',
             ]);
         }
 
-        Log::channel('nodes')->info("Node checkin", ['node' => [
+        Log::channel('nodes')->info("[checkin]", ['node' => [
             'name' => $node->name,
             'public_ip' => $node->public_ip_v4,
             'status' => $node->status,

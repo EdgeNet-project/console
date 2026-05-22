@@ -60,9 +60,9 @@ return new class extends Migration
                 ->nullable();
 
             /**
-             * Wiregard
+             * Wireguard
              */
-            $table->json('wiregard')
+            $table->json('wireguard')
                 ->nullable();
 
             /**

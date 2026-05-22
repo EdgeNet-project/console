@@ -10,9 +10,9 @@ enum NodeStatus: string
     case CHECKIN = 'checkin';
 
     /**
-     * Node has been registered but not yet enabled
+     * Node is configuring network
      */
-    case REGISTERED = 'registered';
+    case NETWORK = 'network';
 
     /**
      * Node has been enabled

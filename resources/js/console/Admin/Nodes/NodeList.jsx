@@ -61,12 +61,12 @@ export default function NodeList() {
                             {item.ip_v4}
                         </Text>
                     </div>}
-                    {item.wiregard && item.wiregard.ip && <div>
+                    {item.wiregard && item.wireguard.address && <div>
                         <Text size="xs" c="dimmed">
-                            Node wiregard IP
+                            Node wireguard IP
                         </Text>
                         <Text size="sm">
-                            {item.wiregard.ip}
+                            {item.wireguard.address}
                         </Text>
                     </div>}
                     {item.public_ip_v4 && <div>

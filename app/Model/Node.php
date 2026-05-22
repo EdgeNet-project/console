@@ -22,7 +22,7 @@ class Node extends Model
         'status', 'enabled', 'installed_at', 'last_seen_at',
         'platform', 'role',
 
-        'ip_v4', 'public_ip_v4', 'ip_v6', 'wiregard', 'asn',
+        'ip_v4', 'public_ip_v4', 'ip_v6', 'wireguard', 'asn',
         'notes', 'config', 'location', 'info',
         'code'
     ];
@@ -33,7 +33,7 @@ class Node extends Model
         'installed_at' => 'datetime',
         'last_seen_at' => 'datetime',
 
-        'wiregard' => 'array',
+        'wireguard' => 'array',
         'location' => 'array',
     ];
 
