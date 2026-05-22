@@ -8,6 +8,7 @@ import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
 import NodeStatus from "../../Nodes/components/NodeStatus.jsx";
+import NodeEnabled from "../../Nodes/components/NodeEnabled.jsx";
 
 export default function NodeList() {
     const [ nodes, setNodes ] = useState([]);
@@ -133,9 +134,10 @@ export default function NodeList() {
 
             </Table.Td>
             <Table.Td>
-                <Group gap="xs">
+                <Stack gap="xs">
                     <NodeStatus status={item.status}/>
-                </Group>
+                    <NodeEnabled enabled={item.enabled} />
+                </Stack>
             </Table.Td>
         </Table.Tr>
     ));
