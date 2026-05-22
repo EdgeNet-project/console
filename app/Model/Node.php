@@ -39,11 +39,6 @@ class Node extends Model
 
     protected $appends = [];
 
-    public function getStatusAttribute($status)
-    {
-        return $status;
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

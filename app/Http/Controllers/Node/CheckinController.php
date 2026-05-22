@@ -32,7 +32,6 @@ class CheckinController extends Controller
         ]);
 
         $validator = Validator::make($request->all(), [
-            'ip' => 'required|ip',
             'uuid' => 'required|uuid',
             'code' => 'required|string|max:6|min:6|regex:/^[a-zA-Z0-9]+$/',
         ]);
@@ -46,7 +45,7 @@ class CheckinController extends Controller
             ], 422);
         }
 
-        $localIp = $request->input('ip');
+        $localIp = $request->input('ip', '0.0.0.0');
         $publicIp = $request->ip();
 
         try {

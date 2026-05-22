@@ -39,11 +39,16 @@ const NodeStatus = ({status}) => {
                     Unknown
                 </Badge>
             )
-        default:
         case '':
             return (
                 <Badge color="gray" variant="light">
                     Disabled
+                </Badge>
+            )
+        default:
+            return (
+                <Badge color="gray" variant="light">
+                    {status}
                 </Badge>
             )
 

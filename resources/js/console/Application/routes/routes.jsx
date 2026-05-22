@@ -21,12 +21,15 @@ import AdminTeams from "../../Admin/Console/Teams";
 import AdminWorkspaces from "../../Admin/Console/Workspaces";
 import AdminUsers from "../../Admin/Console/Users";
 import AdminActivity from "../../Admin/Console/Activity";
-import AdminNodes from "../../Admin/Cluster/Nodes";
+import AdminClusterNodes from "../../Admin/Cluster/Nodes";
 import AdminAudit from "../../Admin/Cluster/Audit";
 import AdminFlow from "../../Admin/Cluster/Flow";
 
 import AdminConsole from "../../Admin/Console";
 import AdminCluster from "../../Admin/Cluster";
+
+import AdminNodes from "../../Admin/Nodes";
+import AdminNodeList from "../../Admin/Nodes/NodeList";
 
 const router = createBrowserRouter([
     {
@@ -66,7 +69,7 @@ const router = createBrowserRouter([
                 children: [
                     {
                         path: "nodes",
-                        element: <AdminNodes />,
+                        element: <AdminClusterNodes />,
                     },
                     {
                         path: "audit",
@@ -76,6 +79,17 @@ const router = createBrowserRouter([
                         path: "flow",
                         element: <AdminFlow />,
                     },
+                ]
+            },
+            {
+                path: "/admin/nodes",
+                element: <AdminNodes />,
+                children: [
+                    {
+                        path: "nodes",
+                        element: <AdminNodeList />,
+                    },
+
                 ]
             },
             {
