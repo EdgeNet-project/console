@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Node;
 
 use App\Http\Controllers\Controller;
 use App\Model\Node;
+use App\Model\NodeStatus;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
@@ -146,14 +147,17 @@ class KubernetesController extends Controller
             ], 404);
         }
 
+        $node->status = NodeStatus::READY->value;
+        $node->save();
 
         try {
             $clusterNode = K8s::getNodeByName($node->name);
 
             $clusterNode
 //                ->setAttribute('spec.taints', [])
-                ->setAttribute('metadata.annotations.edge-net.io/join-completed-at',
-                    now()->toIso8601String())
+                ->setAttribute('metadata.annotations', [
+                    'planetlab.io/join-completed-at' => now()->toIso8601String()
+                ])
                 ->update();
 
         } catch (KubernetesAPIException $e) {
@@ -163,7 +167,10 @@ class KubernetesController extends Controller
                 ]);
             }
 
-            Log::channel('nodes')->error("[kubernetes] ready k8s check: " . $e->getMessage());
+            Log::channel('nodes')->error('[kubernetes] ready k8s check', [
+                'payload' => $e->getPayload(),
+                'message' => $e->getMessage()
+            ]);
             return response()->json([
                 'error' => 'Could not check node status in cluster'
             ], 500);
@@ -267,10 +274,10 @@ stringData:
         ];
 
         $annotations = [
-            'edge-net.io/orchestrator-node-id'   => (string)$node->id,
-            'edge-net.io/join-requested-at'      => now()->toIso8601String(),
-            'edge-net.io/wireguard-pubkey'       => (string)$node->wireguard['public_key'],
-            'edge-net.io/wireguard-ip'           => (string)$node->wireguard['address'],
+            'planetlab.io/orchestrator-node-id'   => (string)$node->id,
+            'planetlab.io/join-requested-at'      => now()->toIso8601String(),
+            'planetlab.io/wireguard-pubkey'       => (string)$node->wireguard['public_key'],
+            'planetlab.io/wireguard-ip'           => (string)$node->wireguard['address'],
             'cluster-autoscaler.kubernetes.io/scale-down-disabled' => 'true',
         ];
 
@@ -287,7 +294,7 @@ stringData:
             if ($e->getCode() !== 404) {
                 Log::channel('nodes')->error('[' . $name . '] Node registration failed', [
                     'payload' => $e->getPayload(),
-                    'error' => $e->getMessage()
+                    'message' => $e->getMessage()
                 ]);
                 return false;
             }
@@ -309,7 +316,7 @@ stringData:
             } catch (KubernetesAPIException $e) {
                 Log::channel('nodes')->error('[' . $name . '] Node registration failed', [
                     'payload' => $e->getPayload(),
-                    'error' => $e->getMessage()
+                    'message' => $e->getMessage()
                 ]);
                 return false;
             }
@@ -324,7 +331,7 @@ stringData:
             } catch (KubernetesAPIException $e) {
                 Log::channel('nodes')->error('[' . $name . '] Node patch failed', [
                     'payload' => $e->getPayload(),
-                    'error' => $e->getMessage()
+                    'message' => $e->getMessage()
                 ]);
 
                 return false;
@@ -345,7 +352,11 @@ stringData:
 
             return $kubeconfig_yaml['clusters'][0]['cluster']['certificate-authority-data'] ?? '';
         } catch (\Exception $e) {
-            Log::channel('nodes')->error("[kubernetes] getCaCert: " . $e->getMessage());
+            Log::channel('nodes')->error("[kubernetes] getCaCert",
+            [
+                'payload' => $e->getPayload(),
+                'message' => $e->getMessage()
+            ]);
             return '';
         }
     }
