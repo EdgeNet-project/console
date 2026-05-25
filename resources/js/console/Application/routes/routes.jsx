@@ -28,8 +28,8 @@ import AdminFlow from "../../Admin/Cluster/Flow";
 import AdminConsole from "../../Admin/Console";
 import AdminCluster from "../../Admin/Cluster";
 
-import AdminNodes from "../../Admin/Nodes";
-import AdminNodeList from "../../Admin/Nodes/NodeList";
+import AdminNodemanager from "../../Admin/Nodemanager";
+import AdminNodemanagerNodeList from "../../Admin/Nodemanager/NodeList";
 
 const router = createBrowserRouter([
     {
@@ -82,12 +82,12 @@ const router = createBrowserRouter([
                 ]
             },
             {
-                path: "/admin/nodes",
-                element: <AdminNodes />,
+                path: "/admin/nodemanager",
+                element: <AdminNodemanager />,
                 children: [
                     {
                         path: "nodes",
-                        element: <AdminNodeList />,
+                        element: <AdminNodemanagerNodeList />,
                     },
 
                 ]

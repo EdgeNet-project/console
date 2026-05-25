@@ -48,6 +48,12 @@ export default function NodeList() {
                             {item.location.latitude} {item.location.longitude}
                         </Text>
                     </div>}
+                    {item.os && <div>
+                        <Text size="sm">
+                            {item.os.distro} {item.os.version}<br />
+                            {item.os.arch} | kernel: {item.os.kernel}
+                        </Text>
+                    </div>}
                 </Stack>
             </Table.Td>
 
@@ -61,7 +67,7 @@ export default function NodeList() {
                             {item.ip_v4}
                         </Text>
                     </div>}
-                    {item.wiregard && item.wireguard.address && <div>
+                    {item.wireguard && item.wireguard.address && <div>
                         <Text size="xs" c="dimmed">
                             Node wireguard IP
                         </Text>

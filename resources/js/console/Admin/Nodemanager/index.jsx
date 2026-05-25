@@ -18,11 +18,11 @@ function Index() {
 
     return (
         <>
-            <PanelTitle title={["Administration", "Nodes"]}/>
+            <PanelTitle title={["Administration", "Nodemanager"]}/>
             <Tabs
                 variant="none"
                 value={activeTab}
-                onChange={(value) => navigate(`/admin/nodes/${value}`)}
+                onChange={(value) => navigate(`/admin/nodemanager/${value}`)}
                 keepMounted={false}
                 color="white"
                 classNames={classes}
