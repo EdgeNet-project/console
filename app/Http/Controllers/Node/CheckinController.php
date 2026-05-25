@@ -57,8 +57,8 @@ class CheckinController extends Controller
         try {
             // check if node already exists
             $node = Node::where([
-                'code', $request->input('code'),
-                'system_uuid', $request->input('uuid'),
+                ['code', $request->input('code')],
+                ['system_uuid', $request->input('uuid')],
             ])->first();
         } catch (\Exception $e) {
             Log::channel('nodes')->error("[checkin] error (lookup): " . $e->getMessage());
