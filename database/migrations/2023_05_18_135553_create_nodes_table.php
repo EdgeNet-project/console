@@ -66,6 +66,18 @@ return new class extends Migration
                 ->nullable();
 
             /**
+             * OS
+             */
+            $table->json('os')
+                ->nullable();
+
+            /**
+             * Info
+             */
+            $table->json('info')
+                ->nullable();
+
+            /**
              * Location
              */
             $table->json('location')
