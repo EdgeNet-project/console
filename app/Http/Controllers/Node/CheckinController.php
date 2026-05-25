@@ -34,6 +34,11 @@ class CheckinController extends Controller
         $validator = Validator::make($request->all(), [
             'uuid' => 'required|uuid',
             'code' => 'required|string|max:6|min:6|regex:/^[a-zA-Z0-9]+$/',
+            'ip' => 'nullable|ipv4',
+            'arch' => 'nullable|string|max:20',
+            'distro' => 'nullable|string|max:20',
+            'version' => 'nullable|string|max:20',
+            'kernel' => 'nullable|string|max:20',
         ]);
 
         if ($validator->fails()) {
@@ -51,7 +56,10 @@ class CheckinController extends Controller
 
         try {
             // check if node already exists
-            $node = Node::where('code', $request->input('code'))->first();
+            $node = Node::where([
+                'code', $request->input('code'),
+                'system_uuid', $request->input('uuid'),
+            ])->first();
         } catch (\Exception $e) {
             Log::channel('nodes')->error("[checkin] error (lookup): " . $e->getMessage());
             return response()->json([
@@ -110,9 +118,18 @@ class CheckinController extends Controller
 
         }
 
+        // Network
         $node->ip_v4 = $localIp;
         $node->public_ip_v4 = $publicIp;
         $node->last_seen_at = now();
+
+        // OS
+        $node->os = [
+            'arch' => $request->input('arch'),
+            'distro' => $request->input('distro'),
+            'version' => $request->input('version'),
+            'kernel' => $request->input('kernel'),
+        ];
 
         try {
             $node->save();
