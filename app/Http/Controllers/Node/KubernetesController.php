@@ -155,7 +155,7 @@ class KubernetesController extends Controller
 
             $clusterNode
 //                ->setAttribute('spec.taints', [])
-                ->setAttribute('metadata.annotations', [
+                ->addToAttribute('metadata.annotations', [
                     'planetlab.io/join-completed-at' => now()->toIso8601String()
                 ])
                 ->update();
