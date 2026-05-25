@@ -26,7 +26,7 @@ set -euo pipefail
 #   2. Validate that the response is a valid JSON array.
 #   3. Transform JSON data into WireGuard [Peer] configuration blocks.
 #   4. Merge the new peer configurations with the existing Interface header.
-#      Note: It assumes the first 11 lines of the current config contain the [Interface] section.
+#      Note: It assumes the first 16 lines of the current config contain the [Interface] section.
 #   5. Compare the new config with the existing one.
 #   6. If changes are found:
 #      a. Create a timestamped backup of the current config.
@@ -36,11 +36,15 @@ set -euo pipefail
 # =========================
 # CONFIG
 # =========================
-API_URL="https://console.planetlab.io/api/node/peers"
+API_URL="https://console.planetlab.io/api/node/wireguard/peers"
 WG_CONFIG="/etc/wireguard/wg0.conf"
 WG_INTERFACE="wg0"
 
-TMP_FILE="/tmp/wg0.conf.tmp"
+TMP_FILE=$(mktemp /tmp/wg_XXXXXX.conf)
+BODY_FILE=$(mktemp)
+
+# Ensure cleanup of temp files on exit
+trap 'rm -f "$TMP_FILE" "$BODY_FILE"' EXIT
 
 # =========================
 # DEPENDENCIES CHECK
@@ -54,9 +58,7 @@ command -v wg   >/dev/null 2>&1 || { echo "wg is required"; exit 1; }
 # =========================
 echo "[+] Fetching peer list..."
 
-HTTP_RESPONSE=$(curl -sS -w "\n%{http_code}" "$API_URL")
-HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed '$d')
-HTTP_CODE=$(echo "$HTTP_RESPONSE" | tail -n1)
+HTTP_CODE=$(curl -sS -H "Accept: application/json" -w "%{http_code}" "$API_URL" -o "$BODY_FILE")
 
 if [[ "$HTTP_CODE" -ne 200 ]]; then
     echo "[-] Error: API returned HTTP $HTTP_CODE"
@@ -66,8 +68,9 @@ fi
 # =========================
 # VALIDATE JSON ARRAY
 # =========================
-if ! echo "$HTTP_BODY" | jq -e 'type == "array"' >/dev/null; then
+if ! jq -e 'type == "array"' "$BODY_FILE" >/dev/null; then
     echo "[-] Error: API response is not a JSON array"
+    cat "$BODY_FILE" # Output the body for debugging if it's not a JSON array
     exit 1
 fi
 
@@ -76,10 +79,10 @@ fi
 # =========================
 echo "[+] Building WireGuard peer config..."
 
-PEER_CONFIG="$(echo "$HTTP_BODY" | jq -r '
+PEER_CONFIG="$(jq -r '
     .[] |
     "[Peer]\nPublicKey = \(.public_key)\nAllowedIPs = \(.allowed_ips)\n"
-')"
+' "$BODY_FILE")"
 
 if [[ -z "$PEER_CONFIG" ]]; then
     echo "[-] Error: No peers generated"
@@ -89,7 +92,7 @@ fi
 # =========================
 # BUILD FULL CONFIG (FOR COMPARISON + SYNC)
 # =========================
-head -n 11 "$WG_CONFIG" > "$TMP_FILE"
+head -n 16 "$WG_CONFIG" > "$TMP_FILE"
 printf "%b" "$PEER_CONFIG" >> "$TMP_FILE"
 
 # =========================
@@ -97,7 +100,6 @@ printf "%b" "$PEER_CONFIG" >> "$TMP_FILE"
 # =========================
 if cmp -s "$WG_CONFIG" "$TMP_FILE"; then
     echo "[+] No changes detected. Skipping sync."
-    rm -f "$TMP_FILE"
     exit 0
 fi
 
@@ -111,7 +113,7 @@ wg syncconf "$WG_INTERFACE" <(wg-quick strip "$TMP_FILE")
 # =========================
 # PERSIST CHANGES TO DISK
 # =========================
-BACKUP_FILE="${WG_CONFIG}.bak.$(date +%s)"
+BACKUP_FILE="/root/wg0.conf.bak.$(date +%s)"
 cp "$WG_CONFIG" "$BACKUP_FILE"
 mv "$TMP_FILE" "$WG_CONFIG"
 
