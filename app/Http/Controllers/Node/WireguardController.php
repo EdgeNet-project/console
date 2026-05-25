@@ -71,7 +71,8 @@ class WireguardController extends Controller
         } else {
             // Find all nodes with an assigned wireguard address
             $usedIps = Node::whereNotNull('wireguard->address')
-                ->pluck('wireguard->address')
+                ->pluck('wireguard')
+                ->pluck('address')
                 ->toArray();
 
             $usedIpsLong = array_map('ip2long', $usedIps);
