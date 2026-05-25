@@ -13,7 +13,7 @@ class ManageController extends Controller
 {
 
     /**
-     * Node activation - performed by a user
+     * Node list - admin only
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse|void
@@ -33,6 +33,32 @@ class ManageController extends Controller
         }
 
         $node = Node::all();
+
+        return response()->json($node);
+    }
+
+    /**
+     * Node activation - admin only
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|void
+     */
+    public function enable(Request $request, Node $node)
+    {
+
+        // Only authenticated users can activate nodes
+        if (!$request->user()) {
+            Log::channel('nodes')->error("Node enable - unauthenticated: User is not authenticated");
+            return response()->json([], 401);
+        }
+
+        if (!$request->user()->admin) {
+            Log::channel('nodes')->error("Node enable - unauthorized: User is not an admin");
+            return response()->json([], 403);
+        }
+
+        $node->enabled = $request->input('enabled', true);
+        $node->save();
 
         return response()->json($node);
     }

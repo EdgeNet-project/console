@@ -37,9 +37,7 @@ class ActivationController extends Controller
 
         try {
             // check if node exists
-            $node = Node::where([
-                'code', $request->input('code'),
-            ])->first();
+            $node = Node::where('code', $request->input('code'))->first();
         } catch (\Exception $e) {
             Log::channel('nodes')->error("Node activation - lookup: " . $e->getMessage());
             return response()->json([

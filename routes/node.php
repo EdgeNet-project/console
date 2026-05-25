@@ -24,4 +24,5 @@ Route::group(['prefix' => 'kubernetes', 'controller' => KubernetesController::cl
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/activate', [ActivationController::class, 'activate']);
     Route::get('/list', [ManageController::class, 'list']);
+    Route::post('/enable/{node}', [ManageController::class, 'enable']);
 });

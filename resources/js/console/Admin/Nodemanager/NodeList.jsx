@@ -1,7 +1,7 @@
 import {
     Table,
     Text,
-    Group, Stack,
+    Group, Stack, Popover, Button,
 } from '@mantine/core';
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -13,6 +13,16 @@ import NodeEnabled from "../../Nodes/components/NodeEnabled.jsx";
 export default function NodeList() {
     const [ nodes, setNodes ] = useState([]);
     const navigate = useNavigate();
+
+    const handleEnable = (nodeId, enabled) => {
+        axios.post(`/api/node/enable/${nodeId}`, { enabled })
+            .then(({data}) => {
+                setNodes(nodes.map(n => n.id === nodeId ? data : n))
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
 
     useEffect(() => {
         axios.get('/api/node/list')
@@ -142,7 +152,25 @@ export default function NodeList() {
             <Table.Td>
                 <Stack gap="xs">
                     <NodeStatus status={item.status}/>
-                    <NodeEnabled enabled={item.enabled} />
+                    <Popover width={200} position="bottom" withArrow shadow="md">
+                        <Popover.Target>
+                            <div style={{cursor: 'pointer'}}>
+                                <NodeEnabled enabled={item.enabled} />
+                            </div>
+                        </Popover.Target>
+                        <Popover.Dropdown>
+                            <Stack gap="xs">
+                                <Text size="sm">Manage node state</Text>
+                                <Button
+                                    size="xs"
+                                    color={item.enabled ? "red" : "green"}
+                                    onClick={() => handleEnable(item.id, !item.enabled)}
+                                >
+                                    {item.enabled ? "Disable" : "Enable"}
+                                </Button>
+                            </Stack>
+                        </Popover.Dropdown>
+                    </Popover>
                 </Stack>
             </Table.Td>
         </Table.Tr>
