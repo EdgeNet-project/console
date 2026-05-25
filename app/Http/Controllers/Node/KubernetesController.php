@@ -148,7 +148,7 @@ class KubernetesController extends Controller
 
 
         try {
-            $clusterNode = K8s::getByName($node->name);
+            $clusterNode = K8s::getNodeByName($node->name);
 
             $clusterNode
 //                ->setAttribute('spec.taints', [])
