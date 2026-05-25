@@ -152,51 +152,34 @@ stringData:
         }
     }
 
-    private function getClusterRootCa() {
+    private function getCaCertDigest() {
         /**
          * This procedure creates the CA key hash needed for CA pinning.
          * Kubeadm uses it to authenticate the server when joining a node.
          *
          * https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-join/#token-based-discovery-with-ca-pinning
          */
-        // retrieve the Kubernetes cluster public configmap containing the CA info
-        $kubeRootCa = K8s::getCluster()
-            ->getConfigMapByName('cluster-info','kube-public')
-            ->getData();
 
-        // parse YAML to array
-        $kubeconfig_yaml = Yaml::parse($kubeRootCa['kubeconfig']);
-
-        if (!isset($kubeconfig_yaml['clusters'][0]['cluster']['certificate-authority-data'])) {
-            return response()->json(['message' => 'kubeconfig yaml parse error'], 500);
-        }
-
-        // extract the Certification Authority certificate
-        $ca = $kubeconfig_yaml['clusters'][0]['cluster']['certificate-authority-data'];
+        // Certification Authority certificate
+        $ca = $this->getCaCert();
 
         // get the public key from the certificate and decode it (converts to PEM format)
-        $pkey = openssl_pkey_get_details(
+        $pem_data = openssl_pkey_get_details(
             openssl_pkey_get_public(base64_decode($ca))
         )['key'];
 
         // converts the public key to DER binary format
-        $der = $this->pem2der($pkey);
-
+        $begin = "KEY-----";
+        $end   = "-----END";
+        $pem_data = substr($pem_data, strpos($pem_data, $begin)+strlen($begin));
+        $pem_data = substr($pem_data, 0, strpos($pem_data, $end));
+        $der = base64_decode($pem_data);
 
         // creates the digest that will be used by kubeadm (or similar) join procedure
         $digest = openssl_digest($der, 'sha256');
 
         return $digest;
 
-    }
-
-    private function pem2der($pem_data) {
-        $begin = "KEY-----";
-        $end   = "-----END";
-        $pem_data = substr($pem_data, strpos($pem_data, $begin)+strlen($begin));
-        $pem_data = substr($pem_data, 0, strpos($pem_data, $end));
-        $der = base64_decode($pem_data);
-        return $der;
     }
 
     private function getClusterDns() {
