@@ -3,6 +3,12 @@ import {Badge} from "@mantine/core";
 const NodeStatus = ({status}) => {
 
     switch(status) {
+        case 'ready':
+            return (
+                <Badge color="green" variant="light">
+                    Ready
+                </Badge>
+            )
         case 'ok':
             return (
                 <Badge color="green" variant="light">

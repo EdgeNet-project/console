@@ -10,6 +10,16 @@ enum NodeStatus: string
     case CHECKIN = 'checkin';
 
     /**
+     * Node is Ready to be activated
+     */
+    case READY = 'ready';
+
+
+
+
+
+
+    /**
      * Node is configuring network
      */
     case NETWORK = 'network';

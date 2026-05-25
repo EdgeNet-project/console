@@ -41,7 +41,7 @@ class NodeObserver
     {
         // Node Status
         if ($node->isDirty('status')) {
-            Log::info($node->hostname . " changed status to " . $node->status);
+            Log::info('[' . $node->name . '] changed status to ' . $node->status->name);
         }
     }
 
