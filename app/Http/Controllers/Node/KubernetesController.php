@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Node;
 use App\Http\Controllers\Controller;
 use App\Model\Node;
 use Carbon\Carbon;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
+use RenokiCo\PhpK8s\Exceptions\KubernetesAPIException;
+use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
 use Symfony\Component\Yaml\Yaml;
 
 class KubernetesController extends Controller
@@ -20,11 +23,11 @@ class KubernetesController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function kubernetes(Request $request)
+    public function join(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'uuid' => 'required|uuid',
-            'hostname' => 'required|string|max:20|regex:/^[a-zA-Z0-9\-]+$/',
+            'name' => 'required|string|max:20|regex:/^[a-zA-Z0-9\-]+$/',
             'token' => 'nullable|string|regex:/^[a-z0-9]{6}\.[a-z0-9]{16}$/',
         ]);
 
@@ -37,7 +40,10 @@ class KubernetesController extends Controller
 
         try {
             // check if node exists
-            $node = Node::where('system_uuid', $request->input('uuid'))->first();
+            $node = Node::where([
+                ['system_uuid', $request->input('uuid')],
+                ['name', $request->input('name')],
+            ])->first();
         } catch (\Exception $e) {
             Log::channel('nodes')->error("[kubernetes] lookup: " . $e->getMessage());
             return response()->json([
@@ -81,6 +87,14 @@ class KubernetesController extends Controller
         $tokenData = $token->getData(true);
         $bootstrap_token = $tokenData['token-id'] . '.' . $tokenData['token-secret'];
 
+        $clusterNode = $this->createNode(
+            $node
+        );
+
+        if(!$clusterNode) {
+            return response()->json(['error' => 'Node creation failed'],400);
+        }
+
         $cluster_dns = $this->getClusterDns();
 
         return response()->json([
@@ -92,6 +106,74 @@ class KubernetesController extends Controller
             'kubelet_config' => config('planetlab.kubernetes.kubelet_config', ''),
             'cluster_dns' => $cluster_dns,
         ]);
+    }
+
+    /**
+     * Check if the node resource exists in the Kubernetes cluster.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ready(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'uuid' => 'required|uuid',
+            'name' => 'required|string|max:20|regex:/^[a-zA-Z0-9\-]+$/',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $node = Node::where([
+                ['system_uuid', $request->input('uuid')],
+                ['name', $request->input('name')],
+                ['enabled', true],
+            ])->first();
+        } catch (\Exception $e) {
+            Log::channel('nodes')->error("[kubernetes] ready lookup: " . $e->getMessage());
+            return response()->json([
+                'error' => 'An error occurred during node lookup (node not found or not enabled)'
+            ], 500);
+        }
+
+        if (!$node) {
+            return response()->json([
+                'error' => 'Node not found'
+            ], 404);
+        }
+
+
+        try {
+            $clusterNode = K8s::getByName($node->name);
+
+            $clusterNode
+//                ->setAttribute('spec.taints', [])
+                ->setAttribute('metadata.annotations.edge-net.io/join-completed-at',
+                    now()->toIso8601String())
+                ->update();
+
+        } catch (KubernetesAPIException $e) {
+            if ($e->getCode() === 404) {
+                return response()->json([
+                    'ready' => false,
+                ]);
+            }
+
+            Log::channel('nodes')->error("[kubernetes] ready k8s check: " . $e->getMessage());
+            return response()->json([
+                'error' => 'Could not check node status in cluster'
+            ], 500);
+        }
+
+        return response()->json([
+            'ready' => true,
+        ]);
+
+
     }
 
     // [a-z0-9]{6}\.[a-z0-9]{16}
@@ -116,6 +198,31 @@ class KubernetesController extends Controller
             $token_secret = $this->generateRandomString(16);
         }
 
+        /**
+         * --- -> For this CSR to be auto approved the following ClusterRoleBinding must be created:
+         * ---
+         * kind: ClusterRoleBinding
+         * metadata:
+         *   name: auto-approve-csrs-for-group
+         * subjects:
+         *   - kind: Group
+         *     name: system:bootstrappers:nodemanager
+         * roleRef:
+         *   kind: ClusterRole
+         *   name: system:certificates.k8s.io:certificatesigningrequests:nodeclient
+         *
+         * --- -> Allow already-running kubelets to renew their own certs
+         * ---
+         * kind: ClusterRoleBinding
+         * metadata:
+         *   name: auto-approve-renewals-for-nodes
+         * subjects:
+         *   - kind: Group
+         *     name: system:nodes
+         * roleRef:
+         *   kind: ClusterRole
+         *   name: system:certificates.k8s.io:certificatesigningrequests:selfnodeclient
+         */
         $token = K8s::getCluster()->fromYaml(
             'apiVersion: v1
 kind: Secret
@@ -130,10 +237,101 @@ stringData:
   expiration: '.Carbon::now()->addHours(2)->toIso8601String().'
   usage-bootstrap-authentication: "true"
   usage-bootstrap-signing: "true"
-  auth-extra-groups: system:bootstrappers:kubeadm:default-node-token'
+  auth-extra-groups: system:bootstrappers:nodemanager'
         );
 
         return $token->createOrUpdate();
+    }
+
+    /**
+     * Creates Node resource in Kubernetes
+     * @param Node $node
+     * @return bool
+     */
+    private function createNode(Node $node): bool {
+        $name = $node->name;
+        $arch = $node->os['arch'] ?? 'amd64';
+
+        $labels = [
+            'kubernetes.io/arch' => $arch,
+            'kubernetes.io/os' => 'linux',
+
+            'planetlab.io/site' => $name,
+//            'planetlab.io/provider' => $nodeData->platform ?? 'baremetal',
+//            'planetlab.io/tier' => $nodeData->role ?? 'edge',
+//            'planetlab.io/wireguard-ip' => $node->wireguard['address'] ?? $node->ip_v4,
+//            'planetlab.io/enrolled-by' => 'nodemanager',
+
+            'topology.kubernetes.io/region' => explode('-', $name)[0] ?? 'unknown',
+            'topology.kubernetes.io/zone' => implode('-', array_slice(explode('-', $name), 0, 2)) ?: 'unknown',
+        ];
+
+        $annotations = [
+            'edge-net.io/orchestrator-node-id'   => (string)$node->id,
+            'edge-net.io/join-requested-at'      => now()->toIso8601String(),
+            'edge-net.io/wireguard-pubkey'       => (string)$node->wireguard['public_key'],
+            'edge-net.io/wireguard-ip'           => (string)$node->wireguard['address'],
+            'cluster-autoscaler.kubernetes.io/scale-down-disabled' => 'true',
+        ];
+
+//        $taints = [
+////            'key'    => 'node.kubernetes.io/not-ready',
+////            'effect' => 'NoSchedule',
+//        ];
+
+
+        $clusterNode = null;
+        try {
+            $clusterNode = K8s::getNodeByName($name);
+        } catch (KubernetesAPIException $e) {
+            if ($e->getCode() !== 404) {
+                Log::channel('nodes')->error('[' . $name . '] Node registration failed', [
+                    'payload' => $e->getPayload(),
+                    'error' => $e->getMessage()
+                ]);
+                return false;
+            }
+        }
+
+        if (!$clusterNode) {
+            Log::channel('nodes')->info('[' . $name . '] Node does not exist, creating...', []);
+            try {
+                $clusterNode = K8s::node()
+                ->setName($name)
+                ->setAttribute('metadata.labels', $labels)
+                ->setAttribute('metadata.annotations', $annotations)
+                ->setAttribute('metadata.taints', [])
+                ->setAttribute('status.addresses', [
+                    ['type' => 'InternalIP', 'address' => (string)$node->wireguard['address'] ?? $node->ip_v4],
+                    ['type' => 'Hostname',   'address' => $name],
+                ])
+                ->create();
+            } catch (KubernetesAPIException $e) {
+                Log::channel('nodes')->error('[' . $name . '] Node registration failed', [
+                    'payload' => $e->getPayload(),
+                    'error' => $e->getMessage()
+                ]);
+                return false;
+            }
+        } else {
+            Log::channel('nodes')->info('[' . $name . '] Node already exists, patching...', []);
+            try {
+                $clusterNode
+                    ->setAttribute('metadata.labels', $labels)
+                    ->setAttribute('metadata.annotations', $annotations)
+                    ->setAttribute('metadata.taints', [])
+                    ->update();
+            } catch (KubernetesAPIException $e) {
+                Log::channel('nodes')->error('[' . $name . '] Node patch failed', [
+                    'payload' => $e->getPayload(),
+                    'error' => $e->getMessage()
+                ]);
+
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function getCaCert()

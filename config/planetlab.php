@@ -23,7 +23,7 @@ return [
 
     'kubernetes' => [
         'cluster_name' => env('PLANETLAB_KUBERNETES_CLUSTER_NAME', 'planetlab'),
-        'api_server' => env('PLANETLAB_KUBERNETES_API_SERVER', 'https://132.227.123.79:6443'),
+        'api_server' => env('PLANETLAB_KUBERNETES_API_SERVER', 'https://10.80.0.1:443'),
         'cluster_dns' => env('PLANETLAB_KUBERNETES_CLUSTER_DNS', '10.96.0.10'),
 
     ]

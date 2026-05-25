@@ -16,7 +16,10 @@ Route::group(['prefix' => 'wireguard', 'controller' => WireguardController::clas
     Route::get('peers', 'peers');
 });
 
-Route::post('/kubernetes', [KubernetesController::class, 'kubernetes']);
+Route::group(['prefix' => 'kubernetes', 'controller' => KubernetesController::class], function () {
+    Route::post('/join', 'join');
+    Route::post('/ready', 'ready');
+});
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/activate', [ActivationController::class, 'activate']);
