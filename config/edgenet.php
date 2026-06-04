@@ -1,6 +1,17 @@
 <?php
 
 return [
+    'console' => [
+        'name' => env('EDGENET_CONSOLE_NAME', 'PlanetLab Console'),
+        'url' => env('EDGENET_CONSOLE_URL', 'console.planetlab.io'),
+        'logo' => env('EDGENET_CONSOLE_LOGO', '/img/logo.png'),
+    ],
+    'support' => [
+        'name' => env('EDGENET_SUPPORT_NAME', 'PlanetLab Support Team'),
+        'email' => env('EDGENET_SUPPORT_EMAIL', 'support@planetlab.io'),
+        'signature' => 'Best regards,<br>PlanetLab Support Team'
+    ],
+
     'boot' => [
         // The boot server is used to boot/install nodes.
         'server' => env('EDGENET_BOOT_SERVER', 'boot.edge-net.io')

@@ -72,7 +72,7 @@ class UserRequestApproved extends Notification
             ->line('Please don\'t hesitate to contact us by replying to this email if you have any questions.')
             ->line('Thank you !')
             ->action('PlanetLab Console', config('edgenet.console.url'))
-            ->salutation('Best regards,<br>' . config('edgenet.support.signature'));
+            ->salutation(config('edgenet.support.signature'));
     }
 
     /**
