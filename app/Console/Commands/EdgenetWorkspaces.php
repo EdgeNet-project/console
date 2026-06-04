@@ -2,10 +2,13 @@
 
 namespace App\Console\Commands;
 
-use App\Services\EdgenetAdmin;
+
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use RenokiCo\PhpK8s\Exceptions\KubernetesAPIException;
+use App\Jobs\EdgeNet\CreateWorkspaceJob;
+use App\Model\SubNamespace;
+use App\Services\EdgenetAdmin;
 
 class EdgenetWorkspaces extends Command
 {
@@ -14,7 +17,9 @@ class EdgenetWorkspaces extends Command
      *
      * @var string
      */
-    protected $signature = 'edgenet:workspaces';
+    protected $signature = 'edgenet:workspaces 
+                            {--check : Check sync status}
+                            {--sync : sync}';
 
     /**
      * The console command description.
@@ -33,7 +38,7 @@ class EdgenetWorkspaces extends Command
         $cluster = $edgenetAdmin->getCluster();
 
         try {
-            $workspaces = $cluster->subNamespace()->all();
+            $clusterWorkspaces = $cluster->subNamespace()->allNamespaces();
         } catch (KubernetesAPIException $e) {
             dd([
                 $e->getMessage(),
@@ -41,8 +46,57 @@ class EdgenetWorkspaces extends Command
             ]);
         }
 
+        $consoleWorkspaces = SubNamespace::all();
 
-        if ($workspaces->count() == 0) {
+        $checkOption = $this->option('check');
+        if ($checkOption) {
+            $clusterWorkspacesNames = collect(
+                $clusterWorkspaces->map(function($item, $key) {
+                    return $item->getName();
+                })
+            );
+
+            foreach ($consoleWorkspaces as $cworkspace) {
+                $output[] = [
+                    $cworkspace->name,
+                    $clusterWorkspacesNames->contains($cworkspace->name) ? 'PRESENT' : ''
+                ];
+            }
+
+            $this->table(
+                ['Console', 'Cluster'],
+                $output
+            );
+
+            return Command::SUCCESS;
+        }
+
+        $syncOption = $this->option('sync');
+        if ($syncOption) {
+            $clusterWorkspacesNames = collect(
+                $clusterWorkspaces->map(function($item, $key) {
+                    return $item->getName();
+                })
+            );
+
+            $this->info('Synchronizing workspaces on ' . config('edgenet.cluster.host'));
+
+
+            foreach ($consoleWorkspaces as $cworkspace) {
+                $this->output->write('-> ' . $cworkspace->name);
+                if (!$clusterWorkspacesNames->contains($cworkspace->name)) {
+                    $this->output->writeln(' => not found - creating');
+                    CreateWorkspaceJob::dispatch($cworkspace);
+                } else {
+                    $this->output->writeln(' => found - skipping');
+                }
+            }
+
+
+            return Command::SUCCESS;
+        }
+
+        if ($clusterWorkspaces->count() == 0) {
             $this->newLine();
             $this->info('No workspaces found');
             $this->newLine();
@@ -50,13 +104,13 @@ class EdgenetWorkspaces extends Command
         }
 
         $output = [];
-        foreach ($workspaces as $t) {
+        foreach ($clusterWorkspaces as $t) {
             $contact = $t->getContact();
 
             $output[] = [
                 $t->getName(),
                 Str::substr($t->getFullname(), 0, 50),
-                $contact['firstname'] . ' ' . $contact['lastname'] . "\n" . $contact['email'] . "\n" . $contact['phone'],
+                $contact ? $contact['firstname'] . ' ' . $contact['lastname'] . "\n" . $contact['email'] . "\n" . $contact['phone'] : '',
                 'Enabled: ' . ($t->isApproved() ? 'Yes' : 'No') . "\n" .
                 'State: ' . $t->getState() . "\n" .
                 'Message: ' . $t->getMessage() . "\n"

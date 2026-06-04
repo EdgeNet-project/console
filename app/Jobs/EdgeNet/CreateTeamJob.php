@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
 use App\CRDs\Tenant as TenantCRD;
@@ -51,10 +52,11 @@ class CreateTeamJob implements ShouldQueue
             ],
             'spec' => [
                 // Full name of the tenant.
-                'fullName' => $this->team->fullname,
+                'fullName' => Str::substr($this->team->fullname, 0, 79),
 
                 // Website of the tenant
-                'url' => $this->team->url ?? null,
+                // DEPRECATED: we are not going to use this anymore
+                'url' => 'https://planetlab.io',
 
                 // This is the admin username for the tenant.
                 // A role binding will be created for user with this username.

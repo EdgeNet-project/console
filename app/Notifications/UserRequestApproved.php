@@ -12,6 +12,9 @@ class UserRequestApproved extends Notification
 {
     use Queueable;
 
+    protected $userRequest;
+    protected $is_admin;
+
     /**
      * Create a new notification instance.
      *
@@ -43,16 +46,33 @@ class UserRequestApproved extends Notification
     public function toMail($notifiable)
     {
 
-        if ($this->is_admin) {
-            return (new MailMessage)
-                ->greeting('Dear ' . $notifiable->firstname . ' ' . $notifiable->lastname)
-                ->line('A the request from ' . $this->userRequest->user->firstname . ' ' . $this->userRequest->user->lastname)
-                ->line('for '.$this->userRequest->type->name .' has been approved.');
+        $line1 = '';
+        switch($this->userRequest->type->name) {
+            case 'CreateTeam':
+                $line1 = 'Your request for creating the Team '.$this->userRequest->data->shortname .' has been approved.';
+                break;
+            case 'JoinTeam':
+                $line1 = 'Your request for joining the Team ' . $this->userRequest->object->shortname . ' has been approved.';
+                break;
+            case 'CreateWorkspace':
+                $line1 = 'Your request for creating the workspace '.$this->userRequest->data->label.' (' . $this->userRequest->data->name . ') has been approved.';
+                break;
+            case 'JoinWorkspace':
+                $line1 = 'Your request for joining the workspace ' . $this->userRequest->object->name . ' has been approved.';
+                break;
+
         }
 
         return (new MailMessage)
+            ->replyTo(config('edgenet.support.email'), config('edgenet.support.name'))
             ->greeting('Dear ' . $notifiable->firstname . ' ' . $notifiable->lastname)
-            ->line('Your request for '.$this->userRequest->type->name .' has been approved.');
+            ->subject('Your request has been approved')
+            ->line($line1)
+            ->line('')
+            ->line('Please don\'t hesitate to contact us by replying to this email if you have any questions.')
+            ->line('Thank you !')
+            ->action('PlanetLab Console', config('edgenet.console.url'))
+            ->salutation('Best regards,<br>' . config('edgenet.support.signature'));
     }
 
     /**

@@ -38,13 +38,16 @@ class UserRequestController extends Controller
                 UserRequestType::JoinWorkspace,
                 UserRequestType::CreateWorkspace,
             ])
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $adminUserRequests = [];
         if (auth()->user()->admin) {
             $adminUserRequests = UserRequest::whereIn('type', [
                 UserRequestType::CreateTeam
-            ])->get();
+            ])
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
 
         //$joinTeamRequests = UserRequest::whereHasMorph('object', [Tenant::class])->get();
