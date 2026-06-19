@@ -1,7 +1,7 @@
 import {
     Table,
     Text,
-    Group, Stack, Popover, Button,
+    Group, Stack, Popover, Button, Image,
 } from '@mantine/core';
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -51,9 +51,15 @@ export default function NodeList() {
                         <Text size="xs" c="dimmed">
                             Location
                         </Text>
-                        <Text size="sm">
-                            {item.location.regionCode} {item.location.regionName} {item.location.countryCode}
-                        </Text>
+                        <Group gap="xs">
+                            {item.location && item.location.countryCode &&
+                            <Image src={"/flags/4x3/"+item.location.countryCode.toLowerCase()+".svg"} width={20} height={12} />
+                            }
+                            <Text size="sm">
+                                {item.location.regionCode} {item.location.regionName} {item.location.countryCode}
+                            </Text>
+                        </Group>
+
                         <Text size="sm" c="blue">
                             {item.location.latitude} {item.location.longitude}
                         </Text>
