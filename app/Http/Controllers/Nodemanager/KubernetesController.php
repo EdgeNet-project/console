@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Node;
+namespace App\Http\Controllers\Nodemanager;
 
 use App\Http\Controllers\Controller;
 use App\Model\Node;
@@ -154,8 +154,7 @@ class KubernetesController extends Controller
             $clusterNode = K8s::getNodeByName($node->name);
 
             $clusterNode
-//                ->setAttribute('spec.taints', [])
-                ->addToAttribute('metadata.annotations', [
+                ->setOrUpdateAnnotations([
                     'planetlab.io/join-completed-at' => now()->toIso8601String()
                 ])
                 ->update();
@@ -305,8 +304,10 @@ stringData:
             try {
                 $clusterNode = K8s::node()
                 ->setName($name)
-                ->setAttribute('metadata.labels', $labels)
-                ->setAttribute('metadata.annotations', $annotations)
+//                ->setAttribute('metadata.labels', $labels)
+                ->setOrUpdateLabels($labels)
+//                ->setAttribute('metadata.annotations', $annotations)
+                ->setOrUpdateAnnotations($annotations)
                 ->setAttribute('metadata.taints', [])
                 ->setAttribute('status.addresses', [
                     ['type' => 'InternalIP', 'address' => (string)$node->wireguard['address'] ?? $node->ip_v4],
@@ -324,8 +325,10 @@ stringData:
             Log::channel('nodes')->info('[' . $name . '] Node already exists, patching...', []);
             try {
                 $clusterNode
-                    ->setAttribute('metadata.labels', $labels)
-                    ->setAttribute('metadata.annotations', $annotations)
+//                ->setAttribute('metadata.labels', $labels)
+                    ->setOrUpdateLabels($labels)
+//                ->setAttribute('metadata.annotations', $annotations)
+                    ->setOrUpdateAnnotations($annotations)
                     ->setAttribute('metadata.taints', [])
                     ->update();
             } catch (KubernetesAPIException $e) {

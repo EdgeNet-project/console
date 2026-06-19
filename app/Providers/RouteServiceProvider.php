@@ -51,7 +51,7 @@ class RouteServiceProvider extends ServiceProvider
 //        $this->mapEdgenetRoutes();
 
         $this->mapBootRoutes();
-        $this->mapNodeRoutes();
+        $this->mapNodemanagerRoutes();
         $this->mapWebRoutes();
 
         //
@@ -155,11 +155,11 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapNodeRoutes()
+    protected function mapNodemanagerRoutes()
     {
         Route::prefix('api/node')
             ->middleware('api')
             ->namespace($this->namespace . '\Node')
-            ->group(base_path('routes/node.php'));
+            ->group(base_path('routes/nodemanager.php'));
     }
 }

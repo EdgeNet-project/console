@@ -2,14 +2,11 @@
 
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
 class Node extends Model
 {
-    use LogsActivity;
 
     public $timestamps = true;
     /**
@@ -46,13 +43,6 @@ class Node extends Model
     ];
 
     protected $appends = [];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logOnly(['status']);
-        // Chain fluent methods for configuration options
-    }
 
     public function getInstallationUrlAttribute()
     {

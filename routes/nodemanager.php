@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Node\CheckinController;
-use App\Http\Controllers\Node\PingController;
-use \App\Http\Controllers\Node\WireguardController;
-use \App\Http\Controllers\Node\ActivationController;
-use \App\Http\Controllers\Node\ManageController;
-use App\Http\Controllers\Node\KubernetesController;
+use App\Http\Controllers\Nodemanager\CheckinController;
+use App\Http\Controllers\Nodemanager\PingController;
+use App\Http\Controllers\Nodemanager\WireguardController;
+use App\Http\Controllers\Nodemanager\ActivationController;
+use App\Http\Controllers\Nodemanager\ManageController;
+use App\Http\Controllers\Nodemanager\KubernetesController;
 
 Route::post('/checkin', [CheckinController::class, 'checkin']);
 Route::post('/ping', [PingController::class, 'ping']);
