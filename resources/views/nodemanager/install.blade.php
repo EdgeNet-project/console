@@ -4,7 +4,7 @@
 #
 # Instructions:
 #   To install the NodeManager package on a supported machine, run:
-#     curl -fsSL https://n.planetlab.io/install | sudo bash
+#     curl -fsSL https://{{config('nodemanager.orchestrator.host')}}/install.sh | sudo bash
 #
 # Supported architectures: x86_64, arm64 (aarch64)
 # Supported distributions & minimum versions:
@@ -72,12 +72,12 @@ if command -v apt > /dev/null; then
     echo "Installing for Debian-based system..."
     
     # Add the key
-    curl -fsSL https://r.planetlab.io/deb/planetlab.gpg \
-      | gpg --dearmor -o /usr/share/keyrings/planetlab.gpg
+    curl -fsSL https://{{config('nodemanager.repository.host')}}/deb/{{config('nodemanager.repository.name')}}.gpg \
+      | gpg --dearmor -o /usr/share/keyrings/{{config('nodemanager.repository.name')}}.gpg
 
     # Add the repo
-    echo "deb [signed-by=/usr/share/keyrings/planetlab.gpg] https://r.planetlab.io/deb stable main" \
-      | tee /etc/apt/sources.list.d/planetlab.list
+    echo "deb [signed-by=/usr/share/keyrings/{{config('nodemanager.repository.name')}}.gpg] https://{{config('nodemanager.repository.host')}}/deb stable main" \
+      | tee /etc/apt/sources.list.d/{{config('nodemanager.repository.name')}}.list
 
     # Install packages
     apt update
