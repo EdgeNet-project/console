@@ -157,9 +157,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapNodemanagerRoutes()
     {
-        Route::prefix('api/node')
-            ->middleware('api')
-            ->namespace($this->namespace . '\Node')
+        Route::namespace($this->namespace . '\Nodemanager')
             ->group(base_path('routes/nodemanager.php'));
     }
 }
