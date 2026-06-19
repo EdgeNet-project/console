@@ -44,4 +44,9 @@ class InstallController extends Controller
             )
             ->header('Content-Type', 'text/plain');
     }
+
+    public function ip(Request $request)
+    {
+        return response($request->ip());
+    }
 }

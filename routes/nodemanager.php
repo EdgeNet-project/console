@@ -14,6 +14,12 @@ Route::group(['domain' => config('nodemanager.orchestrator.host')], function () 
     Route::get('/install.sh', [InstallController::class, 'shell'])
         ->name('nodemanager.install.shell');
 
+    Route::get('/cloud-init', [InstallController::class, 'cloudInit'])
+        ->name('nodemanager.install.cloud-init');
+
+    Route::get('/ip', [InstallController::class, 'ip'])
+        ->name('nodemanager.install.ip');
+
 
 });
 
