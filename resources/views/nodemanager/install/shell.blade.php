@@ -4,7 +4,7 @@
 #
 # Instructions:
 #   To install the NodeManager package on a supported machine, run:
-#     curl -fsSL https://{{config('nodemanager.orchestrator.host')}}/install.sh | sudo bash
+#     curl -fsSL https://{{$orchestrator_host}}/install.sh | sudo bash
 #
 # Supported architectures: x86_64, arm64 (aarch64)
 # Supported distributions & minimum versions:
@@ -72,12 +72,12 @@ if command -v apt > /dev/null; then
     echo "Installing for Debian-based system..."
     
     # Add the key
-    curl -fsSL https://{{config('nodemanager.repository.host')}}/deb/{{config('nodemanager.repository.name')}}.gpg \
-      | gpg --dearmor -o /usr/share/keyrings/{{config('nodemanager.repository.name')}}.gpg
+    curl -fsSL https://{{$repository_host}}/deb/{{$repository_name}}.gpg \
+      | gpg --dearmor -o /usr/share/keyrings/{{$repository_name}}.gpg
 
     # Add the repo
-    echo "deb [signed-by=/usr/share/keyrings/{{config('nodemanager.repository.name')}}.gpg] https://{{config('nodemanager.repository.host')}}/deb stable main" \
-      | tee /etc/apt/sources.list.d/{{config('nodemanager.repository.name')}}.list
+    echo "deb [signed-by=/usr/share/keyrings/{{$repository_name}}.gpg] https://{{$repository_host}}/deb stable main" \
+      | tee /etc/apt/sources.list.d/{{$repository_name}}.list
 
     # Install packages
     apt update

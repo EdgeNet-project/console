@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Node;
+namespace App\Http\Controllers\Nodemanager;
 
 use App\Http\Controllers\Controller;
 use App\Model\Node;
