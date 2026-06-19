@@ -3,42 +3,13 @@ import {
     Text,
     Group, Stack, Popover, Button, Image,
 } from '@mantine/core';
-import {useEffect, useState} from "react";
-import axios from "axios";
-import {Link, useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
-import NodeStatus from "../../Nodes/components/NodeStatus.jsx";
-import NodeEnabled from "../../Nodes/components/NodeEnabled.jsx";
+import NodeEnabled from "../../../Nodes/components/NodeEnabled";
+import NodeStatus from "../../../Nodes/components/NodeStatus";
 
-export default function NodeList() {
-    const [ nodes, setNodes ] = useState([]);
-    const navigate = useNavigate();
+export default function NodeListRowDetailed({item, handleEnable}) {
 
-    const handleEnable = (nodeId, enabled) => {
-        axios.post(`/api/node/enable/${nodeId}`, { enabled })
-            .then(({data}) => {
-                setNodes(nodes.map(n => n.id === nodeId ? data : n))
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-
-    useEffect(() => {
-        axios.get('/api/node/list')
-            .then(({data}) => {
-                setNodes(data)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-
-        return () => {
-            setNodes([])
-        }
-    }, [])
-
-    const rows = nodes.map((item) => (
+    return (
         <Table.Tr key={'node-' + item.name}>
             <Table.Td style={{verticalAlign:"top"}}>
                 <Stack gap="sm">
@@ -53,7 +24,7 @@ export default function NodeList() {
                         </Text>
                         <Group gap="xs">
                             {item.location && item.location.countryCode &&
-                            <Image src={"/flags/4x3/"+item.location.countryCode.toLowerCase()+".svg"} width={20} height={12} />
+                                <Image src={"/flags/4x3/"+item.location.countryCode.toLowerCase()+".svg"} width={20} height={12} />
                             }
                             <Text size="sm">
                                 {item.location.regionCode} {item.location.regionName} {item.location.countryCode}
@@ -180,22 +151,5 @@ export default function NodeList() {
                 </Stack>
             </Table.Td>
         </Table.Tr>
-    ));
-
-    return (
-        <Table.ScrollContainer minWidth={800}>
-            <Table verticalSpacing="sm">
-                <Table.Thead>
-                    <Table.Tr>
-                        <Table.Th>Node</Table.Th>
-                        <Table.Th>Network</Table.Th>
-                        <Table.Th>Last active</Table.Th>
-                        <Table.Th>Status</Table.Th>
-                    </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>{rows}</Table.Tbody>
-            </Table>
-        </Table.ScrollContainer>
-    );
-
+    )
 }

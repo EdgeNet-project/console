@@ -52,7 +52,7 @@ const Application = () => {
                 </AppShell.Navbar>
 
                 <AppShell.Main style={{backgroundColor: 'var(--mantine-primary-color-light)'}}>
-                    <Container size={medium ? large ? "xxl" : "lg" : ''} py="lg">
+                    <Container size={medium ? large ? "xxl" : "lg" : ''} py="sm">
                         <Outlet />
                     </Container>
                 </AppShell.Main>

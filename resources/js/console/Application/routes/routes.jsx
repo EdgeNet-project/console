@@ -29,7 +29,7 @@ import AdminConsole from "../../Admin/Console";
 import AdminCluster from "../../Admin/Cluster";
 
 import AdminNodemanager from "../../Admin/Nodemanager";
-import AdminNodemanagerNodeList from "../../Admin/Nodemanager/NodeList";
+import AdminNodemanagerNodeList from "../../Admin/Nodemanager/Nodes/NodeList";
 
 const router = createBrowserRouter([
     {

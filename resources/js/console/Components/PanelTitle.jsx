@@ -4,8 +4,8 @@ import React from "react";
 export default ({title = []}) => {
 
     return (
-        <Breadcrumbs separator="→" separatorMargin="sm">
-            {title.map((t) => <Title order={1} size="h2">{t}</Title>)}
+        <Breadcrumbs separator="→" separatorMargin="sm" mb="md">
+            {title.map((t,k) => <Title order={1} key={k} id={t} size="h4">{t}</Title>)}
         </Breadcrumbs>
     )
 }
