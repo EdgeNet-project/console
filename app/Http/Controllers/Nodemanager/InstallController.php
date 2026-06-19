@@ -14,7 +14,8 @@ class InstallController extends Controller
      */
     public function shell()
     {
-        return view('nodemanager.install')
+        return response()
+            ->view('nodemanager.install')
             ->header('Content-Type', 'text/plain');
     }
 }
