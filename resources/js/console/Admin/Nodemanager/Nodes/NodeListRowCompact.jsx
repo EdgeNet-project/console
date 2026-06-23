@@ -1,8 +1,10 @@
 import {
     Table,
     Text,
-    Group, Stack, Popover, Button, Image,
+    Group, Stack, Popover, Button, Image, ActionIcon,
 } from '@mantine/core';
+import {IconMapPinFilled} from '@tabler/icons-react';
+
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime);
@@ -26,6 +28,9 @@ export default function NodeListRowCompact({item, handleEnable}) {
                         }
                         <Text size="sm">
                             {item.location.regionCode} {item.location.regionName} {item.location.countryCode}
+                            <ActionIcon component="a" href={" https://www.google.com/maps/place/"+item.location.latitude+","+item.location.longitude+"/@"+item.location.latitude+","+item.location.longitude+",6z"} target="_blank" rel="noreferrer" variant="subtle" aria-label="Google Maps">
+                                <IconMapPinFilled color="pink" size={14} />
+                            </ActionIcon>
                         </Text>
                     </Group>}
                     {item.os &&
