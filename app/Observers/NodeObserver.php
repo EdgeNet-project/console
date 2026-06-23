@@ -5,6 +5,8 @@ namespace App\Observers;
 use App\Model\Node;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Notifications\Nodemanager\NewNodeCreated;
+use App\Model\User;
 
 class NodeObserver
 {
@@ -28,7 +30,11 @@ class NodeObserver
      */
     public function created(Node $node)
     {
-        //
+        Log::info('[Console] New node created - notifying cluster admins');
+        $admins = User::where('admin', true)->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new NewNodeCreated($node));
+        }
     }
 
     /**
