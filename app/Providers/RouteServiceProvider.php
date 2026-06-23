@@ -51,10 +51,13 @@ class RouteServiceProvider extends ServiceProvider
 //        $this->mapEdgenetRoutes();
 
         $this->mapBootRoutes();
+
         $this->mapNodemanagerRoutes();
+
+        $this->mapStatusRoutes();
+
         $this->mapWebRoutes();
 
-        //
     }
 
     /**
@@ -159,5 +162,19 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::namespace($this->namespace . '\Nodemanager')
             ->group(base_path('routes/nodemanager.php'));
+    }
+
+    /**
+     * Application and Platform status
+     *
+     * @return void
+     */
+    protected function mapStatusRoutes()
+    {
+
+        Route::domain('status.planetlab.io')
+            ->namespace($this->namespace . '\Status')
+            ->name('status.')
+            ->group(base_path('routes/status.php'));
     }
 }

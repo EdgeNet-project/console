@@ -8,6 +8,7 @@ export default defineConfig({
         laravel([
             // 'resources/css/app.css',
             'resources/js/console.jsx',
+            'resources/js/status.jsx',
         ]),
         react(),
         // vue({

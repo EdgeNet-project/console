@@ -9,10 +9,11 @@ const NodeStatus = ({status}) => {
                     Ready
                 </Badge>
             )
-        case 'ok':
+        case 'provisioning':
+        case 'networking':
             return (
-                <Badge color="green" variant="light">
-                    Running
+                <Badge variant="light">
+                    {status}
                 </Badge>
             )
         case 'error':
@@ -27,25 +28,14 @@ const NodeStatus = ({status}) => {
                     Warning
                 </Badge>
             )
-        case 'to install':
-            return (
-                <Badge variant="light">
-                    To install
-                </Badge>
-            )
-        case 'installing':
-            return (
-                <Badge variant="light">
-                    Installing
-                </Badge>
-            )
+
         case 'unknown':
             return (
                 <Badge color="gray" variant="light">
                     Unknown
                 </Badge>
             )
-        case '':
+        case 'disabled':
             return (
                 <Badge color="gray" variant="light">
                     Disabled

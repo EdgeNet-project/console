@@ -71,7 +71,7 @@ export default function NodeList() {
                         <Text size="sm" fw={500}>
                                 {item.name}
                         </Text>
-                        <NodeAddresses addresses={item.status?.addesses} />
+                        {item.status && item.status.addesses && <NodeAddresses addresses={item.status.addesses} />}
                         <TempNodeInfo node={item.name} />
                     </div>
                 </Group>
@@ -79,11 +79,11 @@ export default function NodeList() {
 
             <Table.Td style={{verticalAlign:"top"}}>
                 <Text size="sm">
-                    <NodeCapacity capacity={item.status?.capacity} />
+                    {item.status && item.status.capacity && <NodeCapacity capacity={item.status.capacity} />}
                 </Text>
             </Table.Td>
             <Table.Td style={{verticalAlign:"top"}}>
-                <NodeInfo nodeInfo={item.status?.nodeInfo} />
+                {item.status && item.status.nodeInfo && <NodeInfo nodeInfo={item.status.nodeInfo} />}
             </Table.Td>
             <Table.Td>
                 {/*<Group gap="xs">*/}
