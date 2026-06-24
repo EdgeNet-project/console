@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\Nodemanager\InstallController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Nodemanager\ActivationController;
 use App\Http\Controllers\Nodemanager\CheckinController;
+use App\Http\Controllers\Nodemanager\InstallController;
+use App\Http\Controllers\Nodemanager\KubernetesController;
+use App\Http\Controllers\Nodemanager\ManageController;
+use App\Http\Controllers\Nodemanager\Node\SetupController;
 use App\Http\Controllers\Nodemanager\PingController;
 use App\Http\Controllers\Nodemanager\WireguardController;
-use App\Http\Controllers\Nodemanager\ActivationController;
-use App\Http\Controllers\Nodemanager\ManageController;
-use App\Http\Controllers\Nodemanager\KubernetesController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['domain' => config('nodemanager.orchestrator.host')], function () {
 
@@ -17,10 +18,23 @@ Route::group(['domain' => config('nodemanager.orchestrator.host')], function () 
     Route::get('/cloud-init', [InstallController::class, 'cloudInit'])
         ->name('nodemanager.install.cloud-init');
 
+    // simple endpoint to get the node's public IP address
     Route::get('/ip', [InstallController::class, 'ip'])
         ->name('nodemanager.install.ip');
 
 
+    /**
+     * Installer phase endpoints
+     */
+    Route::group(['prefix' => 'install'], function () {
+        // checkin
+        //Route::post('/checkin', [CheckinController::class, 'checkin'])
+        //        ->name('nodemanager.install.checkin');
+
+
+        Route::get('setup', SetupController::class)
+            ->name('nodemanager.setup');
+    });
 });
 
 Route::group([
