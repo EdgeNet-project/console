@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Nodemanager;
 
 use App\Http\Controllers\Controller;
 use App\Model\Node;
+use App\Model\NodeStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -58,6 +59,9 @@ class WireguardController extends Controller
                 'error' => 'Node is not enabled'
             ], 403);
         }
+
+        $node->status = NodeStatus::NETWORKING->value;
+        $node->save();
 
         // calculate address
         $networkCidr = config('planetlab.wireguard.network', '10.80.0.0/16');

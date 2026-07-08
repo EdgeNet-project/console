@@ -37,20 +37,23 @@ class NewNodeCreated extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        $mail = (new MailMessage)
             ->subject('New node created - ' . $this->node->name)
-            ->line('A new node has been created: ' . $this->node->name)
-                    ->line('Public IP: ' . $this->node->public_ip_v4)
-                    ->line('Node IP: ' . $this->node->ip_v4)
-                    ->lineIf(isset($this->node->location['countryCode']), 'countryCode: ' . $this->node->location['countryCode'])
-                    ->lineIf(isset($this->node->location['regionName']), 'regionName: ' . $this->node->location['regionName'])
-                    ->lineIf(isset($this->node->location['regionCode']), 'regionCode: ' . $this->node->location['regionCode'])
-                    ->lineIf(isset($this->node->location['regionName']), 'regionName: ' . $this->node->location['regionName'])
-                    ->lineIf(isset($this->node->os['arch']), 'Arch: ' . $this->node->os['arch'])
-                    ->lineIf(isset($this->node->os['distro']), 'Distro: ' . $this->node->os['distro'])
-                    ->lineIf(isset($this->node->os['version']), 'Version: ' . $this->node->os['version'])
-                    ->lineIf(isset($this->node->os['kernel']), 'Kernel: ' . $this->node->os['kernel'])
-                    ->action('PlanetLab Nodes', url('/admin/nodemanager/nodes'));
+            ->line('A new node has been created: ' . $this->node->name);
+
+        $table = "| Attribute | Value |\n| :--- | :--- |\n";
+        $table .= "| Public IP | " . ($this->node->public_ip_v4 ?? 'N/A') . " |\n";
+        $table .= "| Node IP | " . ($this->node->ip_v4 ?? 'N/A') . " |\n";
+        if (isset($this->node->location['countryCode'])) $table .= "| Country Code | " . $this->node->location['countryCode'] . " |\n";
+        if (isset($this->node->location['regionName'])) $table .= "| Region Name | " . $this->node->location['regionName'] . " |\n";
+        if (isset($this->node->location['regionCode'])) $table .= "| Region Code | " . $this->node->location['regionCode'] . " |\n";
+        if (isset($this->node->os['arch'])) $table .= "| Arch | " . $this->node->os['arch'] . " |\n";
+        if (isset($this->node->os['distro'])) $table .= "| Distro | " . $this->node->os['distro'] . " |\n";
+        if (isset($this->node->os['version'])) $table .= "| Version | " . $this->node->os['version'] . " |\n";
+        if (isset($this->node->os['kernel'])) $table .= "| Kernel | " . $this->node->os['kernel'] . " |\n";
+
+        return $mail->line($table)
+            ->action('PlanetLab Nodes', url('/admin/nodemanager/nodes'));
     }
 
     /**

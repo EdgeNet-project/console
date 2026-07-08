@@ -72,13 +72,15 @@ class CheckinController extends Controller
             $node = new Node();
             $node->system_uuid = $request->input('uuid');
             $node->code = $request->input('code');
-            $node->status = \App\Model\NodeStatus::CHECKIN->value;
             $node->enabled = false;
 
             Log::channel('nodes')->info("[checkin] node is new, creating");
 
             // TODO: check if system_uuid is unique
         }
+
+        // CHECKIN STATUS
+        $node->status = \App\Model\NodeStatus::CHECKIN->value;
 
         // TODO: if node exists check if uuid or network is different
 

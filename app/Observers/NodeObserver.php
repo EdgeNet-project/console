@@ -4,8 +4,8 @@ namespace App\Observers;
 
 use App\Model\Node;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use App\Notifications\Nodemanager\NewNodeCreated;
+use App\Notifications\Nodemanager\NodeStatusChanged;
 use App\Model\User;
 
 class NodeObserver
@@ -48,6 +48,11 @@ class NodeObserver
         // Node Status
         if ($node->isDirty('status')) {
             Log::info('[' . $node->name . '] changed status to ' . $node->status->name);
+
+            $admins = User::where('admin', true)->get();
+            foreach ($admins as $admin) {
+                $admin->notify(new NodeStatusChanged($node));
+            }
         }
     }
 

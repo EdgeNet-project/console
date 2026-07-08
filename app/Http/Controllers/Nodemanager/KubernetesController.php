@@ -66,6 +66,9 @@ class KubernetesController extends Controller
             ], 403);
         }
 
+        $node->status = NodeStatus::PROVISIONING->value;
+        $node->save();
+
         $tokenId = $request->input('token-id');
         $tokenSecret = $request->input('token-secret');
 
