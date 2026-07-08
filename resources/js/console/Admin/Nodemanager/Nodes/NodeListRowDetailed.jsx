@@ -41,6 +41,12 @@ export default function NodeListRowDetailed({item, handleEnable}) {
                             {item.os.arch} | kernel: {item.os.kernel}
                         </Text>
                     </div>}
+                    {item.hardware && <div>
+                        <Text size="sm">
+                            {item.hardware.sys_vendor} {item.hardware.product_family}<br />
+                            {item.hardware.product_name} | serial: {item.hardware.product_serial}
+                        </Text>
+                    </div>}
                 </Stack>
             </Table.Td>
 
@@ -86,6 +92,7 @@ export default function NodeListRowDetailed({item, handleEnable}) {
                             {item.asn}
                         </Text>
                     </div>}
+
                 </Stack>
             </Table.Td>
             <Table.Td style={{verticalAlign:"top"}}>
