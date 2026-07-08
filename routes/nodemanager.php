@@ -26,14 +26,14 @@ Route::group(['domain' => config('nodemanager.orchestrator.host')], function () 
     /**
      * Installer phase endpoints
      */
-    Route::group(['prefix' => 'install'], function () {
+    Route::group(['prefix' => 'setup'], function () {
         // checkin
         //Route::post('/checkin', [CheckinController::class, 'checkin'])
         //        ->name('nodemanager.install.checkin');
 
 
-        Route::get('setup', SetupController::class)
-            ->name('nodemanager.setup');
+        Route::get('users', [ SetupController::class, 'users' ])
+            ->name('nodemanager.setup.users');
     });
 });
 

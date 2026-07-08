@@ -14,7 +14,7 @@ class SetupController extends Controller
      *
      * returns the list of users to be added to the node
      */
-    public function __invoke(Request $request)
+    public function users(Request $request)
     {
         $uuid = $request->header('NODE-UUID');
         $code = $request->header('NODE-CODE');
