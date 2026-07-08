@@ -33,6 +33,7 @@ class CheckinController extends Controller
 
         $validator = Validator::make($request->all(), [
             'uuid' => 'required|uuid',
+            'product_uuid' => 'uuid',
             'code' => 'required|string|max:6|min:6|regex:/^[a-zA-Z0-9]+$/',
             'ip' => 'nullable|ipv4',
             'arch' => 'nullable|string|max:20',
@@ -56,10 +57,12 @@ class CheckinController extends Controller
 
         try {
             // check if node already exists
-            $node = Node::where([
-                ['code', $request->input('code')],
-                ['system_uuid', $request->input('uuid')],
-            ])->first();
+            $node = Node::where('code', $request->input('code'))
+                ->where(function ($query) use ($request) {
+                    $query->where('system_uuid', $request->input('uuid'))
+                        ->orWhere('product_uuid', $request->input('product_uuid'));
+                })
+                ->first();
         } catch (\Exception $e) {
             Log::channel('nodes')->error("[checkin] error (lookup): " . $e->getMessage());
             return response()->json([
@@ -70,6 +73,7 @@ class CheckinController extends Controller
         if (!$node) {
             $node = new Node();
             $node->system_uuid = $request->input('uuid');
+            $node->product_uuid = $request->input('product_uuid');
             $node->code = $request->input('code');
             $node->status = \App\Model\NodeStatus::CHECKIN->value;
             $node->enabled = false;

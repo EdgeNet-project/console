@@ -18,7 +18,7 @@ class Node extends Model
     ];
 
     protected $fillable = [
-        'name', 'system_uuid', 'status', 'enabled',
+        'name', 'system_uuid', 'product_uuid', 'status', 'enabled',
         'installed_at', 'last_seen_at',
 
         'platform', 'role',
