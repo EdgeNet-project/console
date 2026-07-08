@@ -18,15 +18,15 @@ class Node extends Model
     ];
 
     protected $fillable = [
-        'name', 'system_uuid', 'product_uuid', 'status', 'enabled',
+        'name', 'system_uuid',
+        'status', 'enabled',
         'installed_at', 'last_seen_at',
 
         'platform', 'role',
 
         'ip_v4', 'public_ip_v4', 'ip_v6', 'asn',
 
-        'wireguard', 'os', 'info', 'location',
-        'code'
+        'wireguard', 'os', 'hardware', 'info', 'location', 'hardware', 'code'
     ];
 
     protected $casts = [
@@ -38,6 +38,7 @@ class Node extends Model
 
         'wireguard' => 'array',
         'os' => 'array',
+        'hardware' => 'array',
         'info' => 'array',
         'location' => 'array',
     ];

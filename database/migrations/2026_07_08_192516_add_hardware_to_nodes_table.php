@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('nodes', function (Blueprint $table) {
-            $table->uuid('product_uuid')
-                ->nullable()
-                ->unique();
+            $table->json('hardware')->nullable();
         });
     }
 
@@ -24,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('nodes', function (Blueprint $table) {
-            $table->dropColumn('product_uuid');
+            $table->dropColumn('hardware');
         });
     }
 };
