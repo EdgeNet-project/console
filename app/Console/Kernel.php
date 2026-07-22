@@ -29,6 +29,8 @@ class Kernel extends ConsoleKernel
 
         $schedule->job(new \App\Jobs\AggregateNodeMetricsHourly)->hourly();
         $schedule->job(new \App\Jobs\AggregateNodeMetricsDaily)->daily();
+        $schedule->job(new \App\Jobs\AggregateNodeMetricsWeekly)->weekly();
+        $schedule->job(new \App\Jobs\AggregateNodeMetricsMonthly)->monthly();
         $schedule->job(new \App\Jobs\CleanupNodeMetrics)->daily();
     }
 

@@ -43,11 +43,43 @@ class Node extends Model
         'location' => 'array',
     ];
 
-    protected $appends = [];
+    protected $appends = [
+        'installation_url',
+        'current_metrics',
+        'current_metrics_hourly',
+        'current_metrics_daily',
+        'current_metrics_weekly',
+        'current_metrics_monthly',
+    ];
 
     public function getInstallationUrlAttribute()
     {
         return route('node.bootstrap', ['node' => $this->auth]);
+    }
+
+    public function getCurrentMetricsAttribute()
+    {
+        return $this->metrics()->latest('recorded_at')->first();
+    }
+
+    public function getCurrentMetricsHourlyAttribute()
+    {
+        return $this->hourlyMetrics()->latest('hour')->first();
+    }
+
+    public function getCurrentMetricsDailyAttribute()
+    {
+        return $this->dailyMetrics()->latest('day')->first();
+    }
+
+    public function getCurrentMetricsWeeklyAttribute()
+    {
+        return $this->weeklyMetrics()->latest('week_start')->first();
+    }
+
+    public function getCurrentMetricsMonthlyAttribute()
+    {
+        return $this->monthlyMetrics()->latest('month')->first();
     }
 
     public function metrics()
@@ -63,5 +95,15 @@ class Node extends Model
     public function dailyMetrics()
     {
         return $this->hasMany(NodeMetricDaily::class);
+    }
+
+    public function weeklyMetrics()
+    {
+        return $this->hasMany(NodeMetricWeekly::class);
+    }
+
+    public function monthlyMetrics()
+    {
+        return $this->hasMany(NodeMetricMonthly::class);
     }
 }

@@ -4,6 +4,8 @@ namespace App\Jobs;
 
 use App\Model\NodeMetric;
 use App\Model\NodeMetricHourly;
+use App\Model\NodeMetricDaily;
+use App\Model\NodeMetricWeekly;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -23,6 +25,8 @@ class CleanupNodeMetrics implements ShouldQueue
     {
         $rawRetentionDays = config('metrics.retention.raw_days', 30);
         $hourlyRetentionMonths = config('metrics.retention.hourly_months', 12);
+        $dailyRetentionYears = config('metrics.retention.daily_years', 5);
+        $weeklyRetentionYears = config('metrics.retention.weekly_years', 10);
 
         // Cleanup raw metrics
         NodeMetric::where('recorded_at', '<', now()->subDays($rawRetentionDays))
@@ -31,5 +35,15 @@ class CleanupNodeMetrics implements ShouldQueue
         // Cleanup hourly metrics
         NodeMetricHourly::where('hour', '<', now()->subMonths($hourlyRetentionMonths))
             ->delete();
+
+        // Cleanup daily metrics
+        NodeMetricDaily::where('day', '<', now()->subYears($dailyRetentionYears))
+            ->delete();
+
+        // Cleanup weekly metrics
+        NodeMetricWeekly::where('week_start', '<', now()->subYears($weeklyRetentionYears))
+            ->delete();
+
+        // Monthly metrics are retained indefinitely by default
     }
 }

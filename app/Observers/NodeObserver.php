@@ -30,7 +30,7 @@ class NodeObserver
      */
     public function created(Node $node)
     {
-        Log::info('[Console] New node created - notifying cluster admins');
+        Log::channel('nodes')->info('[Console] New node created - notifying cluster admins');
         $admins = User::where('admin', true)->get();
         foreach ($admins as $admin) {
             $admin->notify(new NewNodeCreated($node));
@@ -47,7 +47,7 @@ class NodeObserver
     {
         // Node Status
         if ($node->isDirty('status')) {
-            Log::info('[' . $node->name . '] changed status to ' . $node->status->name);
+            Log::channel('nodes')->info('[' . $node->name . '] changed status to ' . $node->status->name);
 
             $admins = User::where('admin', true)->get();
             foreach ($admins as $admin) {
