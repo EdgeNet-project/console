@@ -47,8 +47,15 @@ export default function Map({nodes}) {
     const [hovered, setHovered] = useState(null);
     const [region, setRegion] = useState('world');
 
+    const statusColors = {
+        ready: '#3FC057',
+        error: '#FB5252',
+    };
+
     const markers = nodes.map(node => ({
         name: node.name,
+        color: '#FB5252',
+        // color: statusColors[node.status] || '#3982DD',
         coordinates: [node.location?.longitude, node.location?.latitude],
     }))
 
@@ -100,7 +107,7 @@ export default function Map({nodes}) {
                             >
                                 <circle
                                     r={5}
-                                    fill="#F53"
+                                    fill={marker.color}
                                     stroke="#fff"
                                     strokeWidth={2}
                                 />

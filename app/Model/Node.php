@@ -54,7 +54,8 @@ class Node extends Model
 
     public function getInstallationUrlAttribute()
     {
-        return route('node.bootstrap', ['node' => $this->auth]);
+        return null;
+        //return route('node.bootstrap', ['node' => $this->auth]);
     }
 
     public function getCurrentMetricsAttribute()

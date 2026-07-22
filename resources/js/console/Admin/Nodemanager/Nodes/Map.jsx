@@ -51,7 +51,7 @@ export default function Map({nodes, region}) {
     }))
 
     return (
-        <div style={{ width: "100%", maxWidth: 900 }}>
+        <div style={{ width: "100%", maxWidth: 900, margin: "auto" }}>
             <ComposableMap
                 projection="geoMercator"
                 projectionConfig={zoom[region]}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Nodemanager;
 use App\Http\Controllers\Controller;
 use App\Model\Node;
 use App\Model\NodeStatus;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +17,7 @@ class ManageController extends Controller
      * Node list - admin only
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse|void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function list(Request $request)
     {
@@ -38,10 +39,32 @@ class ManageController extends Controller
     }
 
     /**
+     * Node metrics - admin only
+     *
+     * @param Request $request
+     * @param Node|null $node
+     * @return JsonResponse
+     */
+    public function metrics(Request $request, Node $node = null)
+    {
+        $range = $request->query('range', 'raw');
+
+        $metrics = match ($range) {
+            'hourly' => $node->hourlyMetrics()->latest('hour')->limit(24)->get(),
+            'daily' => $node->dailyMetrics()->latest('day')->limit(30)->get(),
+            'weekly' => $node->weeklyMetrics()->latest('week_start')->limit(12)->get(),
+            'monthly' => $node->monthlyMetrics()->latest('month')->limit(12)->get(),
+            default => $node->metrics()->latest('recorded_at')->limit(60)->get(),
+        };
+
+        return response()->json($metrics);
+    }
+
+    /**
      * Node activation - admin only
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse|void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function enable(Request $request, Node $node)
     {

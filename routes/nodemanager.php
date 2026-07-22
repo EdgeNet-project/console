@@ -58,6 +58,8 @@ Route::group([
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/activate', [ActivationController::class, 'activate']);
         Route::get('/list', [ManageController::class, 'list']);
+        Route::get('/metrics/{node:id?}', [ ManageController::class, 'metrics' ]);
+
         Route::post('/enable/{node}', [ManageController::class, 'enable']);
     });
 });
