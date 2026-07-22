@@ -24,8 +24,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('edgenet:requests:clean --delete')
-            ->everyMinute();
+//        $schedule->command('edgenet:requests:clean --delete')
+//            ->everyMinute();
+
+        $schedule->job(new \App\Jobs\AggregateNodeMetricsHourly)->hourly();
+        $schedule->job(new \App\Jobs\AggregateNodeMetricsDaily)->daily();
+        $schedule->job(new \App\Jobs\CleanupNodeMetrics)->daily();
     }
 
     /**

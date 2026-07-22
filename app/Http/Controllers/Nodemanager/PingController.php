@@ -4,12 +4,24 @@ namespace App\Http\Controllers\Nodemanager;
 
 use App\Http\Controllers\Controller;
 use App\Model\Node;
+use App\Model\NodeStatus;
+use App\Services\NodeMetricService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class PingController extends Controller
 {
+    /**
+     * @var NodeMetricService
+     */
+    protected $metricService;
+
+    public function __construct(NodeMetricService $metricService)
+    {
+        $this->metricService = $metricService;
+    }
+
     /**
      * Handles node ping.
      * Nodes send their uuid to signal they are active.
@@ -24,6 +36,8 @@ class PingController extends Controller
             'uuid' => $request->input('uuid'),
             'ip' => $request->ip(),
         ]);
+
+        Log::channel('nodes')->info("[ping] request", $request->all());
 
         $validator = Validator::make($request->all(), [
             'uuid' => 'required|uuid',
@@ -52,7 +66,13 @@ class PingController extends Controller
 
         // Update last seen
         $node->last_seen_at = now();
+        $node->status = NodeStatus::READY->value;
         $node->save();
+
+        // Process metrics if present
+        if ($request->has('metrics')) {
+            $this->metricService->store($node, $request->input('metrics'));
+        }
 
         return response()->json([
             'status' => $node->status,

@@ -49,4 +49,19 @@ class Node extends Model
     {
         return route('node.bootstrap', ['node' => $this->auth]);
     }
+
+    public function metrics()
+    {
+        return $this->hasMany(NodeMetric::class);
+    }
+
+    public function hourlyMetrics()
+    {
+        return $this->hasMany(NodeMetricHourly::class);
+    }
+
+    public function dailyMetrics()
+    {
+        return $this->hasMany(NodeMetricDaily::class);
+    }
 }

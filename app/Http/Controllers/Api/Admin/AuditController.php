@@ -10,7 +10,7 @@ class AuditController extends Controller
 {
     public function list(Request $request)
     {
-        $log = AuditEvent::orderBy('request_received_at', 'desc')->get();
+        $log = AuditEvent::orderBy('request_received_at', 'desc')->limit(100)->get();
 
         return response()->json(
             $log

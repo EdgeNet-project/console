@@ -31,6 +31,7 @@
         "react-gravatar": "^2.6.3",
         "react-router": "^6.4.5",
         "react-router-dom": "^6.4.5",
+        "react-simple-maps": "^3.0.0",
         "use-clippy": "^1.0"
     },
     "type": "module"
