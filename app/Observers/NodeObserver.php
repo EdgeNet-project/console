@@ -54,6 +54,14 @@ class NodeObserver
                 $admin->notify(new NodeStatusChanged($node));
             }
         }
+
+        if ($node->isDirty('ip_v4')) {
+            Log::channel('nodes')->info('[' . $node->name . '] ip_v4 changed to ' . $node->ip_v4);
+        }
+
+        if ($node->isDirty('public_ip_v4')) {
+            Log::channel('nodes')->info('[' . $node->name . '] public_ip_v4 changed to ' . $node->public_ip_v4);
+        }
     }
 
     /**
