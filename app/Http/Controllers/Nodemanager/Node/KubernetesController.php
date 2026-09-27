@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Nodemanager;
+namespace App\Http\Controllers\Nodemanager\Node;
 
 use App\Http\Controllers\Controller;
 use App\Model\Node;
 use App\Model\NodeStatus;
 use Carbon\Carbon;
-use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 use RenokiCo\PhpK8s\Exceptions\KubernetesAPIException;
-use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
 use Symfony\Component\Yaml\Yaml;
 
 class KubernetesController extends Controller
@@ -303,7 +301,7 @@ stringData:
         }
 
         if (!$clusterNode) {
-            Log::channel('nodes')->info('[' . $name . '] Node does not exist, creating...', []);
+            Log::channel('nodes')->info('[kubernetes] Node ' . $name . ' does not exist, creating...', []);
             try {
                 $clusterNode = K8s::node()
                 ->setName($name)

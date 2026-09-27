@@ -59,7 +59,6 @@ class ActivationController extends Controller
             ], 403);
         }
 
-        $node->status = NodeStatus::ENABLED;
         $node->enabled = true;
         $node->save();
 

@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\Nodemanager\ActivationController;
-use App\Http\Controllers\Nodemanager\CheckinController;
-use App\Http\Controllers\Nodemanager\InstallController;
-use App\Http\Controllers\Nodemanager\KubernetesController;
 use App\Http\Controllers\Nodemanager\ManageController;
+use App\Http\Controllers\Nodemanager\Node\CheckinController;
+use App\Http\Controllers\Nodemanager\Node\InstallController;
+use App\Http\Controllers\Nodemanager\Node\KubernetesController;
+use App\Http\Controllers\Nodemanager\Node\PingController;
 use App\Http\Controllers\Nodemanager\Node\SetupController;
-use App\Http\Controllers\Nodemanager\PingController;
-use App\Http\Controllers\Nodemanager\WireguardController;
+use App\Http\Controllers\Nodemanager\Node\WireguardController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['domain' => config('nodemanager.orchestrator.host')], function () {

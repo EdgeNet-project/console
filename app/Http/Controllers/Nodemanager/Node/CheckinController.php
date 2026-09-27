@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Nodemanager;
+namespace App\Http\Controllers\Nodemanager\Node;
 
 use App\Http\Controllers\Controller;
 use App\Model\Node;
+use Cslash\GeoName\Data\GeoContext;
+use Cslash\GeoName\Facades\GeoName;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Stevebauman\Location\Facades\Location;
-use Cslash\GeoName\Data\GeoContext;
-use Cslash\GeoName\Facades\GeoName;
 
 class CheckinController extends Controller
 {

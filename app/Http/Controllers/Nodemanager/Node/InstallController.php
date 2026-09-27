@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Nodemanager;
+namespace App\Http\Controllers\Nodemanager\Node;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
