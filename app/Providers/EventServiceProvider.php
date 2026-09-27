@@ -3,6 +3,12 @@
 namespace App\Providers;
 
 
+use App\Events\NodeHeartbeatReceived;
+use App\Events\NodeStageEvent;
+use App\Events\NodeStatusEvent;
+use App\Listeners\NodeStageChange;
+use App\Listeners\NodeStatusChange;
+use App\Listeners\ProcessNodeHeartbeat;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -55,6 +61,18 @@ class EventServiceProvider extends ServiceProvider
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             // ... other providers
             \SocialiteProviders\OIDC\OIDCExtendSocialite::class.'@handle',
+        ],
+
+        NodeHeartbeatReceived::class => [
+            ProcessNodeHeartbeat::class,
+        ],
+
+        NodeStatusEvent::class => [
+            NodeStatusChange::class,
+        ],
+
+        NodeStageEvent::class => [
+            NodeStageChange::class,
         ],
     ];
 

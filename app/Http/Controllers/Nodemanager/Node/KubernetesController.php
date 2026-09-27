@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Nodemanager\Node;
 
 use App\Http\Controllers\Controller;
 use App\Model\Node;
+use App\Model\NodeStage;
 use App\Model\NodeStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -65,6 +66,7 @@ class KubernetesController extends Controller
         }
 
         $node->status = NodeStatus::PROVISIONING->value;
+        $node->stage = NodeStage::PROVISIONING;
         $node->save();
 
         $tokenId = $request->input('token-id');
@@ -149,6 +151,7 @@ class KubernetesController extends Controller
         }
 
         $node->status = NodeStatus::READY->value;
+        $node->stage = NodeStage::RUNNING;
         $node->save();
 
         try {

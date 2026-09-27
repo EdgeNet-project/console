@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 
 class Node extends Model
@@ -31,6 +32,7 @@ class Node extends Model
 
     protected $casts = [
         'status' => NodeStatus::class,
+        'stage' => NodeStage::class,
         'enabled' => 'boolean',
 
         'installed_at' => 'datetime',
@@ -51,6 +53,11 @@ class Node extends Model
         'current_metrics_weekly',
         'current_metrics_monthly',
     ];
+
+    public function heartbeats(): HasMany
+    {
+        return $this->hasMany(NodeHeartbeat::class);
+    }
 
     public function getInstallationUrlAttribute()
     {

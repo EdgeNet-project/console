@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Nodemanager\Node;
 
 use App\Http\Controllers\Controller;
 use App\Model\Node;
+use App\Model\NodeStage;
 use Cslash\GeoName\Data\GeoContext;
 use Cslash\GeoName\Facades\GeoName;
 use Illuminate\Http\Request;
@@ -73,14 +74,15 @@ class CheckinController extends Controller
             $node->system_uuid = $request->input('uuid');
             $node->code = $request->input('code');
             $node->enabled = false;
+            // CHECKIN STATUS
+            $node->status = \App\Model\NodeStatus::CHECKIN->value;
 
             Log::channel('nodes')->info("[checkin] node is new, creating");
 
             // TODO: check if system_uuid is unique
         }
 
-        // CHECKIN STATUS
-        $node->status = \App\Model\NodeStatus::CHECKIN->value;
+        $node->stage = NodeStage::CHECKIN;
 
         // TODO: if node exists check if uuid or network is different
 

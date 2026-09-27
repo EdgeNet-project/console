@@ -5,7 +5,7 @@ use App\Http\Controllers\Nodemanager\ManageController;
 use App\Http\Controllers\Nodemanager\Node\CheckinController;
 use App\Http\Controllers\Nodemanager\Node\InstallController;
 use App\Http\Controllers\Nodemanager\Node\KubernetesController;
-use App\Http\Controllers\Nodemanager\Node\PingController;
+use App\Http\Controllers\Nodemanager\Node\HeartbeatController;
 use App\Http\Controllers\Nodemanager\Node\SetupController;
 use App\Http\Controllers\Nodemanager\Node\WireguardController;
 use Illuminate\Support\Facades\Route;
@@ -43,7 +43,7 @@ Route::group([
 ], function () {
 
     Route::post('/checkin', [CheckinController::class, 'checkin']);
-    Route::post('/ping', [PingController::class, 'ping']);
+    Route::post('/ping', [HeartbeatController::class, 'ping']);
 
     Route::group(['prefix' => 'wireguard', 'controller' => WireguardController::class], function () {
         Route::post('', 'wireguard');

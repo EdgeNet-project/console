@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Nodemanager\Node;
 
 use App\Http\Controllers\Controller;
 use App\Model\Node;
+use App\Model\NodeStage;
 use App\Model\NodeStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -61,6 +62,7 @@ class WireguardController extends Controller
         }
 
         $node->status = NodeStatus::NETWORKING->value;
+        $node->stage = NodeStage::NETWORKING;
         $node->save();
 
         // calculate address

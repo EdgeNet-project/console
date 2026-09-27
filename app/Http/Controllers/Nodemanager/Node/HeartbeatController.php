@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Nodemanager\Node;
 
+use App\Events\NodeHeartbeatReceived;
 use App\Http\Controllers\Controller;
 use App\Model\Node;
 use App\Model\NodeStatus;
@@ -10,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class PingController extends Controller
+class HeartbeatController extends Controller
 {
     /**
      * @var NodeMetricService
@@ -32,10 +33,6 @@ class PingController extends Controller
      */
     public function ping(Request $request)
     {
-        Log::channel('nodes')->info("[ping] request", [
-            'uuid' => $request->input('uuid'),
-            'ip' => $request->ip(),
-        ]);
 
         Log::channel('nodes')->info("[ping] request", $request->all());
 
@@ -64,10 +61,14 @@ class PingController extends Controller
             ], 404);
         }
 
-        // Update last seen
-        $node->last_seen_at = now();
-        $node->status = NodeStatus::READY->value;
-        $node->save();
+        $heartbeat = $node->heartbeats()->create([
+//            'version'   => request()->input('version'),
+            'info' => [
+                'ip_address' => request()->ip(),
+            ],
+        ]);
+
+        NodeHeartbeatReceived::dispatch($heartbeat);
 
         // Process metrics if present
         if ($request->has('metrics')) {

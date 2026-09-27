@@ -10,6 +10,17 @@ enum NodeStatus: string
     case CHECKIN = 'checkin';
 
     /**
+     * Networking
+     */
+    case NETWORKING = 'networking';
+
+    /**
+     * Provisioning (software installation)
+     */
+    case PROVISIONING = 'provisioning';
+
+
+    /**
      * Node is Ready to be activated
      */
     case READY = 'ready';
@@ -17,24 +28,19 @@ enum NodeStatus: string
 
 
 
+    case ONLINE = 'online';
+
+    case UNREACHABLE = 'unreachable';
 
 
-    /**
-     * Node is configuring network
-     */
-    case NETWORK = 'network';
-
-    /**
-     * Node has been enabled
-     */
-    case ENABLED = 'enabled';
-
-    case INSTALLING = 'installing';
-    case OK = 'ok';
-    case WARNING = 'warning';
     case ERROR = 'error';
-    case DISABLED = 'disabled';
+
+    case WARNING = 'warning';
+
     case UNKNOWN = 'unknown';
+
+    case DISABLED = 'disabled';
+
     case DEBUG = 'debug';
 
     public static function validateStatus(string $status): bool
