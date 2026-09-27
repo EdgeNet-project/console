@@ -15,6 +15,10 @@ class NodeHeartbeat extends Model
         'info',
     ];
 
+    protected $casts = [
+        'info' => 'array',
+    ];
+
     public function node(): BelongsTo
     {
         return $this->belongsTo(Node::class);
