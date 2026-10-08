@@ -21,6 +21,7 @@ class CreateWorkspaceJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $workspace;
+    protected $cluster;
 
     /**
      * Create a new job instance.

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use RenokiCo\LaravelK8s\LaravelK8sFacade as K8s;
 use RenokiCo\PhpK8s\Exceptions\PhpK8sException;
+use App\Services\EdgenetAdmin;
 use App\CRDs\Tenant as TenantCRD;
 use App\Model\Tenant;
 
@@ -36,7 +37,7 @@ class CreateTeamJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(EdgenetAdmin $edgenetAdmin)
     {
         Log::info('[EdgeNet] Creating team '. $this->team->name);
 
@@ -46,7 +47,7 @@ class CreateTeamJob implements ShouldQueue
             ->withProperties(['severity' => 'info'])
             ->log('Syncing team with EdgeNet API');
 
-        $crd = new TenantCRD(K8s::getCluster(), [
+        $crd = new TenantCRD($edgenetAdmin->getCluster(), [
             'metadata' => [
                 'name' => $this->team->name,
             ],

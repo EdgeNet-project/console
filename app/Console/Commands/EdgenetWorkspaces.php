@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 
+use App\Jobs\EdgeNet\UpdateWorkspaceRolesJob;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Str;
 use RenokiCo\PhpK8s\Exceptions\KubernetesAPIException;
 use App\Jobs\EdgeNet\CreateWorkspaceJob;
@@ -83,13 +85,21 @@ class EdgenetWorkspaces extends Command
 
 
             foreach ($consoleWorkspaces as $cworkspace) {
-                $this->output->write('-> ' . $cworkspace->name);
-                if (!$clusterWorkspacesNames->contains($cworkspace->name)) {
-                    $this->output->writeln(' => not found - creating');
-                    CreateWorkspaceJob::dispatch($cworkspace);
-                } else {
-                    $this->output->writeln(' => found - skipping');
-                }
+                $this->output->writeln('-> ' . $cworkspace->name);
+//                if (!$clusterWorkspacesNames->contains($cworkspace->name)) {
+//                    $this->output->writeln(' => ');
+//                    CreateWorkspaceJob::dispatch($cworkspace);
+//                } else {
+//                    $this->output->writeln(' => found - skipping');
+//                }
+
+                // updating workspace roles
+//                UpdateWorkspaceRolesJob::dispatch($cworkspace);
+
+                Bus::chain([
+                    new CreateWorkspaceJob($cworkspace),
+                    new UpdateWorkspaceRolesJob($cworkspace),
+                ])->dispatch();
             }
 
 
