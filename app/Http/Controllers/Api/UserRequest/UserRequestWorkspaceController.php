@@ -25,7 +25,7 @@ class UserRequestWorkspaceController extends Controller
 
         $validatedData = $request->validate([
             'label' => ['required', 'string', 'max:255'],
-            'name' => ['required', 'alpha_dash', 'max:32', 'unique:sub_namespaces,name'],
+            'name' => ['required', 'alpha_dash', 'max:27', 'unique:sub_namespaces,name'],
             'team_id' => ['required', 'integer'],
         ]);
 
